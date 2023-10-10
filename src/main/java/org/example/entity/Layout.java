@@ -15,6 +15,7 @@ public class Layout {
     private Integer roomQuantity;
     private Integer areaLiving, areaTotal, areaKitchen;
     private Boolean active;
+
     private String description;
 
     private String img1;

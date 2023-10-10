@@ -23,7 +23,8 @@ public class BuilderObject {
     private Integer priceFrom;
 
     private String phone;
-    private String description;
+
+    private String description_builder;
 
     private PropertyBuildStatus buildStatus;
 
