@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon/favicon.ico}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
+    <script th:src="@{/js/config.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/vendor/css/rtl/core.css}"
+          class="template-customizer-core-css">
+
+</head>
+<body>
+<div class="container-fluid">
+    <h1>ВСТАВИТЬ ИМЯ</h1>
+    <hr class="my-0">
+    <br>
+    <br>
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">Основное
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
+                    type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Галерея
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
+                    type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Планировки
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <div class="row">
+                <div class="col-2">
+                    <h6>Название</h6>
+                    <input type="text">
+                </div>
+                <div class="col-3">
+                    <h6>Нас.пункт</h6>
+                    <select class="custom-select">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <h6>Обл.район</h6>
+                    <select class="custom-select">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select></div>
+                <div class="col-3">
+                    <h6>Район</h6>
+                    <select class="custom-select">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select></div>
+                <div class="col-1"></div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-2">
+                    <h6>Топозона</h6>
+                    <select class="custom-select">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-2">
+                    <h6>Улица</h6>
+                    <input type="text">
+                </div>
+                <div class="col-8"></div>
+            </div>
+            <br>
+            <div class="tab-content">
+
+
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <h6>Номер дома</h6>
+                    <input type="number">
+                </div>
+                <div class="col-2">
+                    <h6>Секция/Корпус</h6>
+                    <input type="number">
+                </div>
+                <div class="col-2">
+                    <h6>Этажность</h6>
+                    <input type="number">
+                </div>
+                <div class="col-3">
+                    <h6>Строительная компания</h6>
+                    <select class="custom-select">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <h6>Срок сдачи</h6>
+                    <select class="custom-select">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+            <br>
+            <h6>Телефон</h6>
+            <input type="text">
+            <br>
+            <br>
+            <br>
+            <h6>Шахматка</h6>
+            <input type="file" class="form-control">
+            <br>
+            <h6>Условия рассрочки</h6>
+            <input type="file" class="form-control">
+            <br>
+            <h6>Файл с ценами</h6>
+            <input type="file" class="form-control">
+            <br>
+            <br>
+            <h3>Описание</h3>
+            <textarea style="width: 100%; height: 300px"></textarea>
+            <br>
+            <h1>Акция</h1>
+            <p style="border: 1px solid #817575; padding: 2px; display: inline-block">Акция 10% до конца
+                января</p>
+            <br>
+            <h3>Описание</h3>
+            <textarea style="width: 100%; height: 300px"></textarea>
+            <br>
+            <input class="form-check-input" type="checkbox"><span class="checkmark">Включить акцию</span>
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="row">
+                <div class="card col-3" style="padding-bottom: 30px">
+                    <img style="justify-content: center; align-items: center;" th:src="@{/img/backgrounds/3.jpg}"
+                         class="d-block w-px-400 h-px-250 rounded mx-auto"></span>
+                    <br>
+                    <p style="text-align: center">INFO</p>
+                    <br>
+                    <div style="text-align: right">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button class="btn btn-submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
+                                    <path d="M7 11l5 5l5 -5"></path>
+                                    <path d="M12 4l0 12"></path>
+                                </svg>
+                            </button>
+
+                            <button class="btn btn-submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M4 7l16 0"></path>
+                                    <path d="M10 11l0 6"></path>
+                                    <path d="M14 11l0 6"></path>
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                </svg>
+                            </button>
+                            <button class="btn btn-submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search"
+                                     width="24"
+                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                                    <path d="M21 21l-6 -6"></path>
+                                </svg>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <input type="file" class="form-control" style="text-align: right;">
+        </div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+    </div>
+    <div style="text-align: right; margin-top: 50px; margin-left: 30px">
+        <button class="btn btn-submit">Отмена</button>
+        <span><button class="btn btn-success">Сохранить</button> </span>
+    </div>
+
+</div>
+
+</body>
+</html>
