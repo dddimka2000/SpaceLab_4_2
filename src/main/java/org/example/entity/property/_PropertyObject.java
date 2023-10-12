@@ -3,7 +3,7 @@ package org.example.entity.property;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.example.entity.BuilderObject;
-import org.example.entity.User;
+import org.example.entity.UserEntity;
 import org.example.util.property.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -80,5 +80,5 @@ public class _PropertyObject {
     private BuilderObject builderObject;
 
     @ManyToOne
-    private User realtor;
+    private UserEntity realtor;
 }

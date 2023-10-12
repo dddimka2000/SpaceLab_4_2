@@ -1,12 +1,15 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "my_bd", catalog = "")
-public class User {
+@Data
+public class UserEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -14,9 +17,13 @@ public class User {
 
     private String email;
     private String password;
+
     @Transient private String confirmPassword;
 
-    private UserRole role;
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> roles;
 
     private String name, surname, middleName;
 
