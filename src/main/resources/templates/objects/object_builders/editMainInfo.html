@@ -31,7 +31,19 @@
     <script th:src="@{/js/config.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/vendor/css/rtl/core.css}"
           class="template-customizer-core-css">
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.6"
+            integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+            crossorigin="anonymous"></script>
+    <style>
+        .button {
+            position: relative;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+        }
+    </style>
 </head>
 <body>
 <div class="container-fluid">
@@ -216,7 +228,6 @@
                                     <path d="M21 21l-6 -6"></path>
                                 </svg>
                             </button>
-
                         </div>
                     </div>
                 </div>
@@ -225,14 +236,212 @@
             <br>
             <input type="file" class="form-control" style="text-align: right;">
         </div>
-        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <div id="card-container">
+                <div class="card" style="padding: 20px;">
+                    <div class="row">
+                        <div class="col-6">
+                            <h6>Название</h6>
+                        </div>
+                        <div class="col-6"  style="text-align: right">
+<!--                            <button class="button">-->
+<!--                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"-->
+<!--                                     width="24"-->
+<!--                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"-->
+<!--                                     stroke-linecap="round" stroke-linejoin="round" onclick="deleteLayout()">-->
+<!--                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>-->
+<!--                                    <path d="M4 7l16 0"></path>-->
+<!--                                    <path d="M10 11l0 6"></path>-->
+<!--                                    <path d="M14 11l0 6"></path>-->
+<!--                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>-->
+<!--                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>-->
+<!--                                </svg>-->
+<!--                            </button>-->
+                        </div>
+                    </div>
+                    <input type="text" class="col-6">
+                    <br>
+                    <div class="row">
+                        <div class="col-2">
+                            <h6>Цена от (м.кв)</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>Комнат</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>S общая (м.кв.)*</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>S жилая (м.кв.)*</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>S кухни (м.кв.)*</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="" id="showSite1">
+                        <span class="checkmark" for="showSite1">Показать сайт</span>
+                    </div>
+                    <br>
+                    <h6>Описание</h6>
+                    <input type="text">
+                    <br>
+                    <div class="row" style="text-align: center">
+                        <div class="col-4">
+                            <img id="previewImage1" style="justify-content: center">
+                            <input type="file" class="form-control" onchange="updatePreviewImage(this, 'previewImage1')"
+                                   style="margin-top: 5px">
+                        </div>
+                        <div class="col-4">
+                            <img id="previewImage2" style="justify-content: center">
+                            <input type="file" class="form-control" onchange="updatePreviewImage(this, 'previewImage2')"
+                                   style="margin-top: 5px">
+                        </div>
+                        <div class="col-4">
+                            <img id="previewImage3">
+                            <input type="file" class="form-control" onchange="updatePreviewImage(this, 'previewImage3')"
+                                   style="margin-top: 5px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: right; margin: 20px">
+                <button class="btn btn-submit" onclick="addLayout()">Добавить планировку</button>
+            </div>
+        </div>
     </div>
-    <div style="text-align: right; margin-top: 50px; margin-left: 30px">
+
+    <div style="text-align: right; margin: 20px">
         <button class="btn btn-submit">Отмена</button>
         <span><button class="btn btn-success">Сохранить</button> </span>
     </div>
 
 </div>
 
+<script th:inline="javascript">
+    let imgMaxId = 4;
+
+    function updatePreviewImage(input, imgId) {
+        if (input.files && input.files[0]) {
+            var file = input.files[0];
+            if (file.type.startsWith('image/')) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#' + imgId).removeAttr('hidden');
+                    $('#' + imgId).attr('src', e.target.result);
+                    $('#' + imgId).addClass('d-block w-px-300 h-px-300 rounded');
+                    if (imgId > imgMaxId) {
+                        imgMaxId = imgId;
+                    }
+                }
+                reader.readAsDataURL(file);
+            } else {
+                alert('Выбранный файл не является изображением.');
+                input.value = '';
+            }
+        }
+    }
+
+    function addLayout() {
+        var cardContainer = document.getElementById('card-container');
+        var newCard = document.createElement('div');
+        newCard.className = 'card';
+        newCard.style.padding = '20px';
+        newCard.style.marginTop = '20px';
+        newCard.id='card'+imgMaxId;
+        newCard.innerHTML = `<div class="row">
+                <div class="col-6">
+                    <h6>Название</h6>
+                </div>
+                <div class="col-6" style="text-align: right">
+                    <button class="button" onClick="deleteLayout(`+imgMaxId+`)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                             width="24"
+                             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round" >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M4 7l16 0"></path>
+                            <path d="M10 11l0 6"></path>
+                            <path d="M14 11l0 6"></path>
+                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <input type="text" class="col-6">
+                <br>
+                    <div class="row">
+                        <div class="col-2">
+                            <h6>Цена от (м.кв)</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>Комнат</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>S общая (м.кв.)*</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>S жилая (м.кв.)*</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>S кухни (м.кв.)*</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                        </div>
+                    </div>
+                    <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="" >
+                                <span class="checkmark">Показать сайт</span>
+                        </div>
+                        <br>
+                            <h6>Описание</h6>
+                            <input type="text">
+                                <br>
+                                    <div class="row" style="text-align: center">
+                                        <div class="col-4">
+                                            <img id="previewImage`+(imgMaxId)+`" style="justify-content: center">
+                                                <input type="file" class="form-control"
+                                                       onChange="updatePreviewImage(this, 'previewImage`+imgMaxId+`')"
+                                                       style="margin-top: 5px">
+                                        </div>
+                                        <div class="col-4">
+                                            <img id="previewImage`+(imgMaxId+1)+`" style="justify-content: center">
+                                                <input type="file" class="form-control"
+                                                       onChange="updatePreviewImage(this, 'previewImage`+(imgMaxId+1)+`')"
+                                                       style="margin-top: 5px">
+                                        </div>
+                                        <div class="col-4">
+                                            <img id="previewImage`+(imgMaxId+2)+`">
+                                                <input type="file" class="form-control"
+                                                       onChange="updatePreviewImage(this, 'previewImage`+(imgMaxId+2)+`')"
+                                                       style="margin-top: 5px">
+                                        </div>
+                                    </div>  `
+        cardContainer.appendChild(newCard);
+        console.log("Добавление Layout");
+        imgMaxId =imgMaxId+3;
+    }
+
+    function deleteLayout(imgId) {
+        let textCard="#card"+imgId;
+        $(textCard).remove();
+        console.log("Удаление Layout");
+    }
+</script>
 </body>
 </html>
