@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport"
@@ -31,208 +31,430 @@
     <script th:src="@{/js/config.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/vendor/css/rtl/core.css}"
           class="template-customizer-core-css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.6"
+            integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+            crossorigin="anonymous"></script>
+    <style>
+        .button {
+            position: relative;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/mySidebar.css}">
 
 </head>
 <body>
-<div class="container-fluid">
-    <h1>ВСТАВИТЬ ИМЯ</h1>
-    <hr class="my-0">
-    <br>
-    <br>
-    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
-                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">Основное
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
-                    type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Галерея
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
-                    type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Планировки
-            </button>
-        </li>
-    </ul>
+<div class="sidebar">
+    <div th:insert="~{blocks/sidebar::sidebarMenu}"></div>
+</div>
+<div class="content">
+    <div class="container-fluid">
+        <h1>ВСТАВИТЬ ИМЯ</h1>
+        <hr class="my-0">
+        <br>
+        <br>
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+                        type="button" role="tab" aria-controls="pills-home" aria-selected="true">Основное
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
+                        type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Галерея
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
+                        type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Планировки
+                </button>
+            </li>
+        </ul>
 
-    <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-            <div class="row">
-                <div class="col-2">
-                    <h6>Название</h6>
-                    <input type="text">
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <div class="row">
+                    <div class="col-2">
+                        <h6>Название</h6>
+                        <input type="text">
+                    </div>
+                    <div class="col-3">
+                        <h6>Нас.пункт</h6>
+                        <select class="custom-select">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <h6>Обл.район</h6>
+                        <select class="custom-select">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select></div>
+                    <div class="col-3">
+                        <h6>Район</h6>
+                        <select class="custom-select">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select></div>
+                    <div class="col-1"></div>
                 </div>
-                <div class="col-3">
-                    <h6>Нас.пункт</h6>
-                    <select class="custom-select">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+                <br>
+                <div class="row">
+                    <div class="col-2">
+                        <h6>Топозона</h6>
+                        <select class="custom-select">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <h6>Улица</h6>
+                        <input type="text">
+                    </div>
+                    <div class="col-8"></div>
                 </div>
-                <div class="col-3">
-                    <h6>Обл.район</h6>
-                    <select class="custom-select">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select></div>
-                <div class="col-3">
-                    <h6>Район</h6>
-                    <select class="custom-select">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select></div>
-                <div class="col-1"></div>
+                <br>
+                <div class="tab-content">
+
+
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <h6>Номер дома</h6>
+                        <input type="number">
+                    </div>
+                    <div class="col-2">
+                        <h6>Секция/Корпус</h6>
+                        <input type="number">
+                    </div>
+                    <div class="col-2">
+                        <h6>Этажность</h6>
+                        <input type="number">
+                    </div>
+                    <div class="col-3">
+                        <h6>Строительная компания</h6>
+                        <select class="custom-select">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <h6>Срок сдачи</h6>
+                        <select class="custom-select">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <h6>Телефон</h6>
+                <input type="text">
+                <br>
+                <br>
+                <br>
+                <h6>Шахматка</h6>
+                <input type="file" class="form-control">
+                <br>
+                <h6>Условия рассрочки</h6>
+                <input type="file" class="form-control">
+                <br>
+                <h6>Файл с ценами</h6>
+                <input type="file" class="form-control">
+                <br>
+                <br>
+                <h3>Описание</h3>
+                <textarea style="width: 100%; height: 300px"></textarea>
+                <br>
+                <h1>Акция</h1>
+                <p style="border: 1px solid #817575; padding: 2px; display: inline-block">Акция 10% до конца
+                    января</p>
+                <br>
+                <h3>Описание</h3>
+                <textarea style="width: 100%; height: 300px"></textarea>
+                <br>
+                <input class="form-check-input" type="checkbox"><span class="checkmark">Включить акцию</span>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-2">
-                    <h6>Топозона</h6>
-                    <select class="custom-select">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-                <div class="col-2">
-                    <h6>Улица</h6>
-                    <input type="text">
-                </div>
-                <div class="col-8"></div>
-            </div>
-            <br>
-            <div class="tab-content">
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="row">
+                    <div class="card col-3" style="padding-bottom: 30px">
+                        <img style="justify-content: center; align-items: center;" th:src="@{/img/backgrounds/3.jpg}"
+                             class="d-block w-px-400 h-px-250 rounded mx-auto"></span>
+                        <br>
+                        <p style="text-align: center">INFO</p>
+                        <br>
+                        <div style="text-align: right">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button class="btn btn-submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="icon icon-tabler icon-tabler-download"
+                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                         stroke="currentColor"
+                                         fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
+                                        <path d="M7 11l5 5l5 -5"></path>
+                                        <path d="M12 4l0 12"></path>
+                                    </svg>
+                                </button>
 
-
-            </div>
-            <div class="row">
-                <div class="col-2">
-                    <h6>Номер дома</h6>
-                    <input type="number">
-                </div>
-                <div class="col-2">
-                    <h6>Секция/Корпус</h6>
-                    <input type="number">
-                </div>
-                <div class="col-2">
-                    <h6>Этажность</h6>
-                    <input type="number">
-                </div>
-                <div class="col-3">
-                    <h6>Строительная компания</h6>
-                    <select class="custom-select">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-                <div class="col-3">
-                    <h6>Срок сдачи</h6>
-                    <select class="custom-select">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-            </div>
-            <br>
-            <h6>Телефон</h6>
-            <input type="text">
-            <br>
-            <br>
-            <br>
-            <h6>Шахматка</h6>
-            <input type="file" class="form-control">
-            <br>
-            <h6>Условия рассрочки</h6>
-            <input type="file" class="form-control">
-            <br>
-            <h6>Файл с ценами</h6>
-            <input type="file" class="form-control">
-            <br>
-            <br>
-            <h3>Описание</h3>
-            <textarea style="width: 100%; height: 300px"></textarea>
-            <br>
-            <h1>Акция</h1>
-            <p style="border: 1px solid #817575; padding: 2px; display: inline-block">Акция 10% до конца
-                января</p>
-            <br>
-            <h3>Описание</h3>
-            <textarea style="width: 100%; height: 300px"></textarea>
-            <br>
-            <input class="form-check-input" type="checkbox"><span class="checkmark">Включить акцию</span>
-        </div>
-        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-            <div class="row">
-                <div class="card col-3" style="padding-bottom: 30px">
-                    <img style="justify-content: center; align-items: center;" th:src="@{/img/backgrounds/3.jpg}"
-                         class="d-block w-px-400 h-px-250 rounded mx-auto"></span>
-                    <br>
-                    <p style="text-align: center">INFO</p>
-                    <br>
-                    <div style="text-align: right">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button class="btn btn-submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download"
-                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
-                                    <path d="M7 11l5 5l5 -5"></path>
-                                    <path d="M12 4l0 12"></path>
-                                </svg>
-                            </button>
-
-                            <button class="btn btn-submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
-                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M4 7l16 0"></path>
-                                    <path d="M10 11l0 6"></path>
-                                    <path d="M14 11l0 6"></path>
-                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                </svg>
-                            </button>
-                            <button class="btn btn-submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search"
-                                     width="24"
-                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                     stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-                                    <path d="M21 21l-6 -6"></path>
-                                </svg>
-                            </button>
-
+                                <button class="btn btn-submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                         stroke="currentColor"
+                                         fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 7l16 0"></path>
+                                        <path d="M10 11l0 6"></path>
+                                        <path d="M14 11l0 6"></path>
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                    </svg>
+                                </button>
+                                <button class="btn btn-submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search"
+                                         width="24"
+                                         height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                         fill="none"
+                                         stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                                        <path d="M21 21l-6 -6"></path>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <br>
+                <br>
+                <input type="file" class="form-control" style="text-align: right;">
             </div>
-            <br>
-            <br>
-            <input type="file" class="form-control" style="text-align: right;">
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <div id="card-container">
+                    <div class="card" style="padding: 20px;">
+                        <div class="row">
+                            <div class="col-6">
+                                <h6>Название</h6>
+                            </div>
+                            <div class="col-6" style="text-align: right">
+                                <!--                            <button class="button">-->
+                                <!--                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"-->
+                                <!--                                     width="24"-->
+                                <!--                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"-->
+                                <!--                                     stroke-linecap="round" stroke-linejoin="round" onclick="deleteLayout()">-->
+                                <!--                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>-->
+                                <!--                                    <path d="M4 7l16 0"></path>-->
+                                <!--                                    <path d="M10 11l0 6"></path>-->
+                                <!--                                    <path d="M14 11l0 6"></path>-->
+                                <!--                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>-->
+                                <!--                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>-->
+                                <!--                                </svg>-->
+                                <!--                            </button>-->
+                            </div>
+                        </div>
+                        <input type="text" class="col-6">
+                        <br>
+                        <div class="row">
+                            <div class="col-2">
+                                <h6>Цена от (м.кв)</h6>
+                                <input type="number">
+                            </div>
+                            <div class="col-2">
+                                <h6>Комнат</h6>
+                                <input type="number">
+                            </div>
+                            <div class="col-2">
+                                <h6>S общая (м.кв.)*</h6>
+                                <input type="number">
+                            </div>
+                            <div class="col-2">
+                                <h6>S жилая (м.кв.)*</h6>
+                                <input type="number">
+                            </div>
+                            <div class="col-2">
+                                <h6>S кухни (м.кв.)*</h6>
+                                <input type="number">
+                            </div>
+                            <div class="col-2">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="" id="showSite1">
+                            <span class="checkmark" for="showSite1">Показать сайт</span>
+                        </div>
+                        <br>
+                        <h6>Описание</h6>
+                        <input type="text">
+                        <br>
+                        <div class="row" style="text-align: center">
+                            <div class="col-4">
+                                <img id="previewImage1" style="justify-content: center">
+                                <input type="file" class="form-control"
+                                       onchange="updatePreviewImage(this, 'previewImage1')"
+                                       style="margin-top: 5px">
+                            </div>
+                            <div class="col-4">
+                                <img id="previewImage2" style="justify-content: center">
+                                <input type="file" class="form-control"
+                                       onchange="updatePreviewImage(this, 'previewImage2')"
+                                       style="margin-top: 5px">
+                            </div>
+                            <div class="col-4">
+                                <img id="previewImage3">
+                                <input type="file" class="form-control"
+                                       onchange="updatePreviewImage(this, 'previewImage3')"
+                                       style="margin-top: 5px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: right; margin: 20px">
+                    <button class="btn btn-submit" onclick="addLayout()">Добавить планировку</button>
+                </div>
+            </div>
         </div>
-        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-    </div>
-    <div style="text-align: right; margin-top: 50px; margin-left: 30px">
-        <button class="btn btn-submit">Отмена</button>
-        <span><button class="btn btn-success">Сохранить</button> </span>
-    </div>
 
+        <div style="text-align: right; margin: 20px">
+            <button class="btn btn-submit">Отмена</button>
+            <span><button class="btn btn-success">Сохранить</button> </span>
+        </div>
+
+    </div>
 </div>
+<script th:inline="javascript">
+    let imgMaxId = 4;
 
+    function updatePreviewImage(input, imgId) {
+        if (input.files && input.files[0]) {
+            var file = input.files[0];
+            if (file.type.startsWith('image/')) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#' + imgId).removeAttr('hidden');
+                    $('#' + imgId).attr('src', e.target.result);
+                    $('#' + imgId).addClass('d-block w-px-300 h-px-300 rounded');
+                    if (imgId > imgMaxId) {
+                        imgMaxId = imgId;
+                    }
+                }
+                reader.readAsDataURL(file);
+            } else {
+                alert('Выбранный файл не является изображением.');
+                input.value = '';
+            }
+        }
+    }
+
+    function addLayout() {
+        var cardContainer = document.getElementById('card-container');
+        var newCard = document.createElement('div');
+        newCard.className = 'card';
+        newCard.style.padding = '20px';
+        newCard.style.marginTop = '20px';
+        newCard.id = 'card' + imgMaxId;
+        newCard.innerHTML = `<div class="row">
+                <div class="col-6">
+                    <h6>Название</h6>
+                </div>
+                <div class="col-6" style="text-align: right">
+                    <button class="button" onClick="deleteLayout(` + imgMaxId + `)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                             width="24"
+                             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round" >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M4 7l16 0"></path>
+                            <path d="M10 11l0 6"></path>
+                            <path d="M14 11l0 6"></path>
+                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <input type="text" class="col-6">
+                <br>
+                    <div class="row">
+                        <div class="col-2">
+                            <h6>Цена от (м.кв)</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>Комнат</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>S общая (м.кв.)*</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>S жилая (м.кв.)*</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                            <h6>S кухни (м.кв.)*</h6>
+                            <input type="number">
+                        </div>
+                        <div class="col-2">
+                        </div>
+                    </div>
+                    <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="" >
+                                <span class="checkmark">Показать сайт</span>
+                        </div>
+                        <br>
+                            <h6>Описание</h6>
+                            <input type="text">
+                                <br>
+                                    <div class="row" style="text-align: center">
+                                        <div class="col-4">
+                                            <img id="previewImage` + (imgMaxId) + `" style="justify-content: center">
+                                                <input type="file" class="form-control"
+                                                       onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
+                                                       style="margin-top: 5px">
+                                        </div>
+                                        <div class="col-4">
+                                            <img id="previewImage` + (imgMaxId + 1) + `" style="justify-content: center">
+                                                <input type="file" class="form-control"
+                                                       onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
+                                                       style="margin-top: 5px">
+                                        </div>
+                                        <div class="col-4">
+                                            <img id="previewImage` + (imgMaxId + 2) + `">
+                                                <input type="file" class="form-control"
+                                                       onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 2) + `')"
+                                                       style="margin-top: 5px">
+                                        </div>
+                                    </div>  `
+        cardContainer.appendChild(newCard);
+        console.log("Добавление Layout");
+        imgMaxId = imgMaxId + 3;
+    }
+
+    function deleteLayout(imgId) {
+        let textCard = "#card" + imgId;
+        $(textCard).remove();
+        console.log("Удаление Layout");
+    }
+</script>
 </body>
 </html>
