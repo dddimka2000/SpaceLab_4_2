@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+>
+<head>
+  <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="d-flex justify-content-between">
+      <h4 class="fw-bold">Филиал</h4>
+      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Главная</a></li>
+          <li class="breadcrumb-item"><a href="#">Филиалы</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Филиал</li>
+        </ol>
+      </nav>
+    </div>
+    <hr style="margin-top: -5px">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-info">Редактировать</button>
+        </div>
+        <hr>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered table-striped table-view">
+          <thead>
+          <tr>
+            <th colspan="2"><h4>Информация</h4></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><b>Код</b></td>
+            <td>16</td>
+          </tr>
+          <tr>
+            <td><b>Название</b></td>
+            <td>Филиал 1</td>
+          </tr>
+          <tr>
+            <td><b>Адрес</b></td>
+            <td>ул. Большая, 1</td>
+          </tr>
+          <tr>
+            <td><b>Телефон</b></td>
+            <td>
+              +380123456789
+            </td>
+          </tr>
+          <tr>
+            <td><b>Email</b></td>
+            <td>admin@admin.com</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>

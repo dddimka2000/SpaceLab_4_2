@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+  />
+
+  <title>Page 1 - Starter Kit | Vuexy - Bootstrap Admin Template</title>
+
+  <meta name="description" content="" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" th:href="@{/img/favicon/favicon.ico}" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet"
+  />
+
+  <!-- Icons -->
+  <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
+  <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
+  <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
+  <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-default.css}" class="template-customizer-theme-css" />
+  <link rel="stylesheet" th:href="@{/css/demo.css}">
+
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
+  <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
+  <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+  <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
+  <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
+  <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
+  <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
+
+  <!-- Page CSS -->
+
+  <!-- Helpers -->
+  <script th:src="@{/vendor/js/helpers.js}"></script>
+  <script th:src="@{/vendor/js/template-customizer.js}"></script>
+  <script th:src="@{/js/config.js}"></script>
+
+  <link rel="stylesheet" type="text/css" th:href="@{/vendor/css/rtl/core.css}"
+        class="template-customizer-core-css">
+  <link rel="stylesheet" type="text/css" th:href="@{/vendor/css/rtl/theme-default.css}"
+        class="template-customizer-theme-css">
+</head>
+<body>
+
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <!-- Menu -->
+    <aside layout:insert="~{sidebar_layout :: sidebar}"></aside>
+    <!-- / Menu -->
+
+    <div class="layout-page">
+      <nav layout:insert="~{navbar_layout :: navbar}"></nav>
+
+      <div class="content-wrapper">
+        <section layout:fragment="content">
+
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="content-footer footer bg-footer-theme">
+          <div class="container-xxl">
+            <div
+                    class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column"
+            >
+              <div>
+                ©
+                <script>
+                      document.write(new Date().getFullYear());
+                    </script>
+                , made with ❤️ by <a href="https://pixinvent.com" target="_blank" class="fw-semibold">Pixinvent</a>
+              </div>
+              <div>
+                <a
+                        href="https://pixinvent.com/demo/vuexy-html-bootstrap-admin-template/documentation/"
+                        target="_blank"
+                        class="footer-link me-4"
+                >Documentation</a
+                >
+              </div>
+            </div>
+          </div>
+        </footer>
+        <!-- / Footer -->
+
+        <div class="content-backdrop fade"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Overlay -->
+  <div class="layout-overlay layout-menu-toggle"></div>
+
+  <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+  <div class="drag-target"></div>
+</div>
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+<script th:src="@{/vendor/libs/popper/popper.js}"></script>
+<script th:src="@{/vendor/js/bootstrap.js}"></script>
+<script th:src="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/libs/node-waves/node-waves.js}"></script>
+
+<script th:src="@{/vendor/libs/hammer/hammer.js}"></script>
+
+<script th:src="@{/vendor/js/menu.js}"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+
+<!-- Main JS -->
+<script th:src="@{/js/main.js}"></script>
+
+
+
+</body>
+</html>

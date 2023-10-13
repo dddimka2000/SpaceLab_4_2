@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+>
+<head>
+  <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="d-flex justify-content-between">
+      <h4 class="fw-bold">Риелторы</h4>
+      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Главная</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Риелторы</li>
+        </ol>
+      </nav>
+    </div>
+    <hr style="margin-top: -5px">
+    <div style="width: 100%; display: flex; justify-content: flex-end">
+      <button class="btn btn-success">Добавить риелтора</button>
+    </div>
+
+    <div class="card border">
+      <div class="card-header border">
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-default">Очистить</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered table-hover table-striped linkedRow" id="adminsTable">
+          <thead>
+          <tr>
+            <th>Филиал</th>
+            <th>Код</th>
+            <th>ФИО</th>
+            <th>Телефон</th>
+            <th>Email</th>
+            <th>Дата рождения</th>
+            <th></th>
+          </tr>
+          <tr>
+            <td>
+              <input type="text" class="form-control">
+            </td>
+            <td>
+              <input type="text" class="form-control">
+            </td>
+            <td>
+              <input type="text" class="form-control">
+            </td>
+            <td>
+              <input type="text" class="form-control">
+            </td>
+            <td>
+              <input type="text" class="form-control">
+            </td>
+            <td>
+              <input type="text" class="form-control">
+            </td>
+            <td>
+
+            </td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>03</td>
+            <td>21</td>
+            <td>Пушкин Александр Сергеевич</td>
+            <td>
+              <p>+380123456789</p>
+              <p>+380123456789</p>
+            </td>
+            <td>user@mail.test</td>
+            <td>12.11.1974</td>
+            <td>
+              <div class="d-flex">
+                <button class="btn btn-default btn-sm">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-default btn-sm">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>03</td>
+            <td>21</td>
+            <td>Пушкин Александр Сергеевич</td>
+            <td>
+              <p>+380123456789</p>
+              <p>+380123456789</p>
+            </td>
+            <td>user@mail.test</td>
+            <td>12.11.1974</td>
+            <td>
+              <div class="d-flex">
+                <button class="btn btn-default btn-sm">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-default btn-sm">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>03</td>
+            <td>21</td>
+            <td>Пушкин Александр Сергеевич</td>
+            <td>
+              <p>+380123456789</p>
+              <p>+380123456789</p>
+            </td>
+            <td>user@mail.test</td>
+            <td>12.11.1974</td>
+            <td>
+              <div class="d-flex">
+                <button class="btn btn-default btn-sm">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-default btn-sm">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="pagination_container"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>

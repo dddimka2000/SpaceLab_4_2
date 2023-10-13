@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+>
+<head>
+  <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="d-flex justify-content-between">
+      <h4 class="fw-bold">Пользователь</h4>
+      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Главная</a></li>
+          <li class="breadcrumb-item"><a href="#">Пользователи</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Пользователь</li>
+        </ol>
+      </nav>
+    </div>
+    <hr style="margin-top: -5px">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-info">Редактировать</button>
+        </div>
+        <hr>
+      </div>
+      <div class="card-body">
+        [image]
+        <table class="table table-bordered table-striped table-view">
+          <tbody>
+          <tr>
+            <td><b>Пользователь</b></td>
+            <td>Elon Musk</td>
+          </tr>
+          <tr>
+            <td><b>Роль</b></td>
+            <td>Директор</td>
+          </tr>
+          <tr>
+            <td><b>Телефон</b></td>
+            <td>+380990010101</td>
+          </tr>
+          <tr>
+            <td><b>Email(логин)</b></td>
+            <td>admin@admin.com</td>
+          </tr>
+          <tr>
+            <td><b>Статус</b></td>
+            <td>Активен</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>

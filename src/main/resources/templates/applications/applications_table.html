@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+>
+<head>
+  <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="d-flex justify-content-between">
+      <h4 class="fw-bold">Заявки с сайта</h4>
+      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Главная</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Заявки с сайта</li>
+        </ol>
+      </nav>
+    </div>
+    <hr style="margin-top: -5px">
+    <!-- <div style="width: 100%; display: flex; justify-content: flex-end">
+        <button class="btn btn-success">Добавить страницу</button>
+    </div> -->
+
+    <div class="card border">
+      <div class="card-body">
+        <table class="table table-bordered table-hover table-striped linkedRow" id="adminsTable">
+          <thead>
+          <tr>
+            <th>Объект</th>
+            <th>Текст</th>
+            <th>Контакты отправителя</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><a href="#">#123443</a></td>
+            <td>Хочу посмотреть квартиру завтра</td>
+            <td>
+              <p>Громов Павел Александрович</p>
+              <p>тел. +380123456789, email: email@user.com</p>
+            </td>
+            <td>
+              <div class="d-flex">
+                <button class="btn btn-default btn-sm">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>
