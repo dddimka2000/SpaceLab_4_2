@@ -33,6 +33,10 @@ public class BuilderObject {
     private String fileCheckerboard;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride( name = "name", column = @Column(name = "promotion_name")),
+            @AttributeOverride( name = "description", column = @Column(name = "promotion_description")),
+    })
     private BuilderObjectPromotion promotion;
 
     @OneToMany(mappedBy = "builderObject")
