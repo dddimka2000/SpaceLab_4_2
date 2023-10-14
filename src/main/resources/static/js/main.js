@@ -95,10 +95,8 @@ if (document.getElementById('layout-menu')) {
     if (styleSwitcherToggleEl) {
       styleSwitcherToggleEl.addEventListener('click', function () {
         if (window.Helpers.isLightStyle()) {
-          alert('is light style');
           window.templateCustomizer.setStyle('dark');
         } else {
-            alert('is dark style');
           window.templateCustomizer.setStyle('light');
         }
       });
