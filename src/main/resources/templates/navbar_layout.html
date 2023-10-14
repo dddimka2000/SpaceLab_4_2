@@ -16,6 +16,38 @@
     </div>
 
     <ul class="navbar-nav flex-row align-items-center ms-auto">
+      <!-- Language -->
+      <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
+        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <a class="dropdown-item selected" href="javascript:void(0);" data-language="en">
+              <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
+              <span class="align-middle">English</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="javascript:void(0);" data-language="fr">
+              <i class="fi fi-fr fis rounded-circle me-1 fs-3"></i>
+              <span class="align-middle">French</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="javascript:void(0);" data-language="de">
+              <i class="fi fi-de fis rounded-circle me-1 fs-3"></i>
+              <span class="align-middle">German</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="javascript:void(0);" data-language="pt">
+              <i class="fi fi-pt fis rounded-circle me-1 fs-3"></i>
+              <span class="align-middle">Portuguese</span>
+            </a>
+          </li>
+        </ul>
+      </li>
       <!-- User -->
       <li class="nav-item navbar-dropdown dropdown-user dropdown">
         <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -43,33 +75,7 @@
             <div class="dropdown-divider"></div>
           </li>
           <li>
-            <a class="dropdown-item" href="#">
-              <i class="ti ti-user-check me-2 ti-sm"></i>
-              <span class="align-middle">My Profile</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">
-              <i class="ti ti-settings me-2 ti-sm"></i>
-              <span class="align-middle">Settings</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">
-                        <span class="d-flex align-items-center align-middle">
-                          <i class="flex-shrink-0 ti ti-credit-card me-2 ti-sm"></i>
-                          <span class="flex-grow-1 align-middle">Billing</span>
-                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-label-danger w-px-20 h-px-20"
-                          >2</span
-                          >
-                        </span>
-            </a>
-          </li>
-          <li>
-            <div class="dropdown-divider"></div>
-          </li>
-          <li>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" th:href="@{/logout}">
               <i class="ti ti-logout me-2 ti-sm"></i>
               <span class="align-middle">Log Out</span>
             </a>
