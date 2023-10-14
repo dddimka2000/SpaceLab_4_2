@@ -5,9 +5,10 @@ import org.example.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+//import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,26 +27,18 @@ public class WebSecurityConfig {
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-//                .cors().disable()
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login").permitAll()
-//                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "MODERATOR")
-//                                .requestMatchers("/personal_account")
-//                                .authenticated()
+                                .requestMatchers("/**").hasAnyAuthority("DIRECTOR", "BRANCH_ADMINISTRATOR", "BUILDER_ADMINISTRATOR")
                                 .anyRequest().permitAll())
-                .formLogin(form ->
-                        form.loginPage("/auth/login")
-                                .loginProcessingUrl("/auth/process_login")
-                                .failureUrl("/auth/login?error"))
-                .httpBasic()
+                .formLogin(form -> form.defaultSuccessUrl("/users"))
         ;
         return http.build();
     }

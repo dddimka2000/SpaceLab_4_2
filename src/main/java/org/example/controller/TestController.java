@@ -8,7 +8,7 @@ public class TestController {
 
     @GetMapping("/test")
     public String lol() {
-        return "test";
+        return "users/users_table3";
     }
 
 }
