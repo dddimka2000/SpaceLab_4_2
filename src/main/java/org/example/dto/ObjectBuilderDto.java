@@ -1,8 +1,10 @@
 package org.example.dto;
 
 import lombok.Data;
+import org.example.entity.Layout;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Data
@@ -25,6 +27,7 @@ public class ObjectBuilderDto {
     private String description;
     private String descriptionPromotion;
     private String statusPromotion;
-
+    private List<MultipartFile> files;
+    private List<LayoutDTO> layoutDTOList;
 }
 

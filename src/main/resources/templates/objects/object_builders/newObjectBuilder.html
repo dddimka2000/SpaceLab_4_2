@@ -82,11 +82,11 @@
                     <div class="row">
                         <div class="col-2">
                             <h6>Название</h6>
-                            <input type="text" name="nameObject">
+                            <input type="text" name="nameObject" id="nameObject">
                         </div>
                         <div class="col-3">
                             <h6>Обл.район</h6>
-                            <select class="custom-select" name="region">
+                            <select class="custom-select" name="region" id="region">
                                 <option selected value=""></option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
@@ -126,7 +126,7 @@
                         </div>
                         <div class="col-2">
                             <h6>Улица</h6>
-                            <input type="text" name="street">
+                            <input type="text" name="street" id="street">
                         </div>
                         <div class="col-8"></div>
                     </div>
@@ -177,10 +177,10 @@
                     <input type="file" class="form-control" name="chessboard" id="chessboard">
                     <br>
                     <h6>Условия рассрочки</h6>
-                    <input type="file" class="form-control" name="installmentTerms">
+                    <input type="file" class="form-control" name="installmentTerms" id="installmentTerms">
                     <br>
                     <h6>Файл с ценами</h6>
-                    <input type="file" class="form-control" name="prices">
+                    <input type="file" class="form-control" name="prices" id="prices">
                     <br>
                     <br>
                     <h3>Описание</h3>
@@ -296,7 +296,7 @@
             <div style="text-align: right; margin: 20px">
                 <button class="btn btn-submit">Отмена</button>
                 <span>
-                <button class="btn btn-success" hx-trigger="click">
+                <button class="btn btn-success" hx-trigger="click" onclick="sendForm()">
 <!--                        hx-vals="#nameObject, #settlement, #chessboard"-->
                 Сохранить </button>
             </span>
@@ -304,12 +304,64 @@
         </form>
     </div>
 </div>
+
+
 <script th:inline="javascript">
+    function sendForm() {
+        let formData = new FormData();
+        formData.append("nameObject", $("#nameObject").val());
+        formData.append("region", $("#region").val());
+        formData.append("street", $("#street").val());
+        formData.append("district", $('[name="district"]').val());
+        formData.append("city", $('[name="city"]').val());
+        formData.append("topozone", $('[name="topozone"]').val());
+        formData.append("houseNumber", $('[name="houseNumber"]').val());
+        formData.append("section", $('[name="section"]').val());
+        formData.append("floorQuantity", $('[name="floorQuantity"]').val());
+        formData.append("nameCompany", $('[name="nameCompany"]').val());
+        formData.append("buildStatus", $('[name="buildStatus"]').val());
+        formData.append("telephone", $('[name="telephone"]').val());
+        formData.append("chessboardFile", $("#chessboard").prop('files')[0]);
+        formData.append("installmentTerms", $("#installmentTerms").prop('files')[0]);
+        formData.append("prices", $("#prices").prop('files')[0]);
+        formData.append("description", $('[name="description"]').val());
+        formData.append("descriptionPromotion", $('[name="descriptionPromotion"]').val());
+        formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
+        for (let [fileName, file] of imageMap) {
+            console.log(file);
+            formData.append("files[]", file);
+        }
+        console.log(formData.get("files[]"))
+        let contextPath =/*[[@{/}]]*/'';
+        let url = contextPath.toString() + "objects/byBuilder/create";
+        $.ajax({
+            url: url,
+            method: "POST",
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (response) {
+                console.log("success");
+            },
+            error: function (xhr, status, error) {
+                console.log(error)
+            }
+        })
+    }
+
+    function deleteCard(num) {
+        let nameCard = "#cardImg" + num;
+        imageMap.delete(num);
+        $(nameCard).remove();
+    }
+
+    var imageMap = new Map();
     const fileInput = document.getElementById("fileInput");
     let cardContainer = document.getElementById('img-list-container');
     let quantity = 1;
     let sendCard;
     $("#fileInput").change(function () {
+
         var newCard = document.createElement('div');
         newCard.className = 'card col-lg-3';
         newCard.style.padding = '5px';
@@ -333,7 +385,7 @@
                             <br>
                             <div style="text-align: right">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button class="btn btn-submit" type="button" id="download` + quantity + `">
+                                    <button class="btn btn-submit" type="button" id="download` + quantity + `" >
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              class="icon icon-tabler icon-tabler-download"
                                              width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -346,7 +398,7 @@
                                         </svg>
                                     </button>
 
-                                    <button class="btn btn-submit" type="button" id="deleteImg` + quantity + `">
+                                    <button class="btn btn-submit" type="button" id="deleteImg` + quantity + `" onclick="deleteCard(` + quantity + `)">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              class="icon icon-tabler icon-tabler-trash"
                                              width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -382,15 +434,17 @@
     function sendPhoto() {
         if (fileInput.files.length > 0) {
             cardContainer.appendChild(sendCard);
+            imageMap.set((quantity - 1), fileInput.files[0]);
+            fileInput.value = "";
+
         }
     }
 
     function clearImagePreview() {
+        console.log(imageMap)
         fileInput.value = "";
     }
-</script>
 
-<script th:inline="javascript">
     let imgMaxId = 4;
 
     function updatePreviewImage(input, imgId) {
@@ -414,6 +468,8 @@
         }
     }
 
+    let layoutArray = [];
+
     function addLayout() {
         var cardContainer = document.getElementById('card-container');
         var newCard = document.createElement('div');
@@ -421,6 +477,7 @@
         newCard.style.padding = '20px';
         newCard.style.marginTop = '20px';
         newCard.id = 'card' + imgMaxId;
+        layoutArray.push(imgMaxId)
         newCard.innerHTML = `<div class="row">
                 <div class="col-6">
                     <h6>Название</h6>
@@ -441,40 +498,40 @@
                     </button>
                 </div>
             </div>
-            <input type="text" class="col-6">
+            <input type="text" class="col-6" id="nameLayout` + imgMaxId + `">
                 <br>
                     <div class="row">
                         <div class="col-2">
                             <h6>Цена от (м.кв)</h6>
-                            <input type="number">
+                            <input type="number" id="priceLayout` + imgMaxId + `">
                         </div>
                         <div class="col-2">
                             <h6>Комнат</h6>
-                            <input type="number">
+                            <input type="number" id="roomsLayout` + imgMaxId + `">
                         </div>
                         <div class="col-2">
                             <h6>S общая (м.кв.)*</h6>
-                            <input type="number">
+                            <input type="number" id="areaTotalLayout` + imgMaxId + `">
                         </div>
                         <div class="col-2">
                             <h6>S жилая (м.кв.)*</h6>
-                            <input type="number">
+                            <input type="number" id="areaLivingLayout` + imgMaxId + `">
                         </div>
                         <div class="col-2">
                             <h6>S кухни (м.кв.)*</h6>
-                            <input type="number">
+                            <input type="number" id="areaKitchenLayout` + imgMaxId + `">
                         </div>
                         <div class="col-2">
                         </div>
                     </div>
                     <br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="" >
+                            <input class="form-check-input" type="checkbox" value="" id="statusLayout` + imgMaxId + `">
                                 <span class="checkmark">Показать сайт</span>
                         </div>
                         <br>
                             <h6>Описание</h6>
-                            <input type="text">
+                            <input type="text" id="descriptionLayout` + imgMaxId + `">
                                 <br>
                                     <div class="row" style="text-align: center">
                                         <div class="col-4">
@@ -498,11 +555,15 @@
                                     </div>  `
         cardContainer.appendChild(newCard);
         console.log("Добавление Layout");
+
         imgMaxId = imgMaxId + 3;
     }
 
     function deleteLayout(imgId) {
         let textCard = "#card" + imgId;
+        layoutArray = layoutArray.filter(function (item) {
+            return item !== imgId;
+        });
         $(textCard).remove();
         console.log("Удаление Layout");
     }
