@@ -18,7 +18,7 @@ public class QuestionService {
         this.questionRepository = questionRepository;
     }
 
-    public Page<Question> findAllQuestionPages(Integer pageNumber, Integer pageSize) {
+    public Page<Question> findQuestionsPage(Integer pageNumber, Integer pageSize) {
         log.info("QuestionService-findAllQuestionPages start");
         Page<Question> page = null;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);

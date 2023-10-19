@@ -1,26 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <link rel="icon" type="image/x-icon" th:href="@{/img/favicon/favicon.ico}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap"
-          rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js"
+            type="text/javascript"></script>
     <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
     <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
     <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
-    <!-- Core CSS -->
     <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <!-- Vendors CSS -->
     <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
@@ -28,35 +32,37 @@
     <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
-    <script th:src="@{/js/config.js}"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/vendor/css/rtl/core.css}"
-          class="template-customizer-core-css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
-
+    <link rel="stylesheet" type="text/css" th:href="@{/vendor/css/rtl/core.css}">
+    <!--    <script th:src="@{/js/config.js}"></script>-->
+    <!--    <script th:src="@{/vendor/js/template-customizer.js}"></script>-->
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
     <style>
-        .button {
-            position: relative;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .notification.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
-    <link rel="stylesheet" th:href="@{/css/mySidebar.css}">
-
 </head>
 <body>
-<div class="sidebar">
-    <div th:insert="~{blocks/sidebar::sidebarMenu}"></div>
-</div>
-<div class="content">
-    <div class="container-fluid">
-        <h1>Новый объект</h1>
-        <hr class="my-0">
-        <br>
-        <br>
-        <form hx-encoding="multipart/form-data" th:attr="hx-post=@{/objects/byBuilder/create}" hx-swap="none">
+<main layout:fragment="content">
+    <div class="content">
+        <div class="container-fluid">
+            <h1>Новый объект</h1>
+            <hr class="my-0">
+            <br>
+            <br>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
@@ -82,30 +88,26 @@
                     <div class="row">
                         <div class="col-2">
                             <h6>Название</h6>
-                            <input type="text" name="nameObject" id="nameObject">
+                            <input type="text" class="form-control" name="nameObject" id="nameObject">
                         </div>
                         <div class="col-3">
                             <h6>Обл.район</h6>
                             <select class="custom-select" name="region" id="region">
-                                <option selected value=""></option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option selected></option>
+                                <option th:each="entity : ${selectRegion}"
+                                        th:value="${entity}"
+                                        th:text="${entity}"></option>
                             </select>
 
                         </div>
                         <div class="col-3">
                             <h6>Нас.пункт</h6>
-                            <select class="custom-select" name="city">
-                                <option selected value=""></option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select class="custom-select" name="city" disabled>
                             </select>
                         </div>
                         <div class="col-3">
                             <h6>Район</h6>
-                            <select class="custom-select" name="district">
+                            <select class="custom-select" name="district" disabled>
                                 <option selected value=""></option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
@@ -118,15 +120,15 @@
                         <div class="col-2">
                             <h6>Топозона</h6>
                             <select class="custom-select" name="topozone">
-                                <option selected>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option value="" selected></option>
+                                <option th:each="entity : ${selectTopozone}"
+                                        th:value="${entity}"
+                                        th:text="${entity}"></option>
                             </select>
                         </div>
                         <div class="col-2">
                             <h6>Улица</h6>
-                            <input type="text" name="street" id="street">
+                            <input class="form-control" type="text" name="street" id="street">
                         </div>
                         <div class="col-8"></div>
                     </div>
@@ -138,20 +140,20 @@
                     <div class="row">
                         <div class="col-2">
                             <h6>Номер дома</h6>
-                            <input type="number" name="houseNumber">
+                            <input class="form-control" type="number" name="houseNumber">
                         </div>
                         <div class="col-2">
                             <h6>Секция/Корпус</h6>
-                            <input type="number" name="section">
+                            <input class="form-control" type="number" name="section">
                         </div>
                         <div class="col-2">
                             <h6>Этажность</h6>
-                            <input type="number" name="floorQuantity">
+                            <input class="form-control" type="number" name="floorQuantity">
                         </div>
                         <div class="col-3">
                             <h6>Строительная компания</h6>
                             <select class="custom-select" name="nameCompany">
-                                <option selected>Open this select menu</option>
+                                <option selected></option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
@@ -159,17 +161,17 @@
                         </div>
                         <div class="col-3">
                             <h6>Срок сдачи</h6>
-                            <select class="custom-select" name="buildStatus">
-                                <option selected>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select id="buildStatus" class="custom-select" name="buildStatus">
+                                <option selected></option>
+                                <option th:each="status : ${propertyBuildStatus}"
+                                        th:value="${status}"
+                                        th:text="${status.status}"></option>
                             </select>
                         </div>
                     </div>
                     <br>
                     <h6>Телефон</h6>
-                    <input type="text" name="telephone" id="telephone">
+                    <input type="tel" name="telephone" id="telephone" class="form-control">
                     <br>
                     <br>
                     <br>
@@ -184,306 +186,276 @@
                     <br>
                     <br>
                     <h3>Описание</h3>
-                    <textarea style="width: 100%; height: 300px" name="description"></textarea>
+                    <textarea class="form-control" style="width: 100%; height: 300px" name="description"></textarea>
                     <br>
                     <h1>Акция</h1>
-                    <p style="border: 1px solid #817575; padding: 2px; display: inline-block">Акция 10% до конца
-                        января</p>
+                    <input type="text" name="promotionName" id="promotionName" class="form-control">
                     <br>
                     <h3>Описание</h3>
-                    <textarea style="width: 100%; height: 300px" name="descriptionPromotion"></textarea>
+                    <textarea style="width: 100%; height: 300px" name="descriptionPromotion"
+                              class="form-control"></textarea>
                     <br>
                     <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"><span
                         class="checkmark">Включить акцию</span>
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                    <div class="row mb-3" id="img-list-container">
-                    </div>
-                    <br>
-                    <br>
-                    <div style="display: flex; text-align: right; justify-content: right">
-                        <button class="btn btn-success" type="button" onclick="sendPhoto()">Отправить</button>
-                        <button class="btn btn-warning" onclick="clearImagePreview()" type="button">Удалить</button>
-                        <input type="file" class="form-control" style="width: 50%" id="fileInput">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card-body">
+                                <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-basic">
+                                    <div class="dz-message needsclick">
+                                        <span class="note needsclick"></span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--Почему-то не работает без этой фигни скрытой-->
+                        <div class="card-body" hidden>
+                            <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-multi">
+                                <div class="dz-message needsclick">
+                                    Drop files here or click to upload
+                                    <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually
+                            uploaded.)</span>
+                                </div>
+                            </form>
+
+                        </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div id="card-container">
-                        <div class="card" style="padding: 20px;">
+                        <div class="card" id="card1" style="padding: 20px; margin-top: 20px;">
                             <div class="row">
                                 <div class="col-6">
                                     <h6>Название</h6>
                                 </div>
                                 <div class="col-6" style="text-align: right">
-                                    <!--                            <button class="button">-->
-                                    <!--                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"-->
-                                    <!--                                     width="24"-->
-                                    <!--                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"-->
-                                    <!--                                     stroke-linecap="round" stroke-linejoin="round" onclick="deleteLayout()">-->
-                                    <!--                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>-->
-                                    <!--                                    <path d="M4 7l16 0"></path>-->
-                                    <!--                                    <path d="M10 11l0 6"></path>-->
-                                    <!--                                    <path d="M14 11l0 6"></path>-->
-                                    <!--                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>-->
-                                    <!--                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>-->
-                                    <!--                                </svg>-->
-                                    <!--                            </button>-->
                                 </div>
                             </div>
-                            <input type="text" class="col-6">
+                            <input class="form-control col-md-6" type="text" id="nameLayout1">
                             <br>
                             <div class="row">
                                 <div class="col-2">
                                     <h6>Цена от (м.кв)</h6>
-                                    <input type="number">
+                                    <input class="form-control" type="number" id="priceLayout1">
                                 </div>
                                 <div class="col-2">
                                     <h6>Комнат</h6>
-                                    <input type="number">
+                                    <input class="form-control" type="number" id="roomsLayout1">
                                 </div>
                                 <div class="col-2">
                                     <h6>S общая (м.кв.)*</h6>
-                                    <input type="number">
+                                    <input class="form-control" type="number" id="areaTotalLayout1">
                                 </div>
                                 <div class="col-2">
                                     <h6>S жилая (м.кв.)*</h6>
-                                    <input type="number">
+                                    <input class="form-control" type="number" id="areaLivingLayout1">
                                 </div>
                                 <div class="col-2">
                                     <h6>S кухни (м.кв.)*</h6>
-                                    <input type="number">
+                                    <input class="form-control" type="number" id="areaKitchenLayout1">
                                 </div>
                                 <div class="col-2">
                                 </div>
                             </div>
                             <br>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" value="" id="showSite1">
-                                <span class="checkmark" for="showSite1">Показать сайт</span>
+                                <input class="form-check-input" type="checkbox" value="" id="statusLayout1">
+                                <span class="checkmark">Показать сайт</span>
                             </div>
                             <br>
                             <h6>Описание</h6>
-                            <input type="text">
+                            <input class="form-control" type="text" id="descriptionLayout1">
                             <br>
                             <div class="row" style="text-align: center">
                                 <div class="col-4">
                                     <img id="previewImage1" style="justify-content: center">
-                                    <input type="file" class="form-control"
-                                           onchange="updatePreviewImage(this, 'previewImage1')"
-                                           style="margin-top: 5px">
+                                    <input type="file" class="form-control" id="inputImage1"
+                                           onchange="updatePreviewImage(this, 'previewImage1')" style="margin-top: 5px">
                                 </div>
                                 <div class="col-4">
                                     <img id="previewImage2" style="justify-content: center">
-                                    <input type="file" class="form-control"
-                                           onchange="updatePreviewImage(this, 'previewImage2')"
-                                           style="margin-top: 5px">
+                                    <input type="file" class="form-control" id="inputImage2"
+                                           onchange="updatePreviewImage(this, 'previewImage2')" style="margin-top: 5px">
                                 </div>
                                 <div class="col-4">
                                     <img id="previewImage3">
-                                    <input type="file" class="form-control"
-                                           onchange="updatePreviewImage(this, 'previewImage3')"
-                                           style="margin-top: 5px">
+                                    <input type="file" class="form-control" id="inputImage3"
+                                           onchange="updatePreviewImage(this, 'previewImage3')" style="margin-top: 5px">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div style="text-align: right; margin: 20px">
-                        <button class="btn btn-submit" onclick="addLayout()" type="button">Добавить планировку</button>
+                        <button class="btn btn-submit" onclick="addLayoutCard()" type="button">Добавить планировку
+                        </button>
                     </div>
                 </div>
             </div>
-
             <div style="text-align: right; margin: 20px">
                 <button class="btn btn-submit">Отмена</button>
                 <span>
                 <button class="btn btn-success" hx-trigger="click" onclick="sendForm()">
-<!--                        hx-vals="#nameObject, #settlement, #chessboard"-->
                 Сохранить </button>
             </span>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+    <div class="alert alert-warning notification  d-flex align-items-center hidden" role="alert"
+         id="notification">
+        <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.94118 10.7474V20.7444C5.94118 21.0758 5.81103 21.3936 5.57937 21.628C5.3477 21.8623 5.0335 21.994 4.70588 21.994H2.23529C1.90767 21.994 1.59347 21.8623 1.36181 21.628C1.13015 21.3936 1 21.0758 1 20.7444V11.997C1 11.6656 1.13015 11.3477 1.36181 11.1134C1.59347 10.879 1.90767 10.7474 2.23529 10.7474H5.94118ZM5.94118 10.7474C7.25166 10.7474 8.50847 10.2207 9.43512 9.28334C10.3618 8.34594 10.8824 7.07456 10.8824 5.74887V4.49925C10.8824 3.83641 11.1426 3.20071 11.606 2.73201C12.0693 2.26331 12.6977 2 13.3529 2C14.0082 2 14.6366 2.26331 15.0999 2.73201C15.5632 3.20071 15.8235 3.83641 15.8235 4.49925V10.7474H19.5294C20.1847 10.7474 20.8131 11.0107 21.2764 11.4794C21.7397 11.9481 22 12.5838 22 13.2466L20.7647 19.4947C20.5871 20.2613 20.25 20.9196 19.8045 21.3704C19.3589 21.8211 18.8288 22.04 18.2941 21.994H9.64706C8.6642 21.994 7.72159 21.599 7.0266 20.896C6.33162 20.1929 5.94118 19.2394 5.94118 18.2451"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+        </svg>
+        <strong id="text_notification"></strong>
+        <div>
+            <span id="notification-message"></span>
+        </div>
+    </div>
+    <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
+    <script th:src="@{/js/forms-file-upload.js}"></script>
+    <script th:inline="javascript">
+        function sendForm() {
+            let formData = new FormData();
+            formData.append("nameObject", $("#nameObject").val());
+            formData.append("region", $("#region").val());
+            formData.append("street", $("#street").val());
+            formData.append("district", $('[name="district"]').val());
+            formData.append("city", $('[name="city"]').val());
+            formData.append("topozone", $('[name="topozone"]').val());
+            formData.append("promotionName", $("#promotionName").val());
+            formData.append("houseNumber", $('[name="houseNumber"]').val());
+            formData.append("section", $('[name="section"]').val());
+            formData.append("floorQuantity", $('[name="floorQuantity"]').val());
+            formData.append("nameCompany", $('[name="nameCompany"]').val());
+            formData.append("buildStatus", $('[name="buildStatus"]').val());
+            formData.append("telephone", $('[name="telephone"]').val());
+            if ($("#chessboard").prop('files')[0] != null)
+                formData.append("chessboardFile", $("#chessboard").prop('files')[0]);
+            if ($("#installmentTerms").prop('files')[0] != null)
+                formData.append("installmentTerms", $("#installmentTerms").prop('files')[0]);
+            if ($("#prices").prop('files')[0] != null)
+                formData.append("prices", $("#prices").prop('files')[0]);
+            formData.append("description", $('[name="description"]').value);
+            formData.append("descriptionPromotion", $('[name="descriptionPromotion"]').value);
+            formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
+            let index = 0;
+            let checkErrors = true;
 
-
-<script th:inline="javascript">
-    function sendForm() {
-        let formData = new FormData();
-        formData.append("nameObject", $("#nameObject").val());
-        formData.append("region", $("#region").val());
-        formData.append("street", $("#street").val());
-        formData.append("district", $('[name="district"]').val());
-        formData.append("city", $('[name="city"]').val());
-        formData.append("topozone", $('[name="topozone"]').val());
-        formData.append("houseNumber", $('[name="houseNumber"]').val());
-        formData.append("section", $('[name="section"]').val());
-        formData.append("floorQuantity", $('[name="floorQuantity"]').val());
-        formData.append("nameCompany", $('[name="nameCompany"]').val());
-        formData.append("buildStatus", $('[name="buildStatus"]').val());
-        formData.append("telephone", $('[name="telephone"]').val());
-        formData.append("chessboardFile", $("#chessboard").prop('files')[0]);
-        formData.append("installmentTerms", $("#installmentTerms").prop('files')[0]);
-        formData.append("prices", $("#prices").prop('files')[0]);
-        formData.append("description", $('[name="description"]').val());
-        formData.append("descriptionPromotion", $('[name="descriptionPromotion"]').val());
-        formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
-        for (let [fileName, file] of imageMap) {
-            console.log(file);
-            formData.append("files[]", file);
-        }
-        console.log(formData.get("files[]"))
-        let contextPath =/*[[@{/}]]*/'';
-        let url = contextPath.toString() + "objects/byBuilder/create";
-        $.ajax({
-            url: url,
-            method: "POST",
-            contentType: false,
-            processData: false,
-            data: formData,
-            success: function (response) {
-                console.log("success");
-            },
-            error: function (xhr, status, error) {
-                console.log(error)
-            }
-        })
-    }
-
-    function deleteCard(num) {
-        let nameCard = "#cardImg" + num;
-        imageMap.delete(num);
-        $(nameCard).remove();
-    }
-
-    var imageMap = new Map();
-    const fileInput = document.getElementById("fileInput");
-    let cardContainer = document.getElementById('img-list-container');
-    let quantity = 1;
-    let sendCard;
-    $("#fileInput").change(function () {
-
-        var newCard = document.createElement('div');
-        newCard.className = 'card col-lg-3';
-        newCard.style.padding = '5px';
-        newCard.id = 'cardImg' + quantity;
-        const image = new Image();
-        newCard.innerHTML = `<br>`;
-        if (fileInput.files.length > 0) {
-            console.log("llflfslflfs")
-            const file = fileInput.files[0];
-            image.src = URL.createObjectURL(file);
-            image.style.justifyContent = 'center';
-            image.style.alignItems = 'center';
-            image.className = 'd-block w-px-250 h-px-150 rounded mx-auto';
-            newCard.innerHTML += image.outerHTML;
-
-            newCard.innerHTML += `
-                            <br>
-                            <p style="text-align: center">` + file.name + `</p>
-                             <br>
-                            <p style="text-align: center">(` + file.size + ` KB)</p>
-                            <br>
-                            <div style="text-align: right">
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button class="btn btn-submit" type="button" id="download` + quantity + `" >
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             class="icon icon-tabler icon-tabler-download"
-                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                             stroke="currentColor"
-                                             fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
-                                            <path d="M7 11l5 5l5 -5"></path>
-                                            <path d="M12 4l0 12"></path>
-                                        </svg>
-                                    </button>
-
-                                    <button class="btn btn-submit" type="button" id="deleteImg` + quantity + `" onclick="deleteCard(` + quantity + `)">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             class="icon icon-tabler icon-tabler-trash"
-                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                             stroke="currentColor"
-                                             fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M4 7l16 0"></path>
-                                            <path d="M10 11l0 6"></path>
-                                            <path d="M14 11l0 6"></path>
-                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                        </svg>
-                                    </button>
-                                    <button class="btn btn-submit" type="button" id="increaseImg` + quantity + `">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             class="icon icon-tabler icon-tabler-search"
-                                             width="24"
-                                             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                             fill="none"
-                                             stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-                                            <path d="M21 21l-6 -6"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>`
-            sendCard = newCard;
-            quantity = quantity + 1;
-        }
-    });
-
-    function sendPhoto() {
-        if (fileInput.files.length > 0) {
-            cardContainer.appendChild(sendCard);
-            imageMap.set((quantity - 1), fileInput.files[0]);
-            fileInput.value = "";
-
-        }
-    }
-
-    function clearImagePreview() {
-        console.log(imageMap)
-        fileInput.value = "";
-    }
-
-    let imgMaxId = 4;
-
-    function updatePreviewImage(input, imgId) {
-        if (input.files && input.files[0]) {
-            var file = input.files[0];
-            if (file.type.startsWith('image/')) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#' + imgId).removeAttr('hidden');
-                    $('#' + imgId).attr('src', e.target.result);
-                    $('#' + imgId).addClass('d-block w-px-300 h-px-300 rounded');
-                    if (imgId > imgMaxId) {
-                        imgMaxId = imgId;
-                    }
+            layoutArray.forEach(function (element) {
+                console.log(element);
+                let layoutData = {
+                    nameLayout: $("#nameLayout" + element).val(),
+                    priceLayout: $("#priceLayout" + element).val(),
+                    roomQuantityLayout: $("#roomsLayout" + element).val(),
+                    areaTotalLayout: $("#areaTotalLayout" + element).val(),
+                    areaLivingLayout: $("#areaLivingLayout" + element).val(),
+                    areaKitchenLayout: $("#areaKitchenLayout" + element).val(),
+                    statusLayout: $("#statusLayout" + element).prop('checked'),
+                    descriptionLayout: $("#descriptionLayout" + element).value
                 }
-                reader.readAsDataURL(file);
-            } else {
-                alert('Выбранный файл не является изображением.');
-                input.value = '';
+                let inputImage1 = $("#inputImage" + element).prop('files');
+                if (inputImage1.length > 0) {
+                    layoutData.img1Layout = inputImage1[0];
+                }
+                let inputImage2 = $("#inputImage" + (element + 1)).prop('files');
+                if (inputImage2.length > 0) {
+                    layoutData.img2Layout = inputImage2[0];
+                }
+                let inputImage3 = $("#inputImage" + (element + 2)).prop('files');
+                if (inputImage3.length > 0) {
+                    layoutData.img3Layout = inputImage3[0];
+                }
+                for (let key in layoutData) {
+                    formData.append(`layoutDTOList[${index}].${key}`, layoutData[key]);
+                }
+                console.log(layoutData)
+                index = index + 1;
+            });
+
+            const uploadedFiles = window.uploadedFiles;
+            console.log(uploadedFiles);
+            let i = 1;
+            for (let [fileName, file] of uploadedFiles) {
+                if (i > 15) {
+                    break;
+                }
+                formData.append("files[]", file);
+                i++;
+            }
+            console.log(formData.get("files[]"))
+
+            let contextPath =/*[[@{/}]]*/'';
+            let url = contextPath.toString() + "objects/byBuilder/create";
+            // for (let pair of formData.entries()) {
+            //     let value = pair[1];
+            //     if (value === "" || value === null || value === undefined || !value) {
+            //         showNotification("Warning!", "Пожалуйста, заполните все данные. ", false);
+            //         checkErrors = false;
+            //         break;
+            //     }
+            // }
+            if (checkErrors) {
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function () {
+                        showNotification("Объект сохранен!", "", true);
+                    },
+                    error: function (xhr, status, error) {
+                        var errors = JSON.parse(xhr.responseText);
+                        errors.forEach(function (error) {
+                            console.log("Ошибка: " + error);
+                            showNotification("Ошибка!", error, false);
+                        });
+                    }
+                })
             }
         }
-    }
 
-    let layoutArray = [];
+        let imgMaxId = 4;
 
-    function addLayout() {
-        var cardContainer = document.getElementById('card-container');
-        var newCard = document.createElement('div');
-        newCard.className = 'card';
-        newCard.style.padding = '20px';
-        newCard.style.marginTop = '20px';
-        newCard.id = 'card' + imgMaxId;
-        layoutArray.push(imgMaxId)
-        newCard.innerHTML = `<div class="row">
+        function updatePreviewImage(input, imgId) {
+            if (input.files && input.files[0]) {
+                var file = input.files[0];
+                if (file.type.startsWith('image/')) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#' + imgId).removeAttr('hidden');
+                        $('#' + imgId).attr('src', e.target.result);
+                        $('#' + imgId).addClass('d-block w-px-300 h-px-300 rounded');
+                        if (imgId > imgMaxId) {
+                            imgMaxId = imgId;
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    input.value = '';
+                    showNotification("Warning!", "Только изображения", false)
+                }
+            }
+        }
+
+        let layoutArray = [1];
+
+        function addLayoutCard() {
+            let cardContainer = document.getElementById('card-container');
+            let newCard = document.createElement('div');
+            newCard.className = 'card';
+            newCard.style.padding = '20px';
+            newCard.style.marginTop = '20px';
+            newCard.id = 'card' + imgMaxId;
+            layoutArray.push(imgMaxId)
+            newCard.innerHTML = `<div class="row">
                 <div class="col-6">
                     <h6>Название</h6>
                 </div>
                 <div class="col-6" style="text-align: right">
-                    <button class="button" onClick="deleteLayout(` + imgMaxId + `)" type="button">
+                    <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
                              width="24"
                              height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -498,28 +470,28 @@
                     </button>
                 </div>
             </div>
-            <input type="text" class="col-6" id="nameLayout` + imgMaxId + `">
+            <input class="form-control" type="text" class="col-6" id="nameLayout` + imgMaxId + `">
                 <br>
                     <div class="row">
                         <div class="col-2">
                             <h6>Цена от (м.кв)</h6>
-                            <input type="number" id="priceLayout` + imgMaxId + `">
+                            <input class="form-control" type="number" id="priceLayout` + imgMaxId + `">
                         </div>
                         <div class="col-2">
                             <h6>Комнат</h6>
-                            <input type="number" id="roomsLayout` + imgMaxId + `">
+                            <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `">
                         </div>
                         <div class="col-2">
                             <h6>S общая (м.кв.)*</h6>
-                            <input type="number" id="areaTotalLayout` + imgMaxId + `">
+                            <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `">
                         </div>
                         <div class="col-2">
                             <h6>S жилая (м.кв.)*</h6>
-                            <input type="number" id="areaLivingLayout` + imgMaxId + `">
+                            <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `">
                         </div>
                         <div class="col-2">
                             <h6>S кухни (м.кв.)*</h6>
-                            <input type="number" id="areaKitchenLayout` + imgMaxId + `">
+                            <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `">
                         </div>
                         <div class="col-2">
                         </div>
@@ -531,42 +503,154 @@
                         </div>
                         <br>
                             <h6>Описание</h6>
-                            <input type="text" id="descriptionLayout` + imgMaxId + `">
+                            <input class="form-control" type="text" id="descriptionLayout` + imgMaxId + `">
                                 <br>
                                     <div class="row" style="text-align: center">
                                         <div class="col-4">
                                             <img id="previewImage` + (imgMaxId) + `" style="justify-content: center">
-                                                <input type="file" class="form-control"
+                                                <input  type="file" class="form-control" id="inputImage` + (imgMaxId) + `"
                                                        onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
                                                        style="margin-top: 5px">
                                         </div>
                                         <div class="col-4">
                                             <img id="previewImage` + (imgMaxId + 1) + `" style="justify-content: center">
-                                                <input type="file" class="form-control"
+                                                <input type="file" class="form-control" id="inputImage` + (imgMaxId + 1) + `"
                                                        onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
                                                        style="margin-top: 5px">
                                         </div>
                                         <div class="col-4">
                                             <img id="previewImage` + (imgMaxId + 2) + `">
-                                                <input type="file" class="form-control"
+                                                <input type="file" class="form-control" id="inputImage` + (imgMaxId + 2) + `"
                                                        onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 2) + `')"
                                                        style="margin-top: 5px">
                                         </div>
                                     </div>  `
-        cardContainer.appendChild(newCard);
-        console.log("Добавление Layout");
+            cardContainer.appendChild(newCard);
+            console.log("Добавление Layout");
 
-        imgMaxId = imgMaxId + 3;
-    }
+            imgMaxId = imgMaxId + 3;
+        }
 
-    function deleteLayout(imgId) {
-        let textCard = "#card" + imgId;
-        layoutArray = layoutArray.filter(function (item) {
-            return item !== imgId;
+        function deleteLayout(imgId) {
+            let textCard = "#card" + imgId;
+            layoutArray = layoutArray.filter(function (item) {
+                return item !== imgId;
+            });
+            $(textCard).remove();
+            showNotification("Warning!", "Планировка удалена", false)
+            console.log("Удаление Layout");
+        }
+
+        // Настройки
+        $('#telephone').mask('+380999999999');
+        $('[name="city"]').change(function () {
+            let selectedValue = $(this).val();
+            console.log(selectedValue)
+            let contextPath = /*[[@{/}]]*/ '';
+            let url = contextPath.toString() + "getDistrict/" + selectedValue.toString();
+            console.log(url)
+            if (selectedValue.toString() == "") {
+                const container2 = $('[name="district"]');
+                container2.empty();
+                container2.prop('disabled', true);
+            } else {
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    data: {
+                        selectedValue: selectedValue
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data)
+                        if (Array.isArray(data)) {
+                            const container = $('[name="district"]');
+                            if (container.is(':disabled')) {
+                                container.removeAttr('disabled');
+                            }
+                            container.empty();
+                            let selectionItem = '<option value=""></option> ';
+                            if (data.length > 0) {
+                                data.forEach(function (category) {
+                                    selectionItem += '<option value="' + category + '">' + category + '</option>';
+                                });
+                            }
+                            container.append(selectionItem);
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:", error);
+                    }
+                });
+            }
         });
-        $(textCard).remove();
-        console.log("Удаление Layout");
-    }
-</script>
+        $("#region").change(function () {
+            let selectedValue = $(this).val();
+            console.log(selectedValue)
+            let contextPath = /*[[@{/}]]*/ '';
+            let url = contextPath.toString() + "getCity/" + selectedValue.toString();
+            console.log(url)
+            if (selectedValue.toString() == "") {
+                const container = $('[name="city"]');
+                container.empty();
+                container.prop('disabled', true);
+                const container2 = $('[name="district"]');
+                container2.empty();
+                container2.prop('disabled', true);
+            } else {
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    data: {
+                        selectedValue: selectedValue
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data)
+                        if (Array.isArray(data)) {
+                            const container = $('[name="city"]');
+                            if (container.is(':disabled')) {
+                                container.removeAttr('disabled');
+                            }
+                            container.empty();
+                            let selectionItem = '<option value=""></option> ';
+                            if (data.length > 0) {
+                                data.forEach(function (category) {
+                                    selectionItem += '<option value="' + category + '">' + category + '</option>';
+                                });
+                            }
+                            container.append(selectionItem);
+                            const container2 = $('[name="district"]');
+                            container2.empty();
+                            container2.prop('disabled', true);
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error:", error);
+                    }
+                });
+            }
+        });
+
+        function showNotification(bigTextMessage, message, isSuccess) {
+            const notification = document.getElementById("notification");
+            const notificationMessage = document.getElementById("notification-message");
+
+            var element = document.getElementById("text_notification");
+            element.textContent = bigTextMessage;
+
+            notificationMessage.textContent = message;
+            notification.classList.remove("hidden");
+            notification.classList.toggle("alert-success", isSuccess);
+            notification.classList.toggle("alert-warning", !isSuccess);
+            setTimeout(() => {
+                notification.classList.add("hidden");
+            }, 5000);
+        }
+
+
+    </script>
+</main>
+
 </body>
 </html>

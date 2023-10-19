@@ -12,4 +12,5 @@ public interface ExchangeRatesRepository extends JpaRepository<ExchangeRates, In
     <S extends ExchangeRates> S save(S entity);
 
     Optional<ExchangeRates> findByName(String name);
+
 }

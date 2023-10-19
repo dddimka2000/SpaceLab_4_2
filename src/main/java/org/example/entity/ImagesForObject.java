@@ -1,10 +1,12 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.example.util.TypeObject;
 
 @Entity
-public class ImageEntity {
+@Data
+public class ImagesForObject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer idImage;

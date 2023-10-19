@@ -2,7 +2,11 @@ package org.example.service;
 
 import lombok.extern.log4j.Log4j2;
 import org.example.entity.ExchangeRates;
+import org.example.entity.Question;
 import org.example.repository.ExchangeRatesRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,4 +33,6 @@ public class ExchangeRatesService {
         exchangeRatesRepository.save(entity);
         log.info("ExchangeRatesService-save successfully");
     }
+
+
 }

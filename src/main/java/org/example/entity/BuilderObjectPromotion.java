@@ -7,8 +7,6 @@ import lombok.Data;
 @Data
 @Embeddable
 public class BuilderObjectPromotion {
-
-
     private String name, description;
     private Boolean active;
 }

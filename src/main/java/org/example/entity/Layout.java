@@ -1,9 +1,11 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "layouts", schema = "my_bd", catalog = "")
+@Data
 public class Layout {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

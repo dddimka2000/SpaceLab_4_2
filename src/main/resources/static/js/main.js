@@ -313,11 +313,12 @@ if (document.getElementById('layout-menu')) {
   // If current layout is vertical and current window screen is > small
 
   // Auto update menu collapsed/expanded based on the themeConfig
-  if (typeof TemplateCustomizer !== 'undefined') {
-    if (window.templateCustomizer.settings.defaultMenuCollapsed) {
+  if (typeof TemplateCustomizer !== 'undefined' && TemplateCustomizer.settings) {
+    if (TemplateCustomizer.settings.defaultMenuCollapsed) {
       window.Helpers.setCollapsed(true, false);
     }
   }
+
 
   // Manage menu expanded/collapsed state with local storage support If enableMenuLocalStorage = true in config.js
   if (typeof config !== 'undefined') {

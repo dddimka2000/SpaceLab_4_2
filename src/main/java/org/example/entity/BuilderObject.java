@@ -9,25 +9,19 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "builder_objects", schema = "my_bd", catalog = "")
+@Table(name = "builder_objects", schema = "my_bd")
 public class BuilderObject {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-
     @Embedded
     private PropertyObjectAddress address;
-
+    String name;
     private Integer floorQuantity;
-    private Integer priceFrom;
-
     private String phone;
-
     private String description_builder;
-
     private PropertyBuildStatus buildStatus;
-
     private String nameCompany;
     private String filePrices;
     private String fileInstallmentTerms;
@@ -40,7 +34,7 @@ public class BuilderObject {
     })
     private BuilderObjectPromotion promotion;
 
-    @OneToMany(mappedBy = "builderObject")
-    private List<Layout> layoutsById;
+    @OneToMany(mappedBy = "builderObject",fetch = FetchType.LAZY)
+    private List<Layout> layouts;
 
 }

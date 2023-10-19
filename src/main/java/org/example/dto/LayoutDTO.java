@@ -1,16 +1,21 @@
 package org.example.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class LayoutDTO {
-    private String name;
-    private Integer price;
-    private Integer roomQuantity;
-    private Integer areaLiving, areaTotal, areaKitchen;
-    private Boolean status;
-    private String description;
-    private String img1;
-    private String img2;
-    private String img3;
+    private String nameLayout;
+    private Integer priceLayout;
+    private Integer roomQuantityLayout;
+    private Integer areaLivingLayout, areaTotalLayout, areaKitchenLayout;
+    private Boolean statusLayout;
+    private String descriptionLayout;
+    @NotNull(message = "Фотографии в планировке не могут быть пусты")
+    private MultipartFile img1Layout;
+    @NotNull(message = "Фотографии в планировке не могут быть пусты")
+    private MultipartFile img2Layout;
+    @NotNull(message = "Фотографии в планировке не могут быть пусты")
+    private MultipartFile img3Layout;
 }

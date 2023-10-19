@@ -1,6 +1,6 @@
 <aside layout:fragment="sidebar" id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-  <div class="app-brand demo">
-    <a href="index.html" class="app-brand-link">
+    <div class="app-brand demo">
+        <a href="index.html" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -31,66 +31,113 @@
                   />
                 </svg>
               </span>
-      <span class="app-brand-text demo menu-text fw-bold">Vuexy</span>
-    </a>
+            <span class="app-brand-text demo menu-text fw-bold">Vuexy</span>
+        </a>
 
-    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-      <i class="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle"></i>
-      <i class="ti ti-x d-block d-xl-none ti-sm align-middle"></i>
-    </a>
-  </div>
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+            <i class="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle"></i>
+            <i class="ti ti-x d-block d-xl-none ti-sm align-middle"></i>
+        </a>
+    </div>
 
-  <div class="menu-inner-shadow"></div>
+    <div class="menu-inner-shadow"></div>
 
-  <ul class="menu-inner py-1">
-    <!-- Page -->
-    <li class="menu-item active">
-      <a th:href="@{/buyers}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-smart-home"></i>
-        <div data-i18n="Page 1">Покупатели</div>
-      </a>
-    </li>
-    <li class="menu-item">
-      <a th:href="@{/applications}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-app-window"></i>
-        <div data-i18n="Page 2">Заявки</div>
-      </a>
-    </li>
-    <li class="menu-item">
-      <a th:href="@{/branches}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-app-window"></i>
-        <div data-i18n="Page 2">Филиалы</div>
-      </a>
-    </li>
-    <li class="menu-item">
-      <a th:href="@{/realtors}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-app-window"></i>
-        <div data-i18n="Page 2">Риелторы</div>
-      </a>
-    </li>
-    <li class="menu-item">
-      <a th:href="@{/pages}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-app-window"></i>
-        <div data-i18n="Page 2">Страницы</div>
-      </a>
-    </li>
-    <li class="menu-item">
-      <a th:href="@{/banners}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-app-window"></i>
-        <div data-i18n="Page 2">Баннеры</div>
-      </a>
-    </li>
-    <li class="menu-item">
-      <a th:href="@{/changes}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-app-window"></i>
-        <div data-i18n="Page 2">Предложения</div>
-      </a>
-    </li>
-    <li th:class="menu-item">
-      <a th:href="@{/users}" class="menu-link">
-        <i class="menu-icon tf-icons ti ti-app-window"></i>
-        <div data-i18n="Page 2">Пользователи</div>
-      </a>
-    </li>
-  </ul>
+    <ul class="menu-inner py-1">
+        <!-- Page -->
+        <li class="menu-item active">
+            <a th:href="@{/objects/byBuilder}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-smart-home"></i>
+                <div >Объекты от строителей</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a th:href="@{/objects/by}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-app-window"></i>
+                <div >Объекты от инвесторов</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a th:href="@{/objects/}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-app-window"></i>
+                <div >Вторичная недвижимость</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a th:href="@{/objects/}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-app-window"></i>
+                <div >Дома и участки</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a th:href="@{/objects/}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-app-window"></i>
+                <div >Коммерческая</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a th:href="@{/changes}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-app-window"></i>
+                <div >Заявки</div>
+            </a>
+        </li>
+
+        <li th:class="menu-item">
+            <a th:href="@{/users}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-app-window"></i>
+                <div >Филлиалы</div>
+            </a>
+        </li>
+        <li th:class="menu-item">
+            <a th:href="@{/users}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-app-window"></i>
+                <div >Покупатели</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a th:href="@{/banners}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-app-window"></i>
+                <div >Риелторы</div>
+            </a>
+        </li>
+        <li class="menu-item">
+<!--            <a class="menu-link">-->
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons ti ti-app-window"></i>
+                    <div >Управление сайтом</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="app-user-list.html" class="menu-link">
+                            <div >Баннеры</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="app-user-list.html" class="menu-link">
+                            <div >Пользователи системы</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="app-user-list.html" class="menu-link">
+                            <div >Страницы</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="app-user-list.html" class="menu-link">
+                            <div >Изменения</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="app-user-list.html" class="menu-link">
+                            <div >Заявки с сайта</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="app-user-list.html" class="menu-link">
+                            <div >Вопросы</div>
+                        </a>
+                    </li>
+                </ul>
+<!--            </a>-->
+        </li>
+    </ul>
 </aside>

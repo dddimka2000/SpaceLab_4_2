@@ -6,9 +6,7 @@ import lombok.Data;
 @Data
 @Embeddable
 public class PropertyObjectAddress {
-
     private String region, city, district, zone, street;
     private Integer houseNumber;
-    private String section;
-
+    private Integer section;
 }
