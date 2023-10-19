@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 @Service
 public class MinioService {
@@ -74,5 +75,23 @@ public class MinioService {
         objectStream.close();
 
         return photoBytes;
+    }
+
+    public String getFileInString(String objectName, String directory) throws ErrorResponseException, InsufficientDataException
+            , InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException
+            , XmlParserException, IOException {
+        String prefix = "/" + directory + "/";
+        String objectNameToRetrieve = prefix + objectName;
+
+        InputStream objectStream = minioClient.getObject(
+                GetObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(objectNameToRetrieve)
+                        .build());
+
+        byte[] photoBytes = IOUtils.toByteArray(objectStream);
+
+        objectStream.close();
+        return Base64.getEncoder().encodeToString(photoBytes);
     }
 }

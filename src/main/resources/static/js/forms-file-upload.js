@@ -53,50 +53,6 @@
     console.log('Загрузка всех файлов завершена.');
   });
 
-
-//   let uploadedFiles = [];
-//   window.uploadedFiles = uploadedFiles;
-//
-//   myDropzone.on('success', function (file, response) {
-//     console.log('Файл успешно загружен:', file);
-//     console.log('Сервер вернул:', response);
-//
-//     // Здесь вы добавляете информацию о файле в массив
-//     uploadedFiles.push({
-//       name: file.name,
-//       size: file.size,
-//       // Другие свойства, которые вас интересуют
-//     });
-//   });
-//
-// // Обработчик события "removedfile" - вызывается при удалении файла
-//   myDropzone.on('removedfile', function (file) {
-//     console.log('Файл был удален:', file);
-//
-//     // Здесь вы можете удалить информацию о файле из массива
-//     for (let i = 0; i < uploadedFiles.length; i++) {
-//       if (uploadedFiles[i].name === file.name) {
-//         uploadedFiles.splice(i, 1);
-//         break;
-//       }
-//     }
-//   });
-//
-// // Обработчик события "queuecomplete" - вызывается после завершения загрузки всех файлов в очереди
-//   myDropzone.on('queuecomplete', function () {
-//     console.log('Загрузка всех файлов завершена.');
-//   });
-
-
-
-
-
-
-
-
-
-
-
   // Multiple Dropzone
   // --------------------------------------------------------------------
   // const dropzoneMulti = new Dropzone('#dropzone-multi', {

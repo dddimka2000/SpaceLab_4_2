@@ -37,10 +37,10 @@ public class GlobalMethods {
         List<String> list = districtRepository.findByCityNameCity(name).stream().map(s->s.getNameDistrict()).collect(Collectors.toList());
         return list;
     }
-    @GetMapping("/getStreet/{name}")
-    public List<String> getStreet(@PathVariable String name) {
-        List<String> list = streetRepository.findByDistrictNameDistrict(name).stream().map(s->s.getName()).collect(Collectors.toList());
-        return list;
-    }
+//    @GetMapping("/getStreet/{name}")
+//    public List<String> getStreet(@PathVariable String name) {
+//        List<String> list = streetRepository.findByDistrictNameDistrict(name).stream().map(s->s.getName()).collect(Collectors.toList());
+//        return list;
+//    }
 
 }

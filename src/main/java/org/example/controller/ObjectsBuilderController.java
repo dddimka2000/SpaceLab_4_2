@@ -67,12 +67,12 @@ public class ObjectsBuilderController {
         Page<BuilderObject> pageElements = objectBuilderService.findBuilderObjectsPage(numberPage, pageSize);
         List<BuilderObject> list = pageElements.getContent();
         model.addAttribute("list", list);
-        List<Integer> listPrices=new ArrayList<>();
-        for(BuilderObject elem:list){
-            List<Integer> prices=layoutService.findByBuilderObject(elem).stream().map(s->s.getPrice()).collect(Collectors.toList());
+        List<Integer> listPrices = new ArrayList<>();
+        for (BuilderObject elem : list) {
+            List<Integer> prices = layoutService.findByBuilderObject(elem).stream().map(s -> s.getPrice()).collect(Collectors.toList());
             listPrices.add(Collections.min(prices));
         }
-        model.addAttribute("listPrice",listPrices);
+        model.addAttribute("listPrice", listPrices);
         model.addAttribute("currentPage", numberPage);
         model.addAttribute("totalPages", pageElements.getTotalPages());
         Long count = pageElements.getTotalElements();
@@ -96,8 +96,7 @@ public class ObjectsBuilderController {
     @PostMapping("/create")
     public ResponseEntity ObjectsBuilderCreatePost(@Valid @ModelAttribute ObjectBuilderDto objectBuilderDto, BindingResult bindingResult)
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException
-            , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException
-    {
+            , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -174,7 +173,7 @@ public class ObjectsBuilderController {
 
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + dto.getImg3Layout().getOriginalFilename();
-            minioService.putMultipartFile(dto.getImg3Layout(), imagesBucketName,resultFilename);
+            minioService.putMultipartFile(dto.getImg3Layout(), imagesBucketName, resultFilename);
             layout.setImg3(resultFilename);
 
             layout.setBuilderObject(builderObject);
@@ -187,7 +186,7 @@ public class ObjectsBuilderController {
 
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + file.getOriginalFilename();
-            minioService.putMultipartFile(file, imagesBucketName,resultFilename);
+            minioService.putMultipartFile(file, imagesBucketName, resultFilename);
             imagesForObject.setPath(resultFilename);
 
             imagesForObjectService.save(imagesForObject);
@@ -198,16 +197,16 @@ public class ObjectsBuilderController {
 
     @GetMapping("/card/{id}")
     public String CardObjectsBuilderShow(@PathVariable Integer id, Model model) {
-        Optional<BuilderObject> objectBuilder=objectBuilderService.findById(id);
-        if(objectBuilder.isEmpty()){
+        Optional<BuilderObject> objectBuilder = objectBuilderService.findById(id);
+        if (objectBuilder.isEmpty()) {
             return "/error/404";
         }
 
-        model.addAttribute("element",objectBuilder.get());
+        model.addAttribute("element", objectBuilder.get());
         model.addAttribute("minPrice",
-                (Collections.min(layoutService.findByBuilderObject(objectBuilder.get()).stream().map(s->s.getPrice()).collect(Collectors.toList()))));
+                (Collections.min(layoutService.findByBuilderObject(objectBuilder.get()).stream().map(s -> s.getPrice()).collect(Collectors.toList()))));
         try {
-            String namePhoto=imagesForObjectService.findOneByIdObjectAndTypeObject(objectBuilder.get().getId(),TypeObject.ByBuilder).get().getPath();
+            String namePhoto = imagesForObjectService.findOneByIdObjectAndTypeObject(objectBuilder.get().getId(), TypeObject.ByBuilder).get().getPath();
             byte[] photoData = minioService.getPhoto(namePhoto, imagesBucketName);
             String base64Image = Base64.getEncoder().encodeToString(photoData);
             model.addAttribute("base64Image", base64Image);
@@ -231,21 +230,105 @@ public class ObjectsBuilderController {
 
 
     @GetMapping("/edit/{id}")
-    public String EditMainInfoObjectsBuilderShow(@PathVariable Integer id, Model model) {
-        Optional<BuilderObject> objectBuilder=objectBuilderService.findById(id);
-        if(objectBuilder.isEmpty()){
+    public String EditMainInfoObjectsBuilderShow(@PathVariable Integer id, Model model) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        Optional<BuilderObject> objectBuilder = objectBuilderService.findById(id);
+        if (objectBuilder.isEmpty()) {
             return "/error/404";
         }
-        model.addAttribute("objectBuilder",objectBuilder.get());
-        return "/objects/object_builders/editMainInfo";
+        model.addAttribute("objectBuilder", objectBuilder.get());
+
+        List<ImagesForObject> list = imagesForObjectService.findByIdObjectAndTypeObject(objectBuilder.get().getId(), TypeObject.ByBuilder);
+
+        List<String> base64ImagesList = new ArrayList<>();
+        List<Integer> base64ImagesListSize = new ArrayList<>();
+        for (ImagesForObject imagesForObject : list) {
+            byte[] filePrices = minioService.getPhoto(imagesForObject.getPath(), imagesBucketName);
+            String base64FilePrices = Base64.getEncoder().encodeToString(filePrices);
+            base64ImagesList.add(base64FilePrices);
+            base64ImagesListSize.add(filePrices.length);
+        }
+        model.addAttribute("base64Images", base64ImagesList);
+        model.addAttribute("base64ImagesSize", base64ImagesListSize);
+        List<Layout> layouts=layoutService.findByBuilderObject(objectBuilder.get());
+        model.addAttribute("layouts",layouts);
+        model.addAttribute("img1",layouts.stream().map(layout -> {
+            try {
+                return minioService.getFileInString(layout.getImg1(),imagesBucketName);
+            } catch (ErrorResponseException e) {
+                throw new RuntimeException(e);
+            } catch (InsufficientDataException e) {
+                throw new RuntimeException(e);
+            } catch (InternalException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidKeyException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidResponseException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            } catch (ServerException e) {
+                throw new RuntimeException(e);
+            } catch (XmlParserException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toList()));
+        model.addAttribute("img2",layouts.stream().map(layout -> {
+            try {
+                return minioService.getFileInString(layout.getImg2(),imagesBucketName);
+            } catch (ErrorResponseException e) {
+                throw new RuntimeException(e);
+            } catch (InsufficientDataException e) {
+                throw new RuntimeException(e);
+            } catch (InternalException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidKeyException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidResponseException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            } catch (ServerException e) {
+                throw new RuntimeException(e);
+            } catch (XmlParserException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toList()));
+        model.addAttribute("img3",layouts.stream().map(layout -> {
+            try {
+                return minioService.getFileInString(layout.getImg3(),imagesBucketName);
+            } catch (ErrorResponseException e) {
+                throw new RuntimeException(e);
+            } catch (InsufficientDataException e) {
+                throw new RuntimeException(e);
+            } catch (InternalException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidKeyException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidResponseException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            } catch (ServerException e) {
+                throw new RuntimeException(e);
+            } catch (XmlParserException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toList()));
+        return "/objects/object_builders/editObjectBuilder";
     }
 
 
     @GetMapping("/card/downloadFileCheckerboard/{id}")
     public ResponseEntity<ByteArrayResource> downloadFileCheckerboard(@PathVariable Integer id) {
-        Optional<BuilderObject> objectBuilder=objectBuilderService.findById(id);
-        if(objectBuilder.isEmpty()){
-            return  ResponseEntity.notFound().build();
+        Optional<BuilderObject> objectBuilder = objectBuilderService.findById(id);
+        if (objectBuilder.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
         try {
             String fileName = objectBuilder.get().getFileCheckerboard();
@@ -257,11 +340,12 @@ public class ObjectsBuilderController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("/card/downloadFileInstallmentTerms/{id}")
     public ResponseEntity<ByteArrayResource> downloadFileInstallmentTerms(@PathVariable Integer id) {
-        Optional<BuilderObject> objectBuilder=objectBuilderService.findById(id);
-        if(objectBuilder.isEmpty()){
-            return  ResponseEntity.notFound().build();
+        Optional<BuilderObject> objectBuilder = objectBuilderService.findById(id);
+        if (objectBuilder.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
         try {
             String fileName = objectBuilder.get().getFileInstallmentTerms();
@@ -273,11 +357,12 @@ public class ObjectsBuilderController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("/card/downloadFilePrices/{id}")
     public ResponseEntity<ByteArrayResource> downloadFilePrices(@PathVariable Integer id) {
-        Optional<BuilderObject> objectBuilder=objectBuilderService.findById(id);
-        if(objectBuilder.isEmpty()){
-            return  ResponseEntity.notFound().build();
+        Optional<BuilderObject> objectBuilder = objectBuilderService.findById(id);
+        if (objectBuilder.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
         try {
             String fileName = objectBuilder.get().getFilePrices();
