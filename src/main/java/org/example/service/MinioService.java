@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.UUID;
 
 @Service
 public class MinioService {
@@ -93,5 +94,11 @@ public class MinioService {
 
         objectStream.close();
         return Base64.getEncoder().encodeToString(photoBytes);
+    }
+    public String putImage(MultipartFile image) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        String extension = image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf(".") + 1);
+        String name = UUID.randomUUID()+"."+extension;
+        putMultipartFile(image, imagesBucketName, name);
+        return name;
     }
 }
