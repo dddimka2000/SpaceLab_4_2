@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users", schema = "my_bd", catalog = "")
 @Data
-public class UserEntity implements UserDetails {
+public class UserEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -24,7 +24,10 @@ public class UserEntity implements UserDetails {
 
     @Transient private String confirmPassword;
 
-    private UserRole role;
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> roles;
 
     private String name, surname, middleName;
 
@@ -37,33 +40,4 @@ public class UserEntity implements UserDetails {
     private List<UserReview> reviews;
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(role);
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }
