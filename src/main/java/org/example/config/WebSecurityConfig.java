@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -40,17 +42,22 @@ public class WebSecurityConfig {
                 {
                     try {
                         authorize
+                                .and()
+                                .oauth2Login(oauth2Login ->
+                                        oauth2Login
+//                                                .defaultSuccessUrl("/auth/login")
+                                                .clientRegistrationRepository(clientRegistrationRepository)
+                                )
+                                .authorizeHttpRequests()
                                 .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login").permitAll()
 //                                .requestMatchers("/**").hasAnyAuthority("ADMIN", "MODERATOR")
                                 .requestMatchers("/admin/**")
                                 .authenticated()
                                 .anyRequest().permitAll()
                                 .and()
-                                .oauth2Login()
-                                .clientRegistrationRepository(clientRegistrationRepository)
-                                .and()
                                 .logout()
                                 .logoutSuccessUrl("/")
+
                                 .permitAll();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -62,7 +69,14 @@ public class WebSecurityConfig {
                                 .failureUrl("/auth/login?error"))
                 .rememberMe()
                 .and()
-                .httpBasic();
+                .httpBasic().and()
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                                .defaultAuthenticationEntryPointFor(
+                                        new LoginUrlAuthenticationEntryPoint("/auth/login"),
+                                        new AntPathRequestMatcher("/admin/**")
+                                )
+                );;
         return http.build();
     }
 
