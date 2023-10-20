@@ -18,6 +18,7 @@
     <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
     <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
     <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
@@ -127,7 +128,8 @@
                             </div>
                             <div class="col-2">
                                 <h6>Улица</h6>
-                                <input class="form-control" type="text" name="street" id="street" th:value="${objectBuilder.getAddress().getStreet()}">
+                                <input class="form-control" type="text" name="street" id="street"
+                                       th:value="${objectBuilder.getAddress().getStreet()}">
                             </div>
                             <div class="col-8"></div>
                         </div>
@@ -139,38 +141,46 @@
                         <div class="row">
                             <div class="col-2">
                                 <h6>Номер дома</h6>
-                                <input class="form-control" type="number" name="houseNumber" th:value="${objectBuilder.getAddress().getHouseNumber()}">
+                                <input class="form-control" type="number" name="houseNumber"
+                                       th:value="${objectBuilder.getAddress().getHouseNumber()}">
                             </div>
                             <div class="col-2">
                                 <h6>Секция/Корпус</h6>
-                                <input class="form-control" type="number" name="section" th:value="${objectBuilder.getAddress().getSection()}" >
+                                <input class="form-control" type="number" name="section"
+                                       th:value="${objectBuilder.getAddress().getSection()}">
                             </div>
                             <div class="col-2">
                                 <h6>Этажность</h6>
-                                <input class="form-control" type="number" name="floorQuantity" th:value="${objectBuilder.getFloorQuantity()}">
+                                <input class="form-control" type="number" name="floorQuantity"
+                                       th:value="${objectBuilder.getFloorQuantity()}">
                             </div>
                             <div class="col-3">
                                 <h6>Строительная компания</h6>
                                 <select class="select2 form-select form-select" name="nameCompany">
                                     <option th:selected="${objectBuilder.getNameCompany() == ''}" value=""></option>
-                                    <option th:selected="${objectBuilder.getNameCompany() == '1'}" value="1">One</option>
-                                    <option th:selected="${objectBuilder.getNameCompany() == '2'}" value="2">Two</option>
-                                    <option th:selected="${objectBuilder.getNameCompany() == '3'}" value="3">Three</option>
+                                    <option th:selected="${objectBuilder.getNameCompany() == '1'}" value="1">One
+                                    </option>
+                                    <option th:selected="${objectBuilder.getNameCompany() == '2'}" value="2">Two
+                                    </option>
+                                    <option th:selected="${objectBuilder.getNameCompany() == '3'}" value="3">Three
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-3">
                                 <h6>Срок сдачи</h6>
                                 <select id="buildStatus" class="select2 form-select form-select" name="buildStatus">
-                                    <option selected></option>
+                                    <option></option>
                                     <option th:each="status : ${propertyBuildStatus}"
                                             th:value="${status}"
-                                            th:text="${status.status}"></option>
+                                            th:text="${status.status}"
+                                            th:selected="${status==objectBuilder.getBuildStatus()}"></option>
                                 </select>
                             </div>
                         </div>
                         <br>
                         <h6>Телефон</h6>
-                        <input type="tel" name="telephone" id="telephone" class="form-control" th:value="${objectBuilder.getPhone()}">
+                        <input type="tel" name="telephone" id="telephone" class="form-control"
+                               th:value="${objectBuilder.getPhone()}">
                         <br>
                         <br>
                         <br>
@@ -185,39 +195,33 @@
                         <br>
                         <br>
                         <h3>Описание</h3>
-                        <textarea class="form-control" style="width: 100%; height: 300px" name="description" th:text="${objectBuilder.getDescription_builder()}"></textarea>
+                        <textarea class="form-control" style="width: 100%; height: 300px" name="description"
+                                  th:text="${objectBuilder.getDescription_builder()}"></textarea>
                         <br>
                         <h1>Акция</h1>
-                        <input type="text" name="promotionName" id="promotionName" class="form-control" th:value="${objectBuilder.getPromotion().getName()}">
+                        <input type="text" name="promotionName" id="promotionName" class="form-control"
+                               th:value="${objectBuilder.getPromotion().getName()}">
                         <br>
                         <h3>Описание</h3>
                         <textarea style="width: 100%; height: 300px" name="descriptionPromotion"
-                                  class="form-control" th:text="${objectBuilder.getPromotion().getDescription()}"></textarea>
+                                  class="form-control"
+                                  th:text="${objectBuilder.getPromotion().getDescription()}"></textarea>
                         <br>
-                        <input class="form-check-input" type="checkbox" value="true" name="statusPromotion" th:checked="${objectBuilder.getPromotion().getActive() == true}"><span
+                        <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"
+                               th:checked="${objectBuilder.getPromotion().getActive() == true}"><span
                             class="checkmark">Включить акцию</span>
                     </div>
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card-body">
-                                    <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-basic">
+                                    <form action="/uploadFile" class="dropzone needsclick dz-clickable"
+                                          id="my-dropzone">
                                         <div class="dz-message needsclick">
                                             <span class="note needsclick"></span>
                                         </div>
                                     </form>
                                 </div>
-                            </div>
-                            <!--Почему-то не работает без этой фигни скрытой-->
-                            <div class="card-body" hidden>
-                                <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-multi">
-                                    <div class="dz-message needsclick">
-                                        Drop files here or click to upload
-                                        <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually
-                            uploaded.)</span>
-                                    </div>
-                                </form>
-
                             </div>
                         </div>
                     </div>
@@ -231,56 +235,69 @@
                                     <div class="col-6" style="text-align: right">
                                     </div>
                                 </div>
-                                <input class="form-control col-md-6" type="text" id="nameLayout1" th:value="${layouts.get(0).getName()}">
+                                <input class="form-control col-md-6" type="text" id="nameLayout1"
+                                       th:value="${layouts.get(0).getName()}">
                                 <br>
                                 <div class="row">
                                     <div class="col-2">
                                         <h6>Цена от (м.кв)</h6>
-                                        <input class="form-control" type="number" id="priceLayout1" th:value="${layouts.get(0).getPrice()}">
+                                        <input class="form-control" type="number" id="priceLayout1"
+                                               th:value="${layouts.get(0).getPrice()}">
                                     </div>
                                     <div class="col-2">
                                         <h6>Комнат</h6>
-                                        <input class="form-control" type="number" id="roomsLayout1" th:value="${layouts.get(0).getRoomQuantity()}">
+                                        <input class="form-control" type="number" id="roomsLayout1"
+                                               th:value="${layouts.get(0).getRoomQuantity()}">
                                     </div>
                                     <div class="col-2">
                                         <h6>S общая (м.кв.)*</h6>
-                                        <input class="form-control" type="number" id="areaTotalLayout1" th:value="${layouts.get(0).getAreaTotal()}">
+                                        <input class="form-control" type="number" id="areaTotalLayout1"
+                                               th:value="${layouts.get(0).getAreaTotal()}">
                                     </div>
                                     <div class="col-2">
                                         <h6>S жилая (м.кв.)*</h6>
-                                        <input class="form-control" type="number" id="areaLivingLayout1" th:value="${layouts.get(0).getAreaLiving()}">
+                                        <input class="form-control" type="number" id="areaLivingLayout1"
+                                               th:value="${layouts.get(0).getAreaLiving()}">
                                     </div>
                                     <div class="col-2">
                                         <h6>S кухни (м.кв.)*</h6>
-                                        <input class="form-control" type="number" id="areaKitchenLayout1" th:value="${layouts.get(0).getAreaKitchen()}" >
+                                        <input class="form-control" type="number" id="areaKitchenLayout1"
+                                               th:value="${layouts.get(0).getAreaKitchen()}">
                                     </div>
                                     <div class="col-2">
                                     </div>
                                 </div>
                                 <br>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="statusLayout1" th:checked="${layouts.get(0).getActive() == true}">
+                                    <input class="form-check-input" type="checkbox" value="" id="statusLayout1"
+                                           th:checked="${layouts.get(0).getActive() == true}">
                                     <span class="checkmark">Показать сайт</span>
                                 </div>
                                 <br>
                                 <h6>Описание</h6>
-                                <input class="form-control" type="text" id="descriptionLayout1" th:value="${layouts.get(0).getDescription()}">
+                                <input class="form-control" type="text" id="descriptionLayout1"
+                                       th:value="${layouts.get(0).getDescription()}">
                                 <br>
                                 <div class="row" style="text-align: center">
                                     <div class="col-4">
-                                        <img id="previewImage1" style="justify-content: center" th:src="'data:image/jpeg;base64, ' + ${img1.get(0)}" class="d-block w-px-300 h-px-300 rounded">
+                                        <img id="previewImage1" style="justify-content: center"
+                                             th:src="'data:image/jpeg;base64, ' + ${img1.get(0)}"
+                                             class="d-block w-px-300 h-px-300 rounded">
                                         <input type="file" class="form-control" id="inputImage1"
                                                onchange="updatePreviewImage(this, 'previewImage1')"
                                                style="margin-top: 5px">
                                     </div>
                                     <div class="col-4">
-                                        <img id="previewImage2" style="justify-content: center" th:src="'data:image/jpeg;base64, ' + ${img2.get(0)}" class="d-block w-px-300 h-px-300 rounded">
+                                        <img id="previewImage2" style="justify-content: center"
+                                             th:src="'data:image/jpeg;base64, ' + ${img2.get(0)}"
+                                             class="d-block w-px-300 h-px-300 rounded">
                                         <input type="file" class="form-control" id="inputImage2"
                                                onchange="updatePreviewImage(this, 'previewImage2')"
                                                style="margin-top: 5px">
                                     </div>
                                     <div class="col-4">
-                                        <img id="previewImage3" th:src="'data:image/jpeg;base64, ' + ${img3.get(0)}" class="d-block w-px-300 h-px-300 rounded">
+                                        <img id="previewImage3" th:src="'data:image/jpeg;base64, ' + ${img3.get(0)}"
+                                             class="d-block w-px-300 h-px-300 rounded">
                                         <input type="file" class="form-control" id="inputImage3"
                                                onchange="updatePreviewImage(this, 'previewImage3')"
                                                style="margin-top: 5px">
@@ -317,8 +334,40 @@
         </div>
     </main>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
-    <script th:src="@{/js/forms-file-upload.js}"></script>
     <script th:inline="javascript">
+
+        const previewTemplate = `<div class="dz-preview dz-file-preview">
+<div class="dz-details">
+  <div class="dz-thumbnail">
+    <img data-dz-thumbnail>
+    <span class="dz-nopreview">No preview</span>
+    <div class="dz-success-mark"></div>
+    <div class="dz-error-mark"></div>
+    <div class="dz-error-message"><span data-dz-errormessage></span></div>
+    <div class="progress">
+      <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuemin="0" aria-valuemax="1000" data-dz-uploadprogress></div>
+    </div>
+  </div>
+  <div class="dz-filename" data-dz-name></div>
+  <div class="dz-size" data-dz-size></div>
+</div>
+</div>`;
+
+        var myDropzone = new Dropzone("#my-dropzone", {
+            url: "/uploadFile",
+            previewTemplate: previewTemplate,
+            parallelUploads: 5,
+            maxFilesize: 10,
+            addRemoveLinks: true,
+            maxFiles: 15,
+            success: function (file, response) {
+                console.log("Файл загружен: " + file.name);
+                console.log("Ответ сервера: " + response);
+                const imageElement = file.previewElement.querySelector("img[data-dz-thumbnail]");
+                imageElement.src = file.dataURL;
+            }
+        })
+
         function sendForm() {
             let formData = new FormData();
             formData.append("nameObject", $("#nameObject").val());
@@ -390,7 +439,8 @@
             console.log(formData.get("files[]"))
 
             let contextPath =/*[[@{/}]]*/'';
-            let url = contextPath.toString() + "objects/byBuilder/create";
+            let idThymeleaf =/*[[${id}]]*/'';
+            let url = contextPath.toString() + "objects/byBuilder/edit/" + idThymeleaf;
             // for (let pair of formData.entries()) {
             //     let value = pair[1];
             //     if (value === "" || value === null || value === undefined || !value) {
@@ -410,6 +460,7 @@
                         showNotification("Объект сохранен!", "", true);
                     },
                     error: function (xhr, status, error) {
+                        console.log(error)
                         var errors = JSON.parse(xhr.responseText);
                         errors.forEach(function (error) {
                             console.log("Ошибка: " + error);
@@ -542,6 +593,11 @@
             $(textCard).remove();
             showNotification("Warning!", "Планировка удалена", false)
             console.log("Удаление Layout");
+            var myDropzone = Dropzone.forElement("#my-dropzone");
+
+// Получите массив всех файлов, загруженных с Dropzone
+            var uploadedFiles = myDropzone.getAcceptedFiles();
+            console.log(uploadedFiles)
         }
 
         // Настройки
@@ -621,36 +677,143 @@
             });
 
 
-
             let imagesDropzoneBase64 = /*[[${base64Images}]]*/ '';
             let base64ImagesSize = /*[[${base64ImagesSize}]]*/ '';
 
-            let myDropzone = Dropzone.forElement("#dropzone-basic");
-            let i=1;
-            let oldImagesArray=[];
+            let i = 1;
+            let oldImagesArray = [];
             imagesDropzoneBase64.forEach(function (base64Image) {
-                var imgElement = document.createElement("img");
-                imgElement.src = `data:image/jpeg;base64, ${base64Image}`;
-
-                var mockFile = {
-                    name: i,
-                    size: base64ImagesSize[i-1],
-                    dataURL: base64Image,
-                };
-                oldImagesArray.push(i);
-                i++;
-                myDropzone.files.push(mockFile);
+                let img=`data:image/jpeg;base64, ${base64Image}`;
+                const mockFile = { name: i+".jpg", dataURL: img, size: base64ImagesSize[i-1] };
                 myDropzone.emit("addedfile", mockFile);
-                myDropzone.emit("thumbnail", mockFile, imgElement.src);
-                myDropzone.emit("success", mockFile, 'success');
-            });
-            let progressBars = document.querySelectorAll(".progress");
-            progressBars.forEach(function (progressBar) {
-                progressBar.remove();
-            });
-            console.log(myDropzone);
-        })
+                myDropzone.emit("thumbnail", mockFile, img);
+                myDropzone.emit("complete", mockFile);
 
+                i++;
+            });
+            // let progressBars = document.querySelectorAll(".progress");
+            // progressBars.forEach(function (progressBar) {
+            //     progressBar.remove();
+            // });
+            // console.log(myDropzone);
+
+
+
+            let layouts = /*[[${layouts}]]*/ '';
+            let img1Thymeleaf = /*[[${img1}]]*/ '';
+            let img2Thymeleaf = /*[[${img2}]]*/ '';
+            let img3Thymeleaf = /*[[${img3}]]*/ '';
+
+            let sizeLayouts = layouts.length;
+            console.log(layouts);
+            let q = 1;
+            layouts.forEach(function () {
+                if (q != 1) {
+
+                }
+                q++;
+            })
+
+
+            if (sizeLayouts > 1) {
+                for (let i = 0; i <= (layouts.length - 1); i++) {
+                    if (i > 0) {
+                        console.log(layouts[i].name)
+
+                        let cardContainer = document.getElementById('card-container');
+                        let newCard = document.createElement('div');
+                        newCard.className = 'card';
+                        newCard.style.padding = '20px';
+                        newCard.style.marginTop = '20px';
+                        newCard.id = 'card' + imgMaxId;
+                        layoutArray.push(imgMaxId)
+                        let textHtml = `<div class="row">
+                <div class="col-6">
+                    <h6>Название</h6>
+                </div>
+                <div class="col-6" style="text-align: right">
+                    <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                             width="24"
+                             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round" >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M4 7l16 0"></path>
+                            <path d="M10 11l0 6"></path>
+                            <path d="M14 11l0 6"></path>
+                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <input class="form-control" type="text" class="col-6" id="nameLayout` + imgMaxId + `" value=" ` + layouts[i].name + `">
+                <br>
+                    <div class="row">
+                        <div class="col-2">
+                            <h6>Цена от (м.кв)</h6>
+                            <input class="form-control" type="number" id="priceLayout` + imgMaxId + `" value="` + layouts[i].price + `">
+                        </div>
+                        <div class="col-2">
+                            <h6>Комнат</h6>
+                            <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `" value="` + layouts[i].roomQuantity + `">
+                        </div>
+                        <div class="col-2">
+                            <h6>S общая (м.кв.)*</h6>
+                            <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `" value="` + layouts[i].areaTotal + `">
+                        </div>
+                        <div class="col-2">
+                            <h6>S жилая (м.кв.)*</h6>
+                            <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `" value="` + layouts[i].areaLiving + `">
+                        </div>
+                        <div class="col-2">
+                            <h6>S кухни (м.кв.)*</h6>
+                            <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `" value="` + layouts[i].areaKitchen + `">
+                        </div>
+                        <div class="col-2">
+                        </div>
+                    </div>
+                    <br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="" id="statusLayout` + imgMaxId + `" `;
+                        if (layouts[i].active = true) {
+                            textHtml += `checked`
+                        }
+                        textHtml += ` > <span class="checkmark">Показать сайт</span>
+                        </div>
+                        <br>
+                            <h6>Описание</h6>
+                            <input class="form-control" type="text" id="descriptionLayout` + imgMaxId + `" value="` + layouts[i].description + `">
+                                <br>
+                                    <div class="row" style="text-align: center">
+                                        <div class="col-4">
+                                            <img id="previewImage` + (imgMaxId) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img1Thymeleaf[i] + `" class="d-block w-px-300 h-px-300 rounded">
+                                                <input  type="file" class="form-control" id="inputImage` + (imgMaxId) + `"
+                                                       onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
+                                                       style="margin-top: 5px">
+                                        </div>
+                                        <div class="col-4">
+                                            <img id="previewImage` + (imgMaxId + 1) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img2Thymeleaf[i] + `" class="d-block w-px-300 h-px-300 rounded">
+                                                <input type="file" class="form-control" id="inputImage` + (imgMaxId + 1) + `"
+                                                       onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
+                                                       style="margin-top: 5px">
+                                        </div>
+                                        <div class="col-4">
+                                            <img id="previewImage` + (imgMaxId + 2) + `" src="data:image/jpeg;base64, ` + img3Thymeleaf[i] + `" class="d-block w-px-300 h-px-300 rounded">
+                                                <input type="file" class="form-control" id="inputImage` + (imgMaxId + 2) + `"
+                                                       onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 2) + `')"
+                                                       style="margin-top: 5px">
+                                        </div>
+                                    </div>  `
+                        newCard.innerHTML = textHtml;
+                        cardContainer.appendChild(newCard);
+                        console.log("Добавление Layout");
+
+                        imgMaxId = imgMaxId + 3;
+                    }
+                }
+            }
+        })
 
 
         $('[name="city"]').change(function () {

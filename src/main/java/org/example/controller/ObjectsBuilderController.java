@@ -230,7 +230,9 @@ public class ObjectsBuilderController {
 
 
     @GetMapping("/edit/{id}")
-    public String EditMainInfoObjectsBuilderShow(@PathVariable Integer id, Model model) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public String EditMainInfoObjectsBuilderShow(@PathVariable Integer id, Model model) throws ServerException, InsufficientDataException
+            , ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException
+            , InvalidResponseException, XmlParserException, InternalException {
         Optional<BuilderObject> objectBuilder = objectBuilderService.findById(id);
         if (objectBuilder.isEmpty()) {
             return "/error/404";
@@ -249,80 +251,35 @@ public class ObjectsBuilderController {
         }
         model.addAttribute("base64Images", base64ImagesList);
         model.addAttribute("base64ImagesSize", base64ImagesListSize);
-        List<Layout> layouts=layoutService.findByBuilderObject(objectBuilder.get());
-        model.addAttribute("layouts",layouts);
-        model.addAttribute("img1",layouts.stream().map(layout -> {
-            try {
-                return minioService.getFileInString(layout.getImg1(),imagesBucketName);
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            } catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList()));
-        model.addAttribute("img2",layouts.stream().map(layout -> {
-            try {
-                return minioService.getFileInString(layout.getImg2(),imagesBucketName);
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            } catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList()));
-        model.addAttribute("img3",layouts.stream().map(layout -> {
-            try {
-                return minioService.getFileInString(layout.getImg3(),imagesBucketName);
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            } catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList()));
+        List<Layout> layouts = layoutService.findByBuilderObject(objectBuilder.get());
+        model.addAttribute("layouts", layouts);
+        log.info("size" + layouts.size());
+        List<String> img1 = new ArrayList<>();
+        List<String> img2 = new ArrayList<>();
+        List<String> img3 = new ArrayList<>();
+        for (Layout layout : layouts) {
+            img1.add(minioService.getFileInString(layout.getImg1(), imagesBucketName));
+            img2.add(minioService.getFileInString(layout.getImg2(), imagesBucketName));
+            img3.add(minioService.getFileInString(layout.getImg3(), imagesBucketName));
+        }
+        model.addAttribute("img1", img1);
+        model.addAttribute("img2", img2);
+        model.addAttribute("img3", img3);
         return "/objects/object_builders/editObjectBuilder";
     }
 
+    @PostMapping("/edit/{id}")
+    public ResponseEntity EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDto objectBuilderDto, BindingResult bindingResult, @PathVariable String id)
+            throws ServerException, InsufficientDataException, ErrorResponseException, IOException
+            , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        log.info(objectBuilderDto);
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList()));
+        }
+        return ResponseEntity.ok().body("YRA");
+    }
 
     @GetMapping("/card/downloadFileCheckerboard/{id}")
     public ResponseEntity<ByteArrayResource> downloadFileCheckerboard(@PathVariable Integer id) {
