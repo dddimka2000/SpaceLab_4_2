@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="">
-    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon/favicon.ico}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap"
-          rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js"
+            type="text/javascript"></script>
     <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
     <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
     <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
-    <!-- Core CSS -->
     <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <!-- Vendors CSS -->
     <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
@@ -23,117 +25,181 @@
     <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
-
+    <!--    <script th:src="@{/js/config.js}"></script>-->
+    <!--    <script th:src="@{/vendor/js/template-customizer.js}"></script>-->
     <script th:src="@{/vendor/js/helpers.js}"></script>
-    <script th:src="@{/vendor/js/template-customizer.js}"></script>
-    <script th:src="@{/js/config.js}"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/vendor/css/rtl/core.css}"
-          class="template-customizer-core-css">
-    <link rel="stylesheet" type="text/css" th:href="@{/vendor/css/rtl/theme-default.css}"
-          class="template-customizer-theme-css">
-    <link rel="stylesheet" th:href="@{/css/mySidebar.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
 </head>
 <body>
-<div class="sidebar">
-    <div th:insert="~{blocks/sidebar::sidebarMenu}"></div>
-</div>
-<div class="content">
-    <div class="container-fluid">
-        <h1>Объекты от строителей</h1>
-        <hr class="my-0">
-        <br>
-        <div class="row">
-            <div class="col-8"></div>
-            <div class="col-1">
-                <button class="btn btn-submit">Распечатать</button>
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div>
+            <h1>Объекты от строителей</h1>
+            <hr class="my-0">
+            <br>
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div class="col-md-1">
+                    <button class="btn btn-submit">Распечатать</button>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <a th:href="@{/objects/byBuilder/create}">
+                        <button class="btn btn-submit">Добавить объект</button>
+                    </a>
+                </div>
             </div>
-            <div class="col-1"></div>
-            <div class="col-2">
-                <a th:href="@{/objects/byBuilder/create}">
-                    <button class="btn btn-submit">Добавить объект</button>
-                </a>
-            </div>
-        </div>
-        <br>
-        <div class="card">
-            <div class="card-header" style="text-align: right">
-                <button class="btn btn-submit">Очистить</button>
-            </div>
-            <div class="card-body">
+            <br>
+            <div class="card">
+                <div class="card-header" style="text-align: right">
+                    <button class="btn btn-submit">Очистить</button>
+                </div>
+                <div class="card-body">
 
-                <table class="invoice-list-table table border-top dataTable no-footer dtr-column">
-                    <thead>
-                    <tr style="text-align: center">
-                        <th>Название</th>
-                        <th>Район</th>
-                        <th>Топозона</th>
-                        <th>Улица</th>
-                        <th>Этажность</th>
-                        <th>Цена от</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="odd" style="text-align: center">
-                        <td valign="top" colspan="7" class="dataTables_empty">No data available in table</td>
-                    </tr>
-                    <tr style="text-align: center">
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button class="btn btn-submit">
-                                    <g transform="matrix(1 0 0 1 1159 281)" class="stencil">
-                                        <svg width="18" height="18.782608695652176" x="0.5" y="0.5"
-                                             class="stencil--easier-to-select" style="opacity: 1;">
-                                            <defs></defs>
-                                            <rect x="0" y="0" width="18" height="18.782608695652176" fill="transparent"
-                                                  class="stencil__selection-helper"></rect>
-                                            <path d="M12 8.897025171624714C12 8.897025171624714 12 2.965675057208238 12 2.965675057208238 12 2.965675057208238 9 0 9 0 9 0 6 2.965675057208238 6 2.965675057208238 6 2.965675057208238 6 4.94279176201373 6 4.94279176201373 6 4.94279176201373 0 4.94279176201373 0 4.94279176201373 0 4.94279176201373 0 18.782608695652176 0 18.782608695652176 0 18.782608695652176 18 18.782608695652176 18 18.782608695652176 18 18.782608695652176 18 8.897025171624714 18 8.897025171624714 18 8.897025171624714 12 8.897025171624714 12 8.897025171624714 12 8.897025171624714 12 8.897025171624714 12 8.897025171624714M4 16.805491990846683C4 16.805491990846683 2 16.805491990846683 2 16.805491990846683 2 16.805491990846683 2 14.82837528604119 2 14.82837528604119 2 14.82837528604119 4 14.82837528604119 4 14.82837528604119 4 14.82837528604119 4 16.805491990846683 4 16.805491990846683 4 16.805491990846683 4 16.805491990846683 4 16.805491990846683M4 12.851258581235697C4 12.851258581235697 2 12.851258581235697 2 12.851258581235697 2 12.851258581235697 2 10.874141876430206 2 10.874141876430206 2 10.874141876430206 4 10.874141876430206 4 10.874141876430206 4 10.874141876430206 4 12.851258581235697 4 12.851258581235697 4 12.851258581235697 4 12.851258581235697 4 12.851258581235697M4 8.897025171624714C4 8.897025171624714 2 8.897025171624714 2 8.897025171624714 2 8.897025171624714 2 6.919908466819222 2 6.919908466819222 2 6.919908466819222 4 6.919908466819222 4 6.919908466819222 4 6.919908466819222 4 8.897025171624714 4 8.897025171624714 4 8.897025171624714 4 8.897025171624714 4 8.897025171624714M10 16.805491990846683C10 16.805491990846683 8 16.805491990846683 8 16.805491990846683 8 16.805491990846683 8 14.82837528604119 8 14.82837528604119 8 14.82837528604119 10 14.82837528604119 10 14.82837528604119 10 14.82837528604119 10 16.805491990846683 10 16.805491990846683 10 16.805491990846683 10 16.805491990846683 10 16.805491990846683M10 12.851258581235697C10 12.851258581235697 8 12.851258581235697 8 12.851258581235697 8 12.851258581235697 8 10.874141876430206 8 10.874141876430206 8 10.874141876430206 10 10.874141876430206 10 10.874141876430206 10 10.874141876430206 10 12.851258581235697 10 12.851258581235697 10 12.851258581235697 10 12.851258581235697 10 12.851258581235697M10 8.897025171624714C10 8.897025171624714 8 8.897025171624714 8 8.897025171624714 8 8.897025171624714 8 6.919908466819222 8 6.919908466819222 8 6.919908466819222 10 6.919908466819222 10 6.919908466819222 10 6.919908466819222 10 8.897025171624714 10 8.897025171624714 10 8.897025171624714 10 8.897025171624714 10 8.897025171624714M10 4.94279176201373C10 4.94279176201373 8 4.94279176201373 8 4.94279176201373 8 4.94279176201373 8 2.965675057208238 8 2.965675057208238 8 2.965675057208238 10 2.965675057208238 10 2.965675057208238 10 2.965675057208238 10 4.94279176201373 10 4.94279176201373 10 4.94279176201373 10 4.94279176201373 10 4.94279176201373M16 16.805491990846683C16 16.805491990846683 14 16.805491990846683 14 16.805491990846683 14 16.805491990846683 14 14.82837528604119 14 14.82837528604119 14 14.82837528604119 16 14.82837528604119 16 14.82837528604119 16 14.82837528604119 16 16.805491990846683 16 16.805491990846683 16 16.805491990846683 16 16.805491990846683 16 16.805491990846683M16 12.851258581235697C16 12.851258581235697 14 12.851258581235697 14 12.851258581235697 14 12.851258581235697 14 10.874141876430206 14 10.874141876430206 14 10.874141876430206 16 10.874141876430206 16 10.874141876430206 16 10.874141876430206 16 12.851258581235697 16 12.851258581235697 16 12.851258581235697 16 12.851258581235697 16 12.851258581235697"
-                                                  stroke-width="0" stroke="none" stroke-dasharray="none"
-                                                  stroke-dashoffset="none" fill="rgb(0,0,0)" fill-rule="evenOdd"></path>
-                                        </svg>
-                                    </g>
-                                </button>
-                                <button type="button" class="btn btn-submit">
-                                    <g transform="matrix(1 0 0 1 1191 281)" class="stencil">
-                                        <svg width="18" height="18" x="0.5" y="0.5" class="stencil--easier-to-select"
-                                             style="opacity: 1;">
-                                            <defs></defs>
-                                            <rect x="0" y="0" width="18" height="18" fill="transparent"
-                                                  class="stencil__selection-helper"></rect>
-                                            <path d="M0 14.250165137727556C0 14.250165137727556 0 18.000000000000004 0 18.000000000000004 0 18.000000000000004 3.7498348622655495 18.000000000000004 3.7498348622655495 18.000000000000004 3.7498348622655495 18.000000000000004 14.809347816040745 6.940487046204468 14.809347816040745 6.940487046204468 14.809347816040745 6.940487046204468 11.059512953775194 3.1906521839320225 11.059512953775194 3.1906521839320225 11.059512953775194 3.1906521839320225 0 14.250165137727556 0 14.250165137727556 0 14.250165137727556 0 14.250165137727556 0 14.250165137727556M17.709220109526104 4.040614752713777C18.096926630157963 3.6505944743758842 18.096926630157963 3.0206971228372295 17.709220109526104 2.6306768444993374 17.709220109526104 2.6306768444993374 15.3693231554724 0.290779890441331 15.3693231554724 0.290779890441331 14.979302877142999-0.09692663014711078 14.349405525589958-0.09692663014711078 13.959385247260556 0.290779890441331 13.959385247260556 0.290779890441331 12.129465834474967 2.1206993032302845 12.129465834474967 2.1206993032302845 12.129465834474967 2.1206993032302845 15.879300696740515 5.87053416550273 15.879300696740515 5.87053416550273 15.879300696740515 5.87053416550273 17.709220109526104 4.040614752713777 17.709220109526104 4.040614752713777 17.709220109526104 4.040614752713777 17.709220109526104 4.040614752713777 17.709220109526104 4.040614752713777"
-                                                  stroke-width="0" stroke="none" stroke-dasharray="none"
-                                                  stroke-dashoffset="none" fill="rgb(0,0,0)" fill-rule="evenOdd"></path>
-                                        </svg>
-                                    </g>
-                                </button>
-                                <button type="button" class="btn btn-submit">
-                                    <g transform="matrix(1 0 0 1 1225 281)" class="stencil">
-                                        <svg width="14" height="17.684210526315788" x="0.5" y="0.5"
-                                             class="stencil--easier-to-select" style="opacity: 1;">
-                                            <defs></defs>
-                                            <rect x="0" y="0" width="14" height="17.684210526315788" fill="transparent"
-                                                  class="stencil__selection-helper"></rect>
-                                            <path d="M1 15.719298245614032C1 16.8 1.9000000000000004 17.68421052631579 3 17.68421052631579 3 17.68421052631579 11 17.68421052631579 11 17.68421052631579 12.100000000000001 17.68421052631579 13 16.8 13 15.719298245614032 13 15.719298245614032 13 3.929824561403509 13 3.929824561403509 13 3.929824561403509 1 3.929824561403509 1 3.929824561403509 1 3.929824561403509 1 15.719298245614032 1 15.719298245614032 1 15.719298245614032 1 15.719298245614032 1 15.719298245614032M14 0.9824561403508771C14 0.9824561403508771 10.5 0.9824561403508771 10.5 0.9824561403508771 10.5 0.9824561403508771 9.5 0 9.5 0 9.5 0 4.5 0 4.5 0 4.5 0 3.5 0.9824561403508771 3.5 0.9824561403508771 3.5 0.9824561403508771 0 0.9824561403508771 0 0.9824561403508771 0 0.9824561403508771 0 2.9473684210526314 0 2.9473684210526314 0 2.9473684210526314 14 2.9473684210526314 14 2.9473684210526314 14 2.9473684210526314 14 0.9824561403508771 14 0.9824561403508771 14 0.9824561403508771 14 0.9824561403508771 14 0.9824561403508771"
-                                                  stroke-width="0" stroke="none" stroke-dasharray="none"
-                                                  stroke-dashoffset="none" fill="rgb(0,0,0)" fill-rule="evenOdd"></path>
-                                        </svg>
-                                    </g>
-                                </button>
-                            </div>
+                    <table class="invoice-list-table table border-top dataTable no-footer dtr-column">
+                        <thead>
+                        <tr style="text-align: center">
+                            <th>Название</th>
+                            <th>Район</th>
+                            <th>Топозона</th>
+                            <th>Улица</th>
+                            <th>Этажность</th>
+                            <th>Цена от</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control"></td>
+                        </tr>
+                        <tr class="odd" style="text-align: center" th:if="${list.size()<1}">
+                            <td valign="top" colspan="7" class="dataTables_empty">No data available in table</td>
+                        </tr>
+                        <div th:unless="${list.size()<1}">
+                            <tr style="text-align: center" th:each="element,i:${list}">
+                                <td th:text="${element.getName()}"></td>
+                                <td th:text="${element.getAddress().getDistrict()}"></td>
+                                <td th:text="${element.getAddress().getZone()}"></td>
+                                <td th:text="${element.getAddress().getStreet()}"></td>
+                                <td th:text="${element.getFloorQuantity()}"></td>
+                                <td th:text="${listPrice.get(i.index)}"></td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <!--                                        <button class="btn btn-submit">-->
+                                        <!--                                            <g transform="matrix(1 0 0 1 1159 281)" class="stencil">-->
+                                        <!--                                                <svg width="18" height="18.782608695652176" x="0.5" y="0.5"-->
+                                        <!--                                                     class="stencil&#45;&#45;easier-to-select" style="opacity: 1;">-->
+                                        <!--                                                    <defs></defs>-->
+                                        <!--                                                    <rect x="0" y="0" width="18" height="18.782608695652176"-->
+                                        <!--                                                          fill="transparent"-->
+                                        <!--                                                          class="stencil__selection-helper"></rect>-->
+                                        <!--                                                    <path d="M12 8.897025171624714C12 8.897025171624714 12 2.965675057208238 12 2.965675057208238 12 2.965675057208238 9 0 9 0 9 0 6 2.965675057208238 6 2.965675057208238 6 2.965675057208238 6 4.94279176201373 6 4.94279176201373 6 4.94279176201373 0 4.94279176201373 0 4.94279176201373 0 4.94279176201373 0 18.782608695652176 0 18.782608695652176 0 18.782608695652176 18 18.782608695652176 18 18.782608695652176 18 18.782608695652176 18 8.897025171624714 18 8.897025171624714 18 8.897025171624714 12 8.897025171624714 12 8.897025171624714 12 8.897025171624714 12 8.897025171624714 12 8.897025171624714M4 16.805491990846683C4 16.805491990846683 2 16.805491990846683 2 16.805491990846683 2 16.805491990846683 2 14.82837528604119 2 14.82837528604119 2 14.82837528604119 4 14.82837528604119 4 14.82837528604119 4 14.82837528604119 4 16.805491990846683 4 16.805491990846683 4 16.805491990846683 4 16.805491990846683 4 16.805491990846683M4 12.851258581235697C4 12.851258581235697 2 12.851258581235697 2 12.851258581235697 2 12.851258581235697 2 10.874141876430206 2 10.874141876430206 2 10.874141876430206 4 10.874141876430206 4 10.874141876430206 4 10.874141876430206 4 12.851258581235697 4 12.851258581235697 4 12.851258581235697 4 12.851258581235697 4 12.851258581235697M4 8.897025171624714C4 8.897025171624714 2 8.897025171624714 2 8.897025171624714 2 8.897025171624714 2 6.919908466819222 2 6.919908466819222 2 6.919908466819222 4 6.919908466819222 4 6.919908466819222 4 6.919908466819222 4 8.897025171624714 4 8.897025171624714 4 8.897025171624714 4 8.897025171624714 4 8.897025171624714M10 16.805491990846683C10 16.805491990846683 8 16.805491990846683 8 16.805491990846683 8 16.805491990846683 8 14.82837528604119 8 14.82837528604119 8 14.82837528604119 10 14.82837528604119 10 14.82837528604119 10 14.82837528604119 10 16.805491990846683 10 16.805491990846683 10 16.805491990846683 10 16.805491990846683 10 16.805491990846683M10 12.851258581235697C10 12.851258581235697 8 12.851258581235697 8 12.851258581235697 8 12.851258581235697 8 10.874141876430206 8 10.874141876430206 8 10.874141876430206 10 10.874141876430206 10 10.874141876430206 10 10.874141876430206 10 12.851258581235697 10 12.851258581235697 10 12.851258581235697 10 12.851258581235697 10 12.851258581235697M10 8.897025171624714C10 8.897025171624714 8 8.897025171624714 8 8.897025171624714 8 8.897025171624714 8 6.919908466819222 8 6.919908466819222 8 6.919908466819222 10 6.919908466819222 10 6.919908466819222 10 6.919908466819222 10 8.897025171624714 10 8.897025171624714 10 8.897025171624714 10 8.897025171624714 10 8.897025171624714M10 4.94279176201373C10 4.94279176201373 8 4.94279176201373 8 4.94279176201373 8 4.94279176201373 8 2.965675057208238 8 2.965675057208238 8 2.965675057208238 10 2.965675057208238 10 2.965675057208238 10 2.965675057208238 10 4.94279176201373 10 4.94279176201373 10 4.94279176201373 10 4.94279176201373 10 4.94279176201373M16 16.805491990846683C16 16.805491990846683 14 16.805491990846683 14 16.805491990846683 14 16.805491990846683 14 14.82837528604119 14 14.82837528604119 14 14.82837528604119 16 14.82837528604119 16 14.82837528604119 16 14.82837528604119 16 16.805491990846683 16 16.805491990846683 16 16.805491990846683 16 16.805491990846683 16 16.805491990846683M16 12.851258581235697C16 12.851258581235697 14 12.851258581235697 14 12.851258581235697 14 12.851258581235697 14 10.874141876430206 14 10.874141876430206 14 10.874141876430206 16 10.874141876430206 16 10.874141876430206 16 10.874141876430206 16 12.851258581235697 16 12.851258581235697 16 12.851258581235697 16 12.851258581235697 16 12.851258581235697"-->
+                                        <!--                                                          stroke-width="0" stroke="none" stroke-dasharray="none"-->
+                                        <!--                                                          stroke-dashoffset="none" fill="rgb(0,0,0)"-->
+                                        <!--                                                          fill-rule="evenOdd"></path>-->
+                                        <!--                                                </svg>-->
+                                        <!--                                            </g>-->
+                                        <!--                                        </button>-->
 
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                                        <a th:href="@{/objects/byBuilder/card/{id}(id=${element.getId()})}">
+                                            <button type="button" class="btn btn-submit">
+                                                <g transform="matrix(1 0 0 1 1191 281)" class="stencil">
+                                                    <svg width="18" height="18" x="0.5" y="0.5"
+                                                         class="stencil--easier-to-select"
+                                                         style="opacity: 1;">
+                                                        <defs></defs>
+                                                        <rect x="0" y="0" width="18" height="18" fill="transparent"
+                                                              class="stencil__selection-helper"></rect>
+                                                        <path d="M0 14.250165137727556C0 14.250165137727556 0 18.000000000000004 0 18.000000000000004 0 18.000000000000004 3.7498348622655495 18.000000000000004 3.7498348622655495 18.000000000000004 3.7498348622655495 18.000000000000004 14.809347816040745 6.940487046204468 14.809347816040745 6.940487046204468 14.809347816040745 6.940487046204468 11.059512953775194 3.1906521839320225 11.059512953775194 3.1906521839320225 11.059512953775194 3.1906521839320225 0 14.250165137727556 0 14.250165137727556 0 14.250165137727556 0 14.250165137727556 0 14.250165137727556M17.709220109526104 4.040614752713777C18.096926630157963 3.6505944743758842 18.096926630157963 3.0206971228372295 17.709220109526104 2.6306768444993374 17.709220109526104 2.6306768444993374 15.3693231554724 0.290779890441331 15.3693231554724 0.290779890441331 14.979302877142999-0.09692663014711078 14.349405525589958-0.09692663014711078 13.959385247260556 0.290779890441331 13.959385247260556 0.290779890441331 12.129465834474967 2.1206993032302845 12.129465834474967 2.1206993032302845 12.129465834474967 2.1206993032302845 15.879300696740515 5.87053416550273 15.879300696740515 5.87053416550273 15.879300696740515 5.87053416550273 17.709220109526104 4.040614752713777 17.709220109526104 4.040614752713777 17.709220109526104 4.040614752713777 17.709220109526104 4.040614752713777 17.709220109526104 4.040614752713777"
+                                                              stroke-width="0" stroke="none" stroke-dasharray="none"
+                                                              stroke-dashoffset="none" fill="rgb(0,0,0)"
+                                                              fill-rule="evenOdd"></path>
+                                                    </svg>
+                                                </g>
+                                            </button>
+                                        </a>
+                                        <button type="button" class="btn btn-submit">
+                                            <g transform="matrix(1 0 0 1 1225 281)" class="stencil">
+                                                <svg width="14" height="17.684210526315788" x="0.5" y="0.5"
+                                                     class="stencil--easier-to-select" style="opacity: 1;">
+                                                    <defs></defs>
+                                                    <rect x="0" y="0" width="14" height="17.684210526315788"
+                                                          fill="transparent"
+                                                          class="stencil__selection-helper"></rect>
+                                                    <path d="M1 15.719298245614032C1 16.8 1.9000000000000004 17.68421052631579 3 17.68421052631579 3 17.68421052631579 11 17.68421052631579 11 17.68421052631579 12.100000000000001 17.68421052631579 13 16.8 13 15.719298245614032 13 15.719298245614032 13 3.929824561403509 13 3.929824561403509 13 3.929824561403509 1 3.929824561403509 1 3.929824561403509 1 3.929824561403509 1 15.719298245614032 1 15.719298245614032 1 15.719298245614032 1 15.719298245614032 1 15.719298245614032M14 0.9824561403508771C14 0.9824561403508771 10.5 0.9824561403508771 10.5 0.9824561403508771 10.5 0.9824561403508771 9.5 0 9.5 0 9.5 0 4.5 0 4.5 0 4.5 0 3.5 0.9824561403508771 3.5 0.9824561403508771 3.5 0.9824561403508771 0 0.9824561403508771 0 0.9824561403508771 0 0.9824561403508771 0 2.9473684210526314 0 2.9473684210526314 0 2.9473684210526314 14 2.9473684210526314 14 2.9473684210526314 14 2.9473684210526314 14 0.9824561403508771 14 0.9824561403508771 14 0.9824561403508771 14 0.9824561403508771 14 0.9824561403508771"
+                                                          stroke-width="0" stroke="none" stroke-dasharray="none"
+                                                          stroke-dashoffset="none" fill="rgb(0,0,0)"
+                                                          fill-rule="evenOdd"></path>
+                                                </svg>
+                                            </g>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </div>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-6" id="rowPanelCount">
+                            <p th:text="${panelCount}"></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-end" id="paginationItems">
+                                    <li class="page-item">
+                                            <span class="page-link" href="#" aria-label="Previous"
+                                                  th:hidden="${currentPage == 0}">
+                                                <span aria-hidden="true">&#10094;</span>
+                                            </span>
+                                    </li>
+                                    <li class="page-item" th:if="${currentPage >= 2}">
+                                            <span class="page-link" href="#"
+                                                  th:text="1"></span>
+                                    </li>
+                                    <li class="page-item disabled" th:if="${currentPage >= 3}">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                    <li class="page-item"
+                                        th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+                                        th:classappend="${pageNumber == currentPage} ? 'active' : ''"
+                                        th:if="${pageNumber >= 0 && pageNumber <= (totalPages - 1)}">
+                                            <span class="page-link" href="#"
+                                                  th:text="${pageNumber + 1}">
+                                            </span>
+                                    </li>
+                                    <li class="page-item" th:if="${currentPage==0 && totalPages>5}">
+                                            <span class="page-link" href="#"
+                                                  th:text="${2 + 1}">
+                                            </span>
+                                    </li>
+                                    <li class="page-item disabled" th:if="${currentPage <= totalPages - 4}">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                    <li class="page-item" th:if="${currentPage <= totalPages - 3}">
+                                            <span class="page-link" href="#"
+                                                  th:text="${totalPages}"></span>
+                                    </li>
+                                    <li class="page-item" th:data-page="${currentPage+2}">
+                                            <span class="page-link" href="#" aria-label="Next"
+                                                  th:hidden="${currentPage == 0&&totalPages==1}">
+                                                <span aria-hidden="true">&#10095;</span>
+                                            </span>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 </body>
 </html>

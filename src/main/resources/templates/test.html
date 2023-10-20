@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
+
 </head>
+
 <body>
-    <h1>TEST</h1>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <h5 class="card-header">Basic</h5>
+            <div class="card-body">
+                <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-basic">
+                    <div class="dz-message needsclick">
+                        Drop files here or click to upload
+                        <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually
+                            uploaded.)</span>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body" hidden>
+        <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-multi">
+            <div class="dz-message needsclick">
+                Drop files here or click to upload
+                <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually
+                            uploaded.)</span>
+            </div>
+        </form>
+        <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
+        <script th:src="@{/js/forms-file-upload.js}"></script>
+
+    </div>
+</div>
+
+
 </body>
 </html>
