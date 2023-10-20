@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -24,6 +25,7 @@ public class Layout {
     private String img2;
     private String img3;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_builder_object", referencedColumnName = "id")
     private BuilderObject builderObject;

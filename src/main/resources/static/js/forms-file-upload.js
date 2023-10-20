@@ -24,10 +24,6 @@
 </div>
 </div>`;
 
-  // ? Start your code from here
-
-  // Basic Dropzone
-  // --------------------------------------------------------------------
 
   const myDropzone = new Dropzone('#dropzone-basic', {
     previewTemplate: previewTemplate,
