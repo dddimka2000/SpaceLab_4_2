@@ -9,12 +9,6 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
     <link rel="icon" type="image/x-icon" th:href="@{/img/favicon/favicon.ico}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -35,7 +29,6 @@
     <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/vendor/css/rtl/core.css}">
     <!--    <script th:src="@{/js/config.js}"></script>-->
     <!--    <script th:src="@{/vendor/js/template-customizer.js}"></script>-->
     <script th:src="@{/vendor/js/helpers.js}"></script>
@@ -107,7 +100,7 @@
                 </table>
                 <br>
                 <h3>Описание</h3>
-                <textarea style="width: 100%; height: 300px" th:text="${element.getDescription_builder()}"></textarea>
+                <textarea class="form-control" style="width: 100%; height: 300px" th:text="${element.getDescription_builder()}"></textarea>
             </div>
         </div>
 
