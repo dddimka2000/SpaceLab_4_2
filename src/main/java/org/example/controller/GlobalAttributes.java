@@ -4,13 +4,11 @@ import org.example.repository.CityRepository;
 import org.example.repository.RegionRepository;
 import org.example.repository.TopozoneRepository;
 import org.example.security.UserDetailsImpl;
-import org.example.util.property.PropertyBuildStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.entity.property.type.PropertyBuildStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

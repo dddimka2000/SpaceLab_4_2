@@ -2,10 +2,10 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.example.util.ApplicationStatus;
-import org.example.util.property.PropertyApplicationType;
-import org.example.util.property.PropertyObjectAddress;
-import org.example.util.property.PropertyOrigin;
+import org.example.entity.property.type.ApplicationStatus;
+import org.example.entity.property.type.PropertyApplicationType;
+import org.example.entity.property.type.PropertyObjectAddress;
+import org.example.entity.property.type.PropertyOrigin;
 
 import java.util.List;
 

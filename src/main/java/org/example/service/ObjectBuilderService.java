@@ -26,6 +26,12 @@ public class ObjectBuilderService {
         log.info("ObjectBuilderService-findById successfully");
         return entity;
     }
+    public Optional<BuilderObject> findByName(String name) {
+        log.info("ObjectBuilderService-findByName start");
+        Optional<BuilderObject> entity=builderObjectRepository.findByName(name);
+        log.info("ObjectBuilderService-findByName successfully");
+        return entity;
+    }
 
     public void save(BuilderObject entity) {
         log.info("ObjectBuilderService-save start");

@@ -2,7 +2,7 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.example.util.property.InformationSource;
+import org.example.entity.property.type.InformationSource;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;

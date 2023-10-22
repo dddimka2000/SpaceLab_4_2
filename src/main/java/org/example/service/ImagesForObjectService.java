@@ -1,12 +1,9 @@
 package org.example.service;
 
 import lombok.extern.log4j.Log4j2;
-import org.example.entity.BuilderObject;
 import org.example.entity.ImagesForObject;
-import org.example.entity.Layout;
 import org.example.repository.ImageForObjectsRepository;
-import org.example.util.TypeObject;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.entity.property.type.TypeObject;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

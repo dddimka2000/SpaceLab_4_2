@@ -2,7 +2,7 @@ package org.example.entity.property;
 
 import jakarta.persistence.Entity;
 import lombok.Data;
-import org.example.util.property.*;
+import org.example.entity.property.type.*;
 
 @Data
 @Entity

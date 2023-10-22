@@ -352,6 +352,13 @@
   <div class="dz-size" data-dz-size></div>
 </div>
 </div>`;
+        let uploadedFiles = new Map();
+        let oldImagesArray = [];
+
+        function updateDropzoneMaxFiles() {
+            const newMaxFiles = (15 - oldImagesArray.length);
+            myDropzone.options.maxFiles = newMaxFiles;
+        }
 
         var myDropzone = new Dropzone("#my-dropzone", {
             url: "/uploadFile",
@@ -367,6 +374,34 @@
                 imageElement.src = file.dataURL;
             }
         })
+        myDropzone.on('success', function (file, response) {
+            console.log('Файл успешно загружен:', file.name);
+            if (oldImagesArray.includes(file.name)) {
+                uploadedFiles.set("wrr2142" + file.name, file);
+            } else {
+                uploadedFiles.set(file.name, file);
+            }
+        });
+        myDropzone.on('removedfile', function (file) {
+            console.log('Файл был удален:', file.name);
+            if (uploadedFiles.has(file.name)) {
+                uploadedFiles.delete(file.name);
+            } else {
+                console.log('Файл не найден в uploadedFiles Map.');
+                oldImagesArray = oldImagesArray.filter(function (item) {
+                    return item !== file.name;
+                });
+                console.log(oldImagesArray);
+            }
+            updateDropzoneMaxFiles()
+        });
+        myDropzone.on("addedfile", function (file) {
+            console.log("Начало загрузки файла: " + file.name);
+        });
+        myDropzone.on('queuecomplete', function () {
+            console.log('Загрузка всех файлов завершена.');
+        });
+
 
         function sendForm() {
             let formData = new FormData();
@@ -394,7 +429,8 @@
             formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
             let index = 0;
             let checkErrors = true;
-
+            console.log(oldImagesArray);
+            formData.append("oldFiles", oldImagesArray);
             layoutArray.forEach(function (element) {
                 console.log(element);
                 let layoutData = {
@@ -426,11 +462,10 @@
                 index = index + 1;
             });
 
-            const uploadedFiles = window.uploadedFiles;
             console.log(uploadedFiles);
             let i = 1;
             for (let [fileName, file] of uploadedFiles) {
-                if (i > 15) {
+                if (i > (15-oldImagesArray.length)) {
                     break;
                 }
                 formData.append("files[]", file);
@@ -596,8 +631,10 @@
             var myDropzone = Dropzone.forElement("#my-dropzone");
 
 // Получите массив всех файлов, загруженных с Dropzone
-            var uploadedFiles = myDropzone.getAcceptedFiles();
+            var uploadedFiles1 = myDropzone.getAcceptedFiles();
+            console.log(uploadedFiles1)
             console.log(uploadedFiles)
+            console.log(oldImagesArray)
         }
 
         // Настройки
@@ -679,24 +716,24 @@
 
             let imagesDropzoneBase64 = /*[[${base64Images}]]*/ '';
             let base64ImagesSize = /*[[${base64ImagesSize}]]*/ '';
-
+            let base64ImagesName = /*[[${base64ImagesListName}]]*/ '';
             let i = 1;
-            let oldImagesArray = [];
             imagesDropzoneBase64.forEach(function (base64Image) {
-                let img=`data:image/jpeg;base64, ${base64Image}`;
-                const mockFile = { name: i+".jpg", dataURL: img, size: base64ImagesSize[i-1] };
+                let img = `data:image/jpeg;base64, ${base64Image}`;
+                oldImagesArray.push(base64ImagesName[i - 1])
+                const mockFile = {name: base64ImagesName[i - 1], dataURL: img, size: base64ImagesSize[i - 1]};
                 myDropzone.emit("addedfile", mockFile);
                 myDropzone.emit("thumbnail", mockFile, img);
                 myDropzone.emit("complete", mockFile);
 
                 i++;
             });
+            updateDropzoneMaxFiles()
             // let progressBars = document.querySelectorAll(".progress");
             // progressBars.forEach(function (progressBar) {
             //     progressBar.remove();
             // });
             // console.log(myDropzone);
-
 
 
             let layouts = /*[[${layouts}]]*/ '';

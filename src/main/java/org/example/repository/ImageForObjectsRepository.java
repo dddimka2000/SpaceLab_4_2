@@ -1,7 +1,7 @@
 package org.example.repository;
 
 import org.example.entity.ImagesForObject;
-import org.example.util.TypeObject;
+import org.example.entity.property.type.TypeObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

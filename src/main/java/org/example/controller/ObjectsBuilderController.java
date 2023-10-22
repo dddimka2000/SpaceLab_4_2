@@ -4,7 +4,9 @@ import io.minio.errors.*;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.LayoutDTO;
+import org.example.dto.LayoutDTOEdit;
 import org.example.dto.ObjectBuilderDto;
+import org.example.dto.ObjectBuilderDtoEdit;
 import org.example.entity.BuilderObject;
 import org.example.entity.BuilderObjectPromotion;
 import org.example.entity.ImagesForObject;
@@ -13,19 +15,19 @@ import org.example.service.ImagesForObjectService;
 import org.example.service.LayoutService;
 import org.example.service.MinioService;
 import org.example.service.ObjectBuilderService;
-import org.example.util.TypeObject;
-import org.example.util.property.PropertyBuildStatus;
-import org.example.util.property.PropertyObjectAddress;
+import org.example.entity.property.type.TypeObject;
+import org.example.entity.property.type.PropertyBuildStatus;
+import org.example.entity.property.type.PropertyObjectAddress;
+import org.example.util.validator.ObjectBuilderValidator;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MimeTypeUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,12 +56,15 @@ public class ObjectsBuilderController {
     MinioService minioService;
     private final
     ImagesForObjectService imagesForObjectService;
+    private final
+    ObjectBuilderValidator objectBuilderValidator;
 
-    public ObjectsBuilderController(ObjectBuilderService objectBuilderService, LayoutService layoutService, MinioService minioService, ImagesForObjectService imagesForObjectService) {
+    public ObjectsBuilderController(ObjectBuilderService objectBuilderService, LayoutService layoutService, MinioService minioService, ImagesForObjectService imagesForObjectService, ObjectBuilderValidator objectBuilderValidator) {
         this.objectBuilderService = objectBuilderService;
         this.layoutService = layoutService;
         this.minioService = minioService;
         this.imagesForObjectService = imagesForObjectService;
+        this.objectBuilderValidator = objectBuilderValidator;
     }
 
     @GetMapping
@@ -97,14 +102,15 @@ public class ObjectsBuilderController {
     public ResponseEntity ObjectsBuilderCreatePost(@Valid @ModelAttribute ObjectBuilderDto objectBuilderDto, BindingResult bindingResult)
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException
             , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        objectBuilderValidator.validate(objectBuilderDto, bindingResult);
         if (bindingResult.hasErrors()) {
+            log.error("error validation");
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }
-
+        log.info("ok validation");
         log.info(objectBuilderDto);
-
         BuilderObject builderObject = new BuilderObject();
         PropertyObjectAddress propertyObjectAddress = new PropertyObjectAddress();
         propertyObjectAddress.setCity(objectBuilderDto.getCity());
@@ -182,7 +188,7 @@ public class ObjectsBuilderController {
         for (MultipartFile file : objectBuilderDto.getFiles()) {
             ImagesForObject imagesForObject = new ImagesForObject();
             imagesForObject.setIdObject(builderObject.getId());
-            imagesForObject.setTypeObject(TypeObject.ByBuilder);
+            imagesForObject.setTypeObject(TypeObject.BY_BUILDER);
 
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + file.getOriginalFilename();
@@ -206,7 +212,7 @@ public class ObjectsBuilderController {
         model.addAttribute("minPrice",
                 (Collections.min(layoutService.findByBuilderObject(objectBuilder.get()).stream().map(s -> s.getPrice()).collect(Collectors.toList()))));
         try {
-            String namePhoto = imagesForObjectService.findOneByIdObjectAndTypeObject(objectBuilder.get().getId(), TypeObject.ByBuilder).get().getPath();
+            String namePhoto = imagesForObjectService.findOneByIdObjectAndTypeObject(objectBuilder.get().getId(), TypeObject.BY_BUILDER).get().getPath();
             byte[] photoData = minioService.getPhoto(namePhoto, imagesBucketName);
             String base64Image = Base64.getEncoder().encodeToString(photoData);
             model.addAttribute("base64Image", base64Image);
@@ -239,17 +245,21 @@ public class ObjectsBuilderController {
         }
         model.addAttribute("objectBuilder", objectBuilder.get());
 
-        List<ImagesForObject> list = imagesForObjectService.findByIdObjectAndTypeObject(objectBuilder.get().getId(), TypeObject.ByBuilder);
+        List<ImagesForObject> list = imagesForObjectService.findByIdObjectAndTypeObject(objectBuilder.get().getId(), TypeObject.BY_BUILDER);
 
         List<String> base64ImagesList = new ArrayList<>();
         List<Integer> base64ImagesListSize = new ArrayList<>();
+        List<String> base64ImagesListName = new ArrayList<>();
+
         for (ImagesForObject imagesForObject : list) {
             byte[] filePrices = minioService.getPhoto(imagesForObject.getPath(), imagesBucketName);
+            base64ImagesListName.add(imagesForObject.getPath());
             String base64FilePrices = Base64.getEncoder().encodeToString(filePrices);
             base64ImagesList.add(base64FilePrices);
             base64ImagesListSize.add(filePrices.length);
         }
         model.addAttribute("base64Images", base64ImagesList);
+        model.addAttribute("base64ImagesListName", base64ImagesListName);
         model.addAttribute("base64ImagesSize", base64ImagesListSize);
         List<Layout> layouts = layoutService.findByBuilderObject(objectBuilder.get());
         model.addAttribute("layouts", layouts);
@@ -269,17 +279,170 @@ public class ObjectsBuilderController {
     }
 
     @PostMapping("/edit/{id}")
-    public ResponseEntity EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDto objectBuilderDto, BindingResult bindingResult, @PathVariable String id)
+    public ResponseEntity EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDtoEdit objectBuilderDtoEdit, BindingResult bindingResult, @PathVariable Integer id)
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException
             , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        log.info(objectBuilderDto);
+        log.info(objectBuilderDtoEdit.getLayoutDTOList());
+        log.info(objectBuilderDtoEdit.getOldFiles());
+        log.info(objectBuilderDtoEdit.getOldFiles().size());
+
+
+        try {
+            if (!objectBuilderDtoEdit.getFiles().isEmpty()) {
+                log.info(objectBuilderDtoEdit.getFiles().stream().map(s -> s.getOriginalFilename()).collect(Collectors.toList()));
+                log.info(objectBuilderDtoEdit.getFiles().size());
+            }
+        } catch (NullPointerException e) {
+        }
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }
-        return ResponseEntity.ok().body("YRA");
+
+        BuilderObject builderObject = objectBuilderService.findById(id).get();
+        PropertyObjectAddress propertyObjectAddress = new PropertyObjectAddress();
+        propertyObjectAddress.setCity(objectBuilderDtoEdit.getCity());
+        propertyObjectAddress.setDistrict(objectBuilderDtoEdit.getDistrict());
+        propertyObjectAddress.setHouseNumber(objectBuilderDtoEdit.getHouseNumber());
+        propertyObjectAddress.setRegion(objectBuilderDtoEdit.getRegion());
+        propertyObjectAddress.setSection(objectBuilderDtoEdit.getSection());
+        propertyObjectAddress.setStreet(objectBuilderDtoEdit.getStreet());
+        propertyObjectAddress.setZone(objectBuilderDtoEdit.getTopozone());
+        builderObject.setAddress(propertyObjectAddress);
+
+        builderObject.setName(objectBuilderDtoEdit.getNameObject());
+        builderObject.setFloorQuantity(objectBuilderDtoEdit.getFloorQuantity());
+        builderObject.setPhone(objectBuilderDtoEdit.getTelephone());
+        builderObject.setDescription_builder(objectBuilderDtoEdit.getDescription());
+        builderObject.setNameCompany(objectBuilderDtoEdit.getNameCompany());
+
+        builderObject.setBuildStatus(PropertyBuildStatus.valueOf(objectBuilderDtoEdit.getBuildStatus()));
+
+
+        BuilderObjectPromotion builderObjectPromotion = new BuilderObjectPromotion();
+        builderObjectPromotion.setName(objectBuilderDtoEdit.getPromotionName());
+        builderObjectPromotion.setDescription(objectBuilderDtoEdit.getDescriptionPromotion());
+        Boolean statusPromotion = Boolean.parseBoolean(objectBuilderDtoEdit.getStatusPromotion());
+        builderObjectPromotion.setActive(statusPromotion);
+        builderObject.setPromotion(builderObjectPromotion);
+
+        String uuidFile = UUID.randomUUID().toString();
+        String resultFilename;
+
+        if (objectBuilderDtoEdit.getPrices().isPresent()) {
+            resultFilename = uuidFile + "." + objectBuilderDtoEdit.getPrices().get().getOriginalFilename();
+            minioService.putMultipartFile(objectBuilderDtoEdit.getPrices().get(), filesBucketName, resultFilename);
+            builderObject.setFilePrices(resultFilename);
+        }
+
+        if (objectBuilderDtoEdit.getChessboardFile().isPresent()) {
+            uuidFile = UUID.randomUUID().toString();
+            resultFilename = uuidFile + "." + objectBuilderDtoEdit.getChessboardFile().get().getOriginalFilename();
+            minioService.putMultipartFile(objectBuilderDtoEdit.getChessboardFile().get(), filesBucketName, resultFilename);
+            builderObject.setFileCheckerboard(resultFilename);
+        }
+
+        if (objectBuilderDtoEdit.getInstallmentTerms().isPresent()) {
+            uuidFile = UUID.randomUUID().toString();
+            resultFilename = uuidFile + "." + objectBuilderDtoEdit.getInstallmentTerms().get().getOriginalFilename();
+            minioService.putMultipartFile(objectBuilderDtoEdit.getInstallmentTerms().get(), filesBucketName, resultFilename);
+            builderObject.setFileInstallmentTerms(resultFilename);
+        }
+
+
+        objectBuilderService.save(builderObject);
+
+        layoutService.removeAllByBuilderObject(builderObject);
+
+        for (LayoutDTOEdit dto : objectBuilderDtoEdit.getLayoutDTOList()) {
+            Layout layout = new Layout();
+            layout.setName(dto.getNameLayout());
+            layout.setPrice(dto.getPriceLayout());
+            layout.setRoomQuantity(dto.getRoomQuantityLayout());
+            layout.setAreaKitchen(dto.getAreaKitchenLayout());
+            layout.setAreaLiving(dto.getAreaLivingLayout());
+            layout.setAreaTotal(dto.getAreaTotalLayout());
+            layout.setActive(dto.getStatusLayout());
+            layout.setDescription(dto.getDescriptionLayout());
+
+            if (!dto.getImg1Layout().isEmpty()) {
+                uuidFile = UUID.randomUUID().toString();
+                resultFilename = uuidFile + "." + dto.getImg1Layout().get().getOriginalFilename();
+                minioService.putMultipartFile(dto.getImg1Layout().get(), imagesBucketName, resultFilename);
+                layout.setImg1(resultFilename);
+            } else {
+                layout.setImg1(dto.getImg1Old());
+            }
+
+            if (!dto.getImg2Layout().isEmpty()) {
+                uuidFile = UUID.randomUUID().toString();
+                resultFilename = uuidFile + "." + dto.getImg2Layout().get().getOriginalFilename();
+                minioService.putMultipartFile(dto.getImg2Layout().get(), imagesBucketName, resultFilename);
+                layout.setImg2(resultFilename);
+            } else {
+                layout.setImg2(dto.getImg2Old());
+            }
+
+            if (!dto.getImg3Layout().isEmpty()) {
+                uuidFile = UUID.randomUUID().toString();
+                resultFilename = uuidFile + "." + dto.getImg3Layout().get().getOriginalFilename();
+                minioService.putMultipartFile(dto.getImg3Layout().get(), imagesBucketName, resultFilename);
+                layout.setImg3(resultFilename);
+            } else {
+                layout.setImg3(dto.getImg3Old());
+            }
+
+            layout.setBuilderObject(builderObject);
+            layoutService.save(layout);
+        }
+
+        List<ImagesForObject> namesImages = imagesForObjectService.findByIdObjectAndTypeObject(id, TypeObject.BY_BUILDER).stream()
+                .filter(path -> !objectBuilderDtoEdit.getOldFiles().contains(path.getPath()))
+                .collect(Collectors.toList());
+        log.info(namesImages);
+        namesImages.stream().forEach(s -> imagesForObjectService.deleteById(s.getIdImage()));
+        namesImages.stream().forEach(s -> {
+            try {
+                minioService.deleteImg(s.getPath(), imagesBucketName);
+            } catch (ErrorResponseException e) {
+                throw new RuntimeException(e);
+            } catch (InsufficientDataException e) {
+                throw new RuntimeException(e);
+            } catch (InternalException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidKeyException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidResponseException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            } catch (ServerException e) {
+                throw new RuntimeException(e);
+            } catch (XmlParserException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        for (MultipartFile file : objectBuilderDtoEdit.getFiles()) {
+            ImagesForObject imagesForObject = new ImagesForObject();
+            imagesForObject.setIdObject(builderObject.getId());
+            imagesForObject.setTypeObject(TypeObject.BY_BUILDER);
+
+            uuidFile = UUID.randomUUID().toString();
+            resultFilename = uuidFile + "." + file.getOriginalFilename();
+            minioService.putMultipartFile(file, imagesBucketName, resultFilename);
+            imagesForObject.setPath(resultFilename);
+
+            imagesForObjectService.save(imagesForObject);
+        }
+
+
+        return ResponseEntity.ok().body("ok");
     }
+
 
     @GetMapping("/card/downloadFileCheckerboard/{id}")
     public ResponseEntity<ByteArrayResource> downloadFileCheckerboard(@PathVariable Integer id) {
@@ -333,7 +496,8 @@ public class ObjectsBuilderController {
     }
 
     @NotNull
-    private ResponseEntity<ByteArrayResource> getByteArrayResourceResponseEntity(String fileName, byte[] file, ByteArrayResource resource) {
+    private ResponseEntity<ByteArrayResource> getByteArrayResourceResponseEntity(String fileName,
+                                                                                 byte[] file, ByteArrayResource resource) {
         HttpHeaders headers = new HttpHeaders();
         try {
             String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString());

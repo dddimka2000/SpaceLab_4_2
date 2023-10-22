@@ -29,12 +29,15 @@ public class ObjectBuilderDto {
     private String city;
     @Size(min = 1, max = 31, message = "Топозона должна быть от 2 до 30 символов.")
     private String topozone;
+    @NotNull(message = "Заполните номер дома")
     @Min(value = 0, message = "Введите корректный номер дома")
     @Max(value = 2001, message = "Введите корректный номер дома")
     private Integer houseNumber;
+    @NotNull(message = "Заполните номер секции")
     @Min(value = 0, message = "Введите корректный номер секции")
     @Max(value = 2001, message = "Введите корректный номер секции")
     private Integer section;
+    @NotNull(message = "Заполните этажность")
     @Min(value = 0, message = "Введите корректный номер этажа")
     @Max(value = 201, message = "Введите корректный номер этажа")
     private Integer floorQuantity;

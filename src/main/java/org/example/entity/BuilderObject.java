@@ -2,8 +2,8 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.example.util.property.PropertyBuildStatus;
-import org.example.util.property.PropertyObjectAddress;
+import org.example.entity.property.type.PropertyBuildStatus;
+import org.example.entity.property.type.PropertyObjectAddress;
 
 import java.util.List;
 

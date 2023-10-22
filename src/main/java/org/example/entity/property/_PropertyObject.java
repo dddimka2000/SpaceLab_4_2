@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.example.entity.BuilderObject;
 import org.example.entity.UserEntity;
-import org.example.util.property.*;
+import org.example.entity.property.type.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;

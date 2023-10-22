@@ -20,4 +20,6 @@ public interface LayoutRepository extends JpaRepository<Layout, Integer> {
     <S extends Layout> S save(S entity);
 
     List<Layout> findByBuilderObject(BuilderObject builderObject);
+
+    void removeAllByBuilderObject(BuilderObject builderObject);
 }

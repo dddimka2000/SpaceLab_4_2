@@ -44,5 +44,10 @@ public class LayoutService {
         return list;
     }
 
+    public void removeAllByBuilderObject(BuilderObject builderObject) {
+        log.info("LayoutService-removeAllByBuilderObject start");
+        layoutRepository.removeAllByBuilderObject(builderObject);
+        log.info("LayoutService-removeAllByBuilderObject successfully");
+    }
 
 }

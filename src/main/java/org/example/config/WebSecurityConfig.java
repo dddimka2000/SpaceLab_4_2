@@ -76,7 +76,7 @@ public class WebSecurityConfig {
                                         new LoginUrlAuthenticationEntryPoint("/auth/login"),
                                         new AntPathRequestMatcher("/admin/**")
                                 )
-                );;
+                );
         return http.build();
     }
 
