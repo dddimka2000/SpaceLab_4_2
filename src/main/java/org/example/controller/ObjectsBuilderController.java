@@ -1,6 +1,8 @@
 package org.example.controller;
 
 import io.minio.errors.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.LayoutDTO;
@@ -27,6 +29,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -267,17 +270,31 @@ public class ObjectsBuilderController {
         List<String> img1 = new ArrayList<>();
         List<String> img2 = new ArrayList<>();
         List<String> img3 = new ArrayList<>();
+        List<String> img1Name = new ArrayList<>();
+        List<String> img2Name = new ArrayList<>();
+        List<String> img3Name = new ArrayList<>();
         for (Layout layout : layouts) {
             img1.add(minioService.getFileInString(layout.getImg1(), imagesBucketName));
             img2.add(minioService.getFileInString(layout.getImg2(), imagesBucketName));
             img3.add(minioService.getFileInString(layout.getImg3(), imagesBucketName));
+            img1Name.add(layout.getImg1());
+            img2Name.add(layout.getImg2());
+            img3Name.add(layout.getImg3());
+
         }
+        model.addAttribute("img1Name", img1Name);
+        model.addAttribute("img2Name", img2Name);
+        model.addAttribute("img3Name", img3Name);
+
         model.addAttribute("img1", img1);
         model.addAttribute("img2", img2);
         model.addAttribute("img3", img3);
         return "/objects/object_builders/editObjectBuilder";
     }
+    @PersistenceContext
+    private EntityManager entityManager;
 
+    @Transactional
     @PostMapping("/edit/{id}")
     public ResponseEntity EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDtoEdit objectBuilderDtoEdit, BindingResult bindingResult, @PathVariable Integer id)
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException
@@ -286,7 +303,7 @@ public class ObjectsBuilderController {
         log.info(objectBuilderDtoEdit.getOldFiles());
         log.info(objectBuilderDtoEdit.getOldFiles().size());
 
-
+        objectBuilderValidator.validateEdit(objectBuilderDtoEdit, bindingResult, id);
         try {
             if (!objectBuilderDtoEdit.getFiles().isEmpty()) {
                 log.info(objectBuilderDtoEdit.getFiles().stream().map(s -> s.getOriginalFilename()).collect(Collectors.toList()));
@@ -330,20 +347,20 @@ public class ObjectsBuilderController {
         String uuidFile = UUID.randomUUID().toString();
         String resultFilename;
 
-        if (objectBuilderDtoEdit.getPrices().isPresent()) {
+        if (objectBuilderDtoEdit.getPrices() != null && objectBuilderDtoEdit.getPrices().isPresent()) {
             resultFilename = uuidFile + "." + objectBuilderDtoEdit.getPrices().get().getOriginalFilename();
             minioService.putMultipartFile(objectBuilderDtoEdit.getPrices().get(), filesBucketName, resultFilename);
             builderObject.setFilePrices(resultFilename);
         }
 
-        if (objectBuilderDtoEdit.getChessboardFile().isPresent()) {
+        if (objectBuilderDtoEdit.getChessboardFile() != null && objectBuilderDtoEdit.getChessboardFile().isPresent()) {
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + objectBuilderDtoEdit.getChessboardFile().get().getOriginalFilename();
             minioService.putMultipartFile(objectBuilderDtoEdit.getChessboardFile().get(), filesBucketName, resultFilename);
             builderObject.setFileCheckerboard(resultFilename);
         }
 
-        if (objectBuilderDtoEdit.getInstallmentTerms().isPresent()) {
+        if (objectBuilderDtoEdit.getInstallmentTerms() != null && objectBuilderDtoEdit.getInstallmentTerms().isPresent()) {
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + objectBuilderDtoEdit.getInstallmentTerms().get().getOriginalFilename();
             minioService.putMultipartFile(objectBuilderDtoEdit.getInstallmentTerms().get(), filesBucketName, resultFilename);
@@ -353,7 +370,7 @@ public class ObjectsBuilderController {
 
         objectBuilderService.save(builderObject);
 
-        layoutService.removeAllByBuilderObject(builderObject);
+        layoutService.deleteAllByBuilderObject(builderObject);
 
         for (LayoutDTOEdit dto : objectBuilderDtoEdit.getLayoutDTOList()) {
             Layout layout = new Layout();
@@ -366,7 +383,7 @@ public class ObjectsBuilderController {
             layout.setActive(dto.getStatusLayout());
             layout.setDescription(dto.getDescriptionLayout());
 
-            if (!dto.getImg1Layout().isEmpty()) {
+            if (dto.getImg1Layout() != null && !dto.getImg1Layout().isEmpty()) {
                 uuidFile = UUID.randomUUID().toString();
                 resultFilename = uuidFile + "." + dto.getImg1Layout().get().getOriginalFilename();
                 minioService.putMultipartFile(dto.getImg1Layout().get(), imagesBucketName, resultFilename);
@@ -375,7 +392,7 @@ public class ObjectsBuilderController {
                 layout.setImg1(dto.getImg1Old());
             }
 
-            if (!dto.getImg2Layout().isEmpty()) {
+            if (dto.getImg2Layout() != null && !dto.getImg2Layout().isEmpty()) {
                 uuidFile = UUID.randomUUID().toString();
                 resultFilename = uuidFile + "." + dto.getImg2Layout().get().getOriginalFilename();
                 minioService.putMultipartFile(dto.getImg2Layout().get(), imagesBucketName, resultFilename);
@@ -384,7 +401,7 @@ public class ObjectsBuilderController {
                 layout.setImg2(dto.getImg2Old());
             }
 
-            if (!dto.getImg3Layout().isEmpty()) {
+            if (dto.getImg3Layout() != null && !dto.getImg3Layout().isEmpty()) {
                 uuidFile = UUID.randomUUID().toString();
                 resultFilename = uuidFile + "." + dto.getImg3Layout().get().getOriginalFilename();
                 minioService.putMultipartFile(dto.getImg3Layout().get(), imagesBucketName, resultFilename);
