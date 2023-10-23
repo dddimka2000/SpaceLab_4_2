@@ -33,9 +33,10 @@ public class BranchController {
         return modelAndView;
     }
 
-    @GetMapping("/info")
-    public ModelAndView infoPage() {
+    @GetMapping("/{id}")
+    public ModelAndView infoPage(@PathVariable("id")long id) {
         ModelAndView modelAndView = new ModelAndView("branch/branch_info");
+        modelAndView.addObject("branch", branchService.getById(id));
         return modelAndView;
     }
 
@@ -69,17 +70,11 @@ public class BranchController {
     public void activeMenuItem(Model model) {
         model.addAttribute("branchesActive", true);
     }
-//    Вроде бы без него работает
-//    @GetMapping("/getAll/{page}")
-//    @ResponseBody
-//    public Page<Branch> getAll(@PathVariable("page")int page){
-//        return branchService.getAll(page);
-//    }
 
-    @GetMapping("/filter")
+    @GetMapping("/get-all")
     @ResponseBody
-    public Page<Branch> getAll(@RequestParam("name")String name, @RequestParam("address")String address, @RequestParam("page")int page){
-        return branchService.getAll(page, name, address);
+    public Page<Branch> getAll(@RequestParam("code")String code, @RequestParam("name")String name, @RequestParam("address")String address, @RequestParam("page")int page){
+        return branchService.getAll(page, code, name, address);
     }
     @GetMapping("/delete/{id}")
     @ResponseBody
