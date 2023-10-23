@@ -11,12 +11,15 @@ public class LayoutDTOEdit {
     @Size(min = 1, max = 31, message = "Название планировок должно быть от 2 до 30 символов.")
     @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Название планировок должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String nameLayout;
+    @NotNull(message = "Заполните цену в планировке")
     @Min(value = 1, message = "Введите корректную цену для планировок")
     @Max(value = 100000001, message = "Введите корректную площадь для планировок")
     private Integer priceLayout;
+    @NotNull(message = "Заполните кол-во комнат в планировке")
     @Min(value = 1, message = "Введите корректное кол-во комнат")
     @Max(value = 1001, message = "Введите корректное кол-во комнат")
     private Integer roomQuantityLayout;
+    @NotNull(message = "Заполните площадь в планировке")
     @Min(value = 1, message = "Введите корректную площадь для планировок")
     @Max(value = 100001, message = "Введите корректную площадь для планировок")
     private Integer areaLivingLayout, areaTotalLayout, areaKitchenLayout;
