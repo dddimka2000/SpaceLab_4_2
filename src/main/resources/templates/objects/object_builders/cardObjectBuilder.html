@@ -36,75 +36,90 @@
     <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
 </head>
 <body>
-<section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h1 th:text="${element.getName()}"></h1>
-        <hr class="my-0">
-        <br>
-        <br>
-        <div class="card">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-5">
-                        <h3>Просмотр новостроя</h3>
-                    </div>
-                    <div class="col-5">
-                    </div>
-                    <div class="col-2" style="text-align: right;">
-                        <a th:href="@{/builder_objects/edit/{id}(id=${id})}">
-                            <button class="btn btn-submit">Редактировать</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-0">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-6" style="text-align: center">
-                        <a th:href="'data:image/jpeg;base64, ' + ${base64Image}" data-lightbox="checkerboard"><img
-                                th:src="'data:image/jpeg;base64, ' + ${base64Image}" alt="Photo"
-                                class="d-block w-px-400 h-px-300 rounded"></a>
-                    </div>
-                    <div class="col-6" style="text-align: right">
-                        <a th:href="@{downloadFileCheckerboard/{id}(id=${id})}">Просмотреть шахматку</a><br>
-                        <a th:href="@{downloadFilePrices/{id}(id=${id})}">Просмотреть условия рассрочки</a><br>
-                        <a th:href="@{downloadFileInstallmentTerms/{id}(id=${id})}">Просмотреть цены</a><br>
-                    </div>
-                </div>
-                <br><br>
-                <table class="table table-bordered">
-                    <tr>
-                        <td style="font-weight: bold">Район</td>
-                        <td th:text="${element.getAddress().getDistrict()}"> Район</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold">Топозона</td>
-                        <td th:text="${element.getAddress().getZone()}"> Топозона</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold">Улица</td>
-                        <td th:text="${element.getAddress().getStreet()}"> Улица</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold">Цена от</td>
-                        <td th:text="${minPrice}">Цена от</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold">Этажность</td>
-                        <td th:text="${element.getFloorQuantity()}">Этажность</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: bold">Акции</td>
-                        <td th:text="${element.getPromotion().getName()}">Акции</td>
-                    </tr>
-                </table>
+<div layout:fragment="content">
+    <main>
+        <div class="content-wrapper">
+            <div class="container-fluid">
                 <br>
-                <h3>Описание</h3>
-                <textarea class="form-control" style="width: 100%; height: 300px" th:text="${element.getDescription_builder()}"></textarea>
+                <div class="d-flex justify-content-between">
+                    <h4 class="fw-bold" th:text="${element.getName()}"></h4>
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
+                         class="d-flex align-items-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/builder_objects}">Объекты от строителей</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Карточка объекта строителя</li>
+                        </ol>
+                    </nav>
+                </div>
+                <hr style="margin-top: -5px">
+                <br>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-5">
+                                <h3>Просмотр новостроя</h3>
+                            </div>
+                            <div class="col-5">
+                            </div>
+                            <div class="col-2" style="text-align: right;">
+                                <a th:href="@{/builder_objects/edit/{id}(id=${id})}">
+                                    <button class="btn btn-submit">Редактировать</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6" style="text-align: center">
+                                <a th:href="'data:image/jpeg;base64, ' + ${base64Image}"
+                                   data-lightbox="checkerboard"><img
+                                        th:src="'data:image/jpeg;base64, ' + ${base64Image}" alt="Photo"
+                                        class="d-block w-px-400 h-px-300 rounded"></a>
+                            </div>
+                            <div class="col-6" style="text-align: right">
+                                <a th:href="@{downloadFileCheckerboard/{id}(id=${id})}">Просмотреть шахматку</a><br>
+                                <a th:href="@{downloadFilePrices/{id}(id=${id})}">Просмотреть условия рассрочки</a><br>
+                                <a th:href="@{downloadFileInstallmentTerms/{id}(id=${id})}">Просмотреть цены</a><br>
+                            </div>
+                        </div>
+                        <br><br>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td style="font-weight: bold">Район</td>
+                                <td th:text="${element.getAddress().getDistrict()}"> Район</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Топозона</td>
+                                <td th:text="${element.getAddress().getZone()}"> Топозона</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Улица</td>
+                                <td th:text="${element.getAddress().getStreet()}"> Улица</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Цена от</td>
+                                <td th:text="${minPrice}">Цена от</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Этажность</td>
+                                <td th:text="${element.getFloorQuantity()}">Этажность</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Акции</td>
+                                <td th:text="${element.getPromotion().getName()}">Акции</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <h3>Описание</h3>
+                        <textarea class="form-control" style="width: 100%; height: 300px"
+                                  th:text="${element.getDescription_builder()}"></textarea>
+                    </div>
+                </div>
             </div>
         </div>
-
-    </div>
-</section>
+    </main>
+</div>
 </body>
 </html>
