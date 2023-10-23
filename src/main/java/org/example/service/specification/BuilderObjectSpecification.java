@@ -16,13 +16,16 @@ public class BuilderObjectSpecification implements Specification<BuilderObject> 
     private String street;
     private String zone;
     private Integer minPrice;
+    private Integer floorQuantity;
 
-    public BuilderObjectSpecification(String name, String district, String street, String zone, Integer minPrice) {
+
+    public BuilderObjectSpecification(String name, String district, String street, String zone, Integer floorQuantity,Integer minPrice ) {
         this.name = name;
         this.district = district;
         this.street = street;
         this.zone = zone;
         this.minPrice = minPrice;
+        this.floorQuantity = floorQuantity;
     }
 
     @Override
@@ -30,17 +33,21 @@ public class BuilderObjectSpecification implements Specification<BuilderObject> 
         List<Predicate> predicates = new ArrayList<>();
 
         if (name != null) {
-            predicates.add(criteriaBuilder.like(root.get("layouts").get("name"), "%" + name + "%"));
+            predicates.add(criteriaBuilder.like(root.get("name"), "%" + name + "%"));
         }
         if (district != null) {
             predicates.add(criteriaBuilder.like(root.get("address").get("district"), "%" +district+ "%"));
         }
-        if (street != null) {
-            predicates.add(criteriaBuilder.like(root.get("address").get("street"), "%" +street+ "%"));
-        }
         if (zone != null) {
             predicates.add(criteriaBuilder.like(root.get("address").get("zone"), "%" +zone+ "%"));
         }
+        if (street != null) {
+            predicates.add(criteriaBuilder.like(root.get("address").get("street"), "%"+street+"%"));
+        }
+        if (floorQuantity != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("floorQuantity"), floorQuantity));
+        }
+
         if (minPrice != null) {
             Subquery<Integer> subquery = query.subquery(Integer.class);
             Root<Layout> layoutRoot = subquery.from(Layout.class);

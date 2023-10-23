@@ -28,8 +28,8 @@ public class ObjectBuilderService {
         log.info("ObjectBuilderService-findById successfully");
         return entity;
     }
-    public Page<BuilderObject> findBuilderObjectsByCriteria(String name, String district, String street, String zone, Integer minPrice, Pageable pageable) {
-        Specification<BuilderObject> spec = new BuilderObjectSpecification(name, district, street, zone, minPrice);
+    public Page<BuilderObject> findBuilderObjectsByCriteria(String name, String district,String zone, String street, Integer floorQuantity,  Integer minPrice, Pageable pageable) {
+        Specification<BuilderObject> spec = new BuilderObjectSpecification(name, district, zone, street, floorQuantity, minPrice);
         return builderObjectRepository.findAll(spec, pageable);
     }
     public Optional<BuilderObject> findByName(String name) {

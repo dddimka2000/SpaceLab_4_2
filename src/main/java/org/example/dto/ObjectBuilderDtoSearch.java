@@ -8,5 +8,6 @@ public class ObjectBuilderDtoSearch {
     String district;
     String street;
     String topozone;
+    Integer floorQuantity;
     Integer minPrice;
 }

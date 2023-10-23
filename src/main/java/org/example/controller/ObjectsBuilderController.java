@@ -10,16 +10,15 @@ import org.example.entity.BuilderObject;
 import org.example.entity.BuilderObjectPromotion;
 import org.example.entity.ImagesForObject;
 import org.example.entity.Layout;
+import org.example.entity.property.type.PropertyBuildStatus;
+import org.example.entity.property.type.PropertyObjectAddress;
+import org.example.entity.property.type.TypeObject;
 import org.example.service.ImagesForObjectService;
 import org.example.service.LayoutService;
 import org.example.service.MinioService;
 import org.example.service.ObjectBuilderService;
-import org.example.entity.property.type.TypeObject;
-import org.example.entity.property.type.PropertyBuildStatus;
-import org.example.entity.property.type.PropertyObjectAddress;
 import org.example.util.validator.ObjectBuilderValidator;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
@@ -33,6 +32,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -73,22 +73,30 @@ public class ObjectsBuilderController {
     @GetMapping("/filter")
     @ResponseBody
     public Page<BuilderObject> showPageObjectBuilder(@ModelAttribute ObjectBuilderDtoSearch objectBuilderDto, @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
+        log.info(objectBuilderDto);
         Pageable pageable = PageRequest.of(numberPage, pageSize);
         Page<BuilderObject> pageElements = objectBuilderService.findBuilderObjectsByCriteria(
                 objectBuilderDto.getName(),
                 objectBuilderDto.getDistrict(),
-                objectBuilderDto.getStreet(),
                 objectBuilderDto.getTopozone(),
+                objectBuilderDto.getStreet(),
+                objectBuilderDto.getFloorQuantity(),
                 objectBuilderDto.getMinPrice(),
                 pageable);
+        log.info(pageable+"yes");
+
         return pageElements;
     }
+
     @ModelAttribute
     public void activeMenuItem(Model model) {
         model.addAttribute("builderObjectsActive", true);
     }
+
     @GetMapping
-    public String ObjectsBuilderShow(Model model, @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
+    public ModelAndView ObjectsBuilderShow(Model model, @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/objects/object_builders/objectsBuilders");
         Page<BuilderObject> pageElements = objectBuilderService.findBuilderObjectsPage(numberPage, pageSize);
         List<BuilderObject> list = pageElements.getContent();
         model.addAttribute("list", list);
@@ -109,18 +117,20 @@ public class ObjectsBuilderController {
         }
         log.info(panelCount);
         model.addAttribute("panelCount", panelCount);
-        return "/objects/object_builders/objectsBuilders";
+        return modelAndView;
     }
 
     @GetMapping("/create")
-    public String ObjectsBuilderCreate() {
-
-        return "/objects/object_builders/newObjectBuilder";
+    public ModelAndView ObjectsBuilderCreate() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/objects/object_builders/newObjectBuilder");
+        return modelAndView;
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> ObjectsBuilderCreate(@PathVariable Integer id) {
         objectBuilderService.deleteById(id);
-        return ResponseEntity.ok().body(" Объект от строителя с id "+id+" успешно удален");
+        return ResponseEntity.ok().body(" Объект от строителя с id " + id + " успешно удален");
     }
 
     @PostMapping("/create")
@@ -227,36 +237,38 @@ public class ObjectsBuilderController {
     }
 
     @GetMapping("/card/{id}")
-    public String CardObjectsBuilderShow(@PathVariable Integer id, Model model) {
+    public ModelAndView CardObjectsBuilderShow(@PathVariable Integer id, Model model) {
         Optional<BuilderObject> objectBuilder = objectBuilderService.findById(id);
+        ModelAndView modelAndView = new ModelAndView();
         if (objectBuilder.isEmpty()) {
-            return "/error/404";
+            modelAndView.setViewName("/error/404");
+        } else {
+            modelAndView.setViewName("/objects/object_builders/cardObjectBuilder");
+            model.addAttribute("element", objectBuilder.get());
+            model.addAttribute("minPrice",
+                    (Collections.min(layoutService.findByBuilderObject(objectBuilder.get()).stream().map(s -> s.getPrice()).collect(Collectors.toList()))));
+            try {
+                String namePhoto = imagesForObjectService.findOneByIdObjectAndTypeObject(objectBuilder.get().getId(), TypeObject.BY_BUILDER).get().getPath();
+                byte[] photoData = minioService.getPhoto(namePhoto, imagesBucketName);
+                String base64Image = Base64.getEncoder().encodeToString(photoData);
+                model.addAttribute("base64Image", base64Image);
+
+                byte[] fileCheckerboard = minioService.getPhoto(objectBuilder.get().getFileCheckerboard(), filesBucketName);
+                String base64FileCheckerboard = Base64.getEncoder().encodeToString(fileCheckerboard);
+                model.addAttribute("base64FileCheckerboard", base64FileCheckerboard);
+
+                byte[] filePrices = minioService.getPhoto(objectBuilder.get().getFilePrices(), filesBucketName);
+                String base64FilePrices = Base64.getEncoder().encodeToString(filePrices);
+                model.addAttribute("base64FilePrices", base64FilePrices);
+
+                byte[] fileInstallmentTerms = minioService.getPhoto(objectBuilder.get().getFileInstallmentTerms(), filesBucketName);
+                String base64FileInstallmentTerms = Base64.getEncoder().encodeToString(fileInstallmentTerms);
+                model.addAttribute("base64FileInstallmentTerms", base64FileInstallmentTerms);
+            } catch (Exception e) {
+                log.error(e);
+            }
         }
-
-        model.addAttribute("element", objectBuilder.get());
-        model.addAttribute("minPrice",
-                (Collections.min(layoutService.findByBuilderObject(objectBuilder.get()).stream().map(s -> s.getPrice()).collect(Collectors.toList()))));
-        try {
-            String namePhoto = imagesForObjectService.findOneByIdObjectAndTypeObject(objectBuilder.get().getId(), TypeObject.BY_BUILDER).get().getPath();
-            byte[] photoData = minioService.getPhoto(namePhoto, imagesBucketName);
-            String base64Image = Base64.getEncoder().encodeToString(photoData);
-            model.addAttribute("base64Image", base64Image);
-
-            byte[] fileCheckerboard = minioService.getPhoto(objectBuilder.get().getFileCheckerboard(), filesBucketName);
-            String base64FileCheckerboard = Base64.getEncoder().encodeToString(fileCheckerboard);
-            model.addAttribute("base64FileCheckerboard", base64FileCheckerboard);
-
-            byte[] filePrices = minioService.getPhoto(objectBuilder.get().getFilePrices(), filesBucketName);
-            String base64FilePrices = Base64.getEncoder().encodeToString(filePrices);
-            model.addAttribute("base64FilePrices", base64FilePrices);
-
-            byte[] fileInstallmentTerms = minioService.getPhoto(objectBuilder.get().getFileInstallmentTerms(), filesBucketName);
-            String base64FileInstallmentTerms = Base64.getEncoder().encodeToString(fileInstallmentTerms);
-            model.addAttribute("base64FileInstallmentTerms", base64FileInstallmentTerms);
-        } catch (Exception e) {
-            log.error(e);
-        }
-        return "/objects/object_builders/cardObjectBuilder";
+        return modelAndView;
     }
 
 
@@ -313,6 +325,7 @@ public class ObjectsBuilderController {
         model.addAttribute("img3", img3);
         return "/objects/object_builders/editObjectBuilder";
     }
+
     @PersistenceContext
     private EntityManager entityManager;
 

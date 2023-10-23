@@ -88,7 +88,8 @@
                         <button class="btn btn-submit" id="clean-filter">Очистить</button>
                     </div>
                     <div class="card-body">
-                        <table class="invoice-list-table table border-top dataTable no-footer dtr-column">
+                        <table class="invoice-list-table table border-top dataTable no-footer dtr-column"
+                               id="branchTable">
                             <thead>
                             <tr style="text-align: center">
                                 <th>Название</th>
@@ -99,16 +100,16 @@
                                 <th>Цена от</th>
                                 <th></th>
                             </tr>
-                            </thead>
-                            <tbody>
                             <tr>
                                 <td><input type="text" class="form-control for-filter"></td>
                                 <td><input type="text" class="form-control for-filter"></td>
                                 <td><input type="text" class="form-control for-filter"></td>
                                 <td><input type="text" class="form-control for-filter"></td>
-                                <td><input type="text" class="form-control for-filter"></td>
-                                <td><input type="text" class="form-control for-filter"></td>
+                                <td><input type="number" class="form-control for-filter"></td>
+                                <td><input type="number" class="form-control for-filter"></td>
                             </tr>
+                            </thead>
+                            <tbody>
                             <tr class="odd" style="text-align: center" th:if="${list.size()<1}">
                                 <td valign="top" colspan="7" class="dataTables_empty">No data available in table</td>
                             </tr>
@@ -138,7 +139,7 @@
                         </table>
 
                         <br>
-                        <div class="row">
+                        <div class="row" id="pagination_container">
                             <div class="col-sm-6" id="rowPanelCount">
                                 <p th:text="${panelCount}"></p>
                             </div>
@@ -231,6 +232,81 @@
 
     <script th:inline="javascript">
 
+        $('.for-filter').on('input', function () {
+            clearTimeout($(this).data('timeout'));
+            var $input = $(this);
+            var timeout = setTimeout(function () {
+                getPageWithFilter(0);
+            }, 1000);
+            $input.data('timeout', timeout);
+        });
+
+        function getPageWithFilter(page) {
+            var filterElements = $('.for-filter');
+            let contextPath = /*[[@{/}]]*/ '';
+            let url = contextPath.toString() + "builder_objects/filter";
+
+            console.log(filterElements)
+            $.ajax({
+                method: "GET",
+                url: url,
+                data: {
+                    page: page,
+                    name: filterElements[0].value,
+                    district: filterElements[1].value,
+                    topozone: filterElements[2].value,
+                    street: filterElements[3].value,
+                    floorQuantity: filterElements[4].value,
+                    minPrice:   filterElements[5].value
+                },
+                dataType: 'json',
+                success: function (builderObjects) {
+                    console.log(builderObjects)
+                    var table = document.getElementById("branchTable");
+                    var tbody = table.querySelector("tbody");
+                    $('#branchTable tbody').empty().css('text-align', 'center');
+                    for (var object of builderObjects.content) {
+                        var newRow = tbody.insertRow();
+                        var cell1 = newRow.insertCell(0);
+                        cell1.innerHTML = object.name;
+
+                        var cell2 = newRow.insertCell(1);
+                        cell2.innerHTML = object.address.district;
+
+                        var cell3 = newRow.insertCell(2);
+                        cell3.innerHTML = object.address.zone;
+
+                        var cell4 = newRow.insertCell(3);
+                        cell4.innerHTML = object.address.street;
+
+                        var cell5 = newRow.insertCell(4);
+                        cell5.innerHTML = object.floorQuantity;
+
+                        var products = object.layouts;
+
+                        var minPrice = products.reduce(function (min, product) {
+                            return product.price < min ? product.price : min;
+                        }, products[0].price);
+
+                        var cell6 = newRow.insertCell(5);
+                        cell6.innerHTML = minPrice;
+
+                        var cell7 = newRow.insertCell(6);
+                        cell7.innerHTML = `
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                       <a href="`+contextPath+`builder_objects/card/`+object.id+`">
+                                                <button class="btn btn-default btn-sm float-right"
+                                                        title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
+                                            </a>
+                         <button class="btn btn-default btn-sm float-right for-delete"
+                                                    onclick="openModal(`+object.id+`)"><i class="fa fa-trash"></i></button>
+                        </div>`;
+                    }
+                    $('#pagination_container').empty();
+                    if (builderObjects.totalPages > 1) updatePagination(page, builderObjects.totalPages, 'pagination_container', true)
+                },
+            });
+        }
 
         // Удаление-начало
         $('#clean-filter').click(function () {
@@ -241,23 +317,25 @@
             getPage(1)
         });
         let elementDelete;
+
         function openModal(elem) {
             console.log(elem);
             elementDelete = elem;
             $("#deleteModal").modal("show");
         }
+
         $(document).on("click", "#okBtn", function () {
             let contextPath =/*[[@{/}]]*/ '';
-            let url =  contextPath + "builder_objects/delete/" + elementDelete;
+            let url = contextPath + "builder_objects/delete/" + elementDelete;
             console.log(url)
             $.ajax({
                 url: url,
                 method: "DELETE",
                 success: function (response) {
-                    $("#elementTable"+elementDelete).empty();
+                    $("#elementTable" + elementDelete).empty();
                     $("#cancelBtn").click();
                     console.log(response);
-                    showNotification("Warn! ",response,false);
+                    showNotification("Warn! ", response, false);
                 },
                 error: function (context) {
                     console.log("ERROR " + context);
