@@ -36,13 +36,14 @@
                     <div class="row">
                         <div class="col-6">
                             <label>Код</label>
-                            <input type="number" class="form-control" th:field="*{code}">
+                            <input type="number" class="form-control" th:field="*{code}" th:style="${#fields.hasErrors('code') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                 th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
+                                 th:if="${#fields.hasErrors('code')}" th:errors="*{code}">
+                            </div>
                         </div>
                         <div class="col-6">
                             <label>Телефон</label>
-                            <input type="number" class="form-control" th:field="*{telephone}">
+                            <input type="number" class="form-control" th:field="*{telephone}" th:style="${#fields.hasErrors('telephone') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></div>
                         </div>
@@ -50,13 +51,13 @@
                     <div class="row">
                         <div class="col-6">
                             <label>Название</label>
-                            <input type="text" class="form-control" th:field="*{name}">
+                            <input type="text" class="form-control" th:field="*{name}" th:style="${#fields.hasErrors('name') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                         </div>
                         <div class="col-6">
                             <label>Email</label>
-                            <input type="text" class="form-control" th:field="*{email}">
+                            <input type="text" class="form-control" th:field="*{email}" th:style="${#fields.hasErrors('email') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                         </div>
@@ -64,13 +65,13 @@
                     <div class="row">
                         <div class="col-6">
                             <label>Адрес</label>
-                            <input type="text" class="form-control" th:field="*{address}">
+                            <input type="text" class="form-control" th:field="*{address}" th:style="${#fields.hasErrors('address') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
                         </div>
                         <div class="col-6">
                             <label>Прикрепить фото</label>
-                            <input type="file" class="form-control" accept=".jpg, .jpeg, .png, .pdf" name="imgPath">
+                            <input type="file" class="form-control" accept=".jpg, .jpeg, .png, .pdf" name="imgPath" th:style="${#fields.hasErrors('imgPath') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('imgPath')}" th:errors="*{imgPath}"></div>
                         </div>

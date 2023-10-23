@@ -73,6 +73,7 @@
     </div>
     <script th:src="@{/js/pagination.js}"></script>
     <script>
+        var page;
         $(document).ready(function () {
             getPageWithFilter(0)
         })
@@ -87,6 +88,7 @@
         });
 
         function getPageWithFilter(page) {
+            this.page = page
             var filterElements = $('.for-filter');
             $.ajax({
                 type: "Get",
@@ -152,7 +154,7 @@
                 type: "Get",
                 url: '[[@{/branches/delete/}]]' + branchId,
                 success: function () {
-                    getPageWithFilter(0)
+                    getPageWithFilter(page)
                 },
             });
 
