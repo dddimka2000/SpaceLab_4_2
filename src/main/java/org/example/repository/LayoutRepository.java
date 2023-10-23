@@ -21,5 +21,6 @@ public interface LayoutRepository extends JpaRepository<Layout, Integer> {
 
     List<Layout> findByBuilderObject(BuilderObject builderObject);
 
-    void removeAllByBuilderObject(BuilderObject builderObject);
+
+    void deleteAllByBuilderObject(BuilderObject builderObject);
 }

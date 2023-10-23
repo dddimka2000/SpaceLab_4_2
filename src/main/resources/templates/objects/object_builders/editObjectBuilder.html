@@ -446,14 +446,23 @@
                 let inputImage1 = $("#inputImage" + element).prop('files');
                 if (inputImage1.length > 0) {
                     layoutData.img1Layout = inputImage1[0];
+                } else {
+                    if (img1ThymeleafPath[index] != null)
+                        layoutData.img1Old = img1ThymeleafPath[index]
                 }
                 let inputImage2 = $("#inputImage" + (element + 1)).prop('files');
                 if (inputImage2.length > 0) {
                     layoutData.img2Layout = inputImage2[0];
+                } else {
+                    if (img2ThymeleafPath[index] != null)
+                        layoutData.img2Old = img2ThymeleafPath[index]
                 }
                 let inputImage3 = $("#inputImage" + (element + 2)).prop('files');
                 if (inputImage3.length > 0) {
                     layoutData.img3Layout = inputImage3[0];
+                } else {
+                    if (img3ThymeleafPath[index] != null)
+                        layoutData.img3Old = img3ThymeleafPath[index]
                 }
                 for (let key in layoutData) {
                     formData.append(`layoutDTOList[${index}].${key}`, layoutData[key]);
@@ -465,7 +474,7 @@
             console.log(uploadedFiles);
             let i = 1;
             for (let [fileName, file] of uploadedFiles) {
-                if (i > (15-oldImagesArray.length)) {
+                if (i > (15 - oldImagesArray.length)) {
                     break;
                 }
                 formData.append("files[]", file);
@@ -639,8 +648,14 @@
 
         // Настройки
         $('#telephone').mask('+380999999999');
+        let img1ThymeleafPath = /*[[${img1Name}]]*/ '';
+        let img2ThymeleafPath = /*[[${img2Name}]]*/ '';
+        let img3ThymeleafPath = /*[[${img3Name}]]*/ '';
 
-        //Прогрузка старых элементов в выбор
+        let img1Thymeleaf = /*[[${img1}]]*/ '';
+        let img2Thymeleaf = /*[[${img2}]]*/ '';
+        let img3Thymeleaf = /*[[${img3}]]*/ '';
+
         document.addEventListener("DOMContentLoaded", function () {
             let contextPath = /*[[@{/}]]*/ '';
             let checkObject = /*[[${objectBuilder.getAddress().getRegion()}]]*/ '';
@@ -737,9 +752,7 @@
 
 
             let layouts = /*[[${layouts}]]*/ '';
-            let img1Thymeleaf = /*[[${img1}]]*/ '';
-            let img2Thymeleaf = /*[[${img2}]]*/ '';
-            let img3Thymeleaf = /*[[${img3}]]*/ '';
+
 
             let sizeLayouts = layouts.length;
             console.log(layouts);

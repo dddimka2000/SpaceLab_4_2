@@ -5,6 +5,8 @@ import org.example.entity.BuilderObject;
 import org.example.entity.Layout;
 import org.example.repository.LayoutRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,7 +26,6 @@ public class LayoutService {
         log.info("LayoutService-findByBuilderObject successfully");
         return list;
     }
-
     public void save(Layout entity) {
         log.info("LayoutService-save start");
         layoutRepository.save(entity);
@@ -44,10 +45,10 @@ public class LayoutService {
         return list;
     }
 
-    public void removeAllByBuilderObject(BuilderObject builderObject) {
-        log.info("LayoutService-removeAllByBuilderObject start");
-        layoutRepository.removeAllByBuilderObject(builderObject);
-        log.info("LayoutService-removeAllByBuilderObject successfully");
+    public void deleteAllByBuilderObject(BuilderObject builderObject) {
+        log.info("LayoutService-deleteAllByBuilderObject start");
+        layoutRepository.deleteAllByBuilderObject(builderObject);
+        log.info("LayoutService-deleteAllByBuilderObject successfully");
     }
 
 }
