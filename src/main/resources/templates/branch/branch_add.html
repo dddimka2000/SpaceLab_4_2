@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+>
+<head>
+    <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Новый филиал</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/branches}">Филиалы</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Новый филиал</li>
+                </ol>
+            </nav>
+        </div>
+        <hr style="margin-top: -5px">
+
+        <div class="card">
+            <form method="post" th:action="@{/branches/create}" th:object="${branchDto}" enctype="multipart/form-data">
+                <div class="card-header">
+                    <h2>Информация</h2>
+                    <input th:field="*{id}" type="text" class="form-control" hidden>
+                    <hr>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <label>Код</label>
+                            <input type="number" class="form-control" th:field="*{code}">
+                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                 th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
+                        </div>
+                        <div class="col-6">
+                            <label>Телефон</label>
+                            <input type="number" class="form-control" th:field="*{telephone}">
+                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                 th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label>Название</label>
+                            <input type="text" class="form-control" th:field="*{name}">
+                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                 th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                        </div>
+                        <div class="col-6">
+                            <label>Email</label>
+                            <input type="text" class="form-control" th:field="*{email}">
+                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                 th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label>Адрес</label>
+                            <input type="text" class="form-control" th:field="*{address}">
+                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                 th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                        </div>
+                        <div class="col-6">
+                            <label>Прикрепить фото</label>
+                            <input type="file" class="form-control" accept=".jpg, .jpeg, .png, .pdf" name="imgPath">
+                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                 th:if="${#fields.hasErrors('imgPath')}" th:errors="*{imgPath}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-default">Отменить</button>
+                        <button type="submit" class="btn btn-success">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+</body>
+</html>
