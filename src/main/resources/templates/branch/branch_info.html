@@ -28,7 +28,7 @@
     <div class="card">
       <div class="card-header">
         <div class="d-flex justify-content-end">
-          <button class="btn btn-info">Редактировать</button>
+          <a class="btn btn-info" th:href="@{/banners/edit/${branch.id}}">Редактировать</a>
         </div>
         <hr>
       </div>
@@ -42,25 +42,23 @@
           <tbody>
           <tr>
             <td><b>Код</b></td>
-            <td>16</td>
+            <td th:text="${branch.code}"></td>
           </tr>
           <tr>
             <td><b>Название</b></td>
-            <td>Филиал 1</td>
+            <td th:text="${branch.name}"></td>
           </tr>
           <tr>
             <td><b>Адрес</b></td>
-            <td>ул. Большая, 1</td>
+            <td th:text="${branch.address}"></td>
           </tr>
           <tr>
             <td><b>Телефон</b></td>
-            <td>
-              +380123456789
-            </td>
+            <td th:text="${branch.telephone}"></td>
           </tr>
           <tr>
             <td><b>Email</b></td>
-            <td>admin@admin.com</td>
+            <td th:text="${branch.email}"></td>
           </tr>
           </tbody>
         </table>
