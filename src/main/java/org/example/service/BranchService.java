@@ -35,11 +35,11 @@ public class BranchService {
         return branchRepository.findById(id).get();
     }
     public Page<Branch> getAll(int page) {
-        Pageable pageable = PageRequest.of(--page, 10, Sort.by(Sort.Order.asc("id")));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.asc("id")));
         return branchRepository.findAll(pageable);
     }
     public Page<Branch> getAll(int page, String name, String address) {
-        Pageable pageable = PageRequest.of(--page, 10, Sort.by(Sort.Order.asc("id")));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.asc("id")));
         return branchRepository.findAllByNameContainingAndAddressContaining(name, address, pageable);
     }
     public void deleteById(long id){

@@ -229,8 +229,13 @@
         </div>
 
     </div>
+    <script th:src="@{/js/pagination.js}"></script>
 
     <script th:inline="javascript">
+        $(document).ready(function () {
+            getPageWithFilter(0)
+        })
+
 
         $('.for-filter').on('input', function () {
             clearTimeout($(this).data('timeout'));
@@ -302,8 +307,8 @@
                                                     onclick="openModal(`+object.id+`)"><i class="fa fa-trash"></i></button>
                         </div>`;
                     }
-                    $('#pagination_container').empty();
-                    if (builderObjects.totalPages > 1) updatePagination(page, builderObjects.totalPages, 'pagination_container', true)
+                    $('#paginationItems').empty();
+                    if (builderObjects.totalPages > 1) updatePagination(page, builderObjects.totalPages, 'paginationItems', true)
                 },
             });
         }
@@ -314,7 +319,7 @@
             filterElements.each(function () {
                 $(this).val("");
             });
-            getPage(1)
+            getPageWithFilter(0)
         });
         let elementDelete;
 

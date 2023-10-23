@@ -1,49 +1,108 @@
 var currentPage;
-var isFilter;
-function updatePagination(currentPage, totalButtons, container, isFilter) {
+function updatePagination(currentPage, totalButtons, container) {
     var pagination = document.getElementById(container);
-    this.currentPage = currentPage
-    this.isFilter = isFilter
     pagination.innerHTML = '';
     var li, link;
+    if (currentPage > 0) {
+        li = document.createElement('span');
+        li.className = "page-link";
+        li.setAttribute("href", "#");
+        li.setAttribute("aria-label", "Previous");
+        link = document.createElement('span');
+        link.innerHTML = "&#10094;";
+        li.onclick = function() {
+            getPageWithFilter(currentPage -1);
+        };
+        li.appendChild(link);
+        pagination.appendChild(li);
+    }
     if (totalButtons <= 7) {
-        for (var i = 1; i <= totalButtons; i++) {
+        for (var i = 0; i <= (totalButtons-1); i++) {
             li = createPaginationItem(i);
+            if(i==currentPage){
+                li.classList.add("active");
+            }
             pagination.appendChild(li);
         }
     } else {
-        li = createPaginationItem(1);
+        li = createPaginationItem(0);
+        if(0==currentPage){
+            li.classList.add("active");
+        }
         pagination.appendChild(li);
         if (currentPage <= 4) {
-            for (var i = 2; i <= 5; i++) {
+            for (var i = 1; i <= 5; i++) {
                 li = createPaginationItem(i);
-                pagination.appendChild(li);
-            }
-            li = createEllipsisItem();
-            pagination.appendChild(li);
-        } else if (parseInt(currentPage) >= parseInt(totalButtons) - 3) {
-
-            li = createEllipsisItem();
-            pagination.appendChild(li);
-            for (var i = totalButtons-4; i <= totalButtons-1; i++) {
-                li = createPaginationItem(i);
-                pagination.appendChild(li);
-            }
-        } else {
-            li = createEllipsisItem();
-            pagination.appendChild(li);
-
-            for (var i = currentPage - 1; i <= parseInt(currentPage) + 1; i++) {
-                li = createPaginationItem(i);
+                if(i==currentPage){
+                    li.classList.add("active");
+                }
                 pagination.appendChild(li);
             }
             li = createEllipsisItem();
             pagination.appendChild(li);
         }
-        li = createPaginationItem(totalButtons);
+        else if (parseInt(currentPage) >= parseInt(totalButtons) - 3) {
+
+            li = createEllipsisItem();
+            if(i==currentPage){
+                li.classList.add("active");
+            }
+            pagination.appendChild(li);
+            for (var i = totalButtons - 4; i <= totalButtons - 2; i++) {
+                li = createPaginationItem(i);
+                if(i==currentPage){
+                    li.classList.add("active");
+                }
+                pagination.appendChild(li);
+            }
+            console.log(2+" page "+currentPage)
+        }
+        else {
+            li = createEllipsisItem();
+            if(i==currentPage){
+                li.classList.add("active");
+            }
+            pagination.appendChild(li);
+            for (var i = currentPage - 1; i <= parseInt(currentPage) + 1; i++) {
+
+                li = createPaginationItem(i);
+                if(i==currentPage){
+                    li.classList.add("active");
+                }
+                pagination.appendChild(li);
+            }
+            li = createEllipsisItem();
+            if(i==currentPage){
+                li.classList.add("active");
+            }
+            pagination.appendChild(li);
+            console.log(3+" page "+currentPage)
+        }
+        if((currentPage+1)<=totalButtons) {
+            li = createPaginationItem(totalButtons-1);
+            if(i==currentPage){
+                li.classList.add("active");
+            }
+            pagination.appendChild(li);
+        }
+    }
+
+    if (totalButtons > (currentPage + 1) && totalButtons > 1) {
+        li = document.createElement('span');
+        li.className = "page-link";
+        li.setAttribute("href", "#");
+        li.setAttribute("aria-label", "Previous");
+        link = document.createElement('span');
+        link.innerHTML = "&#10095;";
+        li.appendChild(link);
+        li.onclick = function() {
+            getPageWithFilter(currentPage +1);
+        };
         pagination.appendChild(li);
     }
+
 }
+
 
 function createPaginationItem(pageNumber) {
     var li = document.createElement('li');
@@ -53,15 +112,12 @@ function createPaginationItem(pageNumber) {
     }
     var button = document.createElement('button');
     button.classList.add('page-link');
-    button.innerText = pageNumber;
+    button.innerText = pageNumber+1;
     li.appendChild(button);
 
-    button.addEventListener('click', function() {
-        if(isFilter) getPageWithFilter(pageNumber)
-        else getPage(pageNumber)
+    button.addEventListener('click', function () {
+        getPageWithFilter(pageNumber)
     });
-
-
     return li;
 }
 

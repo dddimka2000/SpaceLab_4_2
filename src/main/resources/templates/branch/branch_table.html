@@ -46,7 +46,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" class="form-control ">
+                                <input type="text" class="form-control for-filter">
                             </td>
                             <td>
                                 <input type="text" class="form-control for-filter" value="">
@@ -66,7 +66,6 @@
                 </div>
                 <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
                     id="pagination_container">
-
                 </ul>
             </div>
         </div>
@@ -75,45 +74,14 @@
     <script th:src="@{/js/pagination.js}"></script>
     <script>
         $(document).ready(function () {
-            getPage(1)
+            getPageWithFilter(0)
         })
-
-        function getPage(page) {
-            $.ajax({
-                type: "Get",
-                url: '[[@{/branches/getAll/}]]' + page,
-                success: function (branches) {
-                    console.log(branches)
-                    var table = document.getElementById("branchTable");
-                    var tbody = table.querySelector("tbody");
-                    $('#branchTable tbody').empty();
-                    for (var branche of branches.content) {
-                        var newRow = tbody.insertRow();
-                        var cell1 = newRow.insertCell(0);
-                        cell1.innerHTML = branche.code;
-
-                        var cell2 = newRow.insertCell(1);
-                        cell2.innerHTML = branche.name;
-
-                        var cell3 = newRow.insertCell(2);
-                        cell3.innerHTML = branche.address;
-
-                        var cell4 = newRow.insertCell(3);
-                        cell4.innerHTML = `
-                        <button class='btn btn-default btn-sm float-right for-delete' data-parameter="` + branche.id + `"><i class='fa fa-trash'></i></button>
-                        <a class='btn btn-default btn-sm float-right' href='[[@{/branches/edit/}]]` + branche.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
-                    }
-                    $('#pagination_container').empty();
-                    if (branches.totalPages > 1) updatePagination(page, branches.totalPages, 'pagination_container', false)
-                },
-            });
-        }
 
         $('.for-filter').on('input', function () {
             clearTimeout($(this).data('timeout'));
             var $input = $(this);
             var timeout = setTimeout(function () {
-                getPageWithFilter(1);
+                getPageWithFilter(0);
             }, 1000);
             $input.data('timeout', timeout);
         });
@@ -150,7 +118,7 @@
                         <a class='btn btn-default btn-sm float-right' href='[[@{/branches/edit/}]]` + branche.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
                     }
                     $('#pagination_container').empty();
-                    if (branches.totalPages > 1) updatePagination(page, branches.totalPages, 'pagination_container', true)
+                    if (branches.totalPages > 1) updatePagination(page, branches.totalPages, 'pagination_container')
                 },
             });
         }
@@ -159,7 +127,8 @@
             var filterElements = $('.for-filter');
             filterElements[0].value = "";
             filterElements[1].value = "";
-            getPage(1)
+            filterElements[2].value = "";
+            getPageWithFilter(0)
         });
 
         document.addEventListener('click', function(event) {
@@ -176,7 +145,7 @@
                         $(rowToDelete).remove();
                     },
                 });
-                getPage(1)
+                getPageWithFilter(0)
             }
         });
     </script>

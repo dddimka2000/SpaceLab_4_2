@@ -69,12 +69,12 @@ public class BranchController {
     public void activeMenuItem(Model model) {
         model.addAttribute("branchesActive", true);
     }
-
-    @GetMapping("/getAll/{page}")
-    @ResponseBody
-    public Page<Branch> getAll(@PathVariable("page")int page){
-        return branchService.getAll(page);
-    }
+//    Вроде бы без него работает
+//    @GetMapping("/getAll/{page}")
+//    @ResponseBody
+//    public Page<Branch> getAll(@PathVariable("page")int page){
+//        return branchService.getAll(page);
+//    }
 
     @GetMapping("/filter")
     @ResponseBody
