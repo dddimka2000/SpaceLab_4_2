@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/builder_objects")
 @Log4j2
 public class ObjectsBuilderController {
-    Integer pageSize = 1;
+    Integer pageSize = 4;
     String imagesBucketName = "images";
     String filesBucketName = "files";
     private final
@@ -83,8 +83,6 @@ public class ObjectsBuilderController {
                 objectBuilderDto.getFloorQuantity(),
                 objectBuilderDto.getMinPrice(),
                 pageable);
-        log.info(pageable.getPageSize()+"yes");
-        log.info(pageable.getPageNumber()+"yes");
         return pageElements;
     }
 

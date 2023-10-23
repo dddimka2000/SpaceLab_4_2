@@ -146,45 +146,6 @@
                             <div class="col-sm-6">
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination justify-content-end" id="paginationItems">
-                                        <li class="page-item">
-                                            <span class="page-link" href="#" aria-label="Previous"
-                                                  th:hidden="${currentPage == 0}">
-                                                <span aria-hidden="true">&#10094;</span>
-                                            </span>
-                                        </li>
-                                        <li class="page-item" th:if="${currentPage >= 2}">
-                                            <span class="page-link" href="#"
-                                                  th:text="1"></span>
-                                        </li>
-                                        <li class="page-item disabled" th:if="${currentPage >= 3}">
-                                            <span class="page-link">...</span>
-                                        </li>
-                                        <li class="page-item"
-                                            th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
-                                            th:classappend="${pageNumber == currentPage} ? 'active' : ''"
-                                            th:if="${pageNumber >= 0 && pageNumber <= (totalPages - 1)}">
-                                            <span class="page-link" href="#"
-                                                  th:text="${pageNumber + 1}">
-                                            </span>
-                                        </li>
-                                        <li class="page-item" th:if="${currentPage==0 && totalPages>5}">
-                                            <span class="page-link" href="#"
-                                                  th:text="${2 + 1}">
-                                            </span>
-                                        </li>
-                                        <li class="page-item disabled" th:if="${currentPage <= totalPages - 4}">
-                                            <span class="page-link">...</span>
-                                        </li>
-                                        <li class="page-item" th:if="${currentPage <= totalPages - 3}">
-                                            <span class="page-link" href="#"
-                                                  th:text="${totalPages}"></span>
-                                        </li>
-                                        <li class="page-item" th:data-page="${currentPage+2}">
-                                            <span class="page-link" href="#" aria-label="Next"
-                                                  th:hidden="${currentPage == 0&&totalPages==1}">
-                                                <span aria-hidden="true">&#10095;</span>
-                                            </span>
-                                        </li>
                                     </ul>
                                 </nav>
                             </div>
@@ -308,7 +269,9 @@
                         </div>`;
                     }
                     $('#paginationItems').empty();
-                    if (builderObjects.totalPages > 1) updatePagination(page, builderObjects.totalPages, 'paginationItems', true)
+                    if (builderObjects.totalPages > 1) {updatePagination(page, builderObjects.totalPages, 'paginationItems')}
+                    $('#rowPanelCount').empty();
+                    updateLabelPagination(page, 'rowPanelCount', builderObjects.totalElements, builderObjects.numberOfElements, builderObjects.size);
                 },
             });
         }
