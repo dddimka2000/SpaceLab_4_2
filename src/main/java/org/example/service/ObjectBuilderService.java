@@ -3,9 +3,11 @@ package org.example.service;
 import lombok.extern.log4j.Log4j2;
 import org.example.entity.BuilderObject;
 import org.example.repository.BuilderObjectRepository;
+import org.example.service.specification.BuilderObjectSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,6 +27,10 @@ public class ObjectBuilderService {
         Optional<BuilderObject> entity=builderObjectRepository.findById(id);
         log.info("ObjectBuilderService-findById successfully");
         return entity;
+    }
+    public Page<BuilderObject> findBuilderObjectsByCriteria(String name, String district, String street, String zone, Integer minPrice, Pageable pageable) {
+        Specification<BuilderObject> spec = new BuilderObjectSpecification(name, district, street, zone, minPrice);
+        return builderObjectRepository.findAll(spec, pageable);
     }
     public Optional<BuilderObject> findByName(String name) {
         log.info("ObjectBuilderService-findByName start");

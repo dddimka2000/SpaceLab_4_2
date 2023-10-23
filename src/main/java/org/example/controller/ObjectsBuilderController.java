@@ -5,10 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.example.dto.LayoutDTO;
-import org.example.dto.LayoutDTOEdit;
-import org.example.dto.ObjectBuilderDto;
-import org.example.dto.ObjectBuilderDtoEdit;
+import org.example.dto.*;
 import org.example.entity.BuilderObject;
 import org.example.entity.BuilderObjectPromotion;
 import org.example.entity.ImagesForObject;
@@ -26,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -70,6 +69,24 @@ public class ObjectsBuilderController {
         this.objectBuilderValidator = objectBuilderValidator;
     }
 
+
+    @GetMapping("/filter")
+    @ResponseBody
+    public Page<BuilderObject> showPageObjectBuilder(@ModelAttribute ObjectBuilderDtoSearch objectBuilderDto, @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
+        Pageable pageable = PageRequest.of(numberPage, pageSize);
+        Page<BuilderObject> pageElements = objectBuilderService.findBuilderObjectsByCriteria(
+                objectBuilderDto.getName(),
+                objectBuilderDto.getDistrict(),
+                objectBuilderDto.getStreet(),
+                objectBuilderDto.getTopozone(),
+                objectBuilderDto.getMinPrice(),
+                pageable);
+        return pageElements;
+    }
+    @ModelAttribute
+    public void activeMenuItem(Model model) {
+        model.addAttribute("builderObjectsActive", true);
+    }
     @GetMapping
     public String ObjectsBuilderShow(Model model, @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
         Page<BuilderObject> pageElements = objectBuilderService.findBuilderObjectsPage(numberPage, pageSize);
@@ -99,6 +116,11 @@ public class ObjectsBuilderController {
     public String ObjectsBuilderCreate() {
 
         return "/objects/object_builders/newObjectBuilder";
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> ObjectsBuilderCreate(@PathVariable Integer id) {
+        objectBuilderService.deleteById(id);
+        return ResponseEntity.ok().body(" Объект от строителя с id "+id+" успешно удален");
     }
 
     @PostMapping("/create")

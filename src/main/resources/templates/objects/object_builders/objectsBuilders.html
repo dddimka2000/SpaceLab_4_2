@@ -3,12 +3,11 @@
         lang="en"
         class="light-style layout-navbar-fixed layout-menu-fixed"
         layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
-        xmlns:th="http://www.thymeleaf.org" >
+        xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <meta name="description" content="">
     <link rel="icon" type="image/x-icon" th:href="@{/img/favicon/favicon.ico}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -22,15 +21,15 @@
     <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
-        <script th:src="@{/js/config.js}"></script>
-        <script th:src="@{/vendor/js/template-customizer.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
+    <script th:src="@{/vendor/js/template-customizer.js}"></script>
     <script th:src="@{/vendor/js/helpers.js}"></script>
     <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
+    <!--    <script th:src="@{/css/modal.css}"></script>-->
     <style>
         .notification {
             position: fixed;
@@ -41,9 +40,14 @@
             text-align: center;
             transition: opacity 0.5s ease-in-out;
         }
+
         .notification.hidden {
             opacity: 0;
             pointer-events: none;
+        }
+
+        tr.disabled {
+            pointer-events: none; /* Запретить события мыши (клики и т. д.) на дизейбленной строке */
         }
     </style>
 </head>
@@ -51,155 +55,233 @@
 <div layout:fragment="content">
     <div class="container-fluid">
 
-    <div class="content-wrapper">
-        <div>
-            <br>
-            <div class="d-flex justify-content-between">
-                <h4 class="fw-bold">Объекты от строителей</h4>
-                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
-                     class="d-flex align-items-center">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Объекты от строителей</li>
-                    </ol>
-                </nav>
-            </div>
-            <hr style="margin-top: -5px">
-            <div class="row">
-                <div class="col-md-8"></div>
-                <div class="col-md-1">
-                    <button class="btn btn-submit">Распечатать</button>
+        <div class="content-wrapper">
+            <div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <h4 class="fw-bold">Объекты от строителей</h4>
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
+                         class="d-flex align-items-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Объекты от строителей</li>
+                        </ol>
+                    </nav>
                 </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <a th:href="@{/builder_objects/create}">
-                        <button class="btn btn-submit">Добавить объект</button>
-                    </a>
+                <hr style="margin-top: -5px">
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-1">
+                        <button class="btn btn-submit">Распечатать</button>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <a th:href="@{/builder_objects/create}">
+                            <button class="btn btn-submit">Добавить объект</button>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <br>
-            <div class="card">
-                <div class="card-header" style="text-align: right">
-                    <button class="btn btn-submit">Очистить</button>
-                </div>
-                <div class="card-body">
+                <br>
 
-                    <table class="invoice-list-table table border-top dataTable no-footer dtr-column">
-                        <thead>
-                        <tr style="text-align: center">
-                            <th>Название</th>
-                            <th>Район</th>
-                            <th>Топозона</th>
-                            <th>Улица</th>
-                            <th>Этажность</th>
-                            <th>Цена от</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td><input type="text" class="form-control"></td>
-                            <td><input type="text" class="form-control"></td>
-                            <td><input type="text" class="form-control"></td>
-                            <td><input type="text" class="form-control"></td>
-                            <td><input type="text" class="form-control"></td>
-                            <td><input type="text" class="form-control"></td>
-                        </tr>
-                        <tr class="odd" style="text-align: center" th:if="${list.size()<1}">
-                            <td valign="top" colspan="7" class="dataTables_empty">No data available in table</td>
-                        </tr>
-                        <div th:unless="${list.size()<1}">
-                            <tr style="text-align: center" th:each="element,i:${list}">
-                                <td th:text="${element.getName()}"></td>
-                                <td th:text="${element.getAddress().getDistrict()}"></td>
-                                <td th:text="${element.getAddress().getZone()}"></td>
-                                <td th:text="${element.getAddress().getStreet()}"></td>
-                                <td th:text="${element.getFloorQuantity()}"></td>
-                                <td th:text="${listPrice.get(i.index)}"></td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <!--                                        <button class="btn btn-submit">-->
-                                        <!--                                            <g transform="matrix(1 0 0 1 1159 281)" class="stencil">-->
-                                        <!--                                                <svg width="18" height="18.782608695652176" x="0.5" y="0.5"-->
-                                        <!--                                                     class="stencil&#45;&#45;easier-to-select" style="opacity: 1;">-->
-                                        <!--                                                    <defs></defs>-->
-                                        <!--                                                    <rect x="0" y="0" width="18" height="18.782608695652176"-->
-                                        <!--                                                          fill="transparent"-->
-                                        <!--                                                          class="stencil__selection-helper"></rect>-->
-                                        <!--                                                    <path d="M12 8.897025171624714C12 8.897025171624714 12 2.965675057208238 12 2.965675057208238 12 2.965675057208238 9 0 9 0 9 0 6 2.965675057208238 6 2.965675057208238 6 2.965675057208238 6 4.94279176201373 6 4.94279176201373 6 4.94279176201373 0 4.94279176201373 0 4.94279176201373 0 4.94279176201373 0 18.782608695652176 0 18.782608695652176 0 18.782608695652176 18 18.782608695652176 18 18.782608695652176 18 18.782608695652176 18 8.897025171624714 18 8.897025171624714 18 8.897025171624714 12 8.897025171624714 12 8.897025171624714 12 8.897025171624714 12 8.897025171624714 12 8.897025171624714M4 16.805491990846683C4 16.805491990846683 2 16.805491990846683 2 16.805491990846683 2 16.805491990846683 2 14.82837528604119 2 14.82837528604119 2 14.82837528604119 4 14.82837528604119 4 14.82837528604119 4 14.82837528604119 4 16.805491990846683 4 16.805491990846683 4 16.805491990846683 4 16.805491990846683 4 16.805491990846683M4 12.851258581235697C4 12.851258581235697 2 12.851258581235697 2 12.851258581235697 2 12.851258581235697 2 10.874141876430206 2 10.874141876430206 2 10.874141876430206 4 10.874141876430206 4 10.874141876430206 4 10.874141876430206 4 12.851258581235697 4 12.851258581235697 4 12.851258581235697 4 12.851258581235697 4 12.851258581235697M4 8.897025171624714C4 8.897025171624714 2 8.897025171624714 2 8.897025171624714 2 8.897025171624714 2 6.919908466819222 2 6.919908466819222 2 6.919908466819222 4 6.919908466819222 4 6.919908466819222 4 6.919908466819222 4 8.897025171624714 4 8.897025171624714 4 8.897025171624714 4 8.897025171624714 4 8.897025171624714M10 16.805491990846683C10 16.805491990846683 8 16.805491990846683 8 16.805491990846683 8 16.805491990846683 8 14.82837528604119 8 14.82837528604119 8 14.82837528604119 10 14.82837528604119 10 14.82837528604119 10 14.82837528604119 10 16.805491990846683 10 16.805491990846683 10 16.805491990846683 10 16.805491990846683 10 16.805491990846683M10 12.851258581235697C10 12.851258581235697 8 12.851258581235697 8 12.851258581235697 8 12.851258581235697 8 10.874141876430206 8 10.874141876430206 8 10.874141876430206 10 10.874141876430206 10 10.874141876430206 10 10.874141876430206 10 12.851258581235697 10 12.851258581235697 10 12.851258581235697 10 12.851258581235697 10 12.851258581235697M10 8.897025171624714C10 8.897025171624714 8 8.897025171624714 8 8.897025171624714 8 8.897025171624714 8 6.919908466819222 8 6.919908466819222 8 6.919908466819222 10 6.919908466819222 10 6.919908466819222 10 6.919908466819222 10 8.897025171624714 10 8.897025171624714 10 8.897025171624714 10 8.897025171624714 10 8.897025171624714M10 4.94279176201373C10 4.94279176201373 8 4.94279176201373 8 4.94279176201373 8 4.94279176201373 8 2.965675057208238 8 2.965675057208238 8 2.965675057208238 10 2.965675057208238 10 2.965675057208238 10 2.965675057208238 10 4.94279176201373 10 4.94279176201373 10 4.94279176201373 10 4.94279176201373 10 4.94279176201373M16 16.805491990846683C16 16.805491990846683 14 16.805491990846683 14 16.805491990846683 14 16.805491990846683 14 14.82837528604119 14 14.82837528604119 14 14.82837528604119 16 14.82837528604119 16 14.82837528604119 16 14.82837528604119 16 16.805491990846683 16 16.805491990846683 16 16.805491990846683 16 16.805491990846683 16 16.805491990846683M16 12.851258581235697C16 12.851258581235697 14 12.851258581235697 14 12.851258581235697 14 12.851258581235697 14 10.874141876430206 14 10.874141876430206 14 10.874141876430206 16 10.874141876430206 16 10.874141876430206 16 10.874141876430206 16 12.851258581235697 16 12.851258581235697 16 12.851258581235697 16 12.851258581235697 16 12.851258581235697"-->
-                                        <!--                                                          stroke-width="0" stroke="none" stroke-dasharray="none"-->
-                                        <!--                                                          stroke-dashoffset="none" fill="rgb(0,0,0)"-->
-                                        <!--                                                          fill-rule="evenOdd"></path>-->
-                                        <!--                                                </svg>-->
-                                        <!--                                            </g>-->
-                                        <!--                                        </button>-->
-
-                                        <a th:href="@{/builder_objects/card/{id}(id=${element.getId()})}">
-                                            <button class="btn btn-default btn-sm float-right" title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
-                                        </a>
-                                        <button class="btn btn-default btn-sm float-right for-delete" data-parameter="2"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
+                <div class="card">
+                    <div class="card-header" style="text-align: right">
+                        <button class="btn btn-submit" id="clean-filter">Очистить</button>
+                    </div>
+                    <div class="card-body">
+                        <table class="invoice-list-table table border-top dataTable no-footer dtr-column">
+                            <thead>
+                            <tr style="text-align: center">
+                                <th>Название</th>
+                                <th>Район</th>
+                                <th>Топозона</th>
+                                <th>Улица</th>
+                                <th>Этажность</th>
+                                <th>Цена от</th>
+                                <th></th>
                             </tr>
-                        </div>
-                        </tbody>
-                    </table>
-                    <br>
-                    <div class="row">
-                        <div class="col-sm-6" id="rowPanelCount">
-                            <p th:text="${panelCount}"></p>
-                        </div>
-                        <div class="col-sm-6">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-end" id="paginationItems">
-                                    <li class="page-item">
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><input type="text" class="form-control for-filter"></td>
+                                <td><input type="text" class="form-control for-filter"></td>
+                                <td><input type="text" class="form-control for-filter"></td>
+                                <td><input type="text" class="form-control for-filter"></td>
+                                <td><input type="text" class="form-control for-filter"></td>
+                                <td><input type="text" class="form-control for-filter"></td>
+                            </tr>
+                            <tr class="odd" style="text-align: center" th:if="${list.size()<1}">
+                                <td valign="top" colspan="7" class="dataTables_empty">No data available in table</td>
+                            </tr>
+                            <div th:unless="${list.size()<1}">
+                                <tr style="text-align: center" th:each="element,i:${list}"
+                                    th:id="'elementTable'+${element.getId()}">
+                                    <td th:text="${element.getName()}"></td>
+                                    <td th:text="${element.getAddress().getDistrict()}"></td>
+                                    <td th:text="${element.getAddress().getZone()}"></td>
+                                    <td th:text="${element.getAddress().getStreet()}"></td>
+                                    <td th:text="${element.getFloorQuantity()}"></td>
+                                    <td th:text="${listPrice.get(i.index)}"></td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a th:href="@{/builder_objects/card/{id}(id=${element.getId()})}">
+                                                <button class="btn btn-default btn-sm float-right"
+                                                        title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
+                                            </a>
+                                            <button class="btn btn-default btn-sm float-right for-delete"
+                                                    th:onclick="'openModal('+${element.getId()}+')'">
+                                                <i class="fa fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </div>
+                            </tbody>
+                        </table>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-6" id="rowPanelCount">
+                                <p th:text="${panelCount}"></p>
+                            </div>
+                            <div class="col-sm-6">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-end" id="paginationItems">
+                                        <li class="page-item">
                                             <span class="page-link" href="#" aria-label="Previous"
                                                   th:hidden="${currentPage == 0}">
                                                 <span aria-hidden="true">&#10094;</span>
                                             </span>
-                                    </li>
-                                    <li class="page-item" th:if="${currentPage >= 2}">
+                                        </li>
+                                        <li class="page-item" th:if="${currentPage >= 2}">
                                             <span class="page-link" href="#"
                                                   th:text="1"></span>
-                                    </li>
-                                    <li class="page-item disabled" th:if="${currentPage >= 3}">
-                                        <span class="page-link">...</span>
-                                    </li>
-                                    <li class="page-item"
-                                        th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
-                                        th:classappend="${pageNumber == currentPage} ? 'active' : ''"
-                                        th:if="${pageNumber >= 0 && pageNumber <= (totalPages - 1)}">
+                                        </li>
+                                        <li class="page-item disabled" th:if="${currentPage >= 3}">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                        <li class="page-item"
+                                            th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+                                            th:classappend="${pageNumber == currentPage} ? 'active' : ''"
+                                            th:if="${pageNumber >= 0 && pageNumber <= (totalPages - 1)}">
                                             <span class="page-link" href="#"
                                                   th:text="${pageNumber + 1}">
                                             </span>
-                                    </li>
-                                    <li class="page-item" th:if="${currentPage==0 && totalPages>5}">
+                                        </li>
+                                        <li class="page-item" th:if="${currentPage==0 && totalPages>5}">
                                             <span class="page-link" href="#"
                                                   th:text="${2 + 1}">
                                             </span>
-                                    </li>
-                                    <li class="page-item disabled" th:if="${currentPage <= totalPages - 4}">
-                                        <span class="page-link">...</span>
-                                    </li>
-                                    <li class="page-item" th:if="${currentPage <= totalPages - 3}">
+                                        </li>
+                                        <li class="page-item disabled" th:if="${currentPage <= totalPages - 4}">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                        <li class="page-item" th:if="${currentPage <= totalPages - 3}">
                                             <span class="page-link" href="#"
                                                   th:text="${totalPages}"></span>
-                                    </li>
-                                    <li class="page-item" th:data-page="${currentPage+2}">
+                                        </li>
+                                        <li class="page-item" th:data-page="${currentPage+2}">
                                             <span class="page-link" href="#" aria-label="Next"
                                                   th:hidden="${currentPage == 0&&totalPages==1}">
                                                 <span aria-hidden="true">&#10095;</span>
                                             </span>
-                                    </li>
-                                </ul>
-                            </nav>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div id="deleteModal" class="modal animate__animated animate__flipInX"
+                 tabindex="-1" aria-labelledby="flipInXAnimationModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Вы точно хотите удалить объект от
+                                строителя?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelBtn">
+                                    Отмена
+                                </button>
+                                <button type="button" class="btn btn-primary" id="okBtn">Да</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-warning notification  d-flex align-items-center hidden" role="alert"
+                 id="notification">
+                <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.94118 10.7474V20.7444C5.94118 21.0758 5.81103 21.3936 5.57937 21.628C5.3477 21.8623 5.0335 21.994 4.70588 21.994H2.23529C1.90767 21.994 1.59347 21.8623 1.36181 21.628C1.13015 21.3936 1 21.0758 1 20.7444V11.997C1 11.6656 1.13015 11.3477 1.36181 11.1134C1.59347 10.879 1.90767 10.7474 2.23529 10.7474H5.94118ZM5.94118 10.7474C7.25166 10.7474 8.50847 10.2207 9.43512 9.28334C10.3618 8.34594 10.8824 7.07456 10.8824 5.74887V4.49925C10.8824 3.83641 11.1426 3.20071 11.606 2.73201C12.0693 2.26331 12.6977 2 13.3529 2C14.0082 2 14.6366 2.26331 15.0999 2.73201C15.5632 3.20071 15.8235 3.83641 15.8235 4.49925V10.7474H19.5294C20.1847 10.7474 20.8131 11.0107 21.2764 11.4794C21.7397 11.9481 22 12.5838 22 13.2466L20.7647 19.4947C20.5871 20.2613 20.25 20.9196 19.8045 21.3704C19.3589 21.8211 18.8288 22.04 18.2941 21.994H9.64706C8.6642 21.994 7.72159 21.599 7.0266 20.896C6.33162 20.1929 5.94118 19.2394 5.94118 18.2451"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                </svg>
+                <strong id="text_notification"></strong>
+                <div>
+                    <span id="notification-message"></span>
+                </div>
+            </div>
         </div>
+
     </div>
-    </div>
+
+    <script th:inline="javascript">
+
+
+        // Удаление-начало
+        $('#clean-filter').click(function () {
+            let filterElements = $('.for-filter');
+            filterElements.each(function () {
+                $(this).val("");
+            });
+            getPage(1)
+        });
+        let elementDelete;
+        function openModal(elem) {
+            console.log(elem);
+            elementDelete = elem;
+            $("#deleteModal").modal("show");
+        }
+        $(document).on("click", "#okBtn", function () {
+            let contextPath =/*[[@{/}]]*/ '';
+            let url =  contextPath + "builder_objects/delete/" + elementDelete;
+            console.log(url)
+            $.ajax({
+                url: url,
+                method: "DELETE",
+                success: function (response) {
+                    $("#elementTable"+elementDelete).empty();
+                    $("#cancelBtn").click();
+                    console.log(response);
+                    showNotification("Warn! ",response,false);
+                },
+                error: function (context) {
+                    console.log("ERROR " + context);
+                }
+            })
+        });
+        // Удаление-конец
+        // Показ сообщения
+        function showNotification(bigTextMessage, message, isSuccess) {
+            const notification = document.getElementById("notification");
+            const notificationMessage = document.getElementById("notification-message");
+
+            var element = document.getElementById("text_notification");
+            element.textContent = bigTextMessage;
+
+            notificationMessage.textContent = message;
+            notification.classList.remove("hidden");
+            notification.classList.toggle("alert-success", isSuccess);
+            notification.classList.toggle("alert-warning", !isSuccess);
+            setTimeout(() => {
+                notification.classList.add("hidden");
+            }, 5000);
+        }
+    </script>
 </div>
 </body>
 </html>
