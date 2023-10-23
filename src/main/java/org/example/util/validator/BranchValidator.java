@@ -1,4 +1,4 @@
-package org.example.validator;
+package org.example.util.validator;
 
 import org.example.dto.BranchDto;
 import org.springframework.stereotype.Component;

@@ -2,7 +2,6 @@ package org.example.mapper;
 
 import org.example.dto.BranchDto;
 import org.example.entity.Branch;
-import org.example.validator.BranchValidator;
 import org.springframework.stereotype.Component;
 
 @Component

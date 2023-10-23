@@ -7,19 +7,16 @@ import org.example.dto.BranchDto;
 import org.example.entity.Branch;
 import org.example.mapper.BranchMapper;
 import org.example.repository.BranchRepository;
-import org.example.validator.BranchValidator;
+import org.example.util.validator.BranchValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor

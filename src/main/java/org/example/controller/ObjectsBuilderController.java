@@ -45,7 +45,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/objects/byBuilder")
+@RequestMapping("/builder_objects")
 @Log4j2
 public class ObjectsBuilderController {
     Integer pageSize = 10;
