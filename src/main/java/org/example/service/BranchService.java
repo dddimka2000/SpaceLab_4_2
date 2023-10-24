@@ -42,6 +42,9 @@ public class BranchService {
                 .and(BranchSpecification.nameContains(name))
                 .and(BranchSpecification.addressContains(address)), pageable);
     }
+    public Page<Branch> forSelect(String name, Pageable pageable) {
+        return branchRepository.findAll(Specification.where(BranchSpecification.nameContains(name)), pageable);
+    }
     public void deleteById(long id){
         branchRepository.deleteById(id);
     }
