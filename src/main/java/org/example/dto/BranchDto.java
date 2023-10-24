@@ -18,7 +18,7 @@ public class BranchDto {
     @NotBlank(message = "Поле повинно бути заповненим")
     @Size(max = 50, message = "Поле може містити максимум 50 символів")
     private String address;
-    @Pattern(regexp = "\\d{10}", message = "Телефон повинен мати 10 цифр")
+    @Pattern(regexp = "^\\+380\\d{9}$", message = "Телефон повинен бути у форматі +380xxxxxxxxx")
     private String telephone;
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Некоректний email")
     private String email;
