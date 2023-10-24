@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+>
+<head>
+    <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Новый риелтор</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
+                    <li class="breadcrumb-item"><a href="#">Риелторы</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Новый риелтор</li>
+                </ol>
+            </nav>
+        </div>
+        <hr style="margin-top: -5px">
+
+        <ul class="nav nav-pills mb-3" role="tablist">
+            <li class="nav-item">
+                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home" aria-selected="true">
+                    Информация
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-top-reviews" aria-controls="navs-pills-top-profile"
+                        aria-selected="false">Отзывы
+                </button>
+            </li>
+        </ul>
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-content">
+                    <form method="post" th:action="@{/realtors/add}" th:object="${realtor}"
+                          enctype="multipart/form-data">
+                        <div class="tab-pane fade show active" id="navs-pills-top-info">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <img id="previewImage" class="pull-left img-responsive mb-2"
+                                         src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
+                                         style="width: 50%; height: 200px">
+                                    <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png, .pdf"
+                                           onchange="validateAndUpload('previewImage')" th:field="*{img}"
+                                           th:style="${#fields.hasErrors('img') ? 'border-color: #ff0000' : ''}">
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                         th:if="${#fields.hasErrors('img')}" th:errors="*{img}">
+                                        <input th:field="*{id}" type="text" class="form-control" hidden>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label class="form-label">Код</label>
+                                    <input placeholder="11" type="number" class="form-control" th:field="*{code}"
+                                           th:style="${#fields.hasErrors('code') ? 'border-color: #ff0000' : ''}">
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                         th:if="${#fields.hasErrors('code')}" th:errors="*{code}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Филиалы</label>
+                                    <select id="branchSelect2" style="margin-right: 12px; margin-left: 12px;"
+                                            th:field="*{branch}"
+                                            th:style="${#fields.hasErrors('branch') ? 'border-color: #ff0000' : ''}"></select>
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                         th:if="${#fields.hasErrors('branch')}" th:errors="*{branch}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label class="form-label">Фамилия</label>
+                                    <input type="text" class="form-control" th:field="*{surname}"
+                                           th:style="${#fields.hasErrors('surname') ? 'border-color: #ff0000' : ''}"
+                                           placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                         th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Имя</label>
+                                    <input type="text" class="form-control" th:field="*{name}"
+                                           th:style="${#fields.hasErrors('name') ? 'border-color: #ff0000' : ''}"
+                                           placeholder="Александр"
+                                           aria-describedby="defaultFormControlHelp"/>
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                         th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label class="form-label">Отчество</label>
+                                    <input type="text" class="form-control" th:field="*{middleName}"
+                                           th:style="${#fields.hasErrors('middleName') ? 'border-color: #ff0000' : ''}"
+                                           placeholder="Сергеевич"
+                                           aria-describedby="defaultFormControlHelp"/>
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                         th:if="${#fields.hasErrors('middleName')}"
+                                         th:errors="*{middleName}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Дата рождения</label>
+                                    <input type="date" class="form-control"
+                                           th:field="*{birthdate}"
+                                           th:style="${#fields.hasErrors('birthdate') ? 'border-color: #ff0000' : ''}"
+                                           placeholder="yyyy/MM/dd"
+                                           aria-describedby="defaultFormControlHelp"/>
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                         th:if="${#fields.hasErrors('birthdate')}"
+                                         th:errors="*{birthdate}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="text" class="form-control"
+                                           th:field="*{email}"
+                                           th:style="${#fields.hasErrors('email') ? 'border-color: #ff0000' : ''}"
+                                           placeholder="test@gmail.com"
+                                           aria-describedby="defaultFormControlHelp"/>
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                         th:if="${#fields.hasErrors('email')}"
+                                         th:errors="*{email}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <h3>Телефоны</h3>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-5">
+                                    <input type="text" class="form-control"
+                                           aria-describedby="defaultFormControlHelp"/>
+                                </div>
+                                <div class="col-5">
+                                    <select class="form-control">
+                                        <option value="AK">Viber</option>
+                                        <option value="HI">Telegram</option>
+                                    </select>
+                                </div>
+                                <div class="col-1">
+                                    <button class="btn btn-default btn-sm">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-5">
+                                    <input type="text" class="form-control"
+                                           aria-describedby="defaultFormControlHelp"/>
+                                </div>
+                                <div class="col-5">
+                                    <select class="form-control">
+                                        <option value="AK">Viber</option>
+                                        <option value="HI">Telegram</option>
+                                    </select>
+                                </div>
+                                <div class="col-1">
+                                    <button class="btn btn-default btn-sm">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-5">
+                                </div>
+                                <div class="col-5 d-flex justify-content-end">
+                                    <a class="btn btn-info">Добавить</a>
+                                </div>
+                                <div class="col-1">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <h3>Сменить пароль</h3>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label class="form-label">Новый пароль</label>
+                                    <input type="password" class="form-control"
+                                           th:field="*{password}"
+                                           aria-describedby="defaultFormControlHelp"/>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Повтор пароля</label>
+                                    <input type="password" class="form-control"
+                                           aria-describedby="defaultFormControlHelp"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="tab-pane fade" id="navs-pills-top-reviews">
+                        <div class="row mb-3">
+                            <h5>Прикрепить PDF файлы</h5>
+                            <input type="file" name="" id="">
+                            <ul>
+                                <div class="row">
+                                    <div class="col-1">1.pdf</div>
+                                    <div class="col-2"><a href="#">Скачать файл</a></div>
+                                    <div class="col-1"><a href="#">х Удалить</a></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-1">1.pdf</div>
+                                    <div class="col-2"><a href="#">Скачать файл</a></div>
+                                    <div class="col-1"><a href="#">х Удалить</a></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-1">1.pdf</div>
+                                    <div class="col-2"><a href="#">Скачать файл</a></div>
+                                    <div class="col-1"><a href="#">х Удалить</a></div>
+                                </div>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-5">
+                                    <label>Имя</label>
+                                    <input type="text" class="form-control" name="" id="">
+                                </div>
+                                <div class="col-5">
+                                    <label>Контакт</label>
+                                    <input type="text" class="form-control" name="" id="">
+                                </div>
+                                <div class="col-1">
+                                    [icon]
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-10">
+                                    <label>Отзыв</label>
+                                    <textarea name="" class="form-control" id="" cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-5">
+                                    <label>Имя</label>
+                                    <input type="text" class="form-control" name="" id="">
+                                </div>
+                                <div class="col-5">
+                                    <label>Контакт</label>
+                                    <input type="text" class="form-control" name="" id="">
+                                </div>
+                                <div class="col-1">
+                                    [icon]
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-10">
+                                    <label>Отзыв</label>
+                                    <textarea name="" class="form-control" id="" cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-default">Отменить</button>
+                    <button class="btn btn-success">Сохранить</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            branchSelect2()
+        })
+    </script>
+</section>
+
+</body>
+</html>
