@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon/favicon.ico}">
+    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
@@ -72,7 +72,7 @@
                 <div class="row">
                     <div class="col-md-8"></div>
                     <div class="col-md-1">
-                        <button class="btn btn-submit">Распечатать</button>
+                        <button class="btn btn-submit" id="printButton">Распечатать</button>
                     </div>
                     <div class="col-md-1"></div>
                     <div class="col-md-2">
@@ -110,31 +110,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="odd" style="text-align: center" th:if="${list.size()<1}">
-                                <td valign="top" colspan="7" class="dataTables_empty">No data available in table</td>
-                            </tr>
-                            <div th:unless="${list.size()<1}">
-                                <tr style="text-align: center" th:each="element,i:${list}"
-                                    th:id="'elementTable'+${element.getId()}">
-                                    <td th:text="${element.getName()}"></td>
-                                    <td th:text="${element.getAddress().getDistrict()}"></td>
-                                    <td th:text="${element.getAddress().getZone()}"></td>
-                                    <td th:text="${element.getAddress().getStreet()}"></td>
-                                    <td th:text="${element.getFloorQuantity()}"></td>
-                                    <td th:text="${listPrice.get(i.index)}"></td>
-                                    <td>
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a th:href="@{/builder_objects/card/{id}(id=${element.getId()})}">
-                                                <button class="btn btn-default btn-sm float-right"
-                                                        title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
-                                            </a>
-                                            <button class="btn btn-default btn-sm float-right for-delete"
-                                                    th:onclick="'openModal('+${element.getId()}+')'">
-                                                <i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </div>
                             </tbody>
                         </table>
 
@@ -193,6 +168,77 @@
     <script th:src="@{/js/pagination.js}"></script>
 
     <script th:inline="javascript">
+        let dtoArray = new Map();
+        document.getElementById("printButton").addEventListener("click", function () {
+
+
+                var branchTable = $("#branchTable");
+                var rows = branchTable.find('tbody').find('tr');
+                var data = [];
+
+                rows.each(function () {
+                    var rowData = {
+                        name: '',
+                        district: '',
+                        street: '',
+                        topozone: '',
+                        floorQuantity: 0,
+                        minPrice: 0
+                    };
+
+                    var tds = $(this).find('td');
+
+                    rowData.name = tds.eq(0).text();
+                    rowData.district = tds.eq(1).text();
+                    rowData.topozone = tds.eq(2).text();
+                    rowData.street = tds.eq(3).text();
+                    rowData.floorQuantity = parseInt(tds.eq(4).text());
+                    rowData.minPrice = parseInt(tds.eq(5).text());
+
+                    data.push(rowData);
+
+                });
+
+
+                let contextPath =/*[[@{/}]]*/'';
+                let url = contextPath.toString() + "builder_objects/generate-excel";
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    contentType: 'application/json',
+                    data: JSON.stringify(data), // Преобразуйте данные в формат JSON
+                    xhrFields: {
+                        responseType: 'blob'
+                    },  success: function(data) {
+                        var blob = new Blob([data]);
+                        var blobUrl = window.URL.createObjectURL(blob);
+
+                        // Открываем новую вкладку и печатаем
+                        var newTab = window.open(blobUrl, '_blank');
+                        newTab.onload = function() {
+                            newTab.print();
+                        };
+
+                        // var link = document.createElement('a');
+                        // link.href = window.URL.createObjectURL(blob);
+                        // link.printLink = filename || 'example.xlsx';
+                        // document.body.appendChild(link);
+                        // console.log(link)
+                        // console.log(link.href)
+                        // var newTab = window.open(link.href, '_blank');
+                        // newTab.onload = function() {
+                        //     newTab.print();
+                        // };
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error)
+                    }
+                })
+
+
+            }
+        )
+
         $(document).ready(function () {
             getPageWithFilter(0)
         })
@@ -223,7 +269,7 @@
                     topozone: filterElements[2].value,
                     street: filterElements[3].value,
                     floorQuantity: filterElements[4].value,
-                    minPrice:   filterElements[5].value
+                    minPrice: filterElements[5].value
                 },
                 dataType: 'json',
                 success: function (builderObjects) {
@@ -260,21 +306,24 @@
                         var cell7 = newRow.insertCell(6);
                         cell7.innerHTML = `
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                       <a href="`+contextPath+`builder_objects/card/`+object.id+`">
+                       <a href="` + contextPath + `builder_objects/card/` + object.id + `">
                                                 <button class="btn btn-default btn-sm float-right"
                                                         title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
                                             </a>
                          <button class="btn btn-default btn-sm float-right for-delete"
-                                                    onclick="openModal(`+object.id+`)"><i class="fa fa-trash"></i></button>
+                                                    onclick="openModal(` + object.id + `)"><i class="fa fa-trash"></i></button>
                         </div>`;
                     }
                     $('#paginationItems').empty();
-                    if (builderObjects.totalPages > 1) {updatePagination(page, builderObjects.totalPages, 'paginationItems')}
+                    if (builderObjects.totalPages > 1) {
+                        updatePagination(page, builderObjects.totalPages, 'paginationItems')
+                    }
                     $('#rowPanelCount').empty();
                     updateLabelPagination(page, 'rowPanelCount', builderObjects.totalElements, builderObjects.numberOfElements, builderObjects.size);
                 },
             });
         }
+
 
         // Удаление-начало
         $('#clean-filter').click(function () {

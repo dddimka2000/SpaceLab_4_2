@@ -6,77 +6,58 @@
         layout:decorate="~{layout.html}"
 >
 <head>
-  <title>Content page</title>
+    <title>Content page</title>
 </head>
 
 <body>
 
 <section layout:fragment="content">
-  <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="d-flex justify-content-between">
-      <h4 class="fw-bold">Баннеры</h4>
-      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Главная</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Баннеры</li>
-        </ol>
-      </nav>
-    </div>
-    <hr style="margin-top: -5px">
-    <!-- <div style="width: 100%; display: flex; justify-content: flex-end">
-        <button class="btn btn-success">Добавить страницу</button>
-    </div> -->
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Баннеры</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Баннеры</li>
+                </ol>
+            </nav>
+        </div>
+        <hr style="margin-top: -5px">
+        <!-- <div style="width: 100%; display: flex; justify-content: flex-end">
+            <button class="btn btn-success">Добавить страницу</button>
+        </div> -->
 
-    <div class="card border">
-      <div class="card-body">
-        <table class="table table-bordered table-hover table-striped linkedRow" id="adminsTable">
-          <thead>
-          <tr>
-            <th>Название</th>
-            <th>Статус</th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>Баннер раздела от строителей</td>
-            <td>Активен</td>
-            <td>
-              <div class="d-flex">
-                <button class="btn btn-default btn-sm">
-                  <i class="fa fa-pencil"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Баннер раздела от инвесторов</td>
-            <td>Активен</td>
-            <td>
-              <div class="d-flex">
-                <button class="btn btn-default btn-sm">
-                  <i class="fa fa-pencil"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Баннер раздела вторичной</td>
-            <td>Активен</td>
-            <td>
-              <div class="d-flex">
-                <button class="btn btn-default btn-sm">
-                  <i class="fa fa-pencil"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+        <div class="card border">
+            <div class="card-body">
+                <table class="table table-bordered table-hover table-striped linkedRow" id="adminsTable">
+                    <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Статус</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="banner:${banners}" th:if="${banners.size()>0}">
+                        <td th:text="${banner.getName()}">Баннер раздела от строителей</td>
+                        <td th:if="${banner.getStatus() == true}">Активен</td>
+                        <td th:if="${banner.getStatus() == false}">Отключен</td>
+                        <td>
+                            <div class="d-flex">
+                                <a th:href="@{/banners/{id}(id=${banner.getId()})}">
+                                    <button class="btn btn-default btn-sm">
+                                        <i class="fa fa-pencil"></i>
+                                    </button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-  </div>
+    </div>
 </section>
 
 </body>

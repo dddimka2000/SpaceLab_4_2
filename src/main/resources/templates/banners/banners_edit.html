@@ -6,85 +6,239 @@
         layout:decorate="~{layout.html}"
         xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <style>
+        .notification {
+            position: fixed;
+            top: 90px;
+            right: 40px; /* Расстояние справа */
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+            transition: opacity 0.5s ease-in-out;
+        }
 
-
+        .notification.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
 <body>
 
 <section layout:fragment="content">
-  <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="d-flex justify-content-between">
-      <h4 class="fw-bold">Название баннера</h4>
-      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Главная</a></li>
-          <li class="breadcrumb-item"><a href="#">Баннеры</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Название баннера</li>
-        </ol>
-      </nav>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <h4 class="fw-bold">Название баннера</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/banners}">Баннеры</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Название баннера</li>
+                </ol>
+            </nav>
+            <hr style="margin-top: -5px">
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Информация</h2>
+                    <hr>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <label>Название</label>
+                            <input type="text" class="form-control" id="nameBanners" th:value="${banner.nameBanners}">
+                            <br>
+                            <input class="form-check-input" type="checkbox" value="true" name="status"
+                                   th:checked="${banner.status}">
+                            <span class="checkmark">Активен</span>
+                        </div>
+                    </div>
+                    <h2>Слайды</h2>
+                    <div id="card-container">
+                    </div>
+                    <br>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-info" onclick="addLayoutCard()">Добавить слайд</button>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <a th:href="@{/banners}">
+                            <button class="btn btn-default">Отменить</button>
+                        </a>
+                        <button class="btn btn-success" onclick="sendForm()">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-warning notification  d-flex align-items-center hidden" role="alert"
+             id="notification">
+            <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.94118 10.7474V20.7444C5.94118 21.0758 5.81103 21.3936 5.57937 21.628C5.3477 21.8623 5.0335 21.994 4.70588 21.994H2.23529C1.90767 21.994 1.59347 21.8623 1.36181 21.628C1.13015 21.3936 1 21.0758 1 20.7444V11.997C1 11.6656 1.13015 11.3477 1.36181 11.1134C1.59347 10.879 1.90767 10.7474 2.23529 10.7474H5.94118ZM5.94118 10.7474C7.25166 10.7474 8.50847 10.2207 9.43512 9.28334C10.3618 8.34594 10.8824 7.07456 10.8824 5.74887V4.49925C10.8824 3.83641 11.1426 3.20071 11.606 2.73201C12.0693 2.26331 12.6977 2 13.3529 2C14.0082 2 14.6366 2.26331 15.0999 2.73201C15.5632 3.20071 15.8235 3.83641 15.8235 4.49925V10.7474H19.5294C20.1847 10.7474 20.8131 11.0107 21.2764 11.4794C21.7397 11.9481 22 12.5838 22 13.2466L20.7647 19.4947C20.5871 20.2613 20.25 20.9196 19.8045 21.3704C19.3589 21.8211 18.8288 22.04 18.2941 21.994H9.64706C8.6642 21.994 7.72159 21.599 7.0266 20.896C6.33162 20.1929 5.94118 19.2394 5.94118 18.2451"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
+            <strong id="text_notification"></strong>
+            <div>
+                <span id="notification-message"></span>
+            </div>
+        </div>
     </div>
-    <hr style="margin-top: -5px">
+    <script th:inline="javascript">
+        let imgThymeleafPath = [];
+        document.addEventListener("DOMContentLoaded", function () {
+            let thymeleafDto =/*[[${bannerList}]]*/'';
+            let num_thymeleaf = 1;
+            thymeleafDto.forEach(function (s) {
+                addLayoutCard();
+                $("#previewImage" + num_thymeleaf).attr("src", "data:image/jpeg;base64, " + s.oldImgPath).addClass('d-block w-px-300 h-px-300 rounded');
+                $("#nameSlide" + num_thymeleaf).attr("value", s.name);
+                $("#quantitySlide" + num_thymeleaf).attr("value", s.queue);
+                $("#previewImage" + num_thymeleaf);
+                imgThymeleafPath.push(s.oldImgName);
+                num_thymeleaf++;
+            });
+        })
 
-    <div class="card">
-      <div class="card-header">
-        <h2>Информация</h2>
-        <hr>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-6">
-            <label>Название</label>
-            <input type="text" class="form-control" name="" id="">
-            <input type="checkbox" name="" id=""> Активен
-          </div>
-        </div>
+        function sendForm() {
+            let formData = new FormData();
+            console.log(layoutArray)
+            let index = 0;
+            formData.append("status", $('[name="status"]').prop('checked'));
+            formData.append("nameBanners", $("#nameBanners").val());
+            if (layoutArray.length > 0) {
+                layoutArray.forEach(function (element) {
+                    console.log(element);
+                    let layoutData = {
+                        name: $("#nameSlide" + element).val(),
+                        queue: $("#quantitySlide" + element).val(),
+                    }
+                    let inputImage = $("#file" + element).prop('files');
+                    if (inputImage.length > 0) {
+                        layoutData.imgPath = inputImage[0];
+                    } else {
+                        if (imgThymeleafPath[index] != null)
+                            layoutData.oldImgPath = imgThymeleafPath[index]
+                    }
+                    for (let key in layoutData) {
+                        formData.append(`slides[${index}].${key}`, layoutData[key]);
+                    }
+                    console.log(layoutData)
+                    index = index + 1;
+                });
+                let contextPath =/*[[@{/}]]*/'';
+                let idThymeleaf =/*[[${idModel}]]*/'';
+                let url = contextPath.toString() + "banners/" + idThymeleaf;
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function () {
+                        showNotification("Объект сохранен!", "", true);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error)
+                        if (xhr.responseText != null) {
+                            var errors = JSON.parse(xhr.responseText);
+                            errors.forEach(function (error) {
+                                console.log("Ошибка: " + error);
+                                showNotification("Ошибка!", error, false);
+                            });
+                        }
+                    }
+                })
+            }
+            else {
+                showNotification("Заполните хотя бы 1 слайд","",false)
+            }
 
-        <h2>Слайды</h2>
-        <div class="row border ">
-          <div class="col-3">
-            <p>-image-</p>
-            <input type="file" name="" id="">
-          </div>
-          <div class="col-7">
-            <label>Название</label>
-            <input type="text" class="form-control" name="" id="">
-            <label>Порядок</label>
-            <input type="text" class="form-control" name="" id="">
-          </div>
-          <div class="col-2 position-relative">
-            <button class="btn btn-default position-absolute" style="top: 0; right: 0; width: 40px">
-              <i class="fa fa-trash"></i>
-            </button>
-          </div>
-        </div>
-        <div class="row border position-relative">
-          <div class="col-3">
-            <p>-image-</p>
-            <input type="file" name="" id="">
-          </div>
-          <div class="col-9">
-            <label>Название</label>
-            <input type="text" class="form-control" name="" id="">
-            <label>Порядок</label>
-            <input type="text" class="form-control" name="" id="">
-          </div>
-          <button class="btn btn-default position-absolute" style="top: 0; right: 0">
-            <i class="fa fa-trash"></i>
-          </button>
-        </div>
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-info">Добавить слайд</button>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-default">Отменить</button>
-          <button class="btn btn-success">Сохранить</button>
-        </div>
-      </div>
-    </div>
 
-  </div>
+        }
+
+        function updatePreviewImage(input, imgId) {
+            if (input.files && input.files[0]) {
+                var file = input.files[0];
+                if (file.type.startsWith('image/')) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#' + imgId).removeAttr('hidden');
+                        $('#' + imgId).attr('src', e.target.result);
+                        $('#' + imgId).addClass('d-block w-px-300 h-px-300 rounded');
+                        if (imgId > imgMaxId) {
+                            imgMaxId = imgId;
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    input.value = '';
+                    showNotification("Warning!", "Только изображения", false)
+                }
+            }
+        }
+
+        let imgMaxId = 1;
+        let layoutArray = [];
+
+        function addLayoutCard() {
+            let cardContainer = document.getElementById('card-container');
+            let newCard = document.createElement('div');
+            newCard.className = 'row border';
+            newCard.style.padding = '15px';
+            newCard.style.marginTop = '20px';
+            newCard.id = 'card' + imgMaxId;
+            layoutArray.push(imgMaxId);
+            newCard.innerHTML = `  <div class="col-3">
+                            <img id="previewImage` + imgMaxId + `" style=" max-width: 100%; height: auto; margin-bottom: 5px">
+                            <br>
+                            <input type="file" class="form-control" name="file" id="file` + imgMaxId + `"
+                                   onchange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')">
+                        </div>
+                        <div class="col-7">
+                            <label>Название</label>
+                            <input type="text" class="form-control" id="nameSlide` + imgMaxId + `">
+                            <label>Порядок</label>
+                            <input type="number" class="form-control"  id="quantitySlide` + imgMaxId + `">
+                        </div>
+                        <div class="col-2 position-relative">
+                            <button class="btn btn-info waves-effect waves-light position-absolute" onclick="deleteLayout(` + imgMaxId + `)" style="top: 0; right: 0; width: 40px">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>`
+            cardContainer.appendChild(newCard);
+            console.log("Добавление слайда");
+            imgMaxId++;
+        }
+
+        function deleteLayout(imgId) {
+            let textCard = "#card" + imgId;
+            layoutArray = layoutArray.filter(function (item) {
+                return item !== imgId;
+            });
+            $(textCard).remove();
+            showNotification("Warning!", "Слайд удален", false)
+            console.log("Удаление Layout");
+        }
+
+        function showNotification(bigTextMessage, message, isSuccess) {
+            const notification = document.getElementById("notification");
+            const notificationMessage = document.getElementById("notification-message");
+
+            var element = document.getElementById("text_notification");
+            element.textContent = bigTextMessage;
+
+            notificationMessage.textContent = message;
+            notification.classList.remove("hidden");
+            notification.classList.toggle("alert-success", isSuccess);
+            notification.classList.toggle("alert-warning", !isSuccess);
+            setTimeout(() => {
+                notification.classList.add("hidden");
+            }, 5000);
+        }
+    </script>
 </section>
-
 </body>
 </html>

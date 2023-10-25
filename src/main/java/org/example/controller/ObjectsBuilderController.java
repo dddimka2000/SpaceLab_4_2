@@ -3,8 +3,10 @@ package org.example.controller;
 import io.minio.errors.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.apache.poi.ss.usermodel.*;
 import org.example.dto.*;
 import org.example.entity.BuilderObject;
 import org.example.entity.BuilderObjectPromotion;
@@ -25,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +37,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -42,6 +47,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 @Controller
 @RequestMapping("/builder_objects")
@@ -560,4 +567,54 @@ public class ObjectsBuilderController {
                 .contentLength(file.length)
                 .body(resource);
     }
+
+    @PostMapping("/generate-excel")
+    public ResponseEntity generateExcel(HttpServletResponse response, @RequestBody ArrayList<ObjectBuilderDtoSearch> objectBuilderDTOSearchList) throws IOException {
+        log.info(objectBuilderDTOSearchList);
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Название листа");
+
+        CellStyle boldStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        boldStyle.setFont(font);
+
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Название");
+        headerRow.createCell(1).setCellValue("Район");
+        headerRow.createCell(2).setCellValue("Топозона");
+        headerRow.createCell(3).setCellValue("Улица");
+        headerRow.createCell(4).setCellValue("Этажность");
+        headerRow.createCell(5).setCellValue("Цена от");
+
+        for (int i = 0; i < 6; i++) {
+            headerRow.getCell(i).setCellStyle(boldStyle);
+        }
+        int num=1;
+        for (ObjectBuilderDtoSearch objectBuilderDtoSearch:objectBuilderDTOSearchList){
+            Row row = sheet.createRow(num);
+            row.createCell(0).setCellValue(objectBuilderDtoSearch.getName());
+            row.createCell(1).setCellValue(objectBuilderDtoSearch.getDistrict());
+            row.createCell(2).setCellValue(objectBuilderDtoSearch.getTopozone());
+            row.createCell(3).setCellValue(objectBuilderDtoSearch.getStreet());
+            row.createCell(4).setCellValue(objectBuilderDtoSearch.getFloorQuantity());
+            row.createCell(5).setCellValue(objectBuilderDtoSearch.getMinPrice());
+            num++;
+        }
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        workbook.write(bos);
+        byte[] bytes = bos.toByteArray();
+
+        log.info(bytes);
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add("Content-Disposition", "inline; filename=example.xlsx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(bytes);    }
 }
