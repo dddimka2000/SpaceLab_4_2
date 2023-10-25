@@ -35,7 +35,7 @@
     <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
-
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script th:src="@{/vendor/js/helpers.js}"></script>
     <script th:src="@{/vendor/js/template-customizer.js}"></script>
     <script th:src="@{/js/config.js}"></script>
@@ -59,95 +59,100 @@
         }
 
     </style>
+
+
 </head>
 <div class="background-element">
     <div class="container">
-                <!-- Login -->
-                <div class="card"  >
-                    <div class="card-body" style="flex-grow: 1; width: 600px">
-                        <!-- Logo -->
-                        <div class="app-brand justify-content-center mb-4 mt-2">
+        <!-- Login -->
+        <div class="card">
+            <div class="card-body" style="flex-grow: 1; width: 600px">
+                <!-- Logo -->
+                <div class="app-brand justify-content-center mb-4 mt-2">
                   <span class="app-brand-logo">
                     <img width="70" height="auto"
                          th:src="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
                   </span>
+                </div>
+                <!-- /Logo -->
+                <h4 class="mb-1 pt-2" style="text-align: center">Добро пожаловать 👋</h4>
+                <p class="mb-4" style="text-align: center">Войдите в аккаунт</p>
+                <div th:if="${param.error}" style="text-align: center"><p class="text-danger">
+                    Неправильный
+                    логин или пароль</p></div>
+                <form id="formAuthentication" class="mb-3 fv-plugins-bootstrap5 fv-plugins-framework"
+                      th:action="@{/auth/process_login}" method="POST" novalidate="novalidate">
+                    <div class="mb-3 fv-plugins-icon-container">
+                        <input type="hidden" th:value="${_csrf}" name="_csrf">
+
+                        <label for="username" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="username"
+                               name="username"
+                               placeholder="Введите Email" autofocus="">
+                        <div class="fv-plugins-message-container invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3 form-password-toggle fv-plugins-icon-container">
+                        <div class="d-flex justify-content-between">
+                            <label class="form-label" for="password">Пароль</label>
+                            <!--                                <a href="auth-forgot-password-basic.html">-->
+                            <!--                                    <small>Forgot Password?</small>-->
+                            <!--                                </a>-->
                         </div>
-                        <!-- /Logo -->
-                        <h4 class="mb-1 pt-2" style="text-align: center">Добро пожаловать 👋</h4>
-                        <p class="mb-4" style="text-align: center">Войдите в аккаунт</p>
-                        <div th:if="${param.error}" style="text-align: center"><p class="text-danger">
-                            Неправильный
-                            логин или пароль</p></div>
-                        <form id="formAuthentication" class="mb-3 fv-plugins-bootstrap5 fv-plugins-framework"
-                              th:action="@{/auth/process_login}" method="POST" novalidate="novalidate">
-                            <div class="mb-3 fv-plugins-icon-container">
-                                <input type="hidden" th:value="${_csrf}" name="_csrf">
-
-                                <label for="username" class="form-label">Email</label>
-                                <input type="text" class="form-control" id="username"
-                                       name="username"
-                                       placeholder="Введите Email" autofocus="">
-                                <div class="fv-plugins-message-container invalid-feedback"></div>
-                            </div>
-                            <div class="mb-3 form-password-toggle fv-plugins-icon-container">
-                                <div class="d-flex justify-content-between">
-                                    <label class="form-label" for="password">Пароль</label>
-                                    <!--                                <a href="auth-forgot-password-basic.html">-->
-                                    <!--                                    <small>Forgot Password?</small>-->
-                                    <!--                                </a>-->
-                                </div>
-                                <div class="input-group input-group-merge has-validation">
-                                    <input type="password" id="password" class="form-control" name="password"
-                                           placeholder="············" aria-describedby="password">
-                                    <span class="input-group-text"><i
-                                            class="ti ti-eye-off" style="cursor: pointer" onclick="showPass(this)"></i></span>
-                                </div>
-                                <div class="fv-plugins-message-container invalid-feedback"></div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="remember-me" name="remember-me">
-                                    <label class="form-check-label" for="remember-me"> Запомнить меня </label>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <button class="btn btn-primary d-grid w-100 waves-effect waves-light" type="submit">
-                                    Войти
-                                </button>
-                            </div>
-
-                            <input type="hidden">
-                        </form>
-
-                        <p class="text-center">
-                            <span>Забыли пароль?</span>
-                            <a th:href="@{/auth/login/restore_password}">
-                                <span>Восстановить</span>
-                            </a>
-                        </p>
-
-                        <div class="divider my-4">
-                            <div class="divider-text">or</div>
+                        <div class="input-group input-group-merge has-validation">
+                            <input type="password" id="password" class="form-control" name="password"
+                                   placeholder="············" aria-describedby="password">
+                            <span class="input-group-text"><i
+                                    class="ti ti-eye-off" style="cursor: pointer" onclick="showPass(this)"></i></span>
                         </div>
-
-                        <div class="d-flex justify-content-center">
-                            <!--                                                    <a href="javascript:;" class="btn btn-icon btn-label-facebook me-3 waves-effect">-->
-                            <!--                                                        <i class="tf-icons fa-brands fa-facebook-f fs-5"></i>-->
-                            <!--                                                    </a>-->
-                            <a th:href="@{/oauth2/authorization/google}"
-                               class="btn btn-icon btn-label-google-plus me-3 waves-effect">
-                                <i class="tf-icons fa-brands fa-google fs-5"></i>
-                            </a>
-                            <!--                                                    <a href="javascript:;" class="btn btn-icon btn-label-twitter waves-effect">-->
-                            <!--                                                        <i class="tf-icons fa-brands fa-twitter fs-5"></i>-->
-                            <!--                                                    </a>-->
+                        <div class="fv-plugins-message-container invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="remember-me" name="remember-me">
+                            <label class="form-check-label" for="remember-me"> Запомнить меня </label>
                         </div>
                     </div>
+                    <div class="g-recaptcha" data-sitekey="6LfsicooAAAAABhlfGcWDA2py8k3stYJGy3jLqLj"
+                         style="margin: 5px; display: flex; justify-content: center;"></div>
+                    <div class="mb-3">
+                        <button class="btn btn-primary d-grid w-100 waves-effect waves-light" type="submit">
+                            Войти
+                        </button>
+                    </div>
+
+                    <input type="hidden">
+                </form>
+
+                <p class="text-center">
+                    <span>Забыли пароль?</span>
+                    <a th:href="@{/auth/login/restore_password}">
+                        <span>Восстановить</span>
+                    </a>
+                </p>
+
+                <div class="divider my-4">
+                    <div class="divider-text">or</div>
                 </div>
-                <!-- /Register -->
+
+                <div class="d-flex justify-content-center">
+                    <!--                                                    <a href="javascript:;" class="btn btn-icon btn-label-facebook me-3 waves-effect">-->
+                    <!--                                                        <i class="tf-icons fa-brands fa-facebook-f fs-5"></i>-->
+                    <!--                                                    </a>-->
+                    <a th:href="@{/oauth2/authorization/google}"
+                       class="btn btn-icon btn-label-google-plus me-3 waves-effect">
+                        <i class="tf-icons fa-brands fa-google fs-5"></i>
+                    </a>
+                    <!--                                                    <a href="javascript:;" class="btn btn-icon btn-label-twitter waves-effect">-->
+                    <!--                                                        <i class="tf-icons fa-brands fa-twitter fs-5"></i>-->
+                    <!--                                                    </a>-->
+                </div>
+            </div>
+        </div>
+        <!-- /Register -->
     </div>
 </div>
 </div>
+
 <script>
     function showPass(e) {
         let pass = document.getElementById("password");
