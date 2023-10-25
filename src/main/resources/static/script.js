@@ -9,10 +9,8 @@ function previewImage(event, imageId) {
 }
 
 function validateAndUpload(imageId) {
-    // Знаходимо всі інпути з класом 'fileInput'
     const fileInputs = document.querySelectorAll('.fileInput');
 
-    // Перебираємо знайдені інпути
     fileInputs.forEach(fileInput => {
         const file = fileInput.files[0];
         const toastContainer = document.createElement('div');
@@ -46,23 +44,34 @@ function validateAndUpload(imageId) {
 }
 
 function showToast(message, type) {
-    const toastContainer = document.querySelector('.position-fixed.bottom-0.end-0.p-3');
+    let toastContainer = document.querySelector('.position-fixed.bottom-0.end-0.p-3');
+
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.classList.add('position-fixed', 'bottom-0', 'end-0', 'p-3');
+        document.body.appendChild(toastContainer);
+    }
+
     const toast = document.createElement('div');
     toast.classList.add('toast', `bg-${type}`);
     toast.innerHTML = `
         <div class="toast-body text-white">
-            <button type="button" class="btn-close" style="margin-left: 93%; margin-bottom: 15px" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button" class="btn-close" style="margin-left: 93%" data-bs-dismiss="toast" aria-label="Close"></button>
             ${message}
         </div>`;
+
     toastContainer.appendChild(toast);
+
     const toastInstance = new bootstrap.Toast(toast, {
-         delay: 2000
+        delay: 2000
     });
     toastInstance.show();
+
     toast.querySelector('.btn-close').addEventListener('click', function () {
         toastInstance.hide();
     });
 }
+
 
 
 function branchSelect2() {
