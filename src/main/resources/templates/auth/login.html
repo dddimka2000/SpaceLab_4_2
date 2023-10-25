@@ -77,9 +77,12 @@
                 <!-- /Logo -->
                 <h4 class="mb-1 pt-2" style="text-align: center">Добро пожаловать 👋</h4>
                 <p class="mb-4" style="text-align: center">Войдите в аккаунт</p>
-                <div th:if="${param.error}" style="text-align: center"><p class="text-danger">
-                    Неправильный
-                    логин или пароль</p></div>
+                <div th:if="${param.error}" style="text-align: center">
+                    <div class="alert alert-danger" role="alert"> Неправильный логин или пароль</div>
+                   </div>
+                <div th:if="${param.recaptchaError}" style="text-align: center">
+                    <div class="alert alert-danger" role="alert">Подтвердите, что вы не являетесь роботом</div>
+                </div>
                 <form id="formAuthentication" class="mb-3 fv-plugins-bootstrap5 fv-plugins-framework"
                       th:action="@{/auth/process_login}" method="POST" novalidate="novalidate">
                     <div class="mb-3 fv-plugins-icon-container">
