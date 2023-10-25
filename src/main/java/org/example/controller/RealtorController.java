@@ -1,10 +1,13 @@
 package org.example.controller;
 
+import jakarta.validation.Valid;
 import org.example.dto.RealtorDto;
 import org.example.entity.Realtor;
+import org.example.entity.property.type.ContactType;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,9 +26,23 @@ public class RealtorController {
     }
 
     @GetMapping("/add")
-    public ModelAndView editPage() {
+    public ModelAndView addPage() {
         ModelAndView modelAndView = new ModelAndView("realtors/realtor_add");
-        modelAndView.addObject("realtor", new RealtorDto());
+        modelAndView.addObject("realtorDto", new RealtorDto());
+        modelAndView.addObject("contactTypes", ContactType.values());
+        return modelAndView;
+    }
+    @PostMapping("/add")
+    public ModelAndView addPage(@ModelAttribute @Valid RealtorDto realtorDto, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView();
+        if(bindingResult.hasErrors()){
+            modelAndView.addObject("contactTypes", ContactType.values());
+            modelAndView.addObject("realtorDto", realtorDto);
+            modelAndView.setViewName("realtors/realtor_add");
+            return modelAndView;
+        }
+        modelAndView.setViewName("realtors/realtor_add");
+        modelAndView.addObject("realtorDto", new RealtorDto());
         return modelAndView;
     }
 

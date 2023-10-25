@@ -17,8 +17,8 @@
             <h4 class="fw-bold">Новый риелтор</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
-                    <li class="breadcrumb-item"><a href="#">Риелторы</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/realtors}">Риелторы</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Новый риелтор</li>
                 </ol>
             </nav>
@@ -42,9 +42,9 @@
         <div class="card">
             <div class="card-body">
                 <div class="tab-content">
-                    <form method="post" th:action="@{/realtors/add}" th:object="${realtor}"
-                          enctype="multipart/form-data">
-                        <div class="tab-pane fade show active" id="navs-pills-top-info">
+                    <div class="tab-pane fade show active" id="navs-pills-top-info">
+                        <form method="post" th:action="@{/realtors/add}" th:object="${realtorDto}"
+                              enctype="multipart/form-data" id="realtorAdd">
                             <div class="row mb-3">
                                 <div class="col-6">
                                     <img id="previewImage" class="pull-left img-responsive mb-2"
@@ -55,8 +55,8 @@
                                            th:style="${#fields.hasErrors('img') ? 'border-color: #ff0000' : ''}">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('img')}" th:errors="*{img}">
-                                        <input th:field="*{id}" type="text" class="form-control" hidden>
                                     </div>
+                                    <input th:field="*{id}" type="text" class="form-control" hidden>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -143,45 +143,36 @@
                             <div class="row mb-3">
                                 <h3>Телефоны</h3>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-5">
-                                    <input type="text" class="form-control"
-                                           aria-describedby="defaultFormControlHelp"/>
+                            <div id="phones">
+                                <div class="row mb-3" th:each="contact: ${realtorDto.getContacts()}">
+                                    <div class="col-5">
+                                        <input type="text" class="form-control"
+                                               th:value="${contact.getId()}" hidden>
+                                        <input type="text" class="form-control"
+                                               th:value="${contact.getPhone()}"
+                                               aria-describedby="defaultFormControlHelp"/>
+                                    </div>
+                                    <div class="col-5">
+                                        <select class="form-control">
+                                            <option th:each="type: ${contactTypes}" th:value="${type}"
+                                                    th:text="${type}" th:selected="${type == contact.type}">Viber
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-1">
+                                        <button class="btn btn-default btn-sm">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-5">
-                                    <select class="form-control">
-                                        <option value="AK">Viber</option>
-                                        <option value="HI">Telegram</option>
-                                    </select>
-                                </div>
-                                <div class="col-1">
-                                    <button class="btn btn-default btn-sm">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>
+
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-5">
-                                    <input type="text" class="form-control"
-                                           aria-describedby="defaultFormControlHelp"/>
-                                </div>
-                                <div class="col-5">
-                                    <select class="form-control">
-                                        <option value="AK">Viber</option>
-                                        <option value="HI">Telegram</option>
-                                    </select>
-                                </div>
-                                <div class="col-1">
-                                    <button class="btn btn-default btn-sm">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
+
                             <div class="row mb-3">
                                 <div class="col-5">
                                 </div>
-                                <div class="col-5 d-flex justify-content-end">
-                                    <a class="btn btn-info">Добавить</a>
+                                <div class="col-5 d-flex justify-content-end" id="addPhone">
+                                    <button type="button" onclick="addBlockForPhone()" class="btn btn-info">Добавить</button>
                                 </div>
                                 <div class="col-1">
                                 </div>
@@ -198,32 +189,32 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label">Повтор пароля</label>
-                                    <input type="password" class="form-control"
+                                    <input type="password" class="form-control" id="password2"
                                            aria-describedby="defaultFormControlHelp"/>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
 
                     <div class="tab-pane fade" id="navs-pills-top-reviews">
                         <div class="row mb-3">
                             <h5>Прикрепить PDF файлы</h5>
-                            <input type="file" name="" id="">
+                            <input type="file" name="">
                             <ul>
                                 <div class="row">
                                     <div class="col-1">1.pdf</div>
                                     <div class="col-2"><a href="#">Скачать файл</a></div>
-                                    <div class="col-1"><a href="#">х Удалить</a></div>
+                                    <div class="col"><a href="#">х удалить</a></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-1">1.pdf</div>
                                     <div class="col-2"><a href="#">Скачать файл</a></div>
-                                    <div class="col-1"><a href="#">х Удалить</a></div>
+                                    <div class="col"><a href="#">х удалить</a></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-1">1.pdf</div>
                                     <div class="col-2"><a href="#">Скачать файл</a></div>
-                                    <div class="col-1"><a href="#">х Удалить</a></div>
+                                    <div class="col"><a href="#">х удалить</a></div>
                                 </div>
                             </ul>
                         </div>
@@ -238,7 +229,9 @@
                                     <input type="text" class="form-control" name="" id="">
                                 </div>
                                 <div class="col-1">
-                                    [icon]
+                                    <button class="btn btn-default btn-sm" style="margin-top: 22.042px;">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="row">
@@ -259,7 +252,9 @@
                                     <input type="text" class="form-control" name="" id="">
                                 </div>
                                 <div class="col-1">
-                                    [icon]
+                                    <button class="btn btn-default btn-sm" style="margin-top: 22.042px;">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="row">
@@ -274,18 +269,94 @@
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-default">Отменить</button>
-                    <button class="btn btn-success">Сохранить</button>
+                    <a th:href="@{/realtors}" class="btn btn-default">Отменить</a>
+                    <button onclick="sendForm()" class="btn btn-success">Сохранить</button>
                 </div>
             </div>
         </div>
-
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
-    <script>
+    <script th:inline="javascript">
         $(document).ready(function () {
             branchSelect2()
         })
+        function sendForm() {
+            const phoneContainer = document.getElementById("phones");
+            const id = document.getElementById("id");
+            const password = document.getElementById("password");
+            const password2 = document.getElementById("password2");
+            const inputsAndSelects = phoneContainer.querySelectorAll('input, select');
+
+            if(id.value === "" && (password.value === "" || password.value.length < 8 || password.value.length>50)){
+                password.style.borderColor='#ff0000'
+                showToast("Пароль повинен бути вказаний і містити більше 8 і менше 50 символів", 'danger')
+                return
+            }
+            if(id.value !== "" && password.value !== "" && password.value.length < 8 || password.value.length>50){
+                password.style.borderColor='#ff0000'
+                showToast("Пароль повинен містити більше 8 і менше 50 символів", 'danger')
+                return
+            }
+            if(password.value !== password2.value){
+                password.style.borderColor='#ff0000'
+                password2.style.borderColor='#ff0000'
+                showToast("Паролі не співпалають", 'danger')
+                return
+            }
+            if(inputsAndSelects.length < 1){
+                showToast("Повинен бути вказаний хоть один номер телефону", 'danger')
+                return
+            }
+            var index = 0;
+            for (let i = 0; i < inputsAndSelects.length; i+=3) {
+                if(!validatePhoneNumber(inputsAndSelects[i+1].value)){
+                    inputsAndSelects[i+1].style.borderColor='#ff0000'
+                    showToast("Номер телефона не коректний. Зразок: +380_________", 'danger')
+                    return
+                }
+                inputsAndSelects[i].name="contacts["+index+"].id"
+                inputsAndSelects[i+1].name="contacts["+index+"].phone"
+                inputsAndSelects[i+2].name="contacts["+(index++)+"].type"
+            }
+
+            $('#realtorAdd').submit();
+        }
+        function validatePhoneNumber(input) {
+            const phoneNumberRegex = /^\+380\d{9}$/;
+            return phoneNumberRegex.test(input);
+        }
+        function addBlockForPhone() {
+            const phoneContainer = document.getElementById("phones");
+            const newPhoneBlock = document.createElement("div");
+            var contactTypes = [[${contactTypes}]]
+
+            newPhoneBlock.className = "row mb-3";
+
+            newPhoneBlock.innerHTML = `
+            <div class="col-5">
+                <input type="text" class="form-control" hidden/>
+                <input type="text" placeholder="+380989898989" class="form-control" aria-describedby="defaultFormControlHelp" name="phone" />
+            </div>
+            <div class="col-5">
+                <select class="form-control" name="type">
+                    ${contactTypes.map(type => `<option value="${type}">${type}</option>`).join('')}
+                </select>
+            </div>
+            <div class="col-1">
+                <button class="btn btn-default btn-sm delete-phone">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>`;
+            phoneContainer.appendChild(newPhoneBlock);
+
+            const deleteButtons = newPhoneBlock.querySelectorAll(".delete-phone")
+            deleteButtons.forEach((button) => {
+                button.addEventListener("click", function () {
+                    phoneContainer.removeChild(newPhoneBlock)
+                });
+            });
+        };
+
     </script>
 </section>
 
