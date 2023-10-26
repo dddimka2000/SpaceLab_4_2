@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class BranchDto {
-    private Integer id;
+    private Long id;
 
     @NotNull(message = "Поле повинно бути заповненим")
     @Min(value = 1, message = "Число повинно бути більшим за 1")

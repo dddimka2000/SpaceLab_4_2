@@ -28,7 +28,13 @@ public class BranchService {
     private final BranchMapper branchMapper;
     private final BranchRepository branchRepository;
     public void add(BranchDto branchDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        Branch branch = branchMapper.toEntity(branchDto, minioService);
+        Branch branch = new Branch();
+        if(branchDto.getId()==null) branch = branchMapper.toEntity(branchDto, minioService);
+        else {
+            branch = branchRepository.findById(branchDto.getId()).get();
+            branchMapper.updateDtoFromEntity(branch, branchDto, minioService);
+        }
+
         branchRepository.save(branch);
     }
     public Branch getById(long id){
