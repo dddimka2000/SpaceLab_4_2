@@ -1,6 +1,7 @@
 package org.example.config;
 
 import groovy.util.logging.Log4j2;
+import org.example.service.RecaptchaService;
 import org.example.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableWebSecurity
@@ -22,16 +25,21 @@ public class WebSecurityConfig {
     private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, ClientRegistrationRepository clientRegistrationRepository) {
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, ClientRegistrationRepository clientRegistrationRepository, RestTemplate restTemplate) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
         this.clientRegistrationRepository = clientRegistrationRepository;
+        this.restTemplate = restTemplate;
     }
+
     private final ClientRegistrationRepository clientRegistrationRepository;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
+
+    private final
+    RestTemplate restTemplate;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,12 +52,13 @@ public class WebSecurityConfig {
                         authorize
                                 .and()
                                 .oauth2Login(oauth2Login ->
-                                        oauth2Login
+                                                oauth2Login
 //                                                .defaultSuccessUrl("/auth/login")
-                                                .clientRegistrationRepository(clientRegistrationRepository)
+                                                        .clientRegistrationRepository(clientRegistrationRepository)
                                 )
+
                                 .authorizeHttpRequests()
-                                .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login").permitAll()
+                                .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login","/static/**").permitAll()
 //                                .requestMatchers("/**").hasAnyAuthority("ADMIN", "MODERATOR")
                                 .requestMatchers("/admin/**")
                                 .authenticated()
@@ -57,7 +66,6 @@ public class WebSecurityConfig {
                                 .and()
                                 .logout()
                                 .logoutSuccessUrl("/")
-
                                 .permitAll();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -76,9 +84,13 @@ public class WebSecurityConfig {
                                         new LoginUrlAuthenticationEntryPoint("/auth/login"),
                                         new AntPathRequestMatcher("/admin/**")
                                 )
-                );
+                )
+                .addFilterBefore(new CaptchaFilter(recaptchaService), UsernamePasswordAuthenticationFilter.class);
+        ;
         return http.build();
     }
+    @Autowired
+    RecaptchaService recaptchaService;
 
 
 }

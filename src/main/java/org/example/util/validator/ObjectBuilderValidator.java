@@ -66,7 +66,8 @@ public class ObjectBuilderValidator implements Validator {
             if (contentType != null) {
                 if (contentType.startsWith("application/vnd.ms-excel") || // Excel
                         contentType.startsWith("application/pdf") || // PDF
-                        contentType.startsWith("application/msword")) { // Word
+                        contentType.startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document")||
+                        contentType.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ) { // Word
                     return false;
                 }
             }
