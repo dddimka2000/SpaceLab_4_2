@@ -37,7 +37,7 @@ public class BranchController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView infoPage(@PathVariable("id")long id) {
+    public ModelAndView infoPage(@PathVariable("id")int id) {
         ModelAndView modelAndView = new ModelAndView("branch/branch_info");
         modelAndView.addObject("branch", branchService.getById(id));
         return modelAndView;
@@ -50,7 +50,7 @@ public class BranchController {
         return modelAndView;
     }
     @GetMapping("/edit/{id}")
-    public ModelAndView edit(@PathVariable("id")Long id) {
+    public ModelAndView edit(@PathVariable("id")int id) {
         ModelAndView modelAndView = new ModelAndView("branch/branch_add");
         modelAndView.addObject("branchDto", branchService.getById(id));
         return modelAndView;
@@ -77,12 +77,11 @@ public class BranchController {
     @GetMapping("/get-all")
     @ResponseBody
     public Page<Branch> getAll(@RequestParam("code")String code, @RequestParam("name")String name, @RequestParam("address")String address, @RequestParam("page")int page){
-        Page<Branch> branches = branchService.getAll(page, code, name, address);
         return branchService.getAll(page, code, name, address);
     }
     @GetMapping("/delete/{id}")
     @ResponseBody
-    public ResponseEntity<String> deleteById(@PathVariable("id")long id){
+    public ResponseEntity<String> deleteById(@PathVariable("id")int id){
         branchService.deleteById(id);
         return ResponseEntity.ok("Branch was deleted");
     }

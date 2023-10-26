@@ -71,7 +71,7 @@
                         </div>
                         <div class="col-6">
                             <label>Прикрепить фото</label>
-                            <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png, .pdf" name="imgPath" onchange="validateAndUpload()" th:style="${#fields.hasErrors('imgPath') ? 'border-color: #ff0000' : ''}">
+                            <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png" name="imgPath" onchange="validateAndUpload('', ['.jpg', '.jpeg', '.png'])" th:style="${#fields.hasErrors('imgPath') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('imgPath')}" th:errors="*{imgPath}"></div>
                         </div>

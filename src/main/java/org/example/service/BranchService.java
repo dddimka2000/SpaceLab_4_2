@@ -7,8 +7,7 @@ import org.example.dto.BranchDto;
 import org.example.entity.Branch;
 import org.example.mapper.BranchMapper;
 import org.example.repository.BranchRepository;
-import org.example.specification.BranchSpecification;
-import org.example.util.validator.BranchValidator;
+import org.example.service.specification.BranchSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,12 +31,12 @@ public class BranchService {
         if(branchDto.getId()==null) branch = branchMapper.toEntity(branchDto, minioService);
         else {
             branch = branchRepository.findById(branchDto.getId()).get();
-            branchMapper.updateDtoFromEntity(branch, branchDto, minioService);
+            branchMapper.updateEntityFromDto(branchDto, branch, minioService);
         }
 
         branchRepository.save(branch);
     }
-    public Branch getById(long id){
+    public Branch getById(int id){
         return branchRepository.findById(id).get();
     }
     public Page<Branch> getAll(int page, String code, String name, String address) {
@@ -51,7 +50,7 @@ public class BranchService {
     public Page<Branch> forSelect(String name, Pageable pageable) {
         return branchRepository.findAll(Specification.where(BranchSpecification.nameContains(name)), pageable);
     }
-    public void deleteById(long id){
+    public void deleteById(int id){
         branchRepository.deleteById(id);
     }
 }

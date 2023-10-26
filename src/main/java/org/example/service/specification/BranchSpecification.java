@@ -1,4 +1,4 @@
-package org.example.specification;
+package org.example.service.specification;
 
 import org.example.entity.Branch;
 import org.springframework.data.jpa.domain.Specification;
