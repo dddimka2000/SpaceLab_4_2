@@ -6,52 +6,105 @@
         layout:decorate="~{layout.html}"
 >
 <head>
-  <title>Content page</title>
+    <title>Content page</title>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        .white-text {
+            color: white !important; /* Используйте !important, чтобы сделать стиль более приоритетным */
+        }
+    </style>
 </head>
 
 <body>
 
 <section layout:fragment="content">
-  <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="d-flex justify-content-between">
-      <h4 class="fw-bold">Название страницы</h4>
-      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Главная</a></li>
-          <li class="breadcrumb-item"><a href="#">Страницы</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Название страницы</li>
-        </ol>
-      </nav>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Название страницы</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
+                    <li class="breadcrumb-item"><a href="#">Страницы</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Название страницы</li>
+                </ol>
+            </nav>
+        </div>
+        <hr style="margin-top: -5px">
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Информация</h2>
+                <hr>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <label>Название</label>
+                        <input type="text" class="form-control" name="" id="namePage" th:value="${page.getName()}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label>Контент</label>
+                    <div class="col-6">
+                        <div id="editor" th:utext="${page.getContent()}">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-default">Отменить</button>
+                    <button class="btn btn-success" onclick="save()">Сохранить</button>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <hr style="margin-top: -5px">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
-    <div class="card">
-      <div class="card-header">
-        <h2>Информация</h2>
-        <hr>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-6">
-            <label>Название</label>
-            <input type="text" class="form-control" name="" id="">
-          </div>
-        </div>
+    <script>
 
-        <div class="row">
-          <label>Контент</label>
-          <textarea id="summernote" name="editordata"></textarea>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-default">Отменить</button>
-          <button class="btn btn-success">Сохранить</button>
-        </div>
-      </div>
-    </div>
+        var quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+    </script>
 
-  </div>
+    <script th:inline="javascript">
+        function save() {
+            let editor = $(".ql-editor")
+            console.log(editor.html())
+            let name=$("#namePage")
+            let formData = new FormData();
+            formData.append("name", name.val());
+            formData.append("content",editor.html());
+            let contextPath =/*[[@{/}]]*/'';
+            let idThymeleaf =/*[[${id}]]*/'';
+            let url = contextPath.toString() + "pages/edit/" + idThymeleaf;
+            $.ajax({
+                url: url,
+                method: "POST",
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function () {
+                    showNotification("Объект сохранен!", "", true);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error)
+                    if (xhr.responseText != null) {
+                        var errors = JSON.parse(xhr.responseText);
+                        errors.forEach(function (error) {
+                            console.log("Ошибка: " + error);
+                            showNotification("Ошибка!", error, false);
+                        });
+                    }
+                }
+            })
+        }
+    </script>
+
 </section>
 
 </body>
