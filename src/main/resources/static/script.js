@@ -8,7 +8,7 @@ function previewImage(event, imageId) {
     reader.readAsDataURL(event.target.files[0]);
 }
 
-function validateAndUpload(imageId) {
+function validateAndUpload(imageId, allowedExtensions) {
     const fileInputs = document.querySelectorAll('.fileInput');
 
     fileInputs.forEach(fileInput => {
@@ -20,26 +20,27 @@ function validateAndUpload(imageId) {
         if (!file) {
             showToast('Файл не вибрано', 'danger');
             fileInput.value = '';
-            return;
+            return false;
         }
 
         if (file.size > 20 * 1024 * 1024) {
             showToast('Файл перевищує 20 МБ', 'danger');
             fileInput.value = '';
-            return;
+            return false;
         }
 
-        const allowedExtensions = ['.jpg', '.jpeg', '.png', '.pdf'];
         const fileExtension = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2);
+        const lowerCaseExtension = `.${fileExtension.toLowerCase()}`;
 
-        if (!allowedExtensions.includes(`.${fileExtension.toLowerCase()}`)) {
-            showToast('Непідтримуваний тип файлу доступні такі типи: jpg, jpeg, png, pdf', 'danger');
+        if (!allowedExtensions.includes(lowerCaseExtension)) {
+            showToast(`Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`, 'danger');
             fileInput.value = '';
-            return;
+            return false;
         }
 
         showToast('Файл успішно завантажено', 'success');
         if (imageId != null && imageId.length > 1) previewImage(event, imageId);
+        return true;
     });
 }
 
@@ -74,7 +75,7 @@ function showToast(message, type) {
 
 
 
-function branchSelect2() {
+function branchSelect2(id, text) {
     $('#branchSelect2').select2({
         allowClear: true,
         ajax: {
@@ -103,5 +104,13 @@ function branchSelect2() {
             },
             cache: true
         }
-    });
+    }).on('select2:select', function (e) {
+        var selectedBranchId = e.params.data.id;
+        var input = document.querySelector('select[name="branch"]');
+        input.value=selectedBranchId;
+    })
+    if(text === null || id === null) {
+        $('#branchSelect2').append(new Option(text.toString(), id.toString(), true, true));
+        $('#branchSelect2').trigger('change');
+    }
 }

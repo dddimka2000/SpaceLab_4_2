@@ -4,6 +4,8 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.example.entity.Branch;
 import org.example.entity.RealtorContact;
+import org.example.entity.RealtorFeedBack;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -28,8 +30,11 @@ public class RealtorDto {
     private String middleName;
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Некоректний email")
     private String email;
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate birthdate;
     private MultipartFile img;
     private Branch branch;
     private List<RealtorContact> contacts;
+    private List<MultipartFile> files;
+    private List<RealtorFeedBack> realtorFeedBacks;
 }

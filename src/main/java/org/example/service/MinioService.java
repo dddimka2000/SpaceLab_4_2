@@ -1,10 +1,9 @@
 package org.example.service;
 
-import io.minio.GetObjectArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.RemoveObjectArgs;
+import io.minio.*;
 import io.minio.errors.*;
+import io.minio.http.Method;
+import lombok.SneakyThrows;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -100,5 +99,14 @@ public class MinioService {
         String name = UUID.randomUUID()+"."+extension;
         putMultipartFile(image, imagesBucketName, name);
         return name;
+    }
+    @SneakyThrows
+    public String getUrl(String fileName) {
+        GetPresignedObjectUrlArgs args = GetPresignedObjectUrlArgs.builder()
+                .bucket("project.4.2")
+                .object("/images/"+fileName)
+                .method(Method.GET)
+                .build();
+        return minioClient.getPresignedObjectUrl(args);
     }
 }
