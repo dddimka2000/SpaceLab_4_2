@@ -25,7 +25,7 @@ public class OAuth2Config {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationUri("https://accounts.google.com/o/oauth2/auth")
                 .tokenUri("https://www.googleapis.com/oauth2/v4/token")
-                .redirectUri("http://localhost:8080/slj/callback")
+                .redirectUri("http://localhost:8080/ProminadaDD/callback")
                 .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
                 .userNameAttributeName(IdTokenClaimNames.SUB)
                 .clientName("Google")

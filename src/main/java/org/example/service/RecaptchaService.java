@@ -23,11 +23,6 @@ public class RecaptchaService {
     }
 
     public RecaptchaResponse validateToken(String recaptchaToken) {
-
-        // https://www.google.com/recaptcha/api/siteverify METHOD: POST
-        // secret	Required. The shared key between your site and reCAPTCHA.
-        // response Required. The user response token provided by the reCAPTCHA client-side integration on your site.
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
