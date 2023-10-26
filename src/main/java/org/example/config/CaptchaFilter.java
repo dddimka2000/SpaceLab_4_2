@@ -27,16 +27,19 @@ public class CaptchaFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (request.getMethod().equals("POST")) {
-            log.info(response.getHeaderNames());
-            String recaptcha = request.getParameter("g-recaptcha-response");
-
-            RecaptchaResponse recaptchaResponse = recaptchaService.validateToken(recaptcha);
-            if (!recaptchaResponse.success()) {
-                log.info("Invalid reCAPTCHA token");
-
-                // Отправка перенаправления на страницу с ошибкой
-                response.sendRedirect("login?recaptchaError"); // Указать URL вашей страницы с ошибкой
-                return; // Важно прервать дальнейшее выполнение фильтра
+            String requestURI = request.getRequestURI();
+            log.info(request.getRequestURI());
+            log.info((context));
+            log.info((context+"auth/process_login"));
+            log.info("/ProminadaDD/auth/process_login");
+            if (("/ProminadaDD/auth/process_login").equals(requestURI)) {
+                String recaptcha = request.getParameter("g-recaptcha-response");
+                RecaptchaResponse recaptchaResponse = recaptchaService.validateToken(recaptcha);
+                if (!recaptchaResponse.success()) {
+                    log.error("Invalid reCAPTCHA token");
+                    response.sendRedirect("login?recaptchaError");
+                    return;
+                }
             }
         }
         filterChain.doFilter(request, response);

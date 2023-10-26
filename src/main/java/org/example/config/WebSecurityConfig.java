@@ -23,15 +23,19 @@ import org.springframework.web.client.RestTemplate;
 @Log4j2
 public class WebSecurityConfig {
     private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final
+    RecaptchaService recaptchaService;
+
+    private final ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, ClientRegistrationRepository clientRegistrationRepository, RestTemplate restTemplate) {
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, ClientRegistrationRepository clientRegistrationRepository, RestTemplate restTemplate, RecaptchaService recaptchaService) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
         this.clientRegistrationRepository = clientRegistrationRepository;
         this.restTemplate = restTemplate;
+        this.recaptchaService = recaptchaService;
     }
 
-    private final ClientRegistrationRepository clientRegistrationRepository;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -51,19 +55,26 @@ public class WebSecurityConfig {
                     try {
                         authorize
                                 .and()
+                                .authorizeHttpRequests(authorize2 ->
+                                        authorize2
+                                                .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login").permitAll()
+                                                .requestMatchers("/admin/**","/personal_account").authenticated()
+                                                .anyRequest().permitAll()
+                                )
                                 .oauth2Login(oauth2Login ->
                                                 oauth2Login
 //                                                .defaultSuccessUrl("/auth/login")
                                                         .clientRegistrationRepository(clientRegistrationRepository)
                                 )
-
-                                .authorizeHttpRequests()
-                                .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login","/static/**").permitAll()
-//                                .requestMatchers("/**").hasAnyAuthority("ADMIN", "MODERATOR")
-                                .requestMatchers("/admin/**")
-                                .authenticated()
-                                .anyRequest().permitAll()
-                                .and()
+//                                .authorizeHttpRequests(authorize ->
+//                                        authorize
+//                                                .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login", "/swagger-resources/**",
+//                                                        "/swagger-ui.html",
+//                                                        "/webjars/**",
+//                                                        "favicon.ico").permitAll()
+//                                                .requestMatchers("/admin/**","/personal_account").authenticated()
+//                                                .anyRequest().permitAll()
+//                                )
                                 .logout()
                                 .logoutSuccessUrl("/")
                                 .permitAll();
@@ -86,11 +97,8 @@ public class WebSecurityConfig {
                                 )
                 )
                 .addFilterBefore(new CaptchaFilter(recaptchaService), UsernamePasswordAuthenticationFilter.class);
-        ;
         return http.build();
     }
-    @Autowired
-    RecaptchaService recaptchaService;
 
 
 }
