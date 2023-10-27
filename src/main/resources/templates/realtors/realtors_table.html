@@ -31,7 +31,7 @@
         <div class="card border">
             <div class="card-header border">
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-default">Очистить</button>
+                    <button class="btn btn-default" id="clean-filter">Очистить</button>
                 </div>
             </div>
             <div class="card-body">
@@ -40,7 +40,7 @@
                         <thead>
                         <tr>
                             <th>Филиал</th>
-                            <th>Код</th>
+                            <th style="min-width: 100px">Код</th>
                             <th style="min-width: 160px">ФИО</th>
                             <th style="min-width: 160px">Телефон</th>
                             <th>Email</th>
@@ -84,7 +84,7 @@
     <script th:src="@{/js/pagination.js}"></script>
     <script>
         var page;
-        $(document).ready(function(){
+        $(document).ready(function () {
             getPageWithFilter(0)
             $('#datepicker').datepicker({
                 format: 'yyyy-mm-dd',
@@ -92,14 +92,16 @@
             });
         });
 
+
         $('.for-filter').on('input', function () {
             clearTimeout($(this).data('timeout'));
             var $input = $(this);
             var timeout = setTimeout(function () {
                 getPageWithFilter(0);
-            },700);
+            }, 700);
             $input.data('timeout', timeout);
         });
+
         function getPageWithFilter(page) {
             this.page = page
             var filterElements = $('.for-filter');
@@ -113,7 +115,7 @@
                     fullName: filterElements[2].value,
                     phone: filterElements[3].value,
                     email: filterElements[4].value,
-                    birthdate: '26.10.2023'
+                    birthdate: filterElements[5].value
                 },
                 success: function (realtors) {
                     console.log(realtors)
@@ -125,7 +127,7 @@
                         var newRow = tbody.insertRow();
 
                         var cell1 = newRow.insertCell(0);
-                        if (realtor.filial != null) cell1.innerHTML = realtor.filial.code;
+                        if (realtor.branch != null) cell1.innerHTML = realtor.branch.id;
                         cell1.onclick = function () {
                             window.location.href = '[[@{/realtors/}]]' + realtor.id;
                         };
@@ -142,7 +144,13 @@
                         };
 
                         var cell4 = newRow.insertCell(3);
-                        if(realtor.contacts[0]!=null)cell4.innerHTML = realtor.contacts[0].phone
+                        if (realtor.contacts != null) {
+                            for (var contact of realtor.contacts) {
+                                cell4.appendChild(document.createTextNode(contact.phone));
+                                cell4.appendChild(document.createElement("br"));
+                            }
+
+                        }
                         cell4.onclick = function () {
                             window.location.href = '[[@{/realtors/}]]' + realtor.id;
                         };
@@ -169,23 +177,41 @@
                 },
             });
         }
+
         function deleteElement(realtorId) {
+            $('#confirmationModal').modal('show');
 
-
-            var button = document.getElementById(realtorId);
-            var table = document.getElementById("realtorsTable");
-            var row = button.parentElement.parentElement;
-            table.deleteRow(row.rowIndex);
-
-            $.ajax({
-                type: "Get",
-                url: '[[@{/realtors/delete/}]]' + realtorId,
-                success: function () {
-                    getPageWithFilter(page)
-                },
+            $('.confirm-delete').on('click', function () {
+                var button = document.getElementById(realtorId);
+                var table = document.getElementById("realtorsTable");
+                var row = button.parentElement.parentElement;
+                table.deleteRow(row.rowIndex);
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/realtors/delete/}]]' + realtorId,
+                    success: function () {
+                        getPageWithFilter(page)
+                    },
+                });
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
             });
-
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
         }
+
+        $('#clean-filter').click(function () {
+            var filterElements = $('.for-filter');
+            filterElements[0].value = "";
+            filterElements[1].value = "";
+            filterElements[2].value = "";
+            filterElements[3].value = "";
+            filterElements[4].value = "";
+            filterElements[5].value = "";
+            getPageWithFilter(0)
+        });
     </script>
 </section>
 

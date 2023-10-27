@@ -44,6 +44,39 @@ function validateAndUpload(imageId, allowedExtensions) {
     });
 }
 
+
+function validateFile(imageId, allowedExtensions) {
+    const fileInput = document.getElementById(imageId);
+    var file = fileInput.files[0]
+    const toastContainer = document.createElement('div');
+        toastContainer.classList.add('position-fixed', 'bottom-0', 'end-0', 'p-3');
+        document.body.appendChild(toastContainer);
+
+        if (!file) {
+            showToast('Файл не вибрано', 'danger');
+            fileInput.value = '';
+            return false;
+        }
+
+        if (file.size > 20 * 1024 * 1024) {
+            showToast('Файл перевищує 20 МБ', 'danger');
+            fileInput.value = '';
+            return false;
+        }
+
+        const fileExtension = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2);
+        const lowerCaseExtension = `.${fileExtension.toLowerCase()}`;
+
+        if (!allowedExtensions.includes(lowerCaseExtension)) {
+            showToast(`Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`, 'danger');
+            fileInput.value = '';
+            return false;
+        }
+
+        showToast('Файл успішно завантажено', 'success');
+        return true;
+}
+
 function showToast(message, type) {
     let toastContainer = document.querySelector('.position-fixed.bottom-0.end-0.p-3');
 
@@ -109,8 +142,10 @@ function branchSelect2(id, text) {
         var input = document.querySelector('select[name="branch"]');
         input.value=selectedBranchId;
     })
-    if(text === null || id === null) {
+    if(text !== null && id !== null) {
         $('#branchSelect2').append(new Option(text.toString(), id.toString(), true, true));
         $('#branchSelect2').trigger('change');
     }
 }
+
+

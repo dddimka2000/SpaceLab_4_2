@@ -25,21 +25,23 @@
             </nav>
         </div>
         <hr style="margin-top: -5px">
-
-        <ul class="nav nav-pills mb-3" role="tablist">
-            <li class="nav-item">
-                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home" aria-selected="true">
-                    Информация
-                </button>
-            </li>
-            <li class="nav-item">
-                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-reviews" aria-controls="navs-pills-top-profile"
-                        aria-selected="false">Отзывы
-                </button>
-            </li>
-        </ul>
+        <div th:if="${realtorDto.id}">
+            <ul class="nav nav-pills mb-3" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home"
+                            aria-selected="true">
+                        Информация
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-top-reviews" aria-controls="navs-pills-top-profile"
+                            aria-selected="false">Отзывы
+                    </button>
+                </li>
+            </ul>
+        </div>
         <div class="card">
             <div class="card-body">
                 <div class="tab-content">
@@ -52,7 +54,8 @@
                                          src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
                                          style="width: 50%; height: 200px">
                                     <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png, .pdf"
-                                           onchange="validateAndUpload('previewImage', ['.jpg', '.jpeg', '.png'])" th:field="*{img}"
+                                           onchange="validateAndUpload('previewImage', ['.jpg', '.jpeg', '.png'])"
+                                           th:field="*{img}"
                                            th:style="${#fields.hasErrors('img') ? 'border-color: #ff0000' : ''}">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('img')}" th:errors="*{img}">
@@ -117,7 +120,8 @@
                                 <div class="col-6">
                                     <label class="form-label">Дата рождения</label>
                                     <input type="text" class="form-control" id="datepicker"
-                                           th:field="*{birthdate}" th:style="${#fields.hasErrors('birthdate') ? 'border-color: #ff0000' : ''}">
+                                           th:field="*{birthdate}"
+                                           th:style="${#fields.hasErrors('birthdate') ? 'border-color: #ff0000' : ''}">
 
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('birthdate')}"
@@ -159,7 +163,8 @@
                                         </select>
                                     </div>
                                     <div class="col-1">
-                                        <button class="btn btn-default btn-sm">
+                                        <button type="button" class="btn btn-default btn-sm"
+                                                th:onclick="@{deletePhone(this,'{id}')(id=${contact.id})}">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </div>
@@ -171,7 +176,8 @@
                                 <div class="col-5">
                                 </div>
                                 <div class="col-5 d-flex justify-content-end" id="addPhone">
-                                    <button type="button" onclick="addBlockForPhone()" class="btn btn-info">Добавить</button>
+                                    <button type="button" onclick="addBlockForPhone()" class="btn btn-info">Добавить
+                                    </button>
                                 </div>
                                 <div class="col-1">
                                 </div>
@@ -198,24 +204,36 @@
                     <div class="tab-pane fade" id="navs-pills-top-reviews">
                         <div class="row mb-3">
                             <h5>Прикрепить PDF файлы</h5>
-                            <input type="file" accept=".pdf" onchange="validateAndUpload('previewImage', ['.pdf'])">
-                            <div class="row" th:each="file: ${realtorDto.getFiles()}">
-                                <div class="col-2"><a href="#" class="text-decoration-none" th:onclick="@{downloadFileFromFeedBack('{file}')(file=${file})}">Скачать файл</a></div>
-                                <div class="col"><a href="#" class="text-decoration-none" th:onclick="@{deleteFileFromFeedBack('{file}')(file=${file})}">х удалить</a></div>
+                            <input type="file" accept=".pdf" id="file" onchange="downloadFileToFeedBack()">
+                            <div id="block-for-file">
+                                <div class="row" th:each="file: ${realtorDto.getFiles()}">
+                                    <div class="col-2"><a href="#" class="text-decoration-none"
+                                                          th:onclick="@{downloadFileFromFeedBack('{file}')(file=${file})}">Скачать
+                                        файл</a></div>
+                                    <div class="col"><a href="#" class="text-decoration-none for-delete"
+                                                        th:onclick="@{deleteFileFromFeedBack(this,'{file}')(file=${file})}">х
+                                        удалить</a></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row" th:each="body: ${realtorDto.getRealtorFeedBacks()}">
+                        <div class="row" th:each="body: ${realtorDto.getRealtorFeedBacks()}"
+                             th:id="'feedback-' + ${body.id}">
                             <div class="row">
                                 <div class="col-5">
                                     <label>Имя</label>
-                                    <input type="text" class="form-control" name="name" th:value="${body.name}">
+                                    <input type="text" class="form-control for-feedback" name="id" th:value="${body.id}"
+                                           hidden>
+                                    <input type="text" class="form-control for-feedback" name="name"
+                                           th:value="${body.name}">
                                 </div>
                                 <div class="col-5">
                                     <label>Контакт</label>
-                                    <input type="text" class="form-control" name="phone" th:value="${body.phone}">
+                                    <input type="text" class="form-control for-feedback" name="phone"
+                                           th:value="${body.phone}">
                                 </div>
                                 <div class="col-1">
-                                    <button class="btn btn-default btn-sm" style="margin-top: 22.042px;" th:onclick="@{deleteFeedBackBody('{idBody}')(idBody=${body.id})}">
+                                    <button class="btn btn-default btn-sm" style="margin-top: 22.042px;"
+                                            th:onclick="@{deleteFeedBackBody(this,'{idBody}')(idBody=${body.id})}">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </div>
@@ -223,7 +241,8 @@
                             <div class="row">
                                 <div class="col-10">
                                     <label>Отзыв</label>
-                                    <textarea name="description" class="form-control" cols="30" rows="10" th:value="${body.description}"></textarea>
+                                    <textarea name="description" class="form-control  for-feedback" cols="30" rows="10"
+                                              th:text="${body.description}"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -239,39 +258,176 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
-    <script th:inline="javascript">
-        var realtor = [[${realtorDto}]]
-        $(document).ready(function(){
+    <script>
+        const urlForAddFeedBack = '[[@{/realtors/feedback/save}]]'
+        $(document).ready(function () {
             $('#datepicker').datepicker({
                 format: 'yyyy-mm-dd',
                 autoclose: true
             });
-            if(realtor.branch!=null)branchSelect2(realtor.branch.id, realtor.branch.name)
+            if (realtor.branch != null) branchSelect2(realtor.branch.id, realtor.branch.name)
             else branchSelect2()
-            console.log(realtor.id)
-            if(realtor.id!=null){
+            if (realtor.id != null) {
                 $.ajax({
                     type: "Get",
-                    url: '/ProminadaDD/realtors/getUrl',
-                    data:{
+                    url: '[[@{/realtors/getUrl}]]',
+                    data: {
                         url: realtor.img
                     },
                     success: function (url) {
-                        console.log(url)
                         $('#previewImage').attr('src', url);
                     },
                 });
             }
         })
-        function deleteFileFromFeedBack(link){
-            console.log(link)
+
+        function deletePhone(button, id) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var rowElement = button.closest('.row');
+                if (rowElement) {
+                    rowElement.remove();
+                }
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/realtors/delete/contact/}]]' + id,
+                    success: function () {
+
+                    },
+                });
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
         }
-        function downloadFileFromFeedBack(link){
-            console.log(link)
+
+        function deleteFeedBackBody(button, idBody) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var feedbackElement = document.getElementById('feedback-' + idBody);
+                if (feedbackElement) {
+                    feedbackElement.remove();
+                }
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/realtors/feedback/delete/}]]' + idBody,
+                    success: function () {
+
+                    },
+                });
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
         }
-        function deleteFeedBackBody(idBody){
-            console.log(idBody)
+
+        function downloadFileToFeedBack() {
+            if (validateFile('file', ['.pdf'])) {
+                var fileInput = document.getElementById('file');
+                var formData = new FormData();
+                formData.append("file", fileInput.files[0]);
+                formData.append("idRealtor", realtor.id);
+
+                $.ajax({
+                    url: '[[@{/realtors/download/file}]]',
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (url) {
+                        var blockForFile = $("#block-for-file");
+
+                        var row = $("<div class='row'></div>");
+                        var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>Скачать файл</a></div>");
+                        col1.on("click", function () {
+                            downloadFileFromFeedBack(url);
+                        });
+
+                        var col2 = $("<div class='col'><a href='#' class='text-decoration-none for-delete'>х удалить</a></div>");
+                        col2.on("click", function () {
+                            deleteFileFromFeedBack(this, url);
+                        });
+
+                        row.append(col1);
+                        row.append(col2);
+
+                        blockForFile.append(row);
+                    },
+                    error: function (error) {
+                        console.error("Помилка завантаження файлу", error);
+                    }
+                });
+            }
         }
+
+        function deleteFileFromFeedBack(button, link) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var rowElement = button.closest('.row');
+                if (rowElement) {
+                    rowElement.remove();
+                }
+                $.ajax({
+                    url: '[[@{/realtors/delete}]]',
+                    type: "GET",
+                    data: {
+                        url: link,
+                        idRealtor: realtor.id
+                    },
+                    success: function () {
+
+                    },
+                    error: function (error) {
+                        console.error("Помилка видалення файлу", error);
+                    }
+                });
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+
+        function downloadFileFromFeedBack(link) {
+            $.ajax({
+                type: "GET",
+                url: "[[@{/realtors/download}]]?url=" + link,
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (data) {
+                    var blob = new Blob([data], {type: 'application/octet-stream'});
+                    var filename = "file.pdf";
+
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveOrOpenBlob(blob, filename);
+                    } else {
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
+                    }
+                },
+                error: function () {
+                    console.log("Помилка завантаження файлу");
+                }
+            });
+        }
+    </script>
+    <script th:inline="javascript">
+        var realtor = [[${realtorDto}]]
+
         function sendForm() {
             const phoneContainer = document.getElementById("phones");
             const id = document.getElementById("id");
@@ -279,44 +435,84 @@
             const password2 = document.getElementById("password2");
             const inputsAndSelects = phoneContainer.querySelectorAll('input, select');
 
-            if(id.value === "" && (password.value === "" || password.value.length < 8 || password.value.length>50)){
-                password.style.borderColor='#ff0000'
+            if (id.value === "" && (password.value === "" || password.value.length < 8 || password.value.length > 50)) {
+                password.style.borderColor = '#ff0000'
                 showToast("Пароль повинен бути вказаний і містити більше 8 і менше 50 символів", 'danger')
                 return
             }
-            if(id.value !== "" && password.value !== "" && password.value.length < 8 || password.value.length>50){
-                password.style.borderColor='#ff0000'
+            if (id.value !== "" && password.value !== "" && password.value.length < 8 || password.value.length > 50) {
+                password.style.borderColor = '#ff0000'
                 showToast("Пароль повинен містити більше 8 і менше 50 символів", 'danger')
                 return
             }
-            if(password.value !== password2.value){
-                password.style.borderColor='#ff0000'
-                password2.style.borderColor='#ff0000'
+            if (password.value !== password2.value) {
+                password.style.borderColor = '#ff0000'
+                password2.style.borderColor = '#ff0000'
                 showToast("Паролі не співпалають", 'danger')
                 return
             }
-            if(inputsAndSelects.length < 1){
+            if (inputsAndSelects.length < 1) {
                 showToast("Повинен бути вказаний хоть один номер телефону", 'danger')
                 return
             }
             var index = 0;
-            for (let i = 0; i < inputsAndSelects.length; i+=3) {
-                if(!validatePhoneNumber(inputsAndSelects[i+1].value)){
-                    inputsAndSelects[i+1].style.borderColor='#ff0000'
+            for (let i = 0; i < inputsAndSelects.length; i += 3) {
+                if (!validatePhoneNumber(inputsAndSelects[i + 1].value)) {
+                    inputsAndSelects[i + 1].style.borderColor = '#ff0000'
                     showToast("Номер телефона не коректний. Зразок: +380_________", 'danger')
                     return
                 }
-                inputsAndSelects[i].name="contacts["+index+"].id"
-                inputsAndSelects[i+1].name="contacts["+index+"].phone"
-                inputsAndSelects[i+2].name="contacts["+(index++)+"].type"
+                inputsAndSelects[i].name = "contacts[" + index + "].id"
+                inputsAndSelects[i + 1].name = "contacts[" + index + "].phone"
+                inputsAndSelects[i + 2].name = "contacts[" + (index++) + "].type"
             }
 
             $('#realtorAdd').submit();
+            var feedbacks = document.getElementsByClassName('for-feedback');
+            for (let i = 0; i < feedbacks.length; i += 4) {
+                if (!validString(3, 50, feedbacks[i + 1].value)) {
+                    feedbacks[i + 1].style.borderColor = '#ff0000'
+                    showToast("Ім'я повинно бути від 3 до 50 символів", 'danger')
+                    return
+                }
+                if (!validatePhoneNumber(feedbacks[i + 2].value)) {
+                    feedbacks[i + 2].style.borderColor = '#ff0000'
+                    showToast("Номер телефона не коректний. Зразок: +380_________", 'danger')
+                    return
+                }
+                if (!validString(3, 300, feedbacks[i + 3].value)) {
+                    feedbacks[i + 3].style.borderColor = '#ff0000'
+                    showToast("Опис повинен бути від 3 до 300 символів", 'danger')
+                    return
+                }
+            }
+            for (let i = 0; i < feedbacks.length; i += 4) {
+                $.ajax({
+                    type: "GET",
+                    url: urlForAddFeedBack,
+                    data: {
+                        id: feedbacks[i].value,
+                        name: feedbacks[i + 1].value,
+                        phone: feedbacks[i + 2].value,
+                        description: feedbacks[i + 3].value
+                    },
+                    success: function (url) {
+                        $('#previewImage').attr('src', url);
+                    },
+                });
+            }
         }
+
+        function validString(minLength, maxLength, inputString) {
+            var length = inputString.length;
+            return length >= minLength && length <= maxLength;
+        }
+
         function validatePhoneNumber(input) {
             const phoneNumberRegex = /^\+380\d{9}$/;
             return phoneNumberRegex.test(input);
         }
+
         function addBlockForPhone() {
             const phoneContainer = document.getElementById("phones");
             const newPhoneBlock = document.createElement("div");

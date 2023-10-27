@@ -1,9 +1,6 @@
 package org.example.service.specification;
 
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.*;
 import org.example.entity.Branch;
 import org.example.entity.Realtor;
 import org.example.entity.RealtorContact;
@@ -12,11 +9,6 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 
 public class RealtorSpecification {
-    public static Specification<Realtor> branchIdContains(String branchId) {
-        if (branchId.isBlank() || branchId.isEmpty()) return (root, query, criteriaBuilder) -> null;
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(criteriaBuilder.lower(root.get("branch.id").as(String.class)), "%" + branchId.toLowerCase() + "%");
-    }
 
     public static Specification<Realtor> codeContains(String code) {
         if (code.isBlank() || code.isEmpty()) return (root, query, criteriaBuilder) -> null;
@@ -41,6 +33,7 @@ public class RealtorSpecification {
                         "%" + surname.toLowerCase() + "%"
                 );
     }
+
     public static Specification<Realtor> nameContains(String name) {
         if (name.isBlank()) return (root, query, criteriaBuilder) -> null;
         return (root, query, criteriaBuilder) ->
@@ -51,9 +44,41 @@ public class RealtorSpecification {
     }
 
 
+    public static Specification<Realtor> phoneContains(String phone) {
+        if (phone.isBlank()) return (root, query, criteriaBuilder) -> null;
 
+        return (root, query, criteriaBuilder) -> {
+            Subquery<Integer> subquery = query.subquery(Integer.class);
+            Root<Realtor> subRoot = subquery.from(Realtor.class);
+            Join<Realtor, RealtorContact> contactJoin = subRoot.joinList("contacts");
 
+            subquery.select(subRoot.get("id")).where(criteriaBuilder.like(criteriaBuilder.lower(contactJoin.get("phone")), "%" + phone.toLowerCase() + "%"));
 
+            return criteriaBuilder.in(root.get("id")).value(subquery);
+        };
+    }
+
+    public static Specification<Realtor> branchContains(String branch) {
+        if (branch.isBlank()) return (root, query, criteriaBuilder) -> null;
+
+        return (root, query, criteriaBuilder) -> {
+            return criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("branch").get("id").as(String.class)),
+                    "%" + branch.toLowerCase() + "%"
+            );
+        };
+    }
+
+    public static Specification<Realtor> birthdateContains(String birthdate) {
+        if (birthdate.isBlank()) return (root, query, criteriaBuilder) -> null;
+
+        return (root, query, criteriaBuilder) -> {
+            return criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get("birthdate").as(String.class)),
+                    "%" + birthdate.toLowerCase() + "%"
+            );
+        };
+    }
 
     public static Specification<Realtor> emailContains(String email) {
         if (email.isBlank()) return (root, query, criteriaBuilder) -> null;

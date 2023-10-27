@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -17,4 +18,8 @@ public class RealtorContact {
 
     private String phone;
     private ContactType type;
+    @ManyToOne
+    @JoinColumn(name = "realtor_id")
+    @JsonBackReference
+    private Realtor realtor;
 }
