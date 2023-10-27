@@ -278,9 +278,8 @@ public class ObjectsBuilderController {
 
 
     @GetMapping("/edit/{id}")
-    public String EditMainInfoObjectsBuilderShow(@PathVariable Integer id, Model model) throws ServerException, InsufficientDataException
-            , ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException
-            , InvalidResponseException, XmlParserException, InternalException {
+    public String EditMainInfoObjectsBuilderShow(@PathVariable Integer id, Model model) throws MinioException,
+            NoSuchAlgorithmException, IOException, InvalidKeyException {
         Optional<BuilderObject> objectBuilder = objectBuilderService.findById(id);
         if (objectBuilder.isEmpty()) {
             return "/error/404";

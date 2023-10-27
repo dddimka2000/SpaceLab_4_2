@@ -6,118 +6,141 @@
       data-assets-path="/static/"
       data-template="vertical-menu-template-starter">
 <head>
-  <meta charset="utf-8" />
-  <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-  />
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
 
-  <title>Page 1 - Starter Kit | Vuexy - Bootstrap Admin Template</title>
+    <title>Page 1 - Starter Kit | Vuexy - Bootstrap Admin Template</title>
 
-  <meta name="description" content="" />
+    <meta name="description" content=""/>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon"
+          th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-          rel="stylesheet"
-  />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
 
-  <!-- Icons -->
-  <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
-  <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
-  <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
 
-  <!-- Core CSS -->
-  <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css" />
-  <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-default.css}" class="template-customizer-theme-css" />
-  <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css"/>
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-default.css}" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
 
-  <!-- Vendors CSS -->
-  <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
-  <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
-  <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
-  <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
-  <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
-  <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
-  <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
 
 
-  <!-- Page CSS -->
+    <!-- Page CSS -->
 
-  <!-- Helpers -->
-  <script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
-  <script th:src="@{/vendor/js/helpers.js}"></script>
-  <script th:src="@{/vendor/js/template-customizer.js}"></script>
-  <script th:src="@{/js/config.js}"></script>
+    <!-- Helpers -->
+    <script th:src="@{/vendor/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <script th:src="@{/vendor/js/template-customizer.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
 
-  <link th:href="@{/vendor/css/rtl/core.css}"
-        class="template-customizer-core-css">
-  <link  th:href="@{/vendor/css/rtl/theme-default.css}"
-        class="template-customizer-theme-css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link th:href="@{/vendor/css/rtl/core.css}"
+          class="template-customizer-core-css">
+    <link th:href="@{/vendor/css/rtl/theme-default.css}"
+          class="template-customizer-theme-css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 </head>
 <body>
 
 <div class="layout-wrapper layout-content-navbar">
-  <div class="layout-container">
-    <!-- Menu -->
-    <aside layout:insert="~{sidebar_layout :: sidebar}"></aside>
-    <!-- / Menu -->
+    <div class="layout-container">
+        <!-- Menu -->
+        <aside layout:insert="~{sidebar_layout :: sidebar}"></aside>
+        <!-- / Menu -->
 
-    <div class="layout-page">
-      <nav layout:insert="~{navbar_layout :: navbar}"></nav>
+        <div class="layout-page">
+            <nav layout:insert="~{navbar_layout :: navbar}"></nav>
 
-      <div class="content-wrapper">
-        <section layout:fragment="content">
+            <div class="content-wrapper">
+                <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel">Підтвердіть видалення</h5>
+                                <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Ви впевнені, що хочете видалити цей запис?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати</button>
+                                <button type="button" class="btn btn-primary confirm-delete">Так</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <section layout:fragment="content">
 
-        </section>
+                </section>
 
 
-        <!-- Footer -->
-        <footer class="content-footer footer bg-footer-theme">
-          <div class="container-xxl">
-            <div
-                    class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column"
-            >
-              <div>
-                ©
-                <script>
-                      document.write(new Date().getFullYear());
-                    </script>
-                , made with ❤
-              </div>
-              <div>
-                <a
-                        href="#"
-                        target="_blank"
-                        class="footer-link me-4"
-                >Documentation</a
-                >
-              </div>
+                <!-- Footer -->
+
+                <footer class="content-footer footer bg-footer-theme">
+                    <div class="container-xxl">
+                        <div
+                                class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column"
+                        >
+                            <div>
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear());
+                                </script>
+                                , made with ❤
+                            </div>
+                            <div>
+                                <a
+                                        href="#"
+                                        target="_blank"
+                                        class="footer-link me-4"
+                                >Documentation</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
             </div>
-          </div>
-        </footer>
-        <!-- / Footer -->
 
-        <div class="content-backdrop fade"></div>
-      </div>
+        </div>
 
     </div>
 
-  </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
 
-  <!-- Overlay -->
-  <div class="layout-overlay layout-menu-toggle"></div>
-
-  <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-  <div class="drag-target"></div>
+    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+    <div class="drag-target"></div>
 </div>
 
 <!-- Core JS -->
@@ -137,7 +160,6 @@
 <!-- Main JS -->
 <script th:src="@{/js/main.js}"></script>
 <script th:src="@{/script.js}"></script>
-
 
 
 </body>
