@@ -1,50 +1,86 @@
-<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed">
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
-
-
+    <title>Content page</title>
 </head>
 
 <body>
 
+<section layout:fragment="content">
+    <select id="branchSelect3" style="margin-right: 12px; margin-left: 12px;"></select>
 
 
-<div class="row">
-    <div class="col-12">
-        <div class="card mb-4">
-            <h5 class="card-header">Basic</h5>
-            <div class="card-body">
-                <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-basic">
-                    <div class="dz-message needsclick">
-                        Drop files here or click to upload
-                        <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <h5 class="card-header">Basic</h5>
+                <div class="card-body">
+                    <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-basic">
+                        <div class="dz-message needsclick">
+                            Drop files here or click to upload
+                            <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually
                             uploaded.)</span>
-                    </div>
+                        </div>
 
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="card-body" hidden>
-        <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-multi">
-            <div class="dz-message needsclick">
-                Drop files here or click to upload
-                <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually
+        <div class="card-body" hidden>
+            <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-multi">
+                <div class="dz-message needsclick">
+                    Drop files here or click to upload
+                    <span class="note needsclick">(This is just a demo dropzone. Selected files are <strong>not</strong> actually
                             uploaded.)</span>
-            </div>
-        </form>
-        <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
-        <script th:src="@{/js/forms-file-upload.js}"></script>
+                </div>
+            </form>
+            <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
+            <script th:src="@{/js/forms-file-upload.js}"></script>
 
+        </div>
     </div>
-</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+    <script> $(document).ready(function () {
+        branchSelect3() })
+        function branchSelect3() {
+            $('#branchSelect3').select2({
+                allowClear: true,
+                ajax: {
+                    url: contextPath + '/builder_objects/for/select',
+                    dataType: 'json',
+                    delay: 1500,
+                    data: function (params) {
+                        var number = params.page > 0 ? params.page-1 : 0;
+                        return {
+                            query: params.term || '',
+                            page: number,
+                            size: 10
+                        };
+                    },
+                    processResults: function(data, params) {
+                        var results = data.content.map(function(item) {
+                            return { id: item.id, text: item.name };
+                        });
+                        var hasMore = data.totalPages > data.number;
+                        return {
+                            results: results,
+                            pagination: {
+                                more: hasMore
+                            }
+                        };
+                    },
+                    cache: true
+                }
+            });
+        }
 
-
+    </script>
+</section>
 </body>
 </html>

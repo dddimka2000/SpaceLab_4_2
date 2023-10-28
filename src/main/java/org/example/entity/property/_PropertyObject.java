@@ -19,7 +19,7 @@ public class _PropertyObject {
     @Id
     private Integer id;
 
-    private PublicationStatus status;
+    private Boolean status;
 
     private String objectCode, branchCode, employeeCode;
     private Integer price;
