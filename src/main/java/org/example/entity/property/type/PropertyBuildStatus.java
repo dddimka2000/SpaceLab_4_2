@@ -9,5 +9,6 @@ public enum PropertyBuildStatus {
     FINISHED("Закончена"),
     IN_PROGRESS("В процессе"),
     NOT_STARTED("Еще не начата");
+
     private final String status;
 }

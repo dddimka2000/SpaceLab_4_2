@@ -17,7 +17,7 @@ public class BuilderObject {
     private Integer id;
     @Embedded
     private PropertyObjectAddress address;
-    private String name;
+    String name;
     private Integer floorQuantity;
     private String phone;
     private String description_builder;

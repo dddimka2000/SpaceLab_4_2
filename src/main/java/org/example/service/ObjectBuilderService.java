@@ -1,11 +1,9 @@
 package org.example.service;
 
 import lombok.extern.log4j.Log4j2;
-import org.example.entity.Branch;
 import org.example.entity.BuilderObject;
 import org.example.repository.BuilderObjectRepository;
 import org.example.service.specification.BuilderObjectSpecification;
-import org.example.specification.BranchSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -61,8 +59,5 @@ public class ObjectBuilderService {
         log.info("ObjectBuilderService with " + pageNumber + " have been found");
         log.info("ObjectBuilderService-findAllQuestionPages successfully");
         return page;
-    }
-    public Page<BuilderObject> forSelect(String name, Pageable pageable) {
-        return builderObjectRepository.findAll(Specification.where(BuilderObjectSpecification.nameContains(name)), pageable);
     }
 }

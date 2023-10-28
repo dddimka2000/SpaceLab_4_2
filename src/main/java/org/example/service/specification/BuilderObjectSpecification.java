@@ -2,7 +2,6 @@ package org.example.service.specification;
 
 import jakarta.persistence.criteria.*;
 import lombok.Data;
-import org.example.entity.Branch;
 import org.example.entity.BuilderObject;
 import org.example.entity.Layout;
 import org.springframework.data.jpa.domain.Specification;
@@ -59,11 +58,5 @@ public class BuilderObjectSpecification implements Specification<BuilderObject> 
         }
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-    }
-
-    public static Specification<BuilderObject> nameContains(String name) {
-        if(name.isBlank() || name.isEmpty()) return (root, query, criteriaBuilder) -> null;
-        return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.toLowerCase() + "%");
     }
 }
