@@ -7,7 +7,6 @@
 >
 <head>
     <title>Content page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 </head>
 
 <body>
@@ -52,7 +51,7 @@
                                          src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
                                          style="width: 50%; height: 200px">
                                     <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png, .pdf"
-                                           onchange="validateAndUpload('previewImage', ['.jpg', '.jpeg', '.png'])" th:field="*{img}"
+                                           onchange="validateAndUpload('previewImage')" th:field="*{img}"
                                            th:style="${#fields.hasErrors('img') ? 'border-color: #ff0000' : ''}">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('img')}" th:errors="*{img}">
@@ -116,9 +115,11 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label">Дата рождения</label>
-                                    <input type="text" class="form-control" id="datepicker"
-                                           th:field="*{birthdate}" th:style="${#fields.hasErrors('birthdate') ? 'border-color: #ff0000' : ''}">
-
+                                    <input type="date" class="form-control"
+                                           th:field="*{birthdate}"
+                                           th:style="${#fields.hasErrors('birthdate') ? 'border-color: #ff0000' : ''}"
+                                           placeholder="yyyy/MM/dd"
+                                           aria-describedby="defaultFormControlHelp"/>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('birthdate')}"
                                          th:errors="*{birthdate}">
@@ -198,24 +199,37 @@
                     <div class="tab-pane fade" id="navs-pills-top-reviews">
                         <div class="row mb-3">
                             <h5>Прикрепить PDF файлы</h5>
-                            <input type="file" accept=".pdf" onchange="validateAndUpload('previewImage', ['.pdf'])">
-                            <div class="row" th:each="file: ${realtorDto.getFiles()}">
-                                <div class="col-2"><a href="#" class="text-decoration-none" th:onclick="@{downloadFileFromFeedBack('{file}')(file=${file})}">Скачать файл</a></div>
-                                <div class="col"><a href="#" class="text-decoration-none" th:onclick="@{deleteFileFromFeedBack('{file}')(file=${file})}">х удалить</a></div>
-                            </div>
+                            <input type="file" name="">
+                            <ul>
+                                <div class="row">
+                                    <div class="col-1">1.pdf</div>
+                                    <div class="col-2"><a href="#">Скачать файл</a></div>
+                                    <div class="col"><a href="#">х удалить</a></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-1">1.pdf</div>
+                                    <div class="col-2"><a href="#">Скачать файл</a></div>
+                                    <div class="col"><a href="#">х удалить</a></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-1">1.pdf</div>
+                                    <div class="col-2"><a href="#">Скачать файл</a></div>
+                                    <div class="col"><a href="#">х удалить</a></div>
+                                </div>
+                            </ul>
                         </div>
-                        <div class="row" th:each="body: ${realtorDto.getRealtorFeedBacks()}">
+                        <div class="row">
                             <div class="row">
                                 <div class="col-5">
                                     <label>Имя</label>
-                                    <input type="text" class="form-control" name="name" th:value="${body.name}">
+                                    <input type="text" class="form-control" name="" id="">
                                 </div>
                                 <div class="col-5">
                                     <label>Контакт</label>
-                                    <input type="text" class="form-control" name="phone" th:value="${body.phone}">
+                                    <input type="text" class="form-control" name="" id="">
                                 </div>
                                 <div class="col-1">
-                                    <button class="btn btn-default btn-sm" style="margin-top: 22.042px;" th:onclick="@{deleteFeedBackBody('{idBody}')(idBody=${body.id})}">
+                                    <button class="btn btn-default btn-sm" style="margin-top: 22.042px;">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </div>
@@ -223,7 +237,30 @@
                             <div class="row">
                                 <div class="col-10">
                                     <label>Отзыв</label>
-                                    <textarea name="description" class="form-control" cols="30" rows="10" th:value="${body.description}"></textarea>
+                                    <textarea name="" class="form-control" id="" cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-5">
+                                    <label>Имя</label>
+                                    <input type="text" class="form-control" name="" id="">
+                                </div>
+                                <div class="col-5">
+                                    <label>Контакт</label>
+                                    <input type="text" class="form-control" name="" id="">
+                                </div>
+                                <div class="col-1">
+                                    <button class="btn btn-default btn-sm" style="margin-top: 22.042px;">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-10">
+                                    <label>Отзыв</label>
+                                    <textarea name="" class="form-control" id="" cols="30" rows="10"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -240,38 +277,9 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
     <script th:inline="javascript">
-        var realtor = [[${realtorDto}]]
-        $(document).ready(function(){
-            $('#datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true
-            });
-            if(realtor.branch!=null)branchSelect2(realtor.branch.id, realtor.branch.name)
-            else branchSelect2()
-            console.log(realtor.id)
-            if(realtor.id!=null){
-                $.ajax({
-                    type: "Get",
-                    url: '/ProminadaDD/realtors/getUrl',
-                    data:{
-                        url: realtor.img
-                    },
-                    success: function (url) {
-                        console.log(url)
-                        $('#previewImage').attr('src', url);
-                    },
-                });
-            }
+        $(document).ready(function () {
+            branchSelect2()
         })
-        function deleteFileFromFeedBack(link){
-            console.log(link)
-        }
-        function downloadFileFromFeedBack(link){
-            console.log(link)
-        }
-        function deleteFeedBackBody(idBody){
-            console.log(idBody)
-        }
         function sendForm() {
             const phoneContainer = document.getElementById("phones");
             const id = document.getElementById("id");
@@ -348,6 +356,7 @@
                 });
             });
         };
+
     </script>
 </section>
 

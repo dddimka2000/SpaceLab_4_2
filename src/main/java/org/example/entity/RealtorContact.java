@@ -2,9 +2,6 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.example.entity.property.type.ContactType;
 
 @Data
@@ -17,4 +14,7 @@ public class RealtorContact {
 
     private String phone;
     private ContactType type;
+
+    @ManyToOne
+    private Realtor realtor;
 }
