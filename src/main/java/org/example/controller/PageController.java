@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/pages")
+@RequestMapping("/admin/pages")
 @Log4j2
 public class PageController {
     private final

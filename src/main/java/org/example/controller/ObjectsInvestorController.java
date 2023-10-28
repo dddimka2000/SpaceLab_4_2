@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/investor_objects")
+@RequestMapping("/admin/investor_objects")
 @Log4j2
 public class ObjectsInvestorController {
 

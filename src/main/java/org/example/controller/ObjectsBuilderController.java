@@ -48,8 +48,10 @@ import java.util.stream.Collectors;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+// ебать
+
 @Controller
-@RequestMapping("/builder_objects")
+@RequestMapping("/admin/builder_objects")
 @Log4j2
 public class ObjectsBuilderController {
     Integer pageSize = 10;
@@ -137,10 +139,12 @@ public class ObjectsBuilderController {
         return ResponseEntity.ok().body(" Объект от строителя с id " + id + " успешно удален");
     }
 
+
     @PostMapping("/create")
     public ResponseEntity ObjectsBuilderCreatePost(@Valid @ModelAttribute ObjectBuilderDto objectBuilderDto, BindingResult bindingResult)
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException
             , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
         objectBuilderValidator.validate(objectBuilderDto, bindingResult);
         if (bindingResult.hasErrors()) {
             log.error("error validation");
@@ -150,6 +154,7 @@ public class ObjectsBuilderController {
         }
         log.info("ok validation");
         log.info(objectBuilderDto);
+
         BuilderObject builderObject = new BuilderObject();
         PropertyObjectAddress propertyObjectAddress = new PropertyObjectAddress();
         propertyObjectAddress.setCity(objectBuilderDto.getCity());

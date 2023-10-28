@@ -24,7 +24,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @Controller
-@RequestMapping("/branches")
+@RequestMapping("/admin/branches")
 @RequiredArgsConstructor
 @Log4j2
 public class BranchController {

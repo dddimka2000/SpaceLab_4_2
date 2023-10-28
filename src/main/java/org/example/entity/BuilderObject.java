@@ -2,6 +2,7 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.example.entity.property.type.PropertyBuildStatus;
 import org.example.entity.property.type.PropertyObjectAddress;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "builder_objects", schema = "my_bd")
+@Accessors(chain = true)
 public class BuilderObject {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

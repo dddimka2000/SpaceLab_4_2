@@ -11,8 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-//    @Value("${spring.pathImg}")
-//    String pathPhotos;
 
     @Bean
     public LayoutDialect layoutDialect() {

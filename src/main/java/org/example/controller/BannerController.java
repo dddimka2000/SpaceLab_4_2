@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/banners")
+@RequestMapping("/admin/banners")
 @Log4j2
 public class BannerController {
     String imagesBucketName = "images";

@@ -2,15 +2,17 @@ package org.example.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.example.entity.property.type.InformationSource;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-@Table(name = "buyers", schema = "my_bd", catalog = "")
 @Data
+@Entity
+@Table(name = "buyers")
+@Accessors(chain = true)
 public class Buyer {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

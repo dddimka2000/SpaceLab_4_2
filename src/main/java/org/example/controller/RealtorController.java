@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @Controller
-@RequestMapping("/realtors")
+@RequestMapping("/admin/realtors")
 @RequiredArgsConstructor
 @Log4j2
 public class RealtorController {
