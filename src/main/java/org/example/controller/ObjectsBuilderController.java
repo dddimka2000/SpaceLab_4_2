@@ -52,7 +52,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 @RequestMapping("/builder_objects")
 @Log4j2
 public class ObjectsBuilderController {
-    Integer pageSize = 10;
+    Integer pageSize = 4;
     String imagesBucketName = "images";
     String filesBucketName = "files";
     private final
