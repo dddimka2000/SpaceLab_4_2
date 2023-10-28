@@ -24,6 +24,7 @@ public class CaptchaFilter extends OncePerRequestFilter {
     @Value("${server.servlet.context-path}")
     String context;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (request.getMethod().equals("POST")) {
