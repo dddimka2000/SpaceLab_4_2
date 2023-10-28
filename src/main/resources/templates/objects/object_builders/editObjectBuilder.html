@@ -95,7 +95,7 @@
                             <div class="col-2">
                                 <h6>Название</h6>
                                 <input type="text" class="form-control" name="nameObject" id="nameObject"
-                                       th:value="${objectBuilder.getName()}">
+                                       th:value="${objectBuilder.getName()}" placeholder="Введите имя объекта">
                             </div>
                             <div class="col-3">
                                 <h6>Обл.район</h6>
@@ -139,7 +139,7 @@
                             <div class="col-2">
                                 <h6>Улица</h6>
                                 <input class="form-control" type="text" name="street" id="street"
-                                       th:value="${objectBuilder.getAddress().getStreet()}">
+                                       th:value="${objectBuilder.getAddress().getStreet()}" placeholder="Введите название улицы">
                             </div>
                             <div class="col-8"></div>
                         </div>
@@ -152,17 +152,17 @@
                             <div class="col-2">
                                 <h6>Номер дома</h6>
                                 <input class="form-control" type="number" name="houseNumber"
-                                       th:value="${objectBuilder.getAddress().getHouseNumber()}">
+                                       th:value="${objectBuilder.getAddress().getHouseNumber()}" placeholder="Введите номер дома">
                             </div>
                             <div class="col-2">
                                 <h6>Секция/Корпус</h6>
                                 <input class="form-control" type="number" name="section"
-                                       th:value="${objectBuilder.getAddress().getSection()}">
+                                       th:value="${objectBuilder.getAddress().getSection()}" placeholder="Введите секцию/корпус">
                             </div>
                             <div class="col-2">
                                 <h6>Этажность</h6>
                                 <input class="form-control" type="number" name="floorQuantity"
-                                       th:value="${objectBuilder.getFloorQuantity()}">
+                                       th:value="${objectBuilder.getFloorQuantity()}" placeholder="Введите этажность">
                             </div>
                             <div class="col-3">
                                 <h6>Строительная компания</h6>
@@ -190,7 +190,7 @@
                         <br>
                         <h6>Телефон</h6>
                         <input type="tel" name="telephone" id="telephone" class="form-control"
-                               th:value="${objectBuilder.getPhone()}">
+                               th:value="${objectBuilder.getPhone()}" placeholder="Введите номер телефона">
                         <br>
                         <br>
                         <br>
@@ -207,16 +207,16 @@
                         <h3>Описание</h3>
                         <textarea style="width: 100%; height: 300px" name="descriptionObject"
                                   class="form-control"
-                                  th:text="${objectBuilder.getDescription_builder()}"></textarea>
+                                  th:text="${objectBuilder.getDescription_builder()}" placeholder="Введите описание"></textarea>
                         <br>
                         <h1>Акция</h1>
                         <input type="text" name="promotionName" id="promotionName" class="form-control"
-                               th:value="${objectBuilder.getPromotion().getName()}">
+                               th:value="${objectBuilder.getPromotion().getName()}" placeholder="Введите имя акции">
                         <br>
                         <h3>Описание</h3>
                         <textarea style="width: 100%; height: 300px" name="descriptionPromotion"
                                   class="form-control"
-                                  th:text="${objectBuilder.getPromotion().getDescription()}"></textarea>
+                                  th:text="${objectBuilder.getPromotion().getDescription()}" placeholder="Введите описание акции"></textarea>
                         <br>
                         <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"
                                th:checked="${objectBuilder.getPromotion().getActive() == true}"><span
@@ -247,33 +247,33 @@
                                     </div>
                                 </div>
                                 <input class="form-control col-md-6" type="text" id="nameLayout1"
-                                       th:value="${layouts.get(0).getName()}">
+                                       th:value="${layouts.get(0).getName()}" placeholder="Введите имя">
                                 <br>
                                 <div class="row">
                                     <div class="col-2">
                                         <h6>Цена от (м.кв)</h6>
                                         <input class="form-control" type="number" id="priceLayout1"
-                                               th:value="${layouts.get(0).getPrice()}">
+                                               th:value="${layouts.get(0).getPrice()}" placeholder="Введите цену">
                                     </div>
                                     <div class="col-2">
                                         <h6>Комнат</h6>
                                         <input class="form-control" type="number" id="roomsLayout1"
-                                               th:value="${layouts.get(0).getRoomQuantity()}">
+                                               th:value="${layouts.get(0).getRoomQuantity()}" placeholder="Введите кол-во комнат">
                                     </div>
                                     <div class="col-2">
                                         <h6>S общая (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaTotalLayout1"
-                                               th:value="${layouts.get(0).getAreaTotal()}">
+                                               th:value="${layouts.get(0).getAreaTotal()}" placeholder="Введите общую площадь">
                                     </div>
                                     <div class="col-2">
                                         <h6>S жилая (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaLivingLayout1"
-                                               th:value="${layouts.get(0).getAreaLiving()}">
+                                               th:value="${layouts.get(0).getAreaLiving()}" placeholder="Введите жилую площадь">
                                     </div>
                                     <div class="col-2">
                                         <h6>S кухни (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaKitchenLayout1"
-                                               th:value="${layouts.get(0).getAreaKitchen()}">
+                                               th:value="${layouts.get(0).getAreaKitchen()}" placeholder="Введите площадь кухни">
                                     </div>
                                     <div class="col-2">
                                     </div>
@@ -281,13 +281,13 @@
                                 <br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" value="" id="statusLayout1"
-                                           th:checked="${layouts.get(0).getActive() == true}">
+                                           th:checked="${layouts.get(0).getActive() == true}" >
                                     <span class="checkmark">Показать сайт</span>
                                 </div>
                                 <br>
                                 <h6>Описание</h6>
                                 <input class="form-control" type="text" id="descriptionLayout1"
-                                       th:value="${layouts.get(0).getDescription()}">
+                                       th:value="${layouts.get(0).getDescription()}" placeholder="Введите описание">
                                 <br>
                                 <div class="row" style="text-align: center">
                                     <div class="col-4">
@@ -582,28 +582,28 @@
                     </button>
                 </div>
             </div>
-            <input class="form-control" type="text" class="col-6" id="nameLayout` + imgMaxId + `">
+            <input class="form-control" type="text" class="col-6" id="nameLayout` + imgMaxId + `" placeholder="Введите название">
                 <br>
                     <div class="row">
                         <div class="col-2">
                             <h6>Цена от (м.кв)</h6>
-                            <input class="form-control" type="number" id="priceLayout` + imgMaxId + `">
+                            <input class="form-control" type="number" id="priceLayout` + imgMaxId + `" placeholder="Введите цену">
                         </div>
                         <div class="col-2">
                             <h6>Комнат</h6>
-                            <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `">
+                            <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `" placeholder="Введите кол-во комнат">
                         </div>
                         <div class="col-2">
                             <h6>S общая (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `">
+                            <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `" placeholder="Введите общую площадь">
                         </div>
                         <div class="col-2">
                             <h6>S жилая (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `">
+                            <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `" placeholder="Введите жилую площадь">
                         </div>
                         <div class="col-2">
                             <h6>S кухни (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `">
+                            <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `" placeholder="Введите площадь кухни">
                         </div>
                         <div class="col-2">
                         </div>
@@ -615,7 +615,7 @@
                         </div>
                         <br>
                             <h6>Описание</h6>
-                            <input class="form-control" type="text" id="descriptionLayout` + imgMaxId + `">
+                            <input class="form-control" type="text" id="descriptionLayout` + imgMaxId + `" placeholder="Введите описание">
                                 <br>
                                     <div class="row" style="text-align: center">
                                         <div class="col-4">

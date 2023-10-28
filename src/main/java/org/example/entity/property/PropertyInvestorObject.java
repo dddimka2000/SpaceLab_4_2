@@ -14,5 +14,4 @@ public class PropertyInvestorObject extends _PropertyObject {
     private WindowViewType windowViewType;
     private KitchenStoveType stoveType;
     private HeatingType heatingType;
-
 }

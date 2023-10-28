@@ -1,6 +1,13 @@
 package org.example.entity.property.type;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
 public enum BalconyType {
-    BALCONY,
-    LODGE
+    BALCONY("Балкон"),
+    LODGE("Лоджия");
+    private final String status;
+
 }
