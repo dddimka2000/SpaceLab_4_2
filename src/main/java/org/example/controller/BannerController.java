@@ -66,9 +66,11 @@ public class BannerController {
     @GetMapping("/{id}")
     public ModelAndView editPage(@PathVariable Integer id) {
         ModelAndView modelAndView = new ModelAndView();
-
         BannerDto bannerDto = new BannerDto();
         Optional<Banner> byId = bannerService.findById(id);
+        if(byId.isEmpty()){
+            modelAndView.setViewName("error/404");
+        }
         BannerMapper.INSTANCE.updateDtoFromBanner(byId.get(), bannerDto);
         modelAndView.addObject("banner", bannerDto);
         List<BannerSlide> list = bannerSlideService.findAllByBanner(byId.get());
@@ -77,32 +79,20 @@ public class BannerController {
         list.stream().forEach(s -> {
             BannerSlideDto bannerDto1 = new BannerSlideDto();
             BannerSlideMapper.INSTANCE.updateDtoFromEntity(s, bannerDto1);
+            String path = null;
             try {
-                String path = minioService.getFileInString(s.getImgPath(), imagesBucketName);
-                bannerDto1.setOldImgPath(path);
-                bannerDto1.setOldImgName(s.getImgPath());
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            } catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
+                path = minioService.getFileInString(s.getImgPath(), imagesBucketName);
+            } catch (ErrorResponseException | InsufficientDataException | InternalException |InvalidKeyException | InvalidResponseException
+                     | NoSuchAlgorithmException | ServerException | XmlParserException | IOException  e) {
                 throw new RuntimeException(e);
             }
+            bannerDto1.setOldImgPath(path);
+                bannerDto1.setOldImgName(s.getImgPath());
+
             listDto.add(bannerDto1);
             atomicInteger.incrementAndGet();
         });
+
         modelAndView.addObject("bannerList", listDto);
         modelAndView.addObject("idModel", id);
         modelAndView.setViewName("banners/banners_edit");

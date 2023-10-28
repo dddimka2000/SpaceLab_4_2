@@ -161,19 +161,15 @@
                             <input type="text" class="form-control" name="apartmentNumber" id="apartmentNumber"
                                    placeholder="Введите номер квартиры">
                         </div>
-                        <div class="col-2" style="display: flex;align-items: end">
-                            <button class="btn btn-info">Проверить адресс</button>
-                        </div>
                         <div class="col-3" style="display: flex;align-items: end">
                             <button class="btn btn-info">Проверить номер телефона</button>
-
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-3">
                             <h6>ФИО владельца </h6>
-                            <input class="form-control" type="text" name="owner " placeholder="Введите ФИО владельца">
+                            <input class="form-control" type="text" name="owner" placeholder="Введите ФИО владельца">
                         </div>
                         <div class="col-3">
                             <h6>Телефон</h6>
@@ -183,7 +179,7 @@
                         <div class="col-3">
                             <h6>Дата приобретения</h6>
                             <input type="date" class="form-control" placeholder="yyyy/MM/dd"
-                                   aria-describedby="defaultFormControlHelp" id="birthdate" name="datePurchase"
+                                   aria-describedby="defaultFormControlHelp" id="boughtDate" name="boughtDate"
                                    value="">
                         </div>
                         <div class="col-3">
@@ -213,7 +209,7 @@
                     <div class="row">
                         <div class="col-2">
                             <h6>Статус публикации</h6>
-                            <select class="select2 form-select form-select" name="ownership">
+                            <select class="select2 form-select form-select" name="publicationStatus">
                                 <option selected></option>
                                 <option th:each="status : ${publicationStatus}"
                                         th:value="${status}"
@@ -434,7 +430,7 @@
                     <div class="row">
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" value="true" name="tor">
-                            <span class="checkmark">Тор?????? не знаю что за слово</span>
+                            <span class="checkmark">Торг</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" value="true" name="exclusive ">
@@ -516,17 +512,137 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
     <script th:inline="javascript">
+
+        function sendForm() {
+            let formData = new FormData();
+            formData.append("region", $("#region").val());
+            formData.append("street", $("#street").val());
+            formData.append("district", $('[name="district"]').val());
+            formData.append("city", $('[name="city"]').val());
+            formData.append("topozone", $('[name="topozone"]').val());
+            formData.append("section", $('[name="section"]').val());
+            formData.append("apartmentNumber", $('[name="apartmentNumber"]').val());
+            formData.append("houseNumber", $('[name="houseNumber"]').val());
+            formData.append("ownerName", $("#owner").val());
+            formData.append("ownerPhone", $('[name="telephone"]').val());
+            formData.append("boughtDate", $('[name="boughtDate"]').val());
+            console.log($('[name="boughtDate"]').val());
+            formData.append("ownershipType", $('[name="ownership"]').val());
+            console.log($('[name="ownership"]').val())
+            let indexFilesMap = 0;
+            for (const [key, file] of fileMap) {
+                formData.append(key, file);
+                formData.append(`files[${indexFilesMap}]`, file);
+                indexFilesMap++;
+            }
+            formData.append("administrationComment", $('[name="comment"]').val());
+            formData.append("publicationStatus", $('[name="publicationStatus"]').val());
+            formData.append("objectCode", $('[name="codeObject"]').val());
+            formData.append("branchCode", $('[name="codeBranch"]').val());
+            formData.append("employeeCode", $('[name="codeStaff"]').val());
+
+
+
+            //
+            // formData.append("nameObject", $("#nameObject").val());
+            // formData.append("promotionName", $("#promotionName").val());
+            // formData.append("floorQuantity", $('[name="floorQuantity"]').val());
+            // formData.append("nameCompany", $('[name="nameCompany"]').val());
+            // formData.append("buildStatus", $('[name="buildStatus"]').val());
+            // if ($("#chessboard").prop('files')[0] != null)
+            //     formData.append("chessboardFile", $("#chessboard").prop('files')[0]);
+            // if ($("#installmentTerms").prop('files')[0] != null)
+            //     formData.append("installmentTerms", $("#installmentTerms").prop('files')[0]);
+            // if ($("#prices").prop('files')[0] != null)
+            //     formData.append("prices", $("#prices").prop('files')[0]);
+            // formData.append("description", $('[name="descriptionObject"]').val());
+            // formData.append("descriptionPromotion", $('[name="descriptionPromotion"]').val());
+            // formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
+            // let index = 0;
+            // let checkErrors = true;
+            //
+            // layoutArray.forEach(function (element) {
+            //     console.log(element);
+            //     let layoutData = {
+            //         nameLayout: $("#nameLayout" + element).val(),
+            //         priceLayout: $("#priceLayout" + element).val(),
+            //         roomQuantityLayout: $("#roomsLayout" + element).val(),
+            //         areaTotalLayout: $("#areaTotalLayout" + element).val(),
+            //         areaLivingLayout: $("#areaLivingLayout" + element).val(),
+            //         areaKitchenLayout: $("#areaKitchenLayout" + element).val(),
+            //         statusLayout: $("#statusLayout" + element).prop('checked'),
+            //         descriptionLayout: $("#descriptionLayout" + element).val()
+            //     }
+            //     let inputImage1 = $("#inputImage" + element).prop('files');
+            //     if (inputImage1.length > 0) {
+            //         layoutData.img1Layout = inputImage1[0];
+            //     }
+            //     let inputImage2 = $("#inputImage" + (element + 1)).prop('files');
+            //     if (inputImage2.length > 0) {
+            //         layoutData.img2Layout = inputImage2[0];
+            //     }
+            //     let inputImage3 = $("#inputImage" + (element + 2)).prop('files');
+            //     if (inputImage3.length > 0) {
+            //         layoutData.img3Layout = inputImage3[0];
+            //     }
+            //     for (let key in layoutData) {
+            //         formData.append(`layoutDTOList[${index}].${key}`, layoutData[key]);
+            //     }
+            //     console.log(layoutData)
+            //     index = index + 1;
+            // });
+            //
+            // const uploadedFiles = window.uploadedFiles;
+            // console.log(uploadedFiles);
+            // let i = 1;
+            // for (let [fileName, file] of uploadedFiles) {
+            //     if (i > 15) {
+            //         break;
+            //     }
+            //     formData.append("files[]", file);
+            //     i++;
+            // }
+            // console.log(formData.get("files[]"))
+
+            let contextPath =/*[[@{/}]]*/'';
+            let url = contextPath.toString() + "investor_objects/create";
+            // for (let pair of formData.entries()) {
+            //     let value = pair[1];
+            //     if (value === "" || value === null || value === undefined || !value) {
+            //         showNotification("Warning!", "Пожалуйста, заполните все данные. ", false);
+            //         checkErrors = false;
+            //         break;
+            //     }
+            // }
+            $.ajax({
+                url: url,
+                method: "POST",
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function () {
+                    showNotification("Объект сохранен!", "", true);
+                },
+                error: function (xhr, status, error) {
+                    var errors = JSON.parse(xhr.responseText);
+                    errors.forEach(function (error) {
+                        console.log("Ошибка: " + error);
+                        showNotification("Ошибка!", error, false);
+                    });
+                }
+            })
+
+        }
+
         var fileInput = document.getElementById("fileInput");
         var fileList = document.getElementById("fileList");
-        let filesArray = [];
+        let fileMap = new Map();
         let numFile = 0;
 
         function showFile() {
             if (fileInput.files.length > 0) {
-                // Перебираем все выбранные файлы
                 for (var i = 0; i < fileInput.files.length; i++) {
                     var selectedFile = fileInput.files[i];
-
                     if (
                         selectedFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
                         selectedFile.type === "application/pdf"
@@ -547,19 +663,19 @@
                         lineBreak.id = "lineBreak" + numFile;
                         var lineBreak2 = document.createElement("br");
                         lineBreak2.id = "lineBreak2" + numFile;
+                        let numListener = numFile;
                         deleteButton.addEventListener("click", function () {
-                            deleteFile(fileLink.id, deleteButton.id, lineBreak.id, lineBreak2.id);
+                            deleteFile(fileLink.id, deleteButton.id, lineBreak.id, lineBreak2.id, numListener);
                         });
                         fileList.appendChild(lineBreak);
                         fileList.appendChild(lineBreak2);
+                        fileMap.set(numListener, selectedFile);
                         numFile++;
-                        filesArray.push(fileLink.id)
                     } else {
                         showNotification("Выберите файл формата .xlsx или .pdf.", "", false);
                     }
                 }
             }
-            // Очищаем инпут после выбора файлов
             fileInput.value = "";
         }
 
@@ -567,11 +683,12 @@
             branchSelect3()
         })
 
-        function deleteFile(e, e2, e3, e4) {
+        function deleteFile(e, e2, e3, e4, num) {
             $("#" + e).remove();
             $("#" + e2).remove();
             $("#" + e3).remove();
             $("#" + e4).remove();
+            fileMap.delete(num);
 
         }
 
@@ -680,107 +797,6 @@
             console.log('Загрузка всех файлов завершена.');
         });
 
-        function sendForm() {
-            let formData = new FormData();
-            formData.append("nameObject", $("#nameObject").val());
-            formData.append("region", $("#region").val());
-            formData.append("street", $("#street").val());
-            formData.append("district", $('[name="district"]').val());
-            formData.append("city", $('[name="city"]').val());
-            formData.append("topozone", $('[name="topozone"]').val());
-            formData.append("promotionName", $("#promotionName").val());
-            formData.append("houseNumber", $('[name="houseNumber"]').val());
-            formData.append("section", $('[name="section"]').val());
-            formData.append("floorQuantity", $('[name="floorQuantity"]').val());
-            formData.append("nameCompany", $('[name="nameCompany"]').val());
-            formData.append("buildStatus", $('[name="buildStatus"]').val());
-            formData.append("telephone", $('[name="telephone"]').val());
-            if ($("#chessboard").prop('files')[0] != null)
-                formData.append("chessboardFile", $("#chessboard").prop('files')[0]);
-            if ($("#installmentTerms").prop('files')[0] != null)
-                formData.append("installmentTerms", $("#installmentTerms").prop('files')[0]);
-            if ($("#prices").prop('files')[0] != null)
-                formData.append("prices", $("#prices").prop('files')[0]);
-            formData.append("description", $('[name="descriptionObject"]').val());
-            formData.append("descriptionPromotion", $('[name="descriptionPromotion"]').val());
-            formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
-            let index = 0;
-            let checkErrors = true;
-
-            layoutArray.forEach(function (element) {
-                console.log(element);
-                let layoutData = {
-                    nameLayout: $("#nameLayout" + element).val(),
-                    priceLayout: $("#priceLayout" + element).val(),
-                    roomQuantityLayout: $("#roomsLayout" + element).val(),
-                    areaTotalLayout: $("#areaTotalLayout" + element).val(),
-                    areaLivingLayout: $("#areaLivingLayout" + element).val(),
-                    areaKitchenLayout: $("#areaKitchenLayout" + element).val(),
-                    statusLayout: $("#statusLayout" + element).prop('checked'),
-                    descriptionLayout: $("#descriptionLayout" + element).val()
-                }
-                let inputImage1 = $("#inputImage" + element).prop('files');
-                if (inputImage1.length > 0) {
-                    layoutData.img1Layout = inputImage1[0];
-                }
-                let inputImage2 = $("#inputImage" + (element + 1)).prop('files');
-                if (inputImage2.length > 0) {
-                    layoutData.img2Layout = inputImage2[0];
-                }
-                let inputImage3 = $("#inputImage" + (element + 2)).prop('files');
-                if (inputImage3.length > 0) {
-                    layoutData.img3Layout = inputImage3[0];
-                }
-                for (let key in layoutData) {
-                    formData.append(`layoutDTOList[${index}].${key}`, layoutData[key]);
-                }
-                console.log(layoutData)
-                index = index + 1;
-            });
-
-            const uploadedFiles = window.uploadedFiles;
-            console.log(uploadedFiles);
-            let i = 1;
-            for (let [fileName, file] of uploadedFiles) {
-                if (i > 15) {
-                    break;
-                }
-                formData.append("files[]", file);
-                i++;
-            }
-            console.log(formData.get("files[]"))
-
-            let contextPath =/*[[@{/}]]*/'';
-            let url = contextPath.toString() + "builder_objects/create";
-            // for (let pair of formData.entries()) {
-            //     let value = pair[1];
-            //     if (value === "" || value === null || value === undefined || !value) {
-            //         showNotification("Warning!", "Пожалуйста, заполните все данные. ", false);
-            //         checkErrors = false;
-            //         break;
-            //     }
-            // }
-            if (checkErrors) {
-                $.ajax({
-                    url: url,
-                    method: "POST",
-                    contentType: false,
-                    processData: false,
-                    data: formData,
-                    success: function () {
-                        showNotification("Объект сохранен!", "", true);
-                    },
-                    error: function (xhr, status, error) {
-                        var errors = JSON.parse(xhr.responseText);
-                        errors.forEach(function (error) {
-                            console.log("Ошибка: " + error);
-                            showNotification("Ошибка!", error, false);
-                        });
-                    }
-                })
-            }
-        }
-
         function updateDropzoneMaxFiles() {
             const newMaxFiles = (15 - oldImagesArray.length);
             myDropzone.options.maxFiles = newMaxFiles;
@@ -879,22 +895,6 @@
                 });
             }
         });
-
-        function showNotification(bigTextMessage, message, isSuccess) {
-            const notification = document.getElementById("notification");
-            const notificationMessage = document.getElementById("notification-message");
-
-            var element = document.getElementById("text_notification");
-            element.textContent = bigTextMessage;
-
-            notificationMessage.textContent = message;
-            notification.classList.remove("hidden");
-            notification.classList.toggle("alert-success", isSuccess);
-            notification.classList.toggle("alert-warning", !isSuccess);
-            setTimeout(() => {
-                notification.classList.add("hidden");
-            }, 5000);
-        }
 
 
     </script>
