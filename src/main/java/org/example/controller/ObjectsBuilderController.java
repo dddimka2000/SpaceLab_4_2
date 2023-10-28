@@ -8,10 +8,7 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.apache.poi.ss.usermodel.*;
 import org.example.dto.*;
-import org.example.entity.BuilderObject;
-import org.example.entity.BuilderObjectPromotion;
-import org.example.entity.ImagesForObject;
-import org.example.entity.Layout;
+import org.example.entity.*;
 import org.example.entity.property.type.PropertyBuildStatus;
 import org.example.entity.property.type.PropertyObjectAddress;
 import org.example.entity.property.type.TypeObject;
@@ -26,6 +23,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -79,7 +77,8 @@ public class ObjectsBuilderController {
 
     @GetMapping("/filter")
     @ResponseBody
-    public Page<BuilderObject> showPageObjectBuilder(@ModelAttribute ObjectBuilderDtoSearch objectBuilderDto, @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
+    public Page<BuilderObject> showPageObjectBuilder(@ModelAttribute ObjectBuilderDtoSearch objectBuilderDto
+            , @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
         log.info(objectBuilderDto);
         Pageable pageable = PageRequest.of(numberPage, pageSize);
         Page<BuilderObject> pageElements = objectBuilderService.findBuilderObjectsByCriteria(
@@ -617,4 +616,14 @@ public class ObjectsBuilderController {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(bytes);    }
+
+
+    @GetMapping("/for/select")
+    @ResponseBody
+    public Page<BuilderObject> search(@RequestParam("query") String name,
+                               @RequestParam("page") int page,
+                               @RequestParam("size") int size) {
+        Page<BuilderObject> searchResults = objectBuilderService.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
+        return searchResults;
+    }
 }
