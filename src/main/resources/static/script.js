@@ -99,10 +99,10 @@ function showToast(message, type) {
     const toastInstance = new bootstrap.Toast(toast, {
         delay: 2000
     });
-    toastInstance.show();
+    toastInstance.show()
 
     toast.querySelector('.btn-close').addEventListener('click', function () {
-        toastInstance.hide();
+        toastInstance.hide()
     });
 }
 
@@ -110,7 +110,6 @@ function showToast(message, type) {
 
 function branchSelect2(id, text) {
     $('#branchSelect2').select2({
-        allowClear: true,
         ajax: {
             url: contextPath + '/branches/for/select',
             dataType: 'json',
@@ -142,7 +141,7 @@ function branchSelect2(id, text) {
         var input = document.querySelector('select[name="branch"]');
         input.value=selectedBranchId;
     })
-    if(text !== null && id !== null) {
+    if(text !== undefined && id !== undefined) {
         $('#branchSelect2').append(new Option(text.toString(), id.toString(), true, true));
         $('#branchSelect2').trigger('change');
     }
