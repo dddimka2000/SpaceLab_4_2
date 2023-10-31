@@ -29,6 +29,8 @@ public class Realtor {
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate birthdate;
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    private LocalDate creationDate;
     private List<String> files;
     private String img;
 

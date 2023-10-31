@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,7 @@ public class RealtorServiceImpl {
         for (RealtorContact contact : realtor.getContacts()) {
             contact.setRealtor(realtor);
         }
+        realtor.setCreationDate(LocalDate.now());
         realtorRepository.save(realtor);
     }
 
