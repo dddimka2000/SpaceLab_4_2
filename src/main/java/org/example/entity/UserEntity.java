@@ -29,9 +29,10 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
 
-    private String name, surname, middleName;
+    private String name, surname, middleName, phone;
 
     private String img;
+    private List<String> files;
 
     @OneToMany
     private List<Branch> branches;

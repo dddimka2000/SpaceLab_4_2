@@ -78,16 +78,18 @@ function validateFile(imageId, allowedExtensions) {
 }
 
 function showToast(message, type) {
-    let toastContainer = document.querySelector('.position-fixed.bottom-0.end-0.p-3');
+    let toastContainer = document.querySelector('.position-fixed.top-0.end-0.p-3');
 
     if (!toastContainer) {
         toastContainer = document.createElement('div');
-        toastContainer.classList.add('position-fixed', 'bottom-0', 'end-0', 'p-3');
+        toastContainer.classList.add('position-fixed', 'top-0', 'end-0', 'p-3');
+        toastContainer.style.zIndex = '9999';
         document.body.appendChild(toastContainer);
     }
 
     const toast = document.createElement('div');
     toast.classList.add('toast', `bg-${type}`);
+    toast.style.transform = 'translateY(0)';
     toast.innerHTML = `
         <div class="toast-body text-white">
             <button type="button" class="btn-close" style="margin-left: 93%" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -99,17 +101,19 @@ function showToast(message, type) {
     const toastInstance = new bootstrap.Toast(toast, {
         delay: 2000
     });
-    toastInstance.show()
+    toastInstance.show();
 
     toast.querySelector('.btn-close').addEventListener('click', function () {
-        toastInstance.hide()
+        toastInstance.hide();
     });
 }
 
 
 
+
 function branchSelect2(id, text) {
     $('#branchSelect2').select2({
+        placeholder: "Філіал",
         ajax: {
             url: contextPath + '/branches/for/select',
             dataType: 'json',
@@ -147,4 +151,50 @@ function branchSelect2(id, text) {
     }
 }
 
+function roleSelect2(text, id){
+    $('#roleSelect2').select2({
+        minimumResultsForSearch: -1,
+        placeholder: "Адмін",
+        ajax: {
+            url: contextPath+'/enum/role',
+            dataType: 'json',
+            processResults: function(data) {
+                var index = 0;
+                var results = data.map(function(data) {
+                    return { id: data, text: data };
+                });
+                return {
+                    results: results
+                };
+            },
+        }
+    })
+    if(text !== undefined && id !== undefined) {
+        $('#roleSelect2').append(new Option(text.toString(), id.toString(), true, true));
+        $('#roleSelect2').trigger('change');
+    }
+}
 
+function validString(minLength, maxLength, inputString) {
+    var length = inputString.length;
+    return length >= minLength && length <= maxLength;
+}
+
+function validatePhoneNumber(input) {
+    const phoneNumberRegex = /^\+380\d{9}$/;
+    return phoneNumberRegex.test(input);
+}
+
+function validateEmail(input) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(input);
+}
+function getLastDigitFromPath(relativePath) {
+    var pathSegments = relativePath.split("/");
+    var lastSegment = pathSegments[pathSegments.length - 1];
+    if (/^\d+$/.test(lastSegment)) {
+        return parseInt(lastSegment, 10);
+    } else {
+        return null;
+    }
+}

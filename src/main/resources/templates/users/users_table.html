@@ -16,14 +16,14 @@
           <h4 class="fw-bold">Пользователи</h4>
           <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#">Главная</a></li>
+              <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
               <li class="breadcrumb-item active" aria-current="page">Пользователи</li>
             </ol>
           </nav>
         </div>
         <hr style="margin-top: -5px">
         <div style="width: 100%; display: flex; justify-content: flex-end">
-          <button class="btn btn-success">Добавить пользователя</button>
+          <a th:href="@{/users/add}" class="btn btn-success mb-1">Добавить пользователя</a>
         </div>
 
         <div class="card border">
