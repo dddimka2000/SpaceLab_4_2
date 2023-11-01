@@ -117,14 +117,6 @@
                             <h5>Прикрепить PDF файлы</h5>
                             <input type="file" accept=".pdf" id="file" onchange="downloadFileTo()">
                             <div id="block-for-file">
-                                <!--                                <div class="row" th:each="file: ${realtorDto.getFiles()}">-->
-                                <!--                                    <div class="col-2"><a href="#" class="text-decoration-none"-->
-                                <!--                                                          th:onclick="@{downloadFileFromFeedBack('{file}')(file=${file})}">Скачать-->
-                                <!--                                        файл</a></div>-->
-                                <!--                                    <div class="col"><a href="#" class="text-decoration-none for-delete"-->
-                                <!--                                                        th:onclick="@{deleteFileFromFeedBack(this,'{file}')(file=${file})}">х-->
-                                <!--                                        удалить</a></div>-->
-                                <!--                                </div>-->
                             </div>
                         </div>
                         <div id="review-block"></div>
@@ -238,7 +230,7 @@
                 var formData = new FormData();
                 formData.append("file", fileInput.files[0]);
                 formData.append("idUser", userId);
-
+                fileInput.value = ''
                 $.ajax({
                     url: '[[@{/users/download/file}]]',
                     type: "POST",

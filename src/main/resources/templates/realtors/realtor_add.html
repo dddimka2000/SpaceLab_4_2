@@ -334,7 +334,7 @@
                 var formData = new FormData();
                 formData.append("file", fileInput.files[0]);
                 formData.append("idRealtor", realtor.id);
-
+                fileInput.value = ''
                 $.ajax({
                     url: '[[@{/realtors/download/file}]]',
                     type: "POST",
