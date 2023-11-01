@@ -32,7 +32,6 @@ public class UserDto {
     private String middleName;
     @Pattern(regexp = "^\\+380\\d{9}$", message = "Некоректний номер")
     private String phone;
-    @NotNull(message = "Фото повино бути вибране")
     private MultipartFile img;
     @NotNull(message = "Повинен бути вибраний хоть один філіал")
     private List<Branch> branches;

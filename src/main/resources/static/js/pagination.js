@@ -55,7 +55,6 @@ function updatePagination(currentPage, totalButtons, container) {
                 }
                 pagination.appendChild(li);
             }
-            console.log(2 + " page " + currentPage)
         } else {
             li = createEllipsisItem();
             if (i == currentPage) {
@@ -75,7 +74,6 @@ function updatePagination(currentPage, totalButtons, container) {
                 li.classList.add("active");
             }
             pagination.appendChild(li);
-            console.log(3 + " page " + currentPage)
         }
         if ((currentPage + 1) <= totalButtons) {
             li = createPaginationItem(totalButtons - 1);

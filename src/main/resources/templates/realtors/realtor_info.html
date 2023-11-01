@@ -58,7 +58,9 @@
                         </tr>
                         <tr>
                             <td><b>ФИО</b></td>
-                            <td th:text="${realtor.surname + ' ' + realtor.name + ' ' + realtor.middleName}"></td>
+                            <td>
+                                <a th:href="@{/users/{id}(id=${realtor.id})}" th:text="${realtor.surname + ' ' + realtor.name + ' ' + realtor.middleName}"></a>
+                            </td>
                         </tr>
                         <tr>
                             <td><b>Телефоны</b></td>
@@ -73,7 +75,9 @@
                         </tr>
                         <tr>
                             <td><b>Филиал</b></td>
-                            <td th:text="${realtor.branch.name}"></td>
+                            <td>
+                                <a th:href="@{/branches/{id}(id=${realtor.branch.id})}" th:text="${realtor.branch.name}"></a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

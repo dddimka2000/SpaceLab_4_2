@@ -6,62 +6,92 @@
         layout:decorate="~{layout.html}"
 >
 <head>
-  <title>Content page</title>
+    <title>Content page</title>
 </head>
 
 <body>
 
 <section layout:fragment="content">
-  <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="d-flex justify-content-between">
-      <h4 class="fw-bold">Пользователь</h4>
-      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Главная</a></li>
-          <li class="breadcrumb-item"><a href="#">Пользователи</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Пользователь</li>
-        </ol>
-      </nav>
-    </div>
-    <hr style="margin-top: -5px">
-
-    <div class="card">
-      <div class="card-header">
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-info">Редактировать</button>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Пользователь</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
+                    <li class="breadcrumb-item"><a href="#">Пользователи</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Пользователь</li>
+                </ol>
+            </nav>
         </div>
-        <hr>
-      </div>
-      <div class="card-body">
-        [image]
-        <table class="table table-bordered table-striped table-view">
-          <tbody>
-          <tr>
-            <td><b>Пользователь</b></td>
-            <td>Elon Musk</td>
-          </tr>
-          <tr>
-            <td><b>Роль</b></td>
-            <td>Директор</td>
-          </tr>
-          <tr>
-            <td><b>Телефон</b></td>
-            <td>+380990010101</td>
-          </tr>
-          <tr>
-            <td><b>Email(логин)</b></td>
-            <td>admin@admin.com</td>
-          </tr>
-          <tr>
-            <td><b>Статус</b></td>
-            <td>Активен</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+        <hr style="margin-top: -5px">
 
-  </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-end">
+                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info ">Редактировать</a>
+                </div>
+                <hr>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-5">
+                        <img id="previewImage" style="width: 100%; height: auto; margin-bottom: 10px;">
+                    </div>
+                    <div class="col-3">
+                    </div>
+                </div>
+                <table class="table table-bordered table-striped table-view">
+                    <tbody>
+                    <tr>
+                        <td><b>Пользователь</b></td>
+                        <td th:text="${user.name}"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Роль</b></td>
+                        <td th:text="${user.roles}"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Телефон</b></td>
+                        <td th:text="${user.phone}"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Email(логин)</b></td>
+                        <td th:text="${user.email}"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Філіали</b></td>
+                        <td>
+                            <a th:each="branch : ${user.branches}" th:href="@{/branches/{id}(id=${branch.id})}"
+                               th:text="${branch.name}" style="display: inline; margin-right: 20px"></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            $.ajax({
+                url: '[[@{/users/get/id/}]]' + getLastDigitFromPath(window.location.pathname),
+                success: function (user) {
+                    $.ajax({
+                        type: "GET",
+                        url: '[[@{/users/get/url}]]',
+                        data: {
+                            url: user.img
+                        },
+                        success: function (url) {
+                            console.log(url)
+                            $('#previewImage').attr('src', url);
+                        },
+                    });
+                }
+            })
+        })
+    </script>
 </section>
 
 </body>
