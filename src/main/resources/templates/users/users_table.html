@@ -5,132 +5,196 @@
         class="light-style layout-navbar-fixed layout-menu-fixed"
         layout:decorate="~{layout.html}"
         xmlns:layout="http://www.w3.org/1999/xhtml">
-  <head>
+<head>
     <title>Content page</title>
-  </head>
+</head>
 
-  <body>
-    <section layout:fragment="content">
-      <div class="container-xxl flex-grow-1 container-p-y">
+<body>
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
         <div class="d-flex justify-content-between">
-          <h4 class="fw-bold">Пользователи</h4>
-          <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Пользователи</li>
-            </ol>
-          </nav>
+            <h4 class="fw-bold">Пользователи</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Пользователи</li>
+                </ol>
+            </nav>
         </div>
         <hr style="margin-top: -5px">
         <div style="width: 100%; display: flex; justify-content: flex-end">
-          <a th:href="@{/users/add}" class="btn btn-success mb-1">Добавить пользователя</a>
+            <a th:href="@{/users/add}" class="btn btn-success mb-1">Добавить пользователя</a>
         </div>
 
         <div class="card border">
-          <div class="card-header border">
-            <div class="d-flex justify-content-end">
-              <button class="btn btn-default">Очистить</button>
+            <div class="card-header border">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-default" id="clean-filter">Очистить</button>
+                </div>
             </div>
-          </div>
-          <div class="card-body">
-            <table class="table table-bordered table-hover table-striped linkedRow" id="adminsTable">
-              <thead>
-              <tr>
-                <th>Роль</th>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Телефон</th>
-                <th>Email (логин)</th>
-                <th></th>
-              </tr>
-              <tr>
-                <td>
-                  <input type="text" class="form-control">
-                </td>
-                <td>
-                  <input type="text" class="form-control">
-                </td>
-                <td>
-                  <input type="text" class="form-control">
-                </td>
-                <td>
-                  <input type="text" class="form-control">
-                </td>
-                <td>
-                  <input type="text" class="form-control">
-                </td>
-                <td>
-                  <input type="text" class="form-control">
-                </td>
-                <td>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped linkedRow" id="usersTable">
+                        <thead>
+                        <tr>
+                            <th>Роль</th>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th style="min-width: 130px;">Отчество</th>
+                            <th>Телефон</th>
+                            <th>Email (логин)</th>
+                            <th style="min-width: 130px;"></th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" class="form-control for-filter">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control for-filter">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control for-filter">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control for-filter">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control for-filter">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control for-filter">
+                            </td>
+                            <td>
 
-                </td>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>Директор</td>
-                <td>Пушкин</td>
-                <td>Александр</td>
-                <td>Сергеевич</td>
-                <td>+380123456789</td>
-                <td>user@mail.test</td>
-                <td>
-                  <div class="d-flex">
-                    <button class="btn btn-default btn-sm">
-                      <i class="fa fa-pencil"></i>
-                    </button>
-                    <button class="btn btn-default btn-sm">
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>Админ филиала</td>
-                <td>Пушкин</td>
-                <td>Александр</td>
-                <td>Сергеевич</td>
-                <td>+380123456789</td>
-                <td>user@mail.test</td>
-                <td>
-                  <div class="d-flex">
-                    <button class="btn btn-default btn-sm">
-                      <i class="fa fa-pencil"></i>
-                    </button>
-                    <button class="btn btn-default btn-sm">
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>Админ филиала</td>
-                <td>Пушкин</td>
-                <td>Александр</td>
-                <td>Сергеевич</td>
-                <td>+380123456789</td>
-                <td>user@mail.test</td>
-                <td>
-                  <div class="d-flex">
-                    <button class="btn btn-default btn-sm">
-                      <i class="fa fa-pencil"></i>
-                    </button>
-                    <button class="btn btn-default btn-sm">
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-            <div class="pagination_container"></div>
-          </div>
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="card-footer">
+                <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                    id="pagination_container">
+                </ul>
+            </div>
         </div>
+    </div>
+    <script th:src="@{/js/pagination.js}"></script>
+    <script>
+        $(document).ready(function () {
+            getPageWithFilter(0)
+        });
+        $('.for-filter').on('input', function () {
+            clearTimeout($(this).data('timeout'));
+            var $input = $(this);
+            var timeout = setTimeout(function () {
+                getPageWithFilter(0);
+            }, 700);
+            $input.data('timeout', timeout);
+        });
 
-      </div>
-    </section>
+        function getPageWithFilter(page) {
+            this.page = page
+            var filterElements = $('.for-filter');
+            $.ajax({
+                type: "Get",
+                url: '[[@{/users/get-all}]]',
+                data: {
+                    page: page,
+                    role: filterElements[0].value,
+                    surname: filterElements[1].value,
+                    name: filterElements[2].value,
+                    middleName: filterElements[3].value,
+                    phone: filterElements[4].value,
+                    email: filterElements[5].value
+                },
+                success: function (users) {
+                    var table = document.getElementById("usersTable");
+                    var tbody = table.querySelector("tbody");
+                    $('#usersTable tbody').empty();
 
-  </body>
+                    for (var user of users.content) {
+                        var newRow = tbody.insertRow();
+                        var userId = user.id;
+
+                        var cell1 = newRow.insertCell(0);
+                        cell1.innerHTML = user.roles;
+                        cell1.setAttribute('onclick', 'window.location.href="[[@{/users/}]]' + userId + '"');
+
+                        var cell2 = newRow.insertCell(1);
+                        cell2.innerHTML = user.surname;
+                        cell2.setAttribute('onclick', 'window.location.href="[[@{/users/}]]' + userId + '"');
+
+
+                        var cell3 = newRow.insertCell(2);
+                        cell3.innerHTML = user.name;
+                        cell3.setAttribute('onclick', 'window.location.href="[[@{/users/}]]' + userId + '"');
+
+                        var cell4 = newRow.insertCell(3);
+                        cell4.innerHTML = user.middleName;
+                        cell4.setAttribute('onclick', 'window.location.href="[[@{/users/}]]' + userId + '"');
+
+                        var cell5 = newRow.insertCell(4);
+                        cell5.innerHTML = user.phone
+                        cell5.setAttribute('onclick', 'window.location.href="[[@{/users/}]]' + userId + '"');
+
+                        var cell6 = newRow.insertCell(5);
+                        cell6.innerHTML = user.email
+                        cell6.setAttribute('onclick', 'window.location.href="[[@{/users/}]]' + userId + '"');
+
+                        var cell7 = newRow.insertCell(6);
+                        cell7.innerHTML = `
+                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + userId + `);" title='Удалить'><i class='fa fa-trash'></i></button>
+                        <a class='btn btn-default btn-sm float-right' href='[[@{/users/edit/}]]` + userId + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
+                    }
+                    $('#pagination_container').empty();
+                    if (users.totalPages > 1) updatePagination(page, users.totalPages, 'pagination_container')
+                },
+            });
+        }
+        function deleteElement(button, userId) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var table = document.getElementById("usersTable");
+                var row = button.parentElement.parentElement;
+                table.deleteRow(row.rowIndex);
+
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/users/delete/}]]' + userId,
+                    success: function () {
+                        getPageWithFilter(page)
+                        showToast("Елемент успішно видалений", "success")
+                    },
+                });
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+        $('#clean-filter').click(function () {
+            var filterElements = $('.for-filter');
+            filterElements[0].value = "";
+            filterElements[1].value = "";
+            filterElements[2].value = "";
+            filterElements[3].value = "";
+            filterElements[4].value = "";
+            filterElements[5].value = "";
+            getPageWithFilter(0)
+        });
+    </script>
+</section>
+
+</body>
 </html>

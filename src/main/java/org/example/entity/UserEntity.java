@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,11 +35,10 @@ public class UserEntity {
     private String img;
     private List<String> files;
 
-    @OneToMany
+    @ManyToMany
     private List<Branch> branches;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<UserReview> reviews;
-
-
 }
