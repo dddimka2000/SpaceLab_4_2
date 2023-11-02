@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Content page</title>
+    <link rel="stylesheet" th:href="@{/vendor/css/pages/app-chat.css}">
+    <script th:src="@{/js/app-chat.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <style>
+        .scrollable-container {
+            position: relative;
+            overflow: hidden; /* Здесь может быть ваш запрет */
+        }
+
+        .scrollable-container::before,
+        .scrollable-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 10px; /* Ширина полосы прокрутки */
+            background: rgba(0, 0, 0, 0.6); /* Цвет фона полосы прокрутки */
+        }
+
+        .scrollable-container::before {
+            left: 0;
+        }
+
+        .scrollable-container::after {
+            right: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <br>
+    <div class="container-fluid">
+        <div class="app-chat">
+            <div class="col app-chat-history bg-body">
+                <div class="chat-history-wrapper">
+                    <div class="chat-history-header border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <h6 class="m-0">Chat</h6>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="ti ti-phone-call cursor-pointer d-sm-block d-none me-3"></i>
+                                <i class="ti ti-video cursor-pointer d-sm-block d-none me-3"></i>
+                                <i class="ti ti-search cursor-pointer d-sm-block d-none me-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-history-body bg-body ps ps--active-y">
+                        <ul class="list-unstyled chat-history" id="stack">
+                            <!--                        messages-->
+                        </ul>
+                    </div>
+                    <div class="chat-history-footer">
+                        <form class="form-send-message d-flex justify-content-between align-items-center"
+                              id="messageForm">
+                            <input class="form-control message-input border-0 me-3 shadow-none"
+                                   placeholder="Type your message here">
+                            <div class="message-actions d-flex align-items-center">
+<!--                                <i class="speech-to-text ti ti-microphone ti-sm cursor-pointer"></i>-->
+                                <label for="chatFile2" class="form-label mb-0">
+                                    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-files-alt cursor-pointer mx-3" viewBox="0 0 16 16">
+                                        <path d="M11 0H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2 2 2 0 0 0 2-2V4a2 2 0 0 0-2-2 2 2 0 0 0-2-2zm2 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1V3zM2 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2z"/>
+                                    </svg>
+                                    <input type="file" id="chatFile2" accept="*/*" hidden="">
+                                </label>
+                                <label for="chatFile" class="form-label mb-0">
+                                    <i class="ti ti-photo ti-sm cursor-pointer mx-3" onchange="triggerFileInput()"></i>
+                                    <input type="file" id="chatFile" accept="image/*" hidden="">
+                                </label>
+
+                                <button class="btn btn-primary d-flex send-msg-btn waves-effect waves-light">
+                                    <i class="ti ti-send me-md-1 me-0"></i>
+                                    <span class="align-middle d-md-inline-block d-none">Send</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <!-- Chat message form -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function triggerFileInput() {
+            document.getElementById("chatFile").click();
+        }
+    </script>
+    <script th:inline="javascript">
+
+
+        // const username = getRandomName();
+        // console.log(username);
+        let connectingElement = $("#connectingElement");
+        // username =/*[[${name}]]*/'';
+        username = 1;
+        let pathLink =/*[[@{/}]]*/'';
+
+        let stompClient2 = null
+        const socket = new SockJS('/ProminadaDD/gs-guide-websocket');
+
+        function connect() {
+            stompClient2 = Stomp.over(socket);
+            stompClient2.connect({}, function (frame) {
+                console.log('Соединение установлено');
+
+                stompClient2.subscribe('/topic/public', function (message) {
+                    var chatMessage = JSON.parse(message.body);
+                    console.log("Получено сообщение: " + chatMessage);
+                    console.log(chatMessage.messageType);
+                    console.log(chatMessage.name);
+                    if (chatMessage.messageType == 'CHAT') {
+                        if (chatMessage.name != username) {
+                            console.log('CHAT sendMessageFromOtherUser');
+                            sendMessageFromOtherUser(chatMessage.content, formatTime(new Date(chatMessage.timestamp)));
+                        }
+                    }
+                    if (chatMessage.messageType == "PHOTO") {
+                        // if (chatMessage.name != username) {
+                        console.log('PHOTO sendMessagePhotoFromOtherUser');
+                        console.log(chatMessage.photoData)
+                        sendMessagePhotoFromOtherUser(chatMessage.photoData, formatTime(new Date(chatMessage.timestamp)));
+                        // }
+                    }
+                    if (chatMessage.messageType == "FILE") {
+                        // if (chatMessage.name != username) {
+                        console.log('File sendMessageFileFromOtherUser');
+                        console.log(chatMessage.photoData);
+                        console.log(chatMessage.nameFile)
+                        sendMessageFileFromOtherUser(chatMessage.photoData, formatTime(new Date(chatMessage.timestamp)),chatMessage.nameFile);
+                        // }
+                    }
+                });
+            })
+        }
+
+        connect();
+
+        function onError(error) {
+            console.log("Получено error: " + error);
+            connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
+            connectingElement.style.color = 'red';
+        }
+
+        function disconnect() {
+            if (stompClient2 && stompClient2.connected) {
+                stompClient2.disconnect(function () {
+                    console.log('Соединение закрыто');
+                });
+            }
+        }
+
+        window.addEventListener('beforeunload', disconnect);
+
+        let messageArea = $("#stack");
+
+
+        messageInput = document.querySelector('.message-input');
+
+        function sendMessage(event) {
+            let chatFile = document.getElementById("chatFile").files[0];
+            let chatFile2 = document.getElementById("chatFile2").files[0];
+            event.preventDefault();
+            var messageContent = messageInput.value.trim();
+            console.log(messageContent)
+            if (chatFile && stompClient2) {
+                var reader = new FileReader();
+
+                reader.onload = function (event) {
+                    var photoData = new Uint8Array(event.target.result);
+
+                    var message = {
+                        name: username,
+                        messageType: "PHOTO",
+                        photoData: Array.from(photoData),
+                        timestamp: new Date().getTime()
+                    };
+
+                    stompClient2.send("/app/chat.sendPhoto", {}, JSON.stringify(message));
+                    sendMessagePhotoFromUser(chatFile, formatTime(new Date().getTime()));
+                    document.getElementById("chatFile").value = '';
+                };
+
+                reader.readAsArrayBuffer(chatFile);
+            }
+            if (chatFile2 && stompClient2) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var photoData = new Uint8Array(event.target.result);
+
+                    var message = {
+                        name: username,
+                        messageType: "FILE",
+                        photoData: Array.from(photoData),
+                        timestamp: new Date().getTime(),
+                        nameFile: chatFile2.name
+                    };
+                    stompClient2.send("/app/chat.sendPhoto", {}, JSON.stringify(message));
+                    sendMessageFileFromUser(chatFile2, formatTime(new Date().getTime()));
+                    document.getElementById("chatFile").value = '';
+                };
+
+                reader.readAsArrayBuffer(chatFile2);
+            }
+
+            if (messageContent && stompClient2) {
+                var chatMessage = {
+                    name: username,
+                    content: messageInput.value,
+                    messageType: 'CHAT',
+                    timestamp: new Date().getTime()
+                };
+                stompClient2.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+                sendMessageFromUser(messageInput, formatTime(new Date().getTime()));
+                messageInput.value = '';
+            }
+
+        }
+        function sendMessageFileFromUser(messageInput, time) {
+            if (messageInput) {
+                var renderMsg = document.createElement('li');
+                renderMsg.className = 'chat-message chat-message-right';
+
+                var dFlexDiv = document.createElement('div');
+                dFlexDiv.className = 'd-flex';
+
+                var chatMessageWrapper = document.createElement('div');
+                chatMessageWrapper.className = 'chat-message-wrapper flex-grow-1 w-50';
+
+                var chatMessageText = document.createElement('div');
+                chatMessageText.className = 'chat-message-text';
+                if (messageInput) {
+                    let url = URL.createObjectURL(messageInput);
+                    console.log(messageInput);
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.download = messageInput.name;
+                    a.innerHTML = '<img src="https://www.stouffvilletoyota.com/wp-content/uploads/2019/08/download-logo-png-image-77292.png" width="100px" height="auto">';
+                    console.log(a.outerHTML);
+                    chatMessageText.innerHTML = a.outerHTML;
+                }
+                var textEndTextMuted = document.createElement('div');
+                textEndTextMuted.className = 'text-end text-muted mt-1';
+                textEndTextMuted.innerHTML = '<i class="ti ti-checks ti-xs me-1"></i><small>' + time + '</small>';
+
+                chatMessageWrapper.appendChild(chatMessageText);
+                chatMessageWrapper.appendChild(textEndTextMuted);
+
+                dFlexDiv.appendChild(chatMessageWrapper);
+
+                renderMsg.appendChild(dFlexDiv);
+
+                $("#stack").append(renderMsg);
+                messageInput.value = '';
+                scrollToBottom();
+            }
+        }
+        function sendMessageFileFromOtherUser(messageInput, time, fileName) {
+            if (messageInput) {
+                var renderMsg = document.createElement('li');
+                renderMsg.className = 'chat-message chat-message';
+
+                var dFlexDiv = document.createElement('div');
+                dFlexDiv.className = 'd-flex';
+
+                var chatMessageWrapper = document.createElement('div');
+                chatMessageWrapper.className = 'chat-message-wrapper flex-grow-1 w-50';
+
+                var chatMessageText = document.createElement('div');
+                chatMessageText.className = 'chat-message-text';
+                if (messageInput) {
+                    var blob = new Blob([new Uint8Array(messageInput)], { type: 'application/octet-stream' });
+                    var url = URL.createObjectURL(blob);
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    a.innerHTML = '<img src="https://www.stouffvilletoyota.com/wp-content/uploads/2019/08/download-logo-png-image-77292.png" width="100px" height="auto">';
+                    console.log(a.outerHTML);
+                    chatMessageText.innerHTML = a.outerHTML;
+
+                }
+                var textEndTextMuted = document.createElement('div');
+                textEndTextMuted.className = 'text-end text-muted mt-1';
+                textEndTextMuted.innerHTML = '<i class="ti ti-checks ti-xs me-1"></i><small>' + time + '</small>';
+
+                chatMessageWrapper.appendChild(chatMessageText);
+                chatMessageWrapper.appendChild(textEndTextMuted);
+
+                dFlexDiv.appendChild(chatMessageWrapper);
+
+                renderMsg.appendChild(dFlexDiv);
+
+                $("#stack").append(renderMsg);
+                messageInput.value = '';
+                scrollToBottom();
+            }
+        }
+        function dataURItoBlob(dataURI) {
+            var byteString = atob(dataURI.split(',')[1]);
+            var ab = new ArrayBuffer(byteString.length);
+            var ia = new Uint8Array(ab);
+
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+
+            return new Blob([ab]);
+        }
+
+
+        let messageForm = document.querySelector('#messageForm');
+        messageForm.addEventListener('submit', sendMessage, true)
+
+        function sendMessagePhotoFromUser(messageInput, time) {
+            if (messageInput) {
+                var renderMsg = document.createElement('li');
+                renderMsg.className = 'chat-message chat-message-right';
+
+                var dFlexDiv = document.createElement('div');
+                dFlexDiv.className = 'd-flex';
+
+                var chatMessageWrapper = document.createElement('div');
+                chatMessageWrapper.className = 'chat-message-wrapper flex-grow-1 w-50';
+
+                var chatMessageText = document.createElement('div');
+                chatMessageText.className = 'chat-message-text';
+                if (messageInput.type.startsWith('image/')) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        chatMessageText.innerHTML = '<img class="d-block w-px-300 h-px-300 rounded" src="' + e.target.result + '"</img>';
+                    }
+                    reader.readAsDataURL(messageInput);
+                }
+
+                var textEndTextMuted = document.createElement('div');
+                textEndTextMuted.className = 'text-end text-muted mt-1';
+                textEndTextMuted.innerHTML = '<i class="ti ti-checks ti-xs me-1"></i><small>' + time + '</small>';
+
+                chatMessageWrapper.appendChild(chatMessageText);
+                chatMessageWrapper.appendChild(textEndTextMuted);
+
+                dFlexDiv.appendChild(chatMessageWrapper);
+
+                renderMsg.appendChild(dFlexDiv);
+
+                $("#stack").append(renderMsg);
+                messageInput.value = '';
+                scrollToBottom();
+            }
+        }
+
+        function sendMessagePhotoFromOtherUser(photoData, formatTime) {
+            var renderMsg = document.createElement('li');
+            renderMsg.className = 'chat-message chat-message';
+
+            var dFlexDiv = document.createElement('div');
+            dFlexDiv.className = 'd-flex';
+
+            var chatMessageWrapper = document.createElement('div');
+            chatMessageWrapper.className = 'chat-message-wrapper flex-grow-1 w-50';
+
+            var chatMessageText = document.createElement('div');
+            chatMessageText.className = 'chat-message-text';
+            // if (e.startsWith('image/')) {
+            //     var reader = new FileReader();
+            //     reader.onload = function (e2) {
+            //         chatMessageText.innerHTML = '<img class="d-block w-px-300 h-px-300 rounded" src="' + e2.target.result + '"</img>';
+            //     }
+            //     reader.readAsDataURL(e);
+            // }
+            var dataURL = "data:image/jpeg;base64, " + photoData;
+            chatMessageText.innerHTML = '<img class="d-block w-px-300 h-px-300 rounded" src="' + dataURL + '">';
+
+
+            var textEndTextMuted = document.createElement('div');
+            textEndTextMuted.className = 'text-end text-muted mt-1';
+            textEndTextMuted.innerHTML = '<i class="ti ti-checks ti-xs me-1"></i><small>' + formatTime + '</small>';
+
+            chatMessageWrapper.appendChild(chatMessageText);
+            chatMessageWrapper.appendChild(textEndTextMuted);
+
+            dFlexDiv.appendChild(chatMessageWrapper);
+
+            renderMsg.appendChild(dFlexDiv);
+
+            $("#stack").append(renderMsg)
+            scrollToBottom();
+        }
+
+
+        function sendMessageFromUser(messageInput, time) {
+            if (messageInput.value) {
+                var renderMsg = document.createElement('li');
+                renderMsg.className = 'chat-message chat-message-right';
+
+                var dFlexDiv = document.createElement('div');
+                dFlexDiv.className = 'd-flex';
+
+                var chatMessageWrapper = document.createElement('div');
+                chatMessageWrapper.className = 'chat-message-wrapper flex-grow-1 w-50';
+
+                var chatMessageText = document.createElement('div');
+                chatMessageText.className = 'chat-message-text';
+                chatMessageText.innerHTML = '<p class="mb-0">' + messageInput.value + '</p><p></p>';
+
+                var textEndTextMuted = document.createElement('div');
+                textEndTextMuted.className = 'text-end text-muted mt-1';
+                textEndTextMuted.innerHTML = '<i class="ti ti-checks ti-xs me-1"></i><small>' + time + '</small>';
+
+                chatMessageWrapper.appendChild(chatMessageText);
+                chatMessageWrapper.appendChild(textEndTextMuted);
+
+                dFlexDiv.appendChild(chatMessageWrapper);
+
+                renderMsg.appendChild(dFlexDiv);
+
+                $("#stack").append(renderMsg);
+                messageInput.value = '';
+                scrollToBottom();
+            }
+        }
+
+        function sendMessageFromOtherUser(e, formatTime) {
+            var renderMsg = document.createElement('li');
+            renderMsg.className = 'chat-message chat-message';
+
+            var dFlexDiv = document.createElement('div');
+            dFlexDiv.className = 'd-flex';
+
+            var chatMessageWrapper = document.createElement('div');
+            chatMessageWrapper.className = 'chat-message-wrapper flex-grow-1 w-50';
+
+            var chatMessageText = document.createElement('div');
+            chatMessageText.className = 'chat-message-text';
+            chatMessageText.innerHTML = '<p class="mb-0">' + e + '</p><p></p>';
+
+            var textEndTextMuted = document.createElement('div');
+            textEndTextMuted.className = 'text-end text-muted mt-1';
+            textEndTextMuted.innerHTML = '<i class="ti ti-checks ti-xs me-1"></i><small>' + formatTime + '</small>';
+
+            chatMessageWrapper.appendChild(chatMessageText);
+            chatMessageWrapper.appendChild(textEndTextMuted);
+
+            dFlexDiv.appendChild(chatMessageWrapper);
+
+            renderMsg.appendChild(dFlexDiv);
+
+            $("#stack").append(renderMsg)
+            scrollToBottom();
+        }
+
+        chatHistoryBody = document.querySelector('.chat-history-body');
+
+        function scrollToBottom() {
+            chatHistoryBody.scrollTo(0, chatHistoryBody.scrollHeight);
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+
+            // Преобразовываем часы в формат 12-часовых часов
+            const formattedHours = hours % 12 || 12;
+
+            // Добавляем ведущий ноль к минутам, если они менее 10
+            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+            // Форматируем строку времени
+            return `${formattedHours}:${formattedMinutes} ${ampm}`;
+        }
+    </script>
+</section>
+</body>
+
+</html>
