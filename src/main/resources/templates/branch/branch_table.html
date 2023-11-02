@@ -154,8 +154,9 @@
                 $.ajax({
                     type: "Get",
                     url: '[[@{/branches/delete/}]]' + branchId,
-                    success: function () {
+                    success: function (response) {
                         getPageWithFilter(page)
+                        showToast(response, "success")
                     },
                 })
                 $('#confirmationModal').modal('hide')

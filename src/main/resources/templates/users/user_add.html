@@ -150,8 +150,8 @@
                     data: {
                         id: idReview,
                     },
-                    success: function () {
-                        showToast("Відгук успішно видалено", "success")
+                    success: function (response) {
+                        showToast(response, "success")
                     },
                 });
 
@@ -209,8 +209,8 @@
                         userId: userId,
                         url: url,
                     },
-                    success: function () {
-                        showToast("Файл успішно видалений", "success")
+                    success: function (response) {
+                        showToast(response, "success")
                     },
                 });
 
@@ -221,7 +221,6 @@
                 $('#confirmationModal').modal('hide');
                 $('.confirm-delete').off('click');
             });
-            console.log(url)
         }
 
         function downloadFileTo() {
@@ -281,7 +280,6 @@
                                 url: user.img
                             },
                             success: function (url) {
-                                console.log(url)
                                 $('#previewImage').attr('src', url);
                             },
                         });
@@ -521,7 +519,8 @@
                         processData: false,
                         contentType: false,
                         data: reviewForm,
-                        success: function () {
+                        success: function (response) {
+                            showToast(response, "success")
                         },
                         error: function (xhr, status, error) {
                             var errors = JSON.parse(xhr.responseText);
@@ -550,8 +549,8 @@
                 processData: false,
                 contentType: false,
                 data: formData,
-                success: function () {
-                    showToast("Елемент успішно збережений", "success")
+                success: function (response) {
+                    showToast(response, "success")
                 },
                 error: function (xhr, status, error) {
                     var errors = JSON.parse(xhr.responseText);

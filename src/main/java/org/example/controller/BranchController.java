@@ -82,7 +82,7 @@ public class BranchController {
     @ResponseBody
     public ResponseEntity<String> deleteById(@PathVariable("id")int id){
         branchService.deleteById(id);
-        return ResponseEntity.ok("Branch was deleted");
+        return ResponseEntity.ok("Філіал був видалений");
     }
 
     @GetMapping("/for/select")

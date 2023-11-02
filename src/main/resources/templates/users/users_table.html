@@ -169,9 +169,9 @@
                 $.ajax({
                     type: "Get",
                     url: '[[@{/users/delete/}]]' + userId,
-                    success: function () {
+                    success: function (response) {
                         getPageWithFilter(page)
-                        showToast("Елемент успішно видалений", "success")
+                        showToast(response, "success")
                     },
                 });
 

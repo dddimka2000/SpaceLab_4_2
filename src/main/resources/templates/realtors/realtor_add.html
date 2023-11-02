@@ -291,8 +291,8 @@
                 $.ajax({
                     type: "Get",
                     url: '[[@{/realtors/delete/contact/}]]' + id,
-                    success: function () {
-
+                    success: function (response) {
+                        showToast(response, "success")
                     },
                 });
                 $('#confirmationModal').modal('hide');
@@ -315,8 +315,8 @@
                 $.ajax({
                     type: "Get",
                     url: '[[@{/realtors/feedback/delete/}]]' + idBody,
-                    success: function () {
-
+                    success: function (response) {
+                        showToast(response, "success")
                     },
                 });
                 $('#confirmationModal').modal('hide');
@@ -382,8 +382,8 @@
                         url: link,
                         idRealtor: realtor.id
                     },
-                    success: function () {
-
+                    success: function (response) {
+                        showToast(response, "success")
                     },
                     error: function (error) {
                         console.error("Помилка видалення файлу", error);

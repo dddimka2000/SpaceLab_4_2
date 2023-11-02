@@ -20,6 +20,4 @@ public class UserReview {
     @JoinColumn(name = "id_user", referencedColumnName = "id")
     @JsonBackReference
     private UserEntity user;
-
-
 }

@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,5 +17,8 @@ public class Question {
 
     private String question;
     private String answer;
-
+    @ManyToOne
+    @JoinColumn(name="id_buyer", referencedColumnName = "id")
+    @JsonBackReference
+    private Buyer buyer;
 }

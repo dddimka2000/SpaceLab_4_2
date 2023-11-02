@@ -84,7 +84,7 @@ public class RealtorController {
     @ResponseBody
     public ResponseEntity<String> deleteById(@PathVariable("id")int id){
         realtorService.deleteById(id);
-        return ResponseEntity.ok("Realtor was deleted");
+        return ResponseEntity.ok("Елемент успішно видалений");
     }
     @GetMapping("/get-all")
     @ResponseBody
@@ -111,17 +111,17 @@ public class RealtorController {
         Realtor realtor = realtorService.getById(id);
         realtor.getFiles().remove(url);
         realtorService.save(realtor);
-        return ResponseEntity.ok("File deleted successfully");
+        return ResponseEntity.ok("Файл видалено успішно");
     }
     @GetMapping("/feedback/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id")int id) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         realtorFeedBackService.deleteById(id);
-        return ResponseEntity.ok("Feedback deleted successfully");
+        return ResponseEntity.ok("Відгук видалено");
     }
     @GetMapping("/delete/contact/{id}")
     public ResponseEntity<String> deleteContact(@PathVariable("id")int id) {
         realtorContactService.deleteById(id);
-        return ResponseEntity.ok("Contact deleted successfully");
+        return ResponseEntity.ok("Контакт видалено успішно");
     }
     @GetMapping("/feedback/save")
     public ResponseEntity<String> save(@RequestParam("id")int id, @RequestParam("name")String name, @RequestParam("phone")String phone, @RequestParam("description")String description) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
