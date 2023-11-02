@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.example.entity.property.type.InformationSource;
@@ -50,4 +51,7 @@ public class Buyer {
     @OneToMany(mappedBy = "buyer")
     private List<BuyerNote> notes;
 
+    @OneToMany(mappedBy = "buyer")
+    @JsonManagedReference
+    private List<Question> questions;
 }

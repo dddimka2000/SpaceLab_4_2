@@ -59,7 +59,7 @@ public class UserController {
     public ResponseEntity<String> add(@ModelAttribute @Valid UserDto userDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         if(bindingResult.hasErrors()) return ResponseEntity.ok().body(bindingResult.getAllErrors().toString());
         userService.add(userDto);
-        return ResponseEntity.ok().body("Сохранено");
+        return ResponseEntity.ok().body("Користувача успішно збережено");
     }
     @GetMapping("/edit/{id}")
     public ModelAndView edit(){
@@ -116,7 +116,7 @@ public class UserController {
     @PostMapping("/save/review")
     public ResponseEntity<String> saveReview(@ModelAttribute UserReview review){
         reviewService.save(review);
-        return ResponseEntity.ok("Відгук видалено успішно");
+        return ResponseEntity.ok("Відгук збережено");
     }
 
 }

@@ -178,8 +178,9 @@
                 $.ajax({
                     type: "Get",
                     url: '[[@{/realtors/delete/}]]' + realtorId,
-                    success: function () {
+                    success: function (response) {
                         getPageWithFilter(page)
+                        showToast(response, "success")
                     },
                 });
                 $('#confirmationModal').modal('hide');
