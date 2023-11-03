@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Изменения</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Изменения</li>
+                </ol>
+            </nav>
+        </div>
+        <hr style="margin-top: -5px">
+        <!-- <div style="width: 100%; display: flex; justify-content: flex-end">
+            <button class="btn btn-success">Добавить страницу</button>
+        </div> -->
+
+        <div class="card border">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped linkedRow" id="offersTable">
+                        <thead>
+                        <tr>
+                            <th>Объект</th>
+                            <th>Текст</th>
+                            <th>Отправитель</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                    id="pagination_container">
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal animate__animated animate__flipInX" id="modalForOffer" tabindex="-1"
+         aria-labelledby="flipInXAnimationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Изменения</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ОТПРАВИТЕЛЬ
+                    <input class="form-control" name="sender" disabled>
+                    ТЕКСТ
+                    <textarea class="form-control" name="text" rows="8" disabled></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/pagination.js}"></script>
+    <script>
+        $(document).ready(function () {
+            getPageWithFilter(0)
+        })
+
+        function deleteElement(button, id) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var table = document.getElementById("offersTable");
+                var row = button.parentElement.parentElement;
+                table.deleteRow(row.rowIndex);
+
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/proposals_for_changes/delete/}]]' + id,
+                    success: function (response) {
+                        getPageWithFilter(page)
+                        showToast(response, "success")
+                    },
+                });
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+
+        function showModal(id) {
+            $.ajax({
+                type: "Get",
+                url: '[[@{/proposals_for_changes/getById}]]',
+                data: {
+                    id: id
+                },
+                success: function (offer) {
+                    var modal = new bootstrap.Modal(document.getElementById('modalForOffer'))
+                    var modalElement = document.getElementById('modalForOffer')
+                    modalElement.querySelector('input[name="sender"]').value = offer.sender
+                    modalElement.querySelector('textarea[name="text"]').value = offer.text
+                    modal.show()
+                }
+            })
+        }
+
+        function getPageWithFilter(page) {
+            this.page = page
+            $.ajax({
+                type: "Get",
+                url: '[[@{/proposals_for_changes/get-all}]]',
+                data: {
+                    page: page
+                },
+                success: function (offers) {
+                    var table = document.getElementById("offersTable");
+                    var tbody = table.querySelector("tbody");
+                    $('#offersTable tbody').empty();
+
+                    for (var offer of offers.content) {
+                        var newRow = tbody.insertRow();
+                        var offerId = offer.id;
+                        var cell1 = newRow.insertCell(0);
+                        cell1.innerHTML = textForTable(offer.id, 10);
+                        cell1.setAttribute('onclick', 'showModal(' + offerId + ')');
+
+                        var cell2 = newRow.insertCell(1);
+                        cell2.innerHTML = textForTable(offer.text, 40);
+                        cell2.setAttribute('onclick', 'showModal(' + offerId + ')');
+
+                        var cell3 = newRow.insertCell(2);
+                        cell3.innerHTML = textForTable(offer.sender, 40);
+                        cell3.setAttribute('onclick', 'showModal(' + offerId + ')');
+
+                        var cell4 = newRow.insertCell(3);
+                        cell4.innerHTML = `
+                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + offerId + `);" title='Удалить'><i class='fa fa-trash'></i></button>`
+                    }
+                    $('#pagination_container').empty();
+                    if (offers.totalPages > 1) updatePagination(page, offers.totalPages, 'pagination_container')
+                },
+            });
+        }
+    </script>
+</section>
+
+</body>
+</html>
