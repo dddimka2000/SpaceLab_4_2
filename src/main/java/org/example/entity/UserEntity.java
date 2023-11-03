@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -31,15 +32,15 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
 
-    private String name, surname, middleName;
+    private String name, surname, middleName, phone;
 
     private String img;
+    private List<String> files;
 
-    @OneToMany
+    @ManyToMany
     private List<Branch> branches;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<UserReview> reviews;
-
-
 }

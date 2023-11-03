@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Новый пользователь</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/users}">Пользователи</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Новый пользователь</li>
+                </ol>
+            </nav>
+        </div>
+        <hr style="margin-top: -5px">
+
+        <ul class="nav nav-pills mb-3" role="tablist" id="navigationBlock">
+            <li class="nav-item">
+                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home" aria-selected="true">
+                    Информация
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-top-reviews" aria-controls="navs-pills-top-profile"
+                        aria-selected="false">Отзывы
+                </button>
+            </li>
+        </ul>
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="navs-pills-top-info">
+                        <div class="row">
+                            <div class="col-6">
+                                <img id="previewImage" class="pull-left img-responsive mb-2"
+                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
+                                     style="width: 50%; height: 200px">
+                                <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png"
+                                       onchange="validateAndUpload('previewImage', ['.jpg', '.jpeg', '.png'])"
+                                       th:id="img">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="form-label">Филиалы</label>
+                                <select id="branchSelect2Multiple" name="branches" multiple>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Роль</label>
+                                <select id="roleSelect2" name="roles" class="form-select"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="form-label">Фамилия</label>
+                                <input id="surname" type="text" class="form-control"
+                                       placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Имя</label>
+                                <input type="text" class="form-control" id="name"
+                                       placeholder="Александр" aria-describedby="defaultFormControlHelp"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="form-label">Отчество</label>
+                                <input type="text" class="form-control" id="middleName"
+                                       placeholder="Сергеевич" aria-describedby="defaultFormControlHelp"/>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Телефон</label>
+                                <input type="tel" class="form-control" id="phone"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="form-label">Email</label>
+                                <input type="text" class="form-control" id="email"
+                                       placeholder="test@gmail.com" aria-describedby="defaultFormControlHelp"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h3>Сменить пароль</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="form-label">Новый пароль</label>
+                                <input type="password" class="form-control" id="password"
+                                       aria-describedby="defaultFormControlHelp"/>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Повтор пароля</label>
+                                <input type="password" class="form-control" id="confirmPassword"
+                                       aria-describedby="defaultFormControlHelp"/>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="navs-pills-top-reviews">
+                        <div class="row mb-3">
+                            <h5>Прикрепить PDF файлы</h5>
+                            <input type="file" accept=".pdf" id="file" onchange="downloadFileTo()">
+                            <div id="block-for-file">
+                            </div>
+                        </div>
+                        <div id="review-block"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-default">Отменить</button>
+                    <button onclick="sendForm()" class="btn btn-success">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var userId
+
+        function deleteReviewBody(button, idReview) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var rowElement = button.closest('.row');
+                var parentRowElement = rowElement.parentElement;
+                if (parentRowElement) {
+                    parentRowElement.remove();
+                }
+
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/users/delete/review}]]',
+                    data: {
+                        id: idReview,
+                    },
+                    success: function () {
+                        showToast("Відгук успішно видалено", "success")
+                    },
+                });
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+
+        function downloadFileFrom(url) {
+            $.ajax({
+                type: "GET",
+                url: "[[@{/users/download}]]",
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    url: url
+                },
+                success: function (data) {
+                    var blob = new Blob([data], {type: 'application/octet-stream'});
+                    var filename = "file.pdf";
+
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveOrOpenBlob(blob, filename);
+                    } else {
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
+                    }
+                },
+                error: function () {
+                    console.log("Помилка завантаження файлу");
+                }
+            });
+        }
+
+        function deleteFile(button, url) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var rowElement = button.closest('.row');
+                if (rowElement) {
+                    rowElement.remove();
+                }
+
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/users/delete/file}]]',
+                    data: {
+                        userId: userId,
+                        url: url,
+                    },
+                    success: function () {
+                        showToast("Файл успішно видалений", "success")
+                    },
+                });
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            console.log(url)
+        }
+
+        function downloadFileTo() {
+            if (validateFile('file', ['.pdf'])) {
+                var fileInput = document.getElementById('file');
+                var formData = new FormData();
+                formData.append("file", fileInput.files[0]);
+                formData.append("idUser", userId);
+                fileInput.value = ''
+                $.ajax({
+                    url: '[[@{/users/download/file}]]',
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (url) {
+                        var blockForFile = $("#block-for-file");
+
+                        var row = $("<div class='row'></div>");
+                        var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>Скачать файл</a></div>");
+                        col1.on("click", function () {
+                            downloadFileFrom(url);
+                        });
+
+                        var col2 = $("<div class='col'><a href='#' class='text-decoration-none for-delete'>х удалить</a></div>");
+                        col2.on("click", function () {
+                            deleteFile(this, url);
+                        });
+
+                        row.append(col1);
+                        row.append(col2);
+
+                        blockForFile.append(row);
+                    }
+                })
+            }
+        }
+
+        $(document).ready(function () {
+            userId = getLastDigitFromPath(window.location.pathname)
+            if (getLastDigitFromPath(window.location.pathname) != null) {
+                $.ajax({
+                    url: '[[@{/users/get/id/}]]' + getLastDigitFromPath(window.location.pathname),
+                    success: function (user) {
+                        this.user = user
+                        $("#name").val(user.name)
+                        $("#surname").val(user.surname)
+                        $("#middleName").val(user.middleName)
+                        $("#phone").val(user.phone)
+                        $("#email").val(user.email)
+                        roleSelect2(user.roles, user.roles)
+
+                        $.ajax({
+                            type: "GET",
+                            url: '[[@{/users/get/url}]]',
+                            data: {
+                                url: user.img
+                            },
+                            success: function (url) {
+                                console.log(url)
+                                $('#previewImage').attr('src', url);
+                            },
+                        });
+
+                        $('#branchSelect2Multiple').select2({
+                            placeholder: "Філіали",
+                            ajax: {
+                                url: '[[@{/branches/for/select}]]',
+                                dataType: 'json',
+                                delay: 1500,
+                                data: function (params) {
+                                    var number = params.page > 0 ? params.page - 1 : 0;
+                                    return {
+                                        query: params.term || '',
+                                        page: number,
+                                        size: 10
+                                    };
+                                },
+                                processResults: function (data, params) {
+                                    var results = data.content.map(function (item) {
+                                        return {id: item.id, text: item.name};
+                                    });
+                                    var hasMore = data.totalPages > data.number;
+                                    return {
+                                        results: results,
+                                        pagination: {
+                                            more: hasMore
+                                        }
+                                    };
+                                },
+                            }
+                        })
+                        for (var branch of user.branches) {
+                            $('#branchSelect2Multiple').append(new Option(branch.name, branch.id, true, true));
+                        }
+                        var fileBlock = document.getElementById("block-for-file")
+                        if (user.files != null)
+                            for (var file of user.files) {
+                                var newFileBlock = document.createElement("div");
+                                newFileBlock.innerHTML = `
+                        <div class="row">
+                            <div class="col-2"><a href="#" class="text-decoration-none" onclick="downloadFileFrom('` + file + `')">Скачать файл</a></div>
+                            <div class="col"><a href="#" class="text-decoration-none" onclick="deleteFile(this,'` + file + `')">х удалить</a></div>
+                        </div>`
+                                fileBlock.appendChild(newFileBlock)
+                            }
+                        var reviewBlock = document.getElementById("review-block")
+                        if (user.reviews)
+                            for (var review of user.reviews) {
+                                var newReviewBlock = document.createElement("div");
+                                newReviewBlock.innerHTML = `
+                            <div class="row">
+                                <div class="col-5">
+                                    <label>Имя</label>
+                                    <input type="text" class="form-control for-review" value="` + review.id + `" hidden>
+                                    <input type="text" class="form-control for-review" value="` + review.name + `">
+                                </div>
+                                <div class="col-5">
+                                    <label>Контакт</label>
+                                    <input type="text" class="form-control for-review" value="` + review.phone + `">
+                                </div>
+                                <div class="col-1">
+                                    <button class="btn btn-default btn-sm" style="margin-top: 22.042px;" onclick="deleteReviewBody(this,'` + review.id + `')">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-10">
+                                    <label>Отзыв</label>
+                                    <textarea class="form-control for-review" cols="30" rows="10">` + review.content + `</textarea>
+                                </div>
+                            </div>`
+                                reviewBlock.appendChild(newReviewBlock)
+                            }
+                    },
+                    error: function (xhr, status, error) {
+                        var errors = JSON.parse(xhr.responseText);
+                        errors.forEach(function (error) {
+                            console.log("Ошибка: " + error);
+                            showNotification("Ошибка!", error, false);
+                        });
+                    }
+                })
+            } else {
+                $("#navigationBlock").css("display", "none")
+                roleSelect2()
+                $('#branchSelect2Multiple').select2({
+                    placeholder: "Філіали",
+                    ajax: {
+                        url: '[[@{/branches/for/select}]]',
+                        dataType: 'json',
+                        delay: 1500,
+                        data: function (params) {
+                            var number = params.page > 0 ? params.page - 1 : 0;
+                            return {
+                                query: params.term || '',
+                                page: number,
+                                size: 10
+                            };
+                        },
+                        processResults: function (data, params) {
+                            var results = data.content.map(function (item) {
+                                return {id: item.id, text: item.name};
+                            });
+                            var hasMore = data.totalPages > data.number;
+                            return {
+                                results: results,
+                                pagination: {
+                                    more: hasMore
+                                }
+                            };
+                        },
+                    }
+                })
+            }
+        })
+
+        function sendForm() {
+            var img = $("#img").prop("files")[0];
+            var branches = $("#branchSelect2Multiple").val();
+            var role = $("#roleSelect2").val();
+            var name = $("#name").val();
+            var surname = $("#surname").val();
+            var middleName = $("#middleName").val();
+            var phone = $("#phone").val();
+            var email = $("#email").val();
+            var password = $("#password").val();
+            var confirmPassword = $("#confirmPassword").val();
+
+
+            $("#branchSelect2Multiple").next().find(".select2-selection").css("border", "");
+            if (branches.length === 0) {
+                showToast("Повинен бути вибраний хоть один філіал", "danger")
+                $("#branchSelect2Multiple").next().find(".select2-selection").css("border", "1px solid #ff0000");
+                return;
+            }
+            $("#roleSelect2").next().find(".select2-selection").css("border", "");
+            if (role == null) {
+                showToast("Роль повина бути вибрана", "danger")
+                $("#roleSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
+                return;
+            }
+            $("#name").css("border-color", "");
+            if (!validString("3", "50", name)) {
+                showToast("Ім'я повинно бути від 3 до 50 символів", "danger")
+                $("#name").css("border-color", "#ff0000");
+                return;
+            }
+            $("#surname").css("border-color", "");
+            if (!validString("3", "50", surname)) {
+                showToast("Ім'я повинно бути від 3 до 50 символів", "danger")
+                $("#surname").css("border-color", "#ff0000");
+                return;
+            }
+            $("#middleName").css("border-color", "");
+            if (!validString("3", "50", middleName)) {
+                showToast("Ім'я повинно бути від 3 до 50 символів", "danger")
+                $("#middleName").css("border-color", "#ff0000");
+                return;
+            }
+            $("#phone").css("border-color", "");
+            if (!validatePhoneNumber(phone)) {
+                showToast("Телефон не коректний", "danger")
+                $("#phone").css("border-color", "#ff0000");
+                return;
+            }
+            $("#email").css("border-color", "");
+            if (!validateEmail(email)) {
+                showToast("Email не коректний", "danger")
+                $("#email").css("border-color", "#ff0000");
+                return;
+            }
+            let formData = new FormData();
+
+            if (getLastDigitFromPath(window.location.pathname) == null) {
+                $("#img").css("border-color", "");
+                if (img === undefined) {
+                    showToast("Фото повино бути завантажене", "danger")
+                    $("#img").css("border-color", "#ff0000");
+                    return;
+                }
+                $("#password").css("border-color", "");
+                if (!validString(8, 50, password)) {
+                    showToast("Пароль повинен містити від 8 до 50 символів", "danger")
+                    $("#password").css("border-color", "#ff0000");
+                    return;
+                }
+                $("#password").css("border-color", "");
+                $("#confirmPassword").css("border-color", "");
+                if (!validString(8, 50, password)) {
+                    showToast("Паролі не співпадають", "danger")
+                    $("#password").css("border-color", "#ff0000");
+                    $("#confirmPassword").css("border-color", "#ff0000");
+                    return;
+                }
+                formData.append("password", password)
+                formData.append("confirmPassword", confirmPassword)
+                formData.append("img", img)
+            } else {
+                formData.append("id", getLastDigitFromPath(window.location.pathname))
+                if (img != null)
+                    formData.append("img", img)
+                var reviews = document.getElementsByClassName('for-review');
+                for (let i = 0; i < reviews.length; i += 4) {
+                    let reviewForm = new FormData();
+
+                    reviews[i+1].style.borderColor = '';
+                    if (!validString(8, 50, reviews[i+1].value)) {
+                        showToast("Ім'я повино містити від 8 до 50 символів", "danger")
+                        reviews[i+1].style.borderColor = '#ff0000';
+                        return;
+                    }
+                    reviews[i+2].style.borderColor = '';
+                    if (!validatePhoneNumber(reviews[i+2].value)) {
+                        showToast("Телефон повинен бути в форматі +380_________", "danger")
+                        reviews[i+2].style.borderColor = '#ff0000';
+                        return;
+                    }
+                    reviews[i+3].style.borderColor = '';
+                    if (!validString(10, 1000, reviews[i+3].value)) {
+                        showToast("Опис відгука повинен містити від 10 до 1000 символів", "danger")
+                        reviews[i+3].style.borderColor = '#ff0000';
+                        return;
+                    }
+
+                    reviewForm.append("id", reviews[i].value)
+                    reviewForm.append("name", reviews[i+1].value)
+                    reviewForm.append("phone", reviews[i+2].value)
+                    reviewForm.append("content", reviews[i+3].value)
+                    reviewForm.append("user", userId)
+
+                    $.ajax({
+                        url: '[[@{/users/save/review}]]',
+                        method: "POST",
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        data: reviewForm,
+                        success: function () {
+                        },
+                        error: function (xhr, status, error) {
+                            var errors = JSON.parse(xhr.responseText);
+                            errors.forEach(function (error) {
+                                console.log("Ошибка: " + error);
+                                showNotification("Ошибка!", error, false);
+                            });
+                        }
+                    })
+                }
+            }
+
+            formData.append("name", name)
+            formData.append("email", email)
+            formData.append("branches", branches)
+            formData.append("roles", role)
+            formData.append("surname", surname)
+            formData.append("middleName", middleName)
+            formData.append("phone", phone)
+
+
+            $.ajax({
+                url: '[[@{/users/add}]]',
+                method: "POST",
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function () {
+                    showToast("Елемент успішно збережений", "success")
+                },
+                error: function (xhr, status, error) {
+                    var errors = JSON.parse(xhr.responseText);
+                    errors.forEach(function (error) {
+                        console.log("Ошибка: " + error);
+                        showNotification("Ошибка!", error, false);
+                    });
+                }
+            })
+        }
+    </script>
+</section>
+
+</body>
+</html>

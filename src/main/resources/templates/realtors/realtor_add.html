@@ -7,7 +7,6 @@
 >
 <head>
     <title>Content page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 </head>
 
 <body>
@@ -53,7 +52,7 @@
                                     <img id="previewImage" class="pull-left img-responsive mb-2"
                                          src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
                                          style="width: 50%; height: 200px">
-                                    <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png, .pdf"
+                                    <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png"
                                            onchange="validateAndUpload('previewImage', ['.jpg', '.jpeg', '.png'])"
                                            th:field="*{img}"
                                            th:style="${#fields.hasErrors('img') ? 'border-color: #ff0000' : ''}">
@@ -257,7 +256,7 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+
     <script>
         const urlForAddFeedBack = '[[@{/realtors/feedback/save}]]'
         $(document).ready(function () {
@@ -335,7 +334,7 @@
                 var formData = new FormData();
                 formData.append("file", fileInput.files[0]);
                 formData.append("idRealtor", realtor.id);
-
+                fileInput.value = ''
                 $.ajax({
                     url: '[[@{/realtors/download/file}]]',
                     type: "POST",
@@ -503,15 +502,7 @@
             }
         }
 
-        function validString(minLength, maxLength, inputString) {
-            var length = inputString.length;
-            return length >= minLength && length <= maxLength;
-        }
 
-        function validatePhoneNumber(input) {
-            const phoneNumberRegex = /^\+380\d{9}$/;
-            return phoneNumberRegex.test(input);
-        }
 
         function addBlockForPhone() {
             const phoneContainer = document.getElementById("phones");

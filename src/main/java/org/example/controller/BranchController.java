@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.BranchDto;
 import org.example.entity.Branch;
-import org.example.entity.Realtor;
 import org.example.service.BranchService;
 import org.example.util.validator.BranchValidator;
 import org.springframework.data.domain.Page;

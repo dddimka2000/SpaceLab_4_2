@@ -28,7 +28,7 @@
     <div class="card">
       <div class="card-header">
         <div class="d-flex justify-content-end">
-          <a class="btn btn-info" th:href="@{/banners/edit/${branch.id}}">Редактировать</a>
+          <a class="btn btn-info" th:href="@{/branches/edit/{id}(id=${branch.id})}">Редактировать</a>
         </div>
         <hr>
       </div>

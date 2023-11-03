@@ -13,6 +13,7 @@ import org.example.service.MinioService;
 import org.example.service.RealtorContactServiceImpl;
 import org.example.service.RealtorFeedBackServiceImpl;
 import org.example.service.RealtorServiceImpl;
+import org.springframework.boot.Banner;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -46,9 +47,11 @@ public class RealtorController {
         return modelAndView;
     }
 
-    @GetMapping("/info")
-    public String infoPage() {
-        return "realtors/realtor_info";
+    @GetMapping("/{id}")
+    public ModelAndView infoPage(@PathVariable("id")int id) {
+        ModelAndView modelAndView = new ModelAndView("realtors/realtor_info");
+        modelAndView.addObject("realtor", realtorService.getById(id));
+        return modelAndView;
     }
 
     @GetMapping("/add")

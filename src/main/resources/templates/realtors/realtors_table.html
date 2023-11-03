@@ -74,10 +74,12 @@
 
                         </tbody>
                     </table>
-                    <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
-                        id="pagination_container">
-                    </ul>
                 </div>
+            </div>
+            <div class="card-footer">
+                <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                    id="pagination_container">
+                </ul>
             </div>
         </div>
     </div>
@@ -118,30 +120,25 @@
                     birthdate: filterElements[5].value
                 },
                 success: function (realtors) {
-                    console.log(realtors)
                     var table = document.getElementById("realtorsTable");
                     var tbody = table.querySelector("tbody");
                     $('#realtorsTable tbody').empty();
 
                     for (var realtor of realtors.content) {
                         var newRow = tbody.insertRow();
-
+                        var realtorId = realtor.id;
                         var cell1 = newRow.insertCell(0);
                         if (realtor.branch != null) cell1.innerHTML = realtor.branch.id;
-                        cell1.onclick = function () {
-                            window.location.href = '[[@{/realtors/}]]' + realtor.id;
-                        };
+                        cell1.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
+
                         var cell2 = newRow.insertCell(1);
                         cell2.innerHTML = realtor.code;
-                        cell2.onclick = function () {
-                            window.location.href = '[[@{/realtors/}]]' + realtor.id;
-                        };
+                        cell2.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
+
 
                         var cell3 = newRow.insertCell(2);
                         cell3.innerHTML = realtor.surname + "\n" + realtor.name + "\n" + realtor.middleName;
-                        cell3.onclick = function () {
-                            window.location.href = '[[@{/realtors/}]]' + realtor.id;
-                        };
+                        cell3.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
 
                         var cell4 = newRow.insertCell(3);
                         if (realtor.contacts != null) {
@@ -151,21 +148,13 @@
                             }
 
                         }
-                        cell4.onclick = function () {
-                            window.location.href = '[[@{/realtors/}]]' + realtor.id;
-                        };
-
+                        cell4.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
                         var cell5 = newRow.insertCell(4);
                         cell5.innerHTML = realtor.email
-                        cell5.onclick = function () {
-                            window.location.href = '[[@{/realtors/}]]' + realtor.id;
-                        };
-
+                        cell5.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
                         var cell6 = newRow.insertCell(5);
                         cell6.innerHTML = realtor.birthdate
-                        cell6.onclick = function () {
-                            window.location.href = '[[@{/realtors/}]]' + realtor.id;
-                        };
+                        cell6.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
 
                         var cell7 = newRow.insertCell(6);
                         cell7.innerHTML = `
