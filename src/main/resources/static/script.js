@@ -200,7 +200,7 @@ function getLastDigitFromPath(relativePath) {
 }
 
 function textForTable(str, length) {
-    if (str.length > length) {
+    if (str.toString().length > length) {
         return str.substring(0, length-3) + '...';
     }
     return str;

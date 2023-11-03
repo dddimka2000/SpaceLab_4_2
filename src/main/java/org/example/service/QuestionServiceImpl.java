@@ -1,5 +1,6 @@
 package org.example.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.QuestionDto;
 import org.example.entity.Question;
@@ -14,24 +15,28 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class QuestionServiceImpl {
-    private final QuestoinRepository questoinRepository;
+    private final QuestoinRepository questionRepository;
     private final QuestionMapper questionMapper;
     public void save(Question question) {
-        questoinRepository.save(question);
+        questionRepository.save(question);
     }
 
     public Page<Question> getAll(int page) {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
-        return questoinRepository.findAll(pageable);
+        return questionRepository.findAll(pageable);
     }
 
     public Question getById(int id) {
-        return questoinRepository.findById(id).get();
+        return questionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A question with an id = "+id +" was not found"));
     }
 
     public void edit(QuestionDto questionDto) {
         Question question = getById(questionDto.getId());
         questionMapper.updateEntityFromDto(questionDto, question);
         save(question);
+    }
+
+    public void deleteById(Integer id) {
+        questionRepository.deleteById(id);
     }
 }

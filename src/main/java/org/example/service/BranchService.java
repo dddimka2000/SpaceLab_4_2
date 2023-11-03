@@ -1,6 +1,7 @@
 package org.example.service;
 
 import io.minio.errors.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.BranchDto;
@@ -30,14 +31,14 @@ public class BranchService {
         Branch branch = new Branch();
         if(branchDto.getId()==null) branch = branchMapper.toEntity(branchDto, minioService);
         else {
-            branch = branchRepository.findById(branchDto.getId()).get();
+            branch = getById(branchDto.getId());
             branchMapper.updateEntityFromDto(branchDto, branch, minioService);
         }
 
-        branchRepository.save(branch);
+        save(branch);
     }
     public Branch getById(int id){
-        return branchRepository.findById(id).get();
+        return branchRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A branch with an id = "+id +", was not found"));
     }
     public Page<Branch> getAll(int page, String code, String name, String address) {
 
@@ -52,5 +53,8 @@ public class BranchService {
     }
     public void deleteById(int id){
         branchRepository.deleteById(id);
+    }
+    public void save(Branch branch){
+        branchRepository.save(branch);
     }
 }

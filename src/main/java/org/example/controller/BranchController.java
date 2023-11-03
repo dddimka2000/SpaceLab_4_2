@@ -31,42 +31,32 @@ public class BranchController {
     private final BranchValidator branchValidator;
     @GetMapping
     public ModelAndView mainPage() {
-        ModelAndView modelAndView = new ModelAndView("branch/branch_table");
-        return modelAndView;
+        return new ModelAndView("branch/branch_table");
     }
 
     @GetMapping("/{id}")
     public ModelAndView infoPage(@PathVariable("id")int id) {
-        ModelAndView modelAndView = new ModelAndView("branch/branch_info");
-        modelAndView.addObject("branch", branchService.getById(id));
-        return modelAndView;
+        return new ModelAndView("branch/branch_info", "branch", branchService.getById(id));
     }
 
     @GetMapping("/create")
     public ModelAndView createPage() {
-        ModelAndView modelAndView = new ModelAndView("branch/branch_add");
-        modelAndView.addObject("branchDto", new BranchDto());
-        return modelAndView;
+        return new ModelAndView("branch/branch_add", "branchDto", new BranchDto());
     }
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable("id")int id) {
-        ModelAndView modelAndView = new ModelAndView("branch/branch_add");
-        modelAndView.addObject("branchDto", branchService.getById(id));
-        return modelAndView;
+        return new ModelAndView("branch/branch_add", "branchDto", branchService.getById(id));
     }
 
     @PostMapping("/create")
     public ModelAndView createPage(@ModelAttribute("branchDto") @Valid BranchDto branchDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        ModelAndView modelAndView = new ModelAndView();
-        if(branchDto.getId() == null || !branchDto.getImgPath().isEmpty())
-            branchValidator.validate(branchDto, bindingResult);
+        branchValidator.validate(branchDto, bindingResult);
         if(bindingResult.hasErrors()){
-            modelAndView.setViewName("branch/branch_add");
+            return new ModelAndView("branch/branch_add");
         }else {
-            modelAndView.setViewName("redirect:/branches");
             branchService.add(branchDto);
+            return new ModelAndView("redirect:/branches");
         }
-        return modelAndView;
     }
     @ModelAttribute
     public void activeMenuItem(Model model) {

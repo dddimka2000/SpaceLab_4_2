@@ -42,4 +42,10 @@ public class QuestionController {
         questionService.edit(questionDto);
         return ResponseEntity.ok().body("Відповідь відредагована успішно");
     }
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable Integer id){
+        questionService.deleteById(id);
+        return ResponseEntity.ok().body("Елемент видалено успішно");
+    }
+
 }

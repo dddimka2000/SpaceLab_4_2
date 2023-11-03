@@ -26,7 +26,7 @@
         <div class="card border">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped linkedRow" id="questionTable">
+                    <table class="table table-bordered table-striped linkedRow" id="questionTable">
                         <thead>
                         <tr>
                             <th>Вопрос</th>
@@ -82,6 +82,32 @@
         $(document).ready(function () {
             getPageWithFilter(0)
         })
+
+        function deleteElement(button, id) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var table = document.getElementById("questionTable");
+                var row = button.parentElement.parentElement;
+                table.deleteRow(row.rowIndex);
+
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/questions/delete/}]]' + id,
+                    success: function (response) {
+                        getPageWithFilter(page)
+                        showToast(response, "success")
+                    },
+                });
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
 
         function saveElement() {
             var modalElement = document.getElementById('flipInXAnimationModal')
@@ -139,7 +165,7 @@
                 processData: false,
                 contentType: false,
                 data: formData,
-                success: function (response){
+                success: function (response) {
                     showToast(response, "success")
                 }
             })
