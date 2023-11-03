@@ -93,7 +93,7 @@ public class RealtorController {
     }
     @GetMapping("/getUrl")
     @ResponseBody
-    public String getUrl(@RequestParam("url")String url) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public String getUrl(@RequestParam("url")String url){
         return minioService.getUrl(url);
     }
     @PostMapping("/download/file")

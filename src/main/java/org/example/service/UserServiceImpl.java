@@ -1,6 +1,7 @@
 package org.example.service;
 
 import io.minio.errors.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.UserDto;
 import org.example.entity.UserEntity;
@@ -25,14 +26,14 @@ public class UserServiceImpl {
     private final UserMapper userMapper;
     private final MinioService minioService;
     public UserEntity getById(int id){
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A user with an id = "+id +" was not found"));
     }
 
     public void add(UserDto userDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         UserEntity user;
         if(userDto.getId() == null) user = userMapper.toEntity(userDto);
         else {
-            user = userRepository.findById(userDto.getId()).get();
+            user = getById(userDto.getId());
             userMapper.updateEntityFromDto(userDto, user, minioService);
         }
         save(user);

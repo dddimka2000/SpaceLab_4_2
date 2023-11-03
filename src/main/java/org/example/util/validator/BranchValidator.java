@@ -21,10 +21,11 @@ public class BranchValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         BranchDto branchDto = (BranchDto) target;
-
-        validateFile(branchDto.getImgPath(), "imgPath", errors);
-        validateFileExtension(branchDto.getImgPath(), "imgPath", errors);
-        validateFileSize(branchDto.getImgPath(), "imgPath", errors);
+        if(branchDto.getId() == null || !branchDto.getImgPath().isEmpty()) {
+            validateFile(branchDto.getImgPath(), "imgPath", errors);
+            validateFileExtension(branchDto.getImgPath(), "imgPath", errors);
+            validateFileSize(branchDto.getImgPath(), "imgPath", errors);
+        }
     }
 
     private void validateFile(MultipartFile file, String fieldName, Errors errors) {

@@ -1,6 +1,7 @@
 package org.example.service;
 
 import io.minio.errors.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.RealtorDto;
@@ -36,14 +37,14 @@ public class RealtorServiceImpl {
         Realtor realtor;
         if (realtorDto.getId() == null) realtor = realtorMapper.toEntity(realtorDto, minioService);
         else {
-            realtor = realtorRepository.findById(realtorDto.getId()).get();
+            realtor = getById(realtorDto.getId());
             realtorMapper.updateEntityFromDto(realtorDto, realtor, minioService);
         }
         for (RealtorContact contact : realtor.getContacts()) {
             contact.setRealtor(realtor);
         }
         realtor.setCreationDate(LocalDate.now());
-        realtorRepository.save(realtor);
+        save(realtor);
     }
 
     public Page<Realtor> getAll(int page, String branchId, String code, String fullName, String phone, String email, String birthdate) {
@@ -55,7 +56,7 @@ public class RealtorServiceImpl {
     }
 
     public Realtor getById(int id) {
-        return realtorRepository.findById(id).get();
+        return realtorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A realtor with an id = "+id +" was not found"));
     }
 
     public void deleteById(int id) {
@@ -63,10 +64,6 @@ public class RealtorServiceImpl {
     }
 
     public void save(Realtor realtor) {
-        try {
-            realtorRepository.save(realtor);
-        } catch (Exception e) {
-            log.info("Помилка при завантеженні файлу: " + e);
-        }
+        realtorRepository.save(realtor);
     }
 }
