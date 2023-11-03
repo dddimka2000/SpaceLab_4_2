@@ -12,6 +12,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+// fixme Entity -_-
+
+/*
+
+fixme
+
+would be great to set nullable/length on most fields
+
+@Column (nullable = false, length = ...)
+private String/Integer/...
+
+ */
+
 @Data
 @Entity
 @Table(name = "users", schema = "my_bd", catalog = "")
@@ -27,6 +40,7 @@ public class UserEntity {
 
     @Transient private String confirmPassword;
 
+    // fixme set ?
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)

@@ -6,6 +6,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
+/*
+
+fixme
+
+would be great to set nullable/length on most fields
+
+@Column (nullable = false, length = ...)
+private String/Integer/...
+
+ */
+
+
+// fixme @Data ?
 @Entity
 @Table(name = "buyer_notes", schema = "my_bd", catalog = "")
 public class BuyerNote {

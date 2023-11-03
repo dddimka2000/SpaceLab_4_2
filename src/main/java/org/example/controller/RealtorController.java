@@ -32,6 +32,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
+
+/*
+
+fixme
+
+use /admin/... for admin panel application
+use /cabinet/... for realtor cabinet application
+
+*/
+
 @Controller
 @RequestMapping("/admin/realtors")
 @RequiredArgsConstructor

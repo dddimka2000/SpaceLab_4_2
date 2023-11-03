@@ -29,13 +29,30 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/*
+
+fixme
+
+use /admin/... for admin panel application
+use /cabinet/... for realtor cabinet application
+
+*/
+
+
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/admin/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserServiceImpl userService;
     private final ReviewServiceImpl reviewService;
     private final MinioService minioService;
+
+    /*
+    fixme
+    alternate approach in one line
+    return new ModelAndView('banners/banners_table', 'banners', bannerService.findAll());
+     */
+
     @GetMapping
     public ModelAndView mainPage(Model model) {
         ModelAndView modelAndView = new ModelAndView("users/users_table");

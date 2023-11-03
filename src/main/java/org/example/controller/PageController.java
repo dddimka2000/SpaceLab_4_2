@@ -16,6 +16,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+/*
+
+fixme
+
+use /admin/... for admin panel application
+use /cabinet/... for realtor cabinet application
+
+use @RequiredArgsConstructor and format code to make smaller files
+
+set types on ResponseEntity
+ */
+
 @Controller
 @RequestMapping("/admin/pages")
 @Log4j2
@@ -34,8 +46,8 @@ public class PageController {
 
     @GetMapping
     public String mainPage(Model model) {
-        model.addAttribute("pages", pageService.findAll().stream().map(s -> PageMapper.INSTANCE.toDto(s)).collect(Collectors.toList()));
-        log.info(pageService.findAll().stream().map(s -> PageMapper.INSTANCE.toDto(s)).collect(Collectors.toList()));
+        model.addAttribute("pages", pageService.findAll().stream().map(PageMapper.INSTANCE::toDto).collect(Collectors.toList()));
+        log.info(pageService.findAll().stream().map(PageMapper.INSTANCE::toDto).collect(Collectors.toList()));
         return "pages/pages_table";
     }
 

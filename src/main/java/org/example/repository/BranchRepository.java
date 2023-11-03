@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
+// fixme add types to specification executor
 public interface BranchRepository extends JpaRepository<Branch, Integer>, JpaSpecificationExecutor {
     Optional<Branch> findFirstBy();
 }

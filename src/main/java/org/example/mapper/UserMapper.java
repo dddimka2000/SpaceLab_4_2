@@ -22,6 +22,8 @@ public interface UserMapper {
             @Mapping(target = "img", ignore = true)
     })
     UserEntity toEntity(UserDto userDto);
+
+    // fixme saving img using minioservice doesn't belong in a mapper
     default UserEntity toEntity(UserDto userDto, MinioService minioService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         UserEntity user = toEntity(userDto);
         user.setImg(minioService.putImage(userDto.getImg()));
@@ -31,6 +33,8 @@ public interface UserMapper {
             @Mapping(target = "img", ignore = true)
     })
     void updateEntityFromDto(UserDto userDto, @MappingTarget UserEntity user);
+
+    // fixme saving img using minioservice doesn't belong in a mapper
     default void updateEntityFromDto(UserDto userDto, UserEntity user, MinioService minioService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         updateEntityFromDto(userDto, user);
         if(userDto.getImg()!=null)

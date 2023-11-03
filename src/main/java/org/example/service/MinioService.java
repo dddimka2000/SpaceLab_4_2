@@ -17,6 +17,19 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.UUID;
 
+/*
+
+fixme
+
+divide services by interfaces and implementations
+
+process all exceptions here
+
+add logs (here especially lol)
+
+bucket names should (maybe) come from application properties
+ */
+
 @Service
 public class MinioService {
     String bucketName="project.4.2";
@@ -43,6 +56,8 @@ public class MinioService {
                 .contentType(multipartFile.getContentType())
                 .build());
 
+
+        // fixme or tempFile.deleteOnExit();
         tempFile.delete();
     }
 

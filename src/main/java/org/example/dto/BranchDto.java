@@ -4,6 +4,22 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+/*
+
+fixme
+
+use key-values from message.properties in annotations, like this:
+
+@NotBlank(message = {error.field.empty})
+@Size(max = 50, message = {error.field.max-size})
+
+in message.properties:
+error.field.empty = "Заповніть поле!"
+error.field.max-size = "Поле повинно мати не більше {max} символів"!
+
+ */
+
+
 @Data
 public class BranchDto {
     private Integer id;

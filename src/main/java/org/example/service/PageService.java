@@ -9,6 +9,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/*
+
+fixme
+
+divide services by interfaces and implementations
+
+do not return Optional<...> in services, throw not found exception if the value is not present
+if you return Optional from services, Controller layer has to check if the value is present or not
+
+add logs
+ */
+
 @Service
 @Log4j2
 public class PageService {

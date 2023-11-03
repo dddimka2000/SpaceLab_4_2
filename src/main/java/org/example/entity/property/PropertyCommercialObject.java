@@ -4,6 +4,17 @@ import jakarta.persistence.Entity;
 import lombok.Data;
 import org.example.entity.property.type.*;
 
+/*
+
+fixme
+
+would be great to set nullable/length on most fields
+
+@Column (nullable = false, length = ...)
+private String/Integer/...
+
+ */
+
 @Data
 @Entity
 public class PropertyCommercialObject extends _PropertyObject{

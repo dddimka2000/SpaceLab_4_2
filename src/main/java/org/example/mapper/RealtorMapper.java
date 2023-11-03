@@ -24,6 +24,8 @@ public interface RealtorMapper {
             @Mapping(target = "files", ignore = true)
     })
     Realtor toEntity(RealtorDto realtorDto);
+
+    // fixme saving img using minioservice doesn't belong in a mapper
     default Realtor toEntity(RealtorDto realtorDto, MinioService minioService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         Realtor realtor = toEntity(realtorDto);
         realtor.setImg(minioService.putImage(realtorDto.getImg()));
@@ -41,6 +43,8 @@ public interface RealtorMapper {
             @Mapping(target = "files", ignore = true)
     })
     void updateEntityFromDto(RealtorDto realtorDto, @MappingTarget Realtor realtor);
+
+    // fixme saving img using minioservice doesn't belong in a mapper
     default void updateEntityFromDto(RealtorDto realtorDto, Realtor realtor, MinioService minioService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         updateEntityFromDto(realtorDto, realtor);
         if(!Objects.equals(realtorDto.getImg().getOriginalFilename(), "")) realtor.setImg(minioService.putImage(realtorDto.getImg()));

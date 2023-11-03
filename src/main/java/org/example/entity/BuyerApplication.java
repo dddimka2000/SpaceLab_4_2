@@ -9,6 +9,17 @@ import org.example.entity.property.type.PropertyOrigin;
 
 import java.util.List;
 
+/*
+
+fixme
+
+would be great to set nullable/length on most fields
+
+@Column (nullable = false, length = ...)
+private String/Integer/...
+
+ */
+
 @Entity
 @Table(name = "applications")
 @Data
@@ -23,6 +34,7 @@ public class BuyerApplication {
 
     private Integer roomQuantity;
 
+    // fixme @Enumerated(value = EnumType.STRING) ?
     private ApplicationStatus status;
     private PropertyOrigin origin;
     private PropertyApplicationType type;

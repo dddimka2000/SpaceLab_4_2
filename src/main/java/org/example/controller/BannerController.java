@@ -31,6 +31,23 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/*
+
+fixme
+
+use /admin/... for admin panel application
+use /cabinet/... for realtor cabinet application
+
+bucket names should be taken from application properties
+
+use @RequiredArgsConstructor and format code to make smaller files
+
+attach mappers through @Autowired
+
+Move exception handling and optional checking from here to Service Layer
+
+ */
+
 @Controller
 @RequestMapping("/admin/banners")
 @Log4j2
@@ -54,6 +71,12 @@ public class BannerController {
         this.minioService = minioService;
         this.bannerValidator = bannerValidator;
     }
+
+    /*
+    fixme
+    alternate approach in one line
+    return new ModelAndView('banners/banners_table', 'banners', bannerService.findAll());
+     */
 
     @GetMapping
     public ModelAndView mainPage() {
@@ -100,6 +123,13 @@ public class BannerController {
     }
 
 
+    /*
+    fixme
+    use Transactional in services, not here
+    set type on Response Entity
+    do not use Atomic Integer
+    collapse multiple forEach on the same lists into one action
+     */
     @PostMapping("/{id}")
     @ResponseBody
     @Transactional
@@ -118,7 +148,6 @@ public class BannerController {
         bannerSlideService.deleteAllByBannerId(id);
         BannerMapper.INSTANCE.updateBannerFromDto(bannerDto, banner.get());
         log.warn("banner " + banner.get());
-        List<BannerSlide> slideList = new ArrayList<>();
         AtomicInteger num_1 = new AtomicInteger(0);
         banner.get().getSlides().stream().forEach(s -> {
             if (s.getImgPath() == null) {
@@ -126,16 +155,16 @@ public class BannerController {
             }
             num_1.incrementAndGet();
         });
-        slideList.addAll(banner.get().getSlides());
+        List<BannerSlide> slideList = new ArrayList<>(banner.get().getSlides());
         bannerService.save(banner.get());
-        slideList.stream().forEach(s -> log.warn("slideList getImgPath " + s.getImgPath()));
-        bannerDto.getSlides().stream().forEach(s -> log.warn("bannerDto getOldImgPath " + s.getOldImgPath()));
-        bannerDto.getSlides().stream().forEach(s -> log.warn("bannerDto getImgPath " + s.getImgPath()));
+        slideList.forEach(s -> log.warn("slideList getImgPath " + s.getImgPath()));
+        bannerDto.getSlides().forEach(s -> log.warn("bannerDto getOldImgPath " + s.getOldImgPath()));
+        bannerDto.getSlides().forEach(s -> log.warn("bannerDto getImgPath " + s.getImgPath()));
         log.warn("banner " + banner.get());
-        slideList.stream().forEach(s -> s.setBanner(banner.get()));
-        slideList.stream().forEach(s -> bannerSlideService.save(s));
+        slideList.forEach(s -> s.setBanner(banner.get()));
+        slideList.forEach(bannerSlideService::save);
         AtomicInteger num = new AtomicInteger(0);
-        bannerDto.getSlides().stream().forEach(s -> {
+        bannerDto.getSlides().forEach(s -> {
             if (s.getImgPath() != null) {
                 try {
                     log.info(s.getImgPath().getOriginalFilename() + " minioSAVE");
@@ -145,23 +174,9 @@ public class BannerController {
                         log.info(s.getImgPath().getOriginalFilename() + " minioDelete");
                         minioService.deleteImg(s.getOldImgName(), imagesBucketName);
                     }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (ServerException e) {
-                    throw new RuntimeException(e);
-                } catch (InsufficientDataException e) {
-                    throw new RuntimeException(e);
-                } catch (ErrorResponseException e) {
-                    throw new RuntimeException(e);
-                } catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException(e);
-                } catch (InvalidKeyException e) {
-                    throw new RuntimeException(e);
-                } catch (InvalidResponseException e) {
-                    throw new RuntimeException(e);
-                } catch (XmlParserException e) {
-                    throw new RuntimeException(e);
-                } catch (InternalException e) {
+                } catch (IOException | ServerException | InsufficientDataException | ErrorResponseException |
+                         NoSuchAlgorithmException | InvalidKeyException | InvalidResponseException |
+                         XmlParserException | InternalException e) {
                     throw new RuntimeException(e);
                 }
             }

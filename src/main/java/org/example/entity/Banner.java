@@ -5,6 +5,17 @@ import lombok.Data;
 
 import java.util.List;
 
+/*
+
+fixme
+
+would be great to set nullable/length on most fields
+
+@Column (nullable = false, length = ...)
+private String/Integer/...
+
+ */
+
 @Entity
 @Table(name = "banner", schema = "my_bd", catalog = "")
 @Data

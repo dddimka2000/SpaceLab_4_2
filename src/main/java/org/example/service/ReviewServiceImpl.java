@@ -5,6 +5,15 @@ import org.example.entity.UserReview;
 import org.example.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
+/*
+
+fixme
+
+divide services by interfaces and implementations
+
+add logs
+ */
+
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl {

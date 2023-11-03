@@ -5,6 +5,8 @@ import org.example.dto.ObjectBuilderDtoEdit;
 import org.example.entity.BuilderObject;
 import org.mapstruct.Mapper;
 
+
+// fixme component model = "spring"
 @Mapper
 public interface  ObjectBuilderMapper {
     ObjectBuilderDto builderObjectToBuilderObjectDto(BuilderObject builderObject);

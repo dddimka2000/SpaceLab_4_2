@@ -8,14 +8,22 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+//fixme @Repository is not needed
 @Repository
 public interface LayoutRepository extends JpaRepository<Layout, Integer> {
+
+
+    //fixme this is not needed
     @Override
     Optional<Layout> findById(Integer integer);
 
+
+    //fixme this is not needed
     @Override
     void deleteById(Integer integer);
 
+
+    //fixme this is not needed
     @Override
     <S extends Layout> S save(S entity);
 

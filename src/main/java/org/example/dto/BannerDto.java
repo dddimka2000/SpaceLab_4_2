@@ -12,6 +12,21 @@ import org.example.entity.BannerSlide;
 
 import java.util.List;
 
+/*
+
+fixme
+
+use key-values from message.properties in annotations, like this:
+
+@NotBlank(message = {error.field.empty})
+@Size(max = 50, message = {error.field.max-size})
+
+in message.properties:
+error.field.empty = "Заповніть поле!"
+error.field.max-size = "Поле повинно мати не більше {max} символів"!
+
+ */
+
 @Data
 public class BannerDto {
     private Integer id;
@@ -19,6 +34,9 @@ public class BannerDto {
     @Size(max = 50, message = "Поле с именем баннера может иметь максимум 50 символов")
     private String nameBanners;
     private Boolean status;
+
+    //fixme
+    //List < @Valid BannerSlideDto > ?
     @Valid
     @NotEmpty(message = "Заполните минимум 1 слайд")
     private List<BannerSlideDto> slides;

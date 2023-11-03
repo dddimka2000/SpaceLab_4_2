@@ -19,11 +19,14 @@ public interface BranchMapper {
     Branch toEntity(BranchDto branchDto);
     @Mapping(target = "imgPath", ignore = true)
     void updateEntityFromDto(BranchDto branchDto, @MappingTarget Branch branch);
+
+    // fixme saving img using minioservice doesn't belong in a mapper
     default Branch toEntity(BranchDto branchDto, MinioService minioService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         Branch branch = toEntity(branchDto);
         branch.setImgPath(minioService.putImage(branchDto.getImgPath()));
         return branch;
     }
+    // fixme saving img using minioservice doesn't belong in a mapper
     default void updateEntityFromDto(BranchDto branchDto, Branch branch, MinioService minioService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         updateEntityFromDto(branchDto, branch);
         if(!Objects.equals(branchDto.getImgPath().getOriginalFilename(), ""))branch.setImgPath(minioService.putImage(branchDto.getImgPath()));

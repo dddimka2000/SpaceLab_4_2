@@ -10,6 +10,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.util.List;
 
+/*
+
+fixme
+
+would be great to set nullable/length on most fields
+
+@Column (nullable = false, length = ...)
+private String/Integer/...
+
+ */
+
 @Data
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -79,6 +90,7 @@ public class _PropertyObject {
     @ManyToOne
     private BuilderObject builderObject;
 
+    // fixme Realtor ?
     @ManyToOne
     private UserEntity realtor;
 }

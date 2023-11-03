@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
+// fixme add types to specification executor
 public interface UserRepository extends JpaRepository<UserEntity,Integer>, JpaSpecificationExecutor {
     Optional<UserEntity> findByEmail(String email);
 }

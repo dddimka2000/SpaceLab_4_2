@@ -23,6 +23,18 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 
+/*
+
+fixme
+
+divide services by interfaces and implementations
+
+check if optional values are present here, don't just use .get()
+
+add logs
+
+ */
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -31,11 +43,13 @@ public class RealtorServiceImpl {
     private final RealtorMapper realtorMapper;
     private final MinioService minioService;
 
+    // fixme why is @transactional here but nowhere else
     @Transactional
     public void add(RealtorDto realtorDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         Realtor realtor;
         if (realtorDto.getId() == null) realtor = realtorMapper.toEntity(realtorDto, minioService);
         else {
+
             realtor = realtorRepository.findById(realtorDto.getId()).get();
             realtorMapper.updateEntityFromDto(realtorDto, realtor, minioService);
         }

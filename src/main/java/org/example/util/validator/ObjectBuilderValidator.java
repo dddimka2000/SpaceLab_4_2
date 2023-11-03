@@ -37,6 +37,8 @@ public class ObjectBuilderValidator implements Validator {
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
+    // fixme checking extensions/content types has to be the same in all validators, use the same approach
+
 
     private final
     ObjectBuilderService objectBuilderService;
@@ -72,49 +74,61 @@ public class ObjectBuilderValidator implements Validator {
                 }
             }
         } catch (IOException e) {
+            // fixme log exception
             e.printStackTrace();
         } catch (TikaException e) {
+            // fixme log exception
             throw new RuntimeException(e);
         } catch (SAXException e) {
+            // fixme log exception
             throw new RuntimeException(e);
         }
 
         return true;
     }
 
+    // fixme repeated validations in annotations and here
 
     @Override
     public void validate(Object target, Errors errors) {
         ObjectBuilderDto entity = (ObjectBuilderDto) target;
         try {
+
+            // fixme repository.existsByName
             Optional<BuilderObject> tryFindName = objectBuilderService.findByName(entity.getNameObject());
             if (tryFindName.isPresent()) {
                 errors.rejectValue("nameObject", "", "Объект новостроя с таким именем уже существует");
             }
+
             for (MultipartFile multipartFile : entity.getFiles()) {
                 if (!supportedImageFormats.contains(multipartFile.getContentType())) {
                     errors.rejectValue("files", "image.format.invalid", "Неподдерживаемый формат изображения в фотографиях. Пожалуйста, выберите JPEG,PNG,JPG,GIF.");
                 }
+                // fixme else if - no need for multiple errors on the same field
                 if (multipartFile.getSize() > maxFileSize) {
                     errors.rejectValue("files", "image.size.invalid", "Файл не должен превышать 5 МБ.");
                 }
             }
             log.info("success photos - 2 page");
+            // fixme chessboardFile ?
             if (isValidFile(entity.getPrices())) {
                 errors.rejectValue("chessboardFile", "image.format.invalid", "Неподдерживаемый формат файла с ценами. Пожалуйста, выберите Pdf, Exel или Документ Microsoft Word.");
             }
+            // fixme else if
             if (entity.getPrices().getSize() > maxFileSize) {
                 errors.rejectValue("chessboardFile", "image.size.invalid", "Файл с ценами не должен превышать 5 МБ.");
             }
             if (isValidFile(entity.getInstallmentTerms())) {
                 errors.rejectValue("installmentTerms", "image.format.invalid", "Неподдерживаемый формат файла с условиями рассрочки. Пожалуйста, выберите Pdf, Exel или Документ Microsoft Word.");
             }
+            // fixme else if
             if (entity.getInstallmentTerms().getSize() > maxFileSize) {
                 errors.rejectValue("installmentTerms", "image.size.invalid", "Файл с условиями рассрочки не должен превышать 5 МБ.");
             }
             if (isValidFile(entity.getChessboardFile())) {
                 errors.rejectValue("chessboardFile", "image.format.invalid", "Неподдерживаемый формат файла с шахматкой. Пожалуйста, выберите Pdf, Exel или Документ Microsoft Word.");
             }
+            // fixme else if
             if (entity.getChessboardFile().getSize() > maxFileSize) {
                 errors.rejectValue("chessboardFile", "image.size.invalid", "Файл с шахматкой не должен превышать 5 МБ.");
             }

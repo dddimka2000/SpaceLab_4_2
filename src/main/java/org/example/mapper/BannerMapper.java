@@ -10,6 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
+// fixme you do not need to get INSTANCE of mapper when working with spring
+// use @Autowired or something like that
+
 @Mapper(componentModel = "spring")
 public interface BannerMapper {
     BannerMapper INSTANCE = Mappers.getMapper(BannerMapper.class);

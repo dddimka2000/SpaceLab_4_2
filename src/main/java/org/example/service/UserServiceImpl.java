@@ -18,6 +18,18 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+/*
+
+fixme
+
+divide services by interfaces and implementations
+
+process all exceptions here
+
+add logs
+ */
+
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl {

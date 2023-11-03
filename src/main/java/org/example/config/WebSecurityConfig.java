@@ -40,8 +40,8 @@ public class WebSecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(customizer -> customizer
-//                        .requestMatchers("/admin/*", "*/admin/*").authenticated()
-                        .requestMatchers("/admin/*", "*/admin/*").permitAll()
+                        .requestMatchers("/admin/*", "*/admin/*").authenticated()
+//                        .requestMatchers("/admin/*", "*/admin/*").permitAll()
                         .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login").permitAll()
                         .anyRequest().permitAll()
                 )

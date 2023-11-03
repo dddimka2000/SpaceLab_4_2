@@ -23,6 +23,14 @@ public class BannerValidator implements Validator {
         return BannerDto.class.isAssignableFrom(clazz);
     }
 
+
+    /*
+
+    fixme
+
+    why do you need AtomicInteger here lol
+
+     */
     @Override
     public void validate(Object target, Errors errors) {
         BannerDto bannerDto = (BannerDto) target;
@@ -56,6 +64,7 @@ public class BannerValidator implements Validator {
 
             });
         } catch (ConcurrentModificationException e) {
+            // fixme empty catch
         }
 
     }

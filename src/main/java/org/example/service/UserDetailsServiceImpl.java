@@ -12,6 +12,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/*
+
+fixme
+
+maybe UserService should have this functionality without a separate class
+
+ */
 
 @Service
 @Log4j2

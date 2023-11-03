@@ -8,6 +8,17 @@ import org.example.entity.property.type.PropertyObjectAddress;
 
 import java.util.List;
 
+/*
+
+fixme
+
+would be great to set nullable/length on most fields
+
+@Column (nullable = false, length = ...)
+private String/Integer/...
+
+ */
+
 @Data
 @Entity
 @Table(name = "builder_objects", schema = "my_bd")
@@ -23,6 +34,8 @@ public class BuilderObject {
     private Integer floorQuantity;
     private String phone;
     private String description_builder;
+
+    //fixme enumerated
     private PropertyBuildStatus buildStatus;
     private String nameCompany;
     private String filePrices;
@@ -36,6 +49,7 @@ public class BuilderObject {
     })
     private BuilderObjectPromotion promotion;
 
+    // fixme why fetchType eager
     @OneToMany(mappedBy = "builderObject",fetch = FetchType.EAGER)
     private List<Layout> layouts;
 

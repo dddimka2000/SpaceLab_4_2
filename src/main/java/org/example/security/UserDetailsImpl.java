@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class UserDetailsImpl implements UserDetails, OidcUser {
     private final UserEntity userEntity;
-    private Set<UserRole> role;
+    private Set<UserRole> role; // fixme set ?
     Map<String, Object> attributes;
 
     String name;

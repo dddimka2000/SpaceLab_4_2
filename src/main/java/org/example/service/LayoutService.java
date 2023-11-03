@@ -10,6 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/*
+
+fixme
+
+divide services by interfaces and implementations
+
+do not return Optional<...> in services, throw not found exception if the value is not present
+if you return Optional from services, Controller layer has to check if the value is present or not
+
+
+*/
+
 @Service
 @Log4j2
 public class LayoutService {

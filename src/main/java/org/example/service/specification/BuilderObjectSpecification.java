@@ -10,6 +10,16 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+
+fixme
+
+bring strings to lower case for checking
+
+ predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.toLowerCase() + "%"));
+
+ */
+
 @Data
 public class BuilderObjectSpecification implements Specification<BuilderObject> {
     private String name;

@@ -22,6 +22,23 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+/*
+
+fixme
+
+use /admin/... for admin panel application
+use /cabinet/... for realtor cabinet application
+
+bucket names should be taken from application properties
+
+use @RequiredArgsConstructor and format code to make smaller files
+
+attach mappers through @Autowired
+
+Move exception handling and optional checking from here to Service Layer
+
+ */
+
 @Controller
 @RequestMapping("/admin/branches")
 @RequiredArgsConstructor
@@ -34,6 +51,12 @@ public class BranchController {
         ModelAndView modelAndView = new ModelAndView("branch/branch_table");
         return modelAndView;
     }
+
+    /*
+    fixme
+    alternate approach in one line
+    return new ModelAndView('banners/banners_table', 'banners', bannerService.findAll());
+     */
 
     @GetMapping("/{id}")
     public ModelAndView infoPage(@PathVariable("id")int id) {
@@ -58,6 +81,9 @@ public class BranchController {
     @PostMapping("/create")
     public ModelAndView createPage(@ModelAttribute("branchDto") @Valid BranchDto branchDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         ModelAndView modelAndView = new ModelAndView();
+
+        //fixme
+        //why is checking id and img path separate from validation
         if(branchDto.getId() == null || !branchDto.getImgPath().isEmpty())
             branchValidator.validate(branchDto, bindingResult);
         if(bindingResult.hasErrors()){
@@ -73,6 +99,8 @@ public class BranchController {
         model.addAttribute("branchesActive", true);
     }
 
+    // fixme
+    // @RequestParam("code") String code - remove ("code"), no need to repeat
     @GetMapping("/get-all")
     @ResponseBody
     public Page<Branch> getAll(@RequestParam("code")String code, @RequestParam("name")String name, @RequestParam("address")String address, @RequestParam("page")int page){
@@ -85,6 +113,7 @@ public class BranchController {
         return ResponseEntity.ok("Branch was deleted");
     }
 
+    // fixme strange/url/naming/approach
     @GetMapping("/for/select")
     @ResponseBody
     public Page<Branch> search(@RequestParam("query") String name,

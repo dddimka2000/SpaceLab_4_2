@@ -9,9 +9,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/*
+
+fixme
+
+divide services by interfaces and implementations
+
+ */
+
 @Service
 @Log4j2
 public class BannerSlideService {
+
+    //fixme private ? and fix formatting
     final
     BannerSlideRepository bannerSlideRepository;
 

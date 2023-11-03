@@ -5,6 +5,15 @@ import org.example.entity.Realtor;
 import org.example.repository.RealtorContactRepository;
 import org.springframework.stereotype.Service;
 
+/*
+
+fixme
+
+divide services by interfaces and implementations
+
+add logs
+ */
+
 @Service
 @RequiredArgsConstructor
 public class RealtorContactServiceImpl {

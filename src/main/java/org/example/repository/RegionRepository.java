@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RegionRepository extends JpaRepository<RegionEntity,Integer> {
+
+    //fixme this is not needed
     @Override
     <S extends RegionEntity> List<S> findAll(Example<S> example);
 }

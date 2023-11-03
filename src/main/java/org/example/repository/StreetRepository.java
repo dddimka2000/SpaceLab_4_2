@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+//fixme @Repository is not needed
 @Repository
 public interface StreetRepository extends JpaRepository<StreetEntity, Integer> {
     List<StreetEntity> findByDistrictNameDistrict(String name);

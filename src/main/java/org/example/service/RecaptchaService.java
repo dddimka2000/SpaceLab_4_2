@@ -9,6 +9,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+/*
+
+fixme
+
+RestTemplate is already old I think , might want to try and learn how to use reactive WebClient
+for these purposes
+
+ */
+
 @Service
 @Log4j2
 public class RecaptchaService {

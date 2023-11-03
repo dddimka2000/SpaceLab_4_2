@@ -8,6 +8,29 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
+/*
+
+    fixme
+
+    alternative approach
+    public class BranchSpecification implements Specification<Branch> {
+
+        ...
+
+        @Override
+        public Predicate toPredicate(Root... , Query..., CriteriaBuilder...) {
+
+            and check all fields at the same time
+
+        }
+
+        sort order can also be added like so
+        query.orderBy(criteriaBuilder.desc(root.get('...')))
+    }
+
+     */
+
+
 public class RealtorSpecification {
 
     public static Specification<Realtor> codeContains(String code) {

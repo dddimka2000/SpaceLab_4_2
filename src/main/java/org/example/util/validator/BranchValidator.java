@@ -12,6 +12,7 @@ import java.util.List;
 @Component
 public class BranchValidator implements Validator {
     private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("jpg", "jpeg", "png", "pdf");
+    // content-types image/jpg, image/jpeg, image/png, application/pdf
     private static final long MAX_FILE_SIZE = 20 * 1024 * 1024;
     @Override
     public boolean supports(Class<?> clazz) {
@@ -42,6 +43,9 @@ public class BranchValidator implements Validator {
                     errors.rejectValue(fieldName, "file.extension.invalid", "Допустимі розширення файлів: jpg, jpeg, png, pdf");
                 }
             }
+
+            // file.getContentType() -> ...
+            // check real content type with Apache Tika
         }
     }
 

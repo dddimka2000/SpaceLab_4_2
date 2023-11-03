@@ -48,7 +48,22 @@ import java.util.stream.Collectors;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-// ебать
+/*
+
+fixme
+
+use /admin/... for admin panel application
+use /cabinet/... for realtor cabinet application
+
+bucket names should be taken from application properties
+
+use @RequiredArgsConstructor and format code to make smaller files
+
+attach mappers through @Autowired
+
+Move exception handling and optional checking from here to Service Layer
+
+ */
 
 @Controller
 @RequestMapping("/admin/builder_objects")
@@ -76,7 +91,8 @@ public class ObjectsBuilderController {
         this.objectBuilderValidator = objectBuilderValidator;
     }
 
-
+    // fixme
+    // objectBuilderService.findBuilderObjectsByCriteria(objectBuilderDto)
     @GetMapping("/filter")
     @ResponseBody
     public Page<BuilderObject> showPageObjectBuilder(@ModelAttribute ObjectBuilderDtoSearch objectBuilderDto
@@ -126,6 +142,8 @@ public class ObjectsBuilderController {
         return modelAndView;
     }
 
+    // fixme
+    // snake_case and camelCase in one spot
     @GetMapping("/create")
     public ModelAndView ObjectsBuilderCreate() {
         ModelAndView modelAndView = new ModelAndView();
@@ -140,6 +158,8 @@ public class ObjectsBuilderController {
     }
 
 
+    // fixme
+    // super big method, don't even want to read all of this :D
     @PostMapping("/create")
     public ResponseEntity ObjectsBuilderCreatePost(@Valid @ModelAttribute ObjectBuilderDto objectBuilderDto, BindingResult bindingResult)
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException
@@ -570,6 +590,9 @@ public class ObjectsBuilderController {
                 .contentLength(file.length)
                 .body(resource);
     }
+
+    // fixme
+    // move this excel processing to separate service , why is this here
 
     @PostMapping("/generate-excel")
     public ResponseEntity generateExcel(HttpServletResponse response, @RequestBody ArrayList<ObjectBuilderDtoSearch> objectBuilderDTOSearchList) throws IOException {

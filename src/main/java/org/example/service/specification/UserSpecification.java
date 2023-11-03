@@ -7,6 +7,28 @@ import jakarta.persistence.criteria.Subquery;
 import org.example.entity.UserEntity;
 import org.springframework.data.jpa.domain.Specification;
 
+/*
+
+    fixme
+
+    alternative approach
+    public class BranchSpecification implements Specification<Branch> {
+
+        ...
+
+        @Override
+        public Predicate toPredicate(Root... , Query..., CriteriaBuilder...) {
+
+            and check all fields at the same time
+
+        }
+
+        sort order can also be added like so
+        query.orderBy(criteriaBuilder.desc(root.get('...')))
+    }
+
+     */
+
 public class UserSpecification {
     public static Specification<UserEntity> roleContains(String role) {
         if (role.isBlank() || role.isEmpty()) return (root, query, criteriaBuilder) -> null;

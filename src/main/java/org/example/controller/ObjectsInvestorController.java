@@ -12,6 +12,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.stream.Collectors;
 
+
+/*
+
+fixme
+
+use /admin/... for admin panel application
+use /cabinet/... for realtor cabinet application
+
+don't use snake_case and camelCase in the same path
+
+set types on ResponseEntity
+ */
+
 @Controller
 @RequestMapping("/admin/investor_objects")
 @Log4j2
