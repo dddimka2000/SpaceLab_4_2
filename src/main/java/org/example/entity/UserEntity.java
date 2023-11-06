@@ -1,7 +1,9 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.example.chat.entityAndService.ChatEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,5 +41,6 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<UserReview> reviews;
 
-
+    //Для восстановления пароля
+    private String codeRestorePassword;
 }

@@ -37,5 +37,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return new UserDetailsImpl(userEntity.get());
     }
+    public void save(UserEntity user) {
+        userRepository.save(user);
+    }
+    public Optional<UserEntity> findByEmail(String user) {
+        return userRepository.findByEmail(user);
+    }
 }
 

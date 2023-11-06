@@ -540,7 +540,9 @@
             formData.append("objectCode", $('[name="codeObject"]').val());
             formData.append("branchCode", $('[name="codeBranch"]').val());
             formData.append("employeeCode", $('[name="codeStaff"]').val());
-
+            formData.append("ownershipType", $('[name="ownership"]').val());
+            console.log($('[name="ownership"]').val());
+            formData.append("price", $("#price").val());
 
 
             //

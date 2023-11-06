@@ -14,4 +14,5 @@ public class PropertyInvestorObject extends _PropertyObject {
     private KitchenStoveType stoveType;
     private HeatingType heatingType;
     private PublicationStatus publicationStatus;
+    private String residentialComplex;
 }

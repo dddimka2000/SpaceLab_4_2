@@ -83,6 +83,9 @@
                 <div th:if="${param.recaptchaError}" style="text-align: center">
                     <div class="alert alert-danger" role="alert">Подтвердите, что вы не являетесь роботом</div>
                 </div>
+                <div th:if="${param.newPassword}" style="text-align: center">
+                    <div class="alert alert-info" role="alert">Пароль изменен, введите новые данные для входа</div>
+                </div>
                 <form id="formAuthentication" class="mb-3 fv-plugins-bootstrap5 fv-plugins-framework"
                       th:action="@{/auth/process_login}" method="POST" novalidate="novalidate">
                     <div class="mb-3 fv-plugins-icon-container">
