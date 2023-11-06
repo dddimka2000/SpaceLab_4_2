@@ -71,9 +71,9 @@
                             <input class="form-control message-input border-0 me-3 shadow-none"
                                    placeholder="Type your message here">
                             <div class="message-actions d-flex align-items-center">
-<!--                                <i class="speech-to-text ti ti-microphone ti-sm cursor-pointer"></i>-->
+                                <!--                                <i class="speech-to-text ti ti-microphone ti-sm cursor-pointer"></i>-->
                                 <label for="chatFile2" class="form-label mb-0">
-                                    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-files-alt cursor-pointer mx-3" viewBox="0 0 16 16">
                                         <path d="M11 0H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2 2 2 0 0 0 2-2V4a2 2 0 0 0-2-2 2 2 0 0 0-2-2zm2 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1V3zM2 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2z"/>
                                     </svg>
@@ -107,12 +107,58 @@
     </script>
     <script th:inline="javascript">
 
+        let username =/*[[${name}]]*/'';
+       // let username = 1;
+        document.addEventListener("DOMContentLoaded", function () {
+            let pathLinkDOMContentLoaded =/*[[@{/getAllMessages}]]*/'';
+            let dataArray;
+            $.ajax({
+                url: pathLinkDOMContentLoaded,
+                method: "GET",
+                dataType: 'json',
+                success: function (data) {
+                    dataArray=data;
+                    console.log(dataArray);
+                    if (Array.isArray(dataArray)) {
+                        if (dataArray.length > 0) {
+                            dataArray.forEach(function (category) {
+                                console.log(category.messageType)
+                                if (username.toString() == category.userEmail) {
+                                    if (category.messageType == "CHAT") {
+                                        console.log("g")
+                                        sendMessageFromUser(category.content, formatTime(new Date(category.timestamp)),true)
+                                    }
+                                    if (category.messageType == "PHOTO") {
+                                        console.log("g2")
+                                        sendMessagePhotoFromUser(category.photoData, formatTime(new Date(category.timestamp)),false)
+                                    }
+                                } else {
+                                    if (category.messageType == "CHAT") {
+                                        console.log("g")
+                                        sendMessageFromOtherUser(category.content, formatTime(new Date(category.timestamp)))
+                                    }
+                                    if (category.messageType == "PHOTO") {
+                                        console.log("g2")
+                                        sendMessagePhotoFromOtherUser(category.photoData, formatTime(new Date(category.timestamp)))
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+
+            })
+
+        })
 
         // const username = getRandomName();
         // console.log(username);
         let connectingElement = $("#connectingElement");
-        // username =/*[[${name}]]*/'';
-        username = 1;
+
         let pathLink =/*[[@{/}]]*/'';
 
         let stompClient2 = null
@@ -128,26 +174,27 @@
                     console.log("Получено сообщение: " + chatMessage);
                     console.log(chatMessage.messageType);
                     console.log(chatMessage.name);
-                    if (chatMessage.messageType == 'CHAT') {
+                    if (chatMessage.messageType == "CHAT") {
                         if (chatMessage.name != username) {
-                            console.log('CHAT sendMessageFromOtherUser');
-                            sendMessageFromOtherUser(chatMessage.content, formatTime(new Date(chatMessage.timestamp)));
+                        console.log('CHAT sendMessageFromOtherUser');
+                        console.log("Получено сообщение: " + chatMessage.content);
+                        sendMessageFromOtherUser(chatMessage.content, formatTime(new Date(chatMessage.timestamp)));
                         }
                     }
                     if (chatMessage.messageType == "PHOTO") {
-                        // if (chatMessage.name != username) {
+                        if (chatMessage.name != username) {
                         console.log('PHOTO sendMessagePhotoFromOtherUser');
                         console.log(chatMessage.photoData)
                         sendMessagePhotoFromOtherUser(chatMessage.photoData, formatTime(new Date(chatMessage.timestamp)));
-                        // }
+                        }
                     }
                     if (chatMessage.messageType == "FILE") {
-                        // if (chatMessage.name != username) {
+                        if (chatMessage.name != username) {
                         console.log('File sendMessageFileFromOtherUser');
                         console.log(chatMessage.photoData);
                         console.log(chatMessage.nameFile)
-                        sendMessageFileFromOtherUser(chatMessage.photoData, formatTime(new Date(chatMessage.timestamp)),chatMessage.nameFile);
-                        // }
+                        sendMessageFileFromOtherUser(chatMessage.photoData, formatTime(new Date(chatMessage.timestamp)), chatMessage.nameFile);
+                        }
                     }
                 });
             })
@@ -196,7 +243,7 @@
                     };
 
                     stompClient2.send("/app/chat.sendPhoto", {}, JSON.stringify(message));
-                    sendMessagePhotoFromUser(chatFile, formatTime(new Date().getTime()));
+                    sendMessagePhotoFromUser(chatFile, formatTime(new Date().getTime()),true);
                     document.getElementById("chatFile").value = '';
                 };
 
@@ -221,7 +268,6 @@
 
                 reader.readAsArrayBuffer(chatFile2);
             }
-
             if (messageContent && stompClient2) {
                 var chatMessage = {
                     name: username,
@@ -230,11 +276,12 @@
                     timestamp: new Date().getTime()
                 };
                 stompClient2.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-                sendMessageFromUser(messageInput, formatTime(new Date().getTime()));
+                sendMessageFromUser(messageInput, formatTime(new Date().getTime()),false);
                 messageInput.value = '';
             }
 
         }
+
         function sendMessageFileFromUser(messageInput, time) {
             if (messageInput) {
                 var renderMsg = document.createElement('li');
@@ -274,6 +321,7 @@
                 scrollToBottom();
             }
         }
+
         function sendMessageFileFromOtherUser(messageInput, time, fileName) {
             if (messageInput) {
                 var renderMsg = document.createElement('li');
@@ -288,7 +336,7 @@
                 var chatMessageText = document.createElement('div');
                 chatMessageText.className = 'chat-message-text';
                 if (messageInput) {
-                    var blob = new Blob([new Uint8Array(messageInput)], { type: 'application/octet-stream' });
+                    var blob = new Blob([new Uint8Array(messageInput)], {type: 'application/octet-stream'});
                     var url = URL.createObjectURL(blob);
                     let a = document.createElement('a');
                     a.href = url;
@@ -314,6 +362,7 @@
                 scrollToBottom();
             }
         }
+
         function dataURItoBlob(dataURI) {
             var byteString = atob(dataURI.split(',')[1]);
             var ab = new ArrayBuffer(byteString.length);
@@ -330,7 +379,7 @@
         let messageForm = document.querySelector('#messageForm');
         messageForm.addEventListener('submit', sendMessage, true)
 
-        function sendMessagePhotoFromUser(messageInput, time) {
+        function sendMessagePhotoFromUser(messageInput, time, newType) {
             if (messageInput) {
                 var renderMsg = document.createElement('li');
                 renderMsg.className = 'chat-message chat-message-right';
@@ -343,14 +392,18 @@
 
                 var chatMessageText = document.createElement('div');
                 chatMessageText.className = 'chat-message-text';
-                if (messageInput.type.startsWith('image/')) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        chatMessageText.innerHTML = '<img class="d-block w-px-300 h-px-300 rounded" src="' + e.target.result + '"</img>';
+                if (newType == true) {
+                    if (messageInput.type.startsWith('image/')) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            chatMessageText.innerHTML = '<img class="d-block w-px-300 h-px-300 rounded" src="' + e.target.result + '"</img>';
+                        }
+                        reader.readAsDataURL(messageInput);
                     }
-                    reader.readAsDataURL(messageInput);
+                } else {
+                    let e = "data:image/jpeg;base64," + messageInput;
+                    chatMessageText.innerHTML = '<img class="d-block w-px-300 h-px-300 rounded" src="' + e + '"</img>';
                 }
-
                 var textEndTextMuted = document.createElement('div');
                 textEndTextMuted.className = 'text-end text-muted mt-1';
                 textEndTextMuted.innerHTML = '<i class="ti ti-checks ti-xs me-1"></i><small>' + time + '</small>';
@@ -407,8 +460,8 @@
         }
 
 
-        function sendMessageFromUser(messageInput, time) {
-            if (messageInput.value) {
+        function sendMessageFromUser(messageInput, time, status) {
+            if (messageInput.value || status==true) {
                 var renderMsg = document.createElement('li');
                 renderMsg.className = 'chat-message chat-message-right';
 
@@ -420,8 +473,12 @@
 
                 var chatMessageText = document.createElement('div');
                 chatMessageText.className = 'chat-message-text';
-                chatMessageText.innerHTML = '<p class="mb-0">' + messageInput.value + '</p><p></p>';
-
+                if(status==true){
+                    chatMessageText.innerHTML = '<p class="mb-0">' + messageInput + '</p><p></p>';
+                }
+                else {
+                    chatMessageText.innerHTML = '<p class="mb-0">' + messageInput.value + '</p><p></p>';
+                }
                 var textEndTextMuted = document.createElement('div');
                 textEndTextMuted.className = 'text-end text-muted mt-1';
                 textEndTextMuted.innerHTML = '<i class="ti ti-checks ti-xs me-1"></i><small>' + time + '</small>';
