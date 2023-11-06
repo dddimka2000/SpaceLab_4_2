@@ -41,4 +41,8 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<UserReview> reviews;
+
+    //Для восстановления пароля
+    private String codeRestorePassword;
+
 }

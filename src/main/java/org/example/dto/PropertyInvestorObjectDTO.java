@@ -9,13 +9,15 @@ import java.util.List;
 @Data
 public class PropertyInvestorObjectDTO {
     private Integer id;
-    private Boolean status;
-    private String objectCode;
-    private String branchCode;
-    private String employeeCode;
-    private Integer price;
-    private String landmark;
+    private Boolean status; //
+    private String objectCode; //
+    private String branchCode;//
+    private String employeeCode;//
+    private Integer price; //
+    private String landmark;//
     private PropertyObjectAddress address;//
+    private String referencePoint;
+
     private Integer floor;
     private Integer floorQuantity;
     private Integer roomQuantity;
