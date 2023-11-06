@@ -3,6 +3,8 @@ package org.example.controller;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.PropertyInvestorObjectDTO;
+import org.example.entity.property.PropertyInvestorObject;
+import org.example.mapper.ObjectInvestorMapper;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/investor_objects")
 @Log4j2
 public class ObjectsInvestorController {
+
 
     @GetMapping
     public ModelAndView showObjectsInvestors() {
@@ -35,7 +38,11 @@ public class ObjectsInvestorController {
     @ResponseBody
     public ResponseEntity newObjectsInvestorControllerPost(@Valid @ModelAttribute PropertyInvestorObjectDTO propertyInvestorObjectDTO, BindingResult bindingResult) {
         log.info(propertyInvestorObjectDTO);
-        propertyInvestorObjectDTO.getFiles().stream().forEach(s->log.info(s.getOriginalFilename()));
+        PropertyInvestorObject propertyInvestorObject=ObjectInvestorMapper.INSTANCE.toEntity(propertyInvestorObjectDTO);
+        log.info(propertyInvestorObject);
+
+
+
         if (bindingResult.hasErrors()) {
             ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)

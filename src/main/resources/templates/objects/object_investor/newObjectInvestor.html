@@ -179,7 +179,7 @@
                         <div class="col-3">
                             <h6>Дата приобретения</h6>
                             <input type="date" class="form-control" placeholder="yyyy/MM/dd"
-                                   aria-describedby="defaultFormControlHelp" id="boughtDate" name="boughtDate"
+                                   aria-describedby="defaultFormControlHelp" id="boughtDate"
                                    value="">
                         </div>
                         <div class="col-3">
@@ -209,7 +209,7 @@
                     <div class="row">
                         <div class="col-2">
                             <h6>Статус публикации</h6>
-                            <select class="select2 form-select form-select" name="publicationStatus">
+                            <select class="select2 form-select form-select" name="publicationStatus" id="publicationStatus">
                                 <option selected></option>
                                 <option th:each="status : ${publicationStatus}"
                                         th:value="${status}"
@@ -220,7 +220,7 @@
                         </div>
                         <div class="col-2">
                             <h6>Код объекта</h6>
-                            <input class="form-control" type="text" id="codeObject" placeholder="Введите код объекта">
+                            <input class="form-control" type="text" id="codeObject" placeholder="100-101-102" name="codeObject">
                         </div>
                         <div class="col-5">
                             <div class="row">
@@ -236,13 +236,14 @@
                             </div>
                             <div class="row" style="display:flex; align-items: center">
                                 <div class="col-3" style="text-align: right">
-                                    <input class="form-control" type="text" id="codeBranch" placeholder="Код филиала">
+                                    <input class="form-control" type="number" id="codeBranch" placeholder="Код филиала" name="codeBranch">
                                 </div>
                                 <div class="col-1">
                                     <span><h6>—</h6></span>
                                 </div>
                                 <div class="col-3">
-                                    <input class="form-control" type="text" id="codeStaff" placeholder="Код сотрудника">
+                                    <input class="form-control" type="number" id="codeStaff" name="codeStaff"
+                                           placeholder="Код сотрудника">
                                 </div>
                             </div>
                         </div>
@@ -251,7 +252,8 @@
                     <div class="row">
                         <div class="col-2">
                             <h6>ЖК</h6>
-                            <select id="branchSelect3" class="select2 form-select form-select">
+                            <select id="branchSelect3" class="select2 form-select form-select"
+                                    name="residentialComplex">
                             </select>
                         </div>
                         <div class="col-2">
@@ -281,7 +283,7 @@
                     <div class="row">
                         <div class="col-2">
                             <h6>Срок сдачи</h6>
-                            <select id="buildStatus" class="select2 form-select form-select" name="buildStatus">
+                            <select id="buildStatus" class="select2 form-select form-select">
                                 <option selected></option>
                                 <option th:each="status : ${propertyBuildStatus}"
                                         th:value="${status}"
@@ -313,7 +315,7 @@
                         <div class="col-2">
                             <h6>Метраж комнат</h6>
                             <input class="form-control" type="text" id="footageOfRooms"
-                                   placeholder="Введите метраж комнат">
+                                   placeholder="10+10+10">
 
                         </div>
                         <div class="col-2">
@@ -333,7 +335,7 @@
                         </div>
                         <div class="col-3">
                             <h6>Состояние квартиры</h6>
-                            <select id="state" class="select2 form-select form-select" name="buildStatus">
+                            <select id="state" class="select2 form-select form-select">
                                 <option selected></option>
                                 <option th:each="status : ${propertyOrigin}"
                                         th:value="${status}"
@@ -345,7 +347,7 @@
                     <div class="row">
                         <div class="col-3">
                             <h6>Кухня</h6>
-                            <select id="kitchen" class="select2 form-select form-select" name="buildStatus">
+                            <select id="kitchen" class="select2 form-select form-select">
                                 <option selected></option>
                                 <option th:each="status : ${kitchenType}"
                                         th:value="${status}"
@@ -353,7 +355,7 @@
                             </select></div>
                         <div class="col-3">
                             <h6>Санузел</h6>
-                            <select id="bathroom" class="select2 form-select form-select" name="buildStatus">
+                            <select id="bathroom" class="select2 form-select form-select">
                                 <option selected></option>
                                 <option th:each="status : ${bathroomType}"
                                         th:value="${status}"
@@ -371,7 +373,7 @@
                         </div>
                         <div class="col-2">
                             <h6>Вид из окон</h6>
-                            <select id="viewWindow" class="select2 form-select form-select" name="buildStatus">
+                            <select id="viewWindow" class="select2 form-select form-select">
                                 <option selected></option>
                                 <option th:each="status : ${windowViewType}"
                                         th:value="${status}"
@@ -392,7 +394,7 @@
                         <div class="col-3">
                             <h6>Отопление
                             </h6>
-                            <select id="heating" class="select2 form-select form-select" name="buildStatus">
+                            <select id="heating" class="select2 form-select form-select">
                                 <option selected></option>
                                 <option th:each="status : ${heatingType}"
                                         th:value="${status}"
@@ -433,7 +435,7 @@
                             <span class="checkmark">Торг</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" name="exclusive ">
+                            <input class="form-check-input" type="checkbox" value="true" name="exclusive">
                             <span class="checkmark">Ексклюзив</span>
                         </div>
                         <div class="col-2">
@@ -523,17 +525,17 @@
             formData.append("section", $('[name="section"]').val());
             formData.append("apartmentNumber", $('[name="apartmentNumber"]').val());
             formData.append("houseNumber", $('[name="houseNumber"]').val());
-            formData.append("ownerName", $("#owner").val());
+            formData.append("ownerName", $('[name="owner"]').val());
             formData.append("ownerPhone", $('[name="telephone"]').val());
             formData.append("boughtDate", $('[name="boughtDate"]').val());
             console.log($('[name="boughtDate"]').val());
-            formData.append("ownershipType", $('[name="ownership"]').val());
-            console.log($('[name="ownership"]').val())
             let indexFilesMap = 0;
-            for (const [key, file] of fileMap) {
-                formData.append(key, file);
-                formData.append(`files[${indexFilesMap}]`, file);
-                indexFilesMap++;
+            if (fileMap.size > 0) {
+                for (const [key, file] of fileMap) {
+                    formData.append(key, file);
+                    formData.append(`files[${indexFilesMap}]`, file);
+                    indexFilesMap++;
+                }
             }
             formData.append("administrationComment", $('[name="comment"]').val());
             formData.append("publicationStatus", $('[name="publicationStatus"]').val());
@@ -541,81 +543,63 @@
             formData.append("branchCode", $('[name="codeBranch"]').val());
             formData.append("employeeCode", $('[name="codeStaff"]').val());
             formData.append("ownershipType", $('[name="ownership"]').val());
-            console.log($('[name="ownership"]').val());
+            formData.append("landmark", $("#reference_point").val());
+            formData.append("residentialComplexId", $('[name="residentialComplex"]').val());
+            formData.append("floorQuantity", $('[name="floorQuantity"]').val());
+            formData.append("floor", $('[name="floor"]').val());
+            formData.append("employeeCode", $('[name="codeStaff"]').val());
+            formData.append("roomQuantity", $("#rooms").val());
             formData.append("price", $("#price").val());
 
+            formData.append("areaTotal", $("#areaTotal").val());
+            formData.append("areaLiving", $("#areaLiving").val());
+            formData.append("areaKitchen", $("#areaKitchen").val());
+            formData.append("roomMeters", $("#footageOfRooms").val());
 
-            //
-            // formData.append("nameObject", $("#nameObject").val());
-            // formData.append("promotionName", $("#promotionName").val());
-            // formData.append("floorQuantity", $('[name="floorQuantity"]').val());
-            // formData.append("nameCompany", $('[name="nameCompany"]').val());
-            // formData.append("buildStatus", $('[name="buildStatus"]').val());
-            // if ($("#chessboard").prop('files')[0] != null)
-            //     formData.append("chessboardFile", $("#chessboard").prop('files')[0]);
-            // if ($("#installmentTerms").prop('files')[0] != null)
-            //     formData.append("installmentTerms", $("#installmentTerms").prop('files')[0]);
-            // if ($("#prices").prop('files')[0] != null)
-            //     formData.append("prices", $("#prices").prop('files')[0]);
-            // formData.append("description", $('[name="descriptionObject"]').val());
-            // formData.append("descriptionPromotion", $('[name="descriptionPromotion"]').val());
-            // formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
-            // let index = 0;
-            // let checkErrors = true;
-            //
-            // layoutArray.forEach(function (element) {
-            //     console.log(element);
-            //     let layoutData = {
-            //         nameLayout: $("#nameLayout" + element).val(),
-            //         priceLayout: $("#priceLayout" + element).val(),
-            //         roomQuantityLayout: $("#roomsLayout" + element).val(),
-            //         areaTotalLayout: $("#areaTotalLayout" + element).val(),
-            //         areaLivingLayout: $("#areaLivingLayout" + element).val(),
-            //         areaKitchenLayout: $("#areaKitchenLayout" + element).val(),
-            //         statusLayout: $("#statusLayout" + element).prop('checked'),
-            //         descriptionLayout: $("#descriptionLayout" + element).val()
-            //     }
-            //     let inputImage1 = $("#inputImage" + element).prop('files');
-            //     if (inputImage1.length > 0) {
-            //         layoutData.img1Layout = inputImage1[0];
-            //     }
-            //     let inputImage2 = $("#inputImage" + (element + 1)).prop('files');
-            //     if (inputImage2.length > 0) {
-            //         layoutData.img2Layout = inputImage2[0];
-            //     }
-            //     let inputImage3 = $("#inputImage" + (element + 2)).prop('files');
-            //     if (inputImage3.length > 0) {
-            //         layoutData.img3Layout = inputImage3[0];
-            //     }
-            //     for (let key in layoutData) {
-            //         formData.append(`layoutDTOList[${index}].${key}`, layoutData[key]);
-            //     }
-            //     console.log(layoutData)
-            //     index = index + 1;
-            // });
-            //
-            // const uploadedFiles = window.uploadedFiles;
-            // console.log(uploadedFiles);
-            // let i = 1;
-            // for (let [fileName, file] of uploadedFiles) {
-            //     if (i > 15) {
-            //         break;
-            //     }
-            //     formData.append("files[]", file);
-            //     i++;
-            // }
-            // console.log(formData.get("files[]"))
+            formData.append("heightCeiling", $("#myNumberInput").val());
+            formData.append("wallMaterial", $("#wall_material").val());
+            formData.append("propertyOrigin", $("#state").val());
+            formData.append("kitchenType", $("#kitchen").val());
+            formData.append("buildStatus", $("#buildStatus").val());
+
+            formData.append("bathroomType", $("#bathroom").val());
+            formData.append("balconyType", $("#balcony").val());
+            formData.append("windowViewType", $("#viewWindow").val());
+            formData.append("kitchenStoveType", $("#kitchenStove").val());
+            formData.append("heatingType", $("#heating").val());
+
+
+            formData.append("lastContactDate", $("#dateLastContact").val());
+            formData.append("vnp", $('[name="statusVNP"]').prop("checked"));
+            formData.append("vnpExpirationDate", $("#dateVNP").val());
+
+            formData.append("informationSource", $("#sourceInformation").val());
+            formData.append("bargain", $('[name="tor"]').prop("checked"));
+            formData.append("exclusive", $('[name="exclusive"]').prop("checked"));
+            formData.append("urgent", $('[name="urgently"]').prop("checked"));
+            formData.append("free", $('[name="free"]').prop("checked"));
+            formData.append("open", $('[name="objectOpen"]').prop("checked"));
+            formData.append("intermediary", $('[name="fromIntermediary"]').prop("checked"));
+
+            formData.append("description", $('[name="descriptionObject"]').val());
+
+            formData.append("advertisementHeadline", $('[name="advertisingName"]').val());
+            formData.append("advertisementText", $('[name="advertisingText"]').val());
+            formData.append("advertisementHeadline", $('[name="statusPromotion"]').prop("checked"));
+
+
+            let i = 1;
+            for (let [fileName, file] of uploadedFiles) {
+                if (i > 15) {
+                    break;
+                }
+                formData.append("pictures[]", file);
+                i++;
+            }
+            console.log(formData.get("pictures[]"))
 
             let contextPath =/*[[@{/}]]*/'';
             let url = contextPath.toString() + "investor_objects/create";
-            // for (let pair of formData.entries()) {
-            //     let value = pair[1];
-            //     if (value === "" || value === null || value === undefined || !value) {
-            //         showNotification("Warning!", "Пожалуйста, заполните все данные. ", false);
-            //         checkErrors = false;
-            //         break;
-            //     }
-            // }
             $.ajax({
                 url: url,
                 method: "POST",
@@ -693,7 +677,18 @@
             fileMap.delete(num);
 
         }
-
+        var inputElement = document.getElementById("codeObject");
+        inputElement.addEventListener("input", function() {
+            var inputValue = inputElement.value;
+            var numericValue = inputValue.replace(/[^0-9-]/g, '');
+            inputElement.value = numericValue;
+        });
+        var inputElement2 = document.getElementById("footageOfRooms");
+        inputElement2.addEventListener("input", function() {
+            var inputValue = inputElement2.value;
+            var numericValue = inputValue.replace(/[^0-9+]/g, '');
+            inputElement2.value = numericValue;
+        });
         function branchSelect3() {
             let contextPath = /*[[@{/}]]*/ '';
             $('#branchSelect3').select2({
@@ -762,11 +757,8 @@
                 console.log(currentFiles);
                 console.log(myDropzone.maxFiles);
                 currentFiles++;
-
                 const imageElement = file.previewElement.querySelector("img[data-dz-thumbnail]");
                 imageElement.src = file.dataURL;
-
-
             }
         })
         myDropzone.on('success', function (file, response) {
@@ -804,8 +796,6 @@
             myDropzone.options.maxFiles = newMaxFiles;
         }
 
-        let imgMaxId = 4;
-        let layoutArray = [1];
 
         // Настройки
         $('#telephone').mask('+380999999999');
