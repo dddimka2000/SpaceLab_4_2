@@ -51,22 +51,21 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public static final String REGISTRY = "/gs-guide-websocket";
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint(REGISTRY)
-                .withSockJS();
+        registry.addEndpoint(REGISTRY).withSockJS();
     }
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
+        log.info(username);
+        log.info(password);
+        log.info(host);
         config
                 .setApplicationDestinationPrefixes("/app")
                 .enableStompBrokerRelay(TOPIC_DESTINATION_PREFIX)
-                .setRelayHost(host)
                 .setClientLogin(username)
                 .setClientPasscode(password)
                 .setSystemLogin(username)
                 .setSystemPasscode(password)
-                .setVirtualHost("/")
-                .setRelayPort(5672)
-        ;
+                .setRelayHost(host);
     }
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registration) {

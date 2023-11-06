@@ -6,95 +6,53 @@ import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableRabbit
 @Log4j2
 public class RabbitMQConfig {
-    @Value("${spring.rabbitmq.host}")
-    private String rabbitmqHost;
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        return new CachingConnectionFactory("localhost");
+    }
 
-    @Value("${spring.rabbitmq.username}")
-    private String rabbitmqUsername;
+    @Bean
+    public AmqpAdmin amqpAdmin() {
+        return new RabbitAdmin(connectionFactory());
+    }
 
-    @Value("${spring.rabbitmq.password}")
-    private String rabbitmqPassword;
-    public static final String TOPIC_EXCHANGE_NAME = "topic2";
-
-    public static final String ROUTING_KEY_SEND_MESSAGE = "chat.sendMessage";
-    public static final String ROUTING_KEY_SEND_PHOTO = "chat.sendPhoto";
-    public static final String ROUTING_KEY_ADD_USER = "chat.addUser";
+    @Bean
+    public RabbitTemplate rabbitTemplate() {
+        return new RabbitTemplate(connectionFactory());
+    }
 
     @Bean
     public Queue queueSendMessage() {
-        return new Queue("chat-queue-send-message",true);
+        return new Queue("chat-queue-send-message");
     }
     @Bean
-    public Queue queueSendPhoto() {return new Queue("chat-queue-send-photo", true);}
+    public Queue queueSendPhoto() {return new Queue("chat-queue-send-photo");}
     @Bean
-    public Queue queueAddUser() {
-        return new Queue("chat-queue-add-user", true);
-    }
-
+    public Queue queueAddUser() {return new Queue("chat-queue-add-user");}
     @Bean
-    public Binding bindingSendMessage(Queue queueSendMessage, TopicExchange topicExchange) {
-        log.info(topicExchange.getType());
-        return BindingBuilder.bind(queueSendMessage).to(topicExchange).with(ROUTING_KEY_SEND_MESSAGE);
-    }
-
-    @Bean
-    public Binding bindingSendPhoto(Queue queueSendPhoto, TopicExchange topicExchange) {
-        return BindingBuilder.bind(queueSendPhoto).to(topicExchange).with(ROUTING_KEY_SEND_PHOTO);
+    public FanoutExchange fanoutExchange(){
+        return new FanoutExchange("common-exchange");
     }
     @Bean
-    public Binding bindingAddUser(Queue queueAddUser, TopicExchange topicExchange) {
-        return BindingBuilder.bind(queueAddUser).to(topicExchange).with(ROUTING_KEY_ADD_USER);
+    public Binding binding1() {
+        return BindingBuilder.bind(queueSendMessage()).to(fanoutExchange());
     }
-
-
     @Bean
-    public TopicExchange topicExchange() {
-        return ExchangeBuilder.topicExchange(TOPIC_EXCHANGE_NAME)
-                .durable(true)
-                .build();
+    public Binding binding2() {
+        return BindingBuilder.bind(queueSendPhoto()).to(fanoutExchange());
+    }
+    @Bean
+    public Binding binding3() {
+        return BindingBuilder.bind(queueAddUser()).to(fanoutExchange());
     }
 
-    @Bean
-    public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(rabbitmqHost);
-        connectionFactory.setUsername(rabbitmqUsername);
-        connectionFactory.setPassword(rabbitmqPassword);
-        connectionFactory.setHost("localhost");
-        connectionFactory.setPort(5672);
-        connectionFactory.setVirtualHost("/");
-        return connectionFactory;
-    }
-
-
-    @Bean
-    public RabbitTemplate rabbitTemplateSendMessage(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setRoutingKey("chat.sendMessage");
-        rabbitTemplate.setExchange(TOPIC_EXCHANGE_NAME);
-        return rabbitTemplate;
-    }
-    @Bean
-    public RabbitTemplate rabbitTemplateSendPhoto(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setRoutingKey("chat.sendPhoto");
-        rabbitTemplate.setExchange(TOPIC_EXCHANGE_NAME);
-        return rabbitTemplate;
-    }
-    @Bean
-    public RabbitTemplate rabbitTemplateAddUser(ConnectionFactory connectionFactory) {
-
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setRoutingKey("chat.addUser");
-        rabbitTemplate.setExchange(TOPIC_EXCHANGE_NAME);
-        return rabbitTemplate;
-    }
 }
