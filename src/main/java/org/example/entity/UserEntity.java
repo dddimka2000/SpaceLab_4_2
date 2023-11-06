@@ -33,6 +33,7 @@ public class UserEntity {
     private String name, surname, middleName, phone;
 
     private String img;
+
     private List<String> files;
 
     @ManyToMany
@@ -44,5 +45,6 @@ public class UserEntity {
 
     //Для восстановления пароля
     private String codeRestorePassword;
+
 
 }
