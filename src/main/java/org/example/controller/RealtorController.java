@@ -72,11 +72,15 @@ public class RealtorController {
     public ModelAndView addPage(@ModelAttribute @Valid RealtorDto realtorDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         ModelAndView modelAndView = new ModelAndView("redirect:/realtors");
         if(bindingResult.hasErrors()){
+            log.info("error add");
             modelAndView.addObject("contactTypes", ContactType.values());
             modelAndView.addObject("realtorDto", realtorDto);
+            log.info(bindingResult.getFieldErrors());
+
             modelAndView.setViewName("realtors/realtor_add");
             return modelAndView;
         }
+        log.info("realtorDto");
         realtorService.add(realtorDto);
         return modelAndView;
     }
