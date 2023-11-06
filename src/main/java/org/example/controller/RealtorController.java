@@ -16,6 +16,8 @@ import org.example.service.RealtorServiceImpl;
 import org.springframework.boot.Banner;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -137,6 +139,12 @@ public class RealtorController {
     public void activeMenuItem(Model model) {
         model.addAttribute("realtorsActive", true);
     }
-
-
+    @GetMapping("/for/select")
+    @ResponseBody
+    public Page<Realtor> search(@RequestParam("query") String name,
+                               @RequestParam("page") int page,
+                               @RequestParam("size") int size) {
+        Page<Realtor> searchResults = realtorService.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
+        return searchResults;
+    }
 }

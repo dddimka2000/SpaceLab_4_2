@@ -7,6 +7,7 @@
         xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <title>Content page</title>
+    <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
 </head>
 
 <body>
@@ -57,17 +58,17 @@
                 </div>
                 <div class="modal-body">
                     Имя
-                    <input name="id" hidden>
-                    <input class="form-control" name="name" placeholder="Денис">
+                    <input id="id" hidden>
+                    <input class="form-control" id="name" placeholder="Денис">
                     Email
-                    <input class="form-control" name="email" placeholder="some.email@gmail.com">
+                    <input class="form-control" id="email" placeholder="some.email@gmail.com">
                     Телефон
-                    <input class="form-control" name="phone" placeholder="+380123456789">
+                    <input class="form-control" id="phone" placeholder="+380123456789">
                     Вопрос
-                    <textarea class="form-control" name="question" rows="3"
+                    <textarea class="form-control" id="question"
                               placeholder="Питання питання питання питанння ..."></textarea>
                     Ответ
-                    <textarea class="form-control" name="answer" rows="3"
+                    <textarea class="form-control" id="answer"
                               placeholder="Відповідь відповідь відповідь ..."></textarea>
                 </div>
                 <div class="modal-footer">
@@ -81,6 +82,8 @@
     <script>
         $(document).ready(function () {
             getPageWithFilter(0)
+            autosize(document.querySelector("#answer"));
+            autosize(document.querySelector("#question"))
         })
 
         function deleteElement(button, id) {
@@ -112,51 +115,41 @@
         function saveElement() {
             var modalElement = document.getElementById('flipInXAnimationModal')
 
-            var id = modalElement.querySelector('input[name="id"]')
-            var name = modalElement.querySelector('input[name="name"]')
-            var email = modalElement.querySelector('input[name="email"]')
-            var phone = modalElement.querySelector('input[name="phone"]')
-            var question = modalElement.querySelector('textarea[name="question"]')
-            var answer = modalElement.querySelector('textarea[name="answer"]')
+            var id = $("#id");
+            var name = $("#name");
+            var email = $("#email");
+            var phone = $("#phone");
+            var question = $("#question");
+            var answer = $("#answer");
 
-            name.style.borderColor = "";
-            if (!validString(3, 25, name.value)) {
-                showToast("Ім'я повино містити від 3 до 25 символів", "danger")
-                name.style.borderColor = "#ff0000";
+            name.css("border-color", "")
+            if (!validString(3, 25, name)) {
                 return;
             }
-            email.style.borderColor = "";
-            if (!validateEmail(email.value)) {
-                showToast("Email не коректний", "danger")
-                email.style.borderColor = "#ff0000";
+            email.css("border-color", "")
+            if (!validateEmail(email)) {
                 return;
             }
-            phone.style.borderColor = "";
-            if (!validatePhoneNumber(phone.value)) {
-                showToast("Номер телефону повинен бути в такому форматі +380_________", "danger")
-                phone.style.borderColor = "#ff0000";
+            phone.css("border-color", "")
+            if (!validatePhoneNumber(phone)) {
                 return;
             }
-            question.style.borderColor = "";
-            if (!validString(5, 1500, name.value)) {
-                showToast("Питання повино складатись від 5 до 1500 символів", "danger")
-                question.style.borderColor = "#ff0000";
+            question.css("border-color", "")
+            if (!validString(5, 1500, question)) {
                 return;
             }
-            answer.style.borderColor = "";
-            if (!validString(5, 1500, name.value)) {
-                showToast("Відповідь повина складатись від 5 до 1500 символів", "danger")
-                answer.style.borderColor = "#ff0000";
+            answer.css("border-color", "")
+            if (!validString(5, 1500, answer)) {
                 return;
             }
 
             let formData = new FormData();
-            formData.append("id", id.value)
-            formData.append("name", name.value)
-            formData.append("email", email.value)
-            formData.append("phone", phone.value)
-            formData.append("question", question.value)
-            formData.append("answer", answer.value)
+            formData.append("id", id.val())
+            formData.append("name", name.val())
+            formData.append("email", email.val())
+            formData.append("phone", phone.val())
+            formData.append("question", question.val())
+            formData.append("answer", answer.val())
 
             $.ajax({
                 url: '[[@{/questions/edit}]]',
@@ -181,12 +174,17 @@
                 success: function (question) {
                     var modal = new bootstrap.Modal(document.getElementById('flipInXAnimationModal'))
                     var modalElement = document.getElementById('flipInXAnimationModal')
-                    modalElement.querySelector('input[name="id"]').value = question.id
-                    modalElement.querySelector('input[name="name"]').value = question.name
-                    modalElement.querySelector('input[name="email"]').value = question.email
-                    modalElement.querySelector('input[name="phone"]').value = question.phone
-                    modalElement.querySelector('textarea[name="question"]').value = question.question
-                    modalElement.querySelector('textarea[name="answer"]').value = question.answer
+                    modalElement.querySelector('input[id="id"]').value = question.id
+                    modalElement.querySelector('input[id="name"]').value = question.name
+                    modalElement.querySelector('input[id="email"]').value = question.email
+                    modalElement.querySelector('input[id="phone"]').value = question.phone
+                    modalElement.querySelector('textarea[id="question"]').value = question.question
+                    modalElement.querySelector('textarea[id="answer"]').value = question.answer
+
+                    modalElement.querySelector('textarea[id="answer"]').setAttribute('rows', 6);
+                    modalElement.querySelector('textarea[id="question"]').setAttribute('rows', 6);
+
+
                     modal.show()
                 }
             })

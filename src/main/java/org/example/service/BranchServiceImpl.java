@@ -23,7 +23,7 @@ import java.security.NoSuchAlgorithmException;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class BranchService {
+public class BranchServiceImpl {
     private final MinioService minioService;
     private final BranchMapper branchMapper;
     private final BranchRepository branchRepository;

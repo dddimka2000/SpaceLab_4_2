@@ -7,7 +7,13 @@
         xmlns:layout="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Content page</title>
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
+    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+    <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
+    <script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
+    <script th:src="@{/vendor/libs/cleavejs/cleave-phone.js}"></script>
 </head>
+
 
 <body>
 
@@ -73,22 +79,22 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <input class="form-control">
+                                <input class="form-control" id="surname">
                             </div>
                             <div class="col">
-                                <input class="form-control">
+                                <input class="form-control" id="name">
                             </div>
                             <div class="col">
-                                <input class="form-control">
+                                <input class="form-control" id="middleName">
                             </div>
                             <div class="col">
-                                <input class="form-control">
+                                <input class="form-control prefix-mask" id="phone">
                             </div>
                             <div class="col">
-                                <input class="form-control">
+                                <input class="form-control" id="email">
                             </div>
                             <div class="col">
-                                <input class="form-control">
+                                <select id="realtorSelect2" name="realtor"></select>
                             </div>
                         </div>
                         <div class="row">
@@ -109,16 +115,18 @@
                         </div>
                         <div class="row">
                             <div class="col-2">
-                                <input class="form-control">
+                                <input class="form-control" id="passport" placeholder="XX 1234">
                             </div>
                             <div class="col-2">
-                                <input class="form-control">
+                                <input type="text" class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
+                                       id="birthdate"/>
                             </div>
                             <div class="col-2">
-                                <input class="form-control">
+                                <select id="informationSourceSelect2" name="informationSource"></select>
                             </div>
                             <div class="col-2">
-                                <input class="form-control">
+                                <input type="text" class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
+                                       id="lastVisit"/>
                             </div>
                             <div class="col-4">
                                 <a class="btn btn-success">Проверить номер телефона</a>
@@ -126,12 +134,12 @@
                         </div>
                         Коментарий
                         <br/>
-                        <textarea class="form-control" rows="5"></textarea>
+                        <textarea class="form-control bootstrap-maxlength-example" rows="5"></textarea>
                         <div class="row mt-2">
                             <div class="col-5">
                                 Прикрепить файли
                                 <br/>
-                                <input type="file" class="form-control" multiple>
+                                <input type="file" class="form-control" id="files" accept=".pdf" multiple>
                             </div>
                             <div class="col-7"></div>
                         </div>
@@ -228,7 +236,9 @@
                     <div class="tab-pane fade show" id="navs-pills-top-note">
                         <div id="noteBlock"></div>
                         <div style="width: 100%; display: flex; justify-content: flex-end">
-                            <button type="button" onclick="addNoteBlock()" class="btn btn-success mb-1">Добавить заметку</button>
+                            <button type="button" onclick="addNoteBlock()" class="btn btn-success mb-1">Добавить
+                                заметку
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -257,12 +267,151 @@
         </div>
     </div>
     <script>
+        function sendForm() {
+            var surname = $("#surname")
+            var name = $("#name")
+            var middleName = $("#middleName")
+            var phone = $("#phone")
+            var email = $("#email")
+            var realtor = $("#realtorSelect2")
+            var passport = $("#passport")
+            var birthdate = $("#birthdate")
+            var informationSourceSelect2 = $("#informationSourceSelect2")
+            var lastVisit = $("#lastVisit")
+            var files = $("#files")
+
+            // surname.css("border-color", "");
+            // if (!validString("3", "50", surname)) {
+            //     return;
+            // }
+            // name.css("border-color", "");
+            // if (!validString("3", "50", name)) {
+            //     return;
+            // }
+            // middleName.css("border-color", "");
+            // if (!validString("3", "50", middleName)) {
+            //     return;
+            // }
+            // phone.css("border-color", "");
+            // if (!validatePhoneNumber(phone)) {
+            //     return;
+            // }
+            // email.css("border-color", "");
+            // if (!validateEmail(email)) {
+            //     return;
+            // }
+            // realtor.next().find(".select2-selection").css("border", "");
+            // if (realtor.val() === null) {
+            //     showToast("Елемент має бути вибрано", "danger")
+            //     $("#realtorSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
+            //     return;
+            // }
+            // informationSourceSelect2.next().find(".select2-selection").css("border", "");
+            // if (informationSourceSelect2.val() == null) {
+            //     showToast("Елемент має бути вибрано", "danger")
+            //     $("#informationSourceSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
+            //     return;
+            // }
+            // passport.css("border-color", "")
+            // var regex = /^[A-Za-z]{2}\d{4}$/;
+            // if (!regex.test(passport.val().replace(/\s/g, ''))){
+            //     showToast("Серія паспорта повина бути в такому форматі: XX 1234", "danger")
+            //     passport.css("border-color", "#ff0000")
+            //     return;
+            // }
+            // birthdate.css("border-color", "")
+            // if(!validateDate(birthdate)){
+            //     return;
+            // }
+            // lastVisit.css("border-color", "")
+            // if(!validateDate(lastVisit)){
+            //     return;
+            // }
+            // files.css("border-color", "")
+            // if(files[0].files.length <= 0){
+            //     showToast("Файл повинен бути вибраний", "danger")
+            //     files.css("border-color", "#ff0000")
+            //     return;
+            // } else {
+            //     Array.from(files[0].files).forEach(function(file) {
+            //         if(!validateOneFile(file, ['.pdf'])){
+            //             files.css("border-color", "#ff0000")
+            //             document.getElementById("#files").value = ''
+            //             return;
+            //         }
+            //     });
+            // }
+            showToast('Файли успішно завантажено', 'success');
+
+            let formData = new FormData();
+            console.log(birthdate)
+            console.log(lastVisit)
+            formData.append("surname", surname.val());
+            formData.append("name", name.val());
+            formData.append("middleName", middleName.val());
+            formData.append("phone", phone.val());
+            formData.append("email", email.val());
+            formData.append("realtor", realtor.val());
+            formData.append("passportCode", passport.val());
+            formData.append("birthdate", birthdate.val());
+            formData.append("informationSource", informationSourceSelect2.val());
+            formData.append("lastVisit", lastVisit.val());
+            var filesElement = files[0].files;
+            for (var i = 0; i < filesElement.length; i++) {
+                formData.append("files", filesElement[i]);
+            }
+            $.ajax({
+                url: '[[@{/buyers/add}]]',
+                method: "POST",
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function () {
+
+                },
+                error: function (xhr, status, error) {
+                    var errors = JSON.parse(xhr.responseText);
+                    errors.forEach(function (error) {
+                        console.log("Ошибка: " + error);
+                        showNotification("Ошибка!", error, false);
+                    });
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            realtorSelect2()
+            informationSourceSelect2()
+
+            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
+
+            flatpickrDateTimes.forEach(function (element) {
+                element.flatpickr({
+                    dateFormat: "Y/m/d"
+                });
+            });
+
+            $(".bootstrap-maxlength-example").each(function () {
+                autosize(this);
+            })
+            new Cleave(".prefix-mask", {
+                prefix: "+380",
+                blocks: [4, 2, 3, 2, 2],
+                numericOnly: true
+            })
+            new Cleave("#passport", {
+                blocks: [2, 4],
+                uppercase: true
+            })
+        })
+
         function addNoteBlock() {
             var newElement = document.createElement("p");
             newElement.innerHTML = `
         <div class="card">
             <div class="card-header">
-                `+new Date().toLocaleDateString()+`
+                ` + new Date().toLocaleDateString() + `
                 <button class="btn" onclick="deleteblock(this)" style='float: right;'>
                     <i class='fa fa-trash'></i>
                 </button>
@@ -275,27 +424,28 @@
             var noteBlock = document.getElementById("noteBlock");
             noteBlock.appendChild(newElement);
         }
-        function showModal(){
+
+        function showModal() {
             var modal = new bootstrap.Modal(document.getElementById('modalForHistory'))
             var modalElement = document.getElementById('modalForHistory')
             modalElement.querySelector('textarea[name="history"]').value = 'asdfasdfqefrgbnh gbhtthnhbgb bv rbg br gbrgv  brsf vaerf'
             modal.show()
-
-            // $.ajax({
-            //     type: "Get",
-            //     url: '[[@{/proposals_for_changes/getById}]]',
-            //     data: {
-            //         id: id
-            //     },
-            //     success: function (offer) {
-            //         var modal = new bootstrap.Modal(document.getElementById('modalForOffer'))
-            //         var modalElement = document.getElementById('modalForOffer')
-            //         modalElement.querySelector('input[name="sender"]').value = offer.sender
-            //         modalElement.querySelector('textarea[name="text"]').value = offer.text
-            //         modal.show()
-            //     }
-            // })
         }
+
+        // $.ajax({
+        //     type: "Get",
+        //     url: '[[@{/proposals_for_changes/getById}]]',
+        //     data: {
+        //         id: id
+        //     },
+        //     success: function (offer) {
+        //         var modal = new bootstrap.Modal(document.getElementById('modalForOffer'))
+        //         var modalElement = document.getElementById('modalForOffer')
+        //         modalElement.querySelector('input[name="sender"]').value = offer.sender
+        //         modalElement.querySelector('textarea[name="text"]').value = offer.text
+        //         modal.show()
+        //     }
+        // })
     </script>
 </section>
 

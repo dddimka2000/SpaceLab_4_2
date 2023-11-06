@@ -14,7 +14,6 @@ import java.util.List;
 @Data
 public class RealtorDto {
     private Integer id;
-    @Size(min = 8, max = 50, message = "Поле повино містити від 8 до 50 символів")
     private String password;
     @NotNull(message = "Поле повинно бути заповненим")
     @Min(value = 1, message = "Число повинно бути більшим за 1")
