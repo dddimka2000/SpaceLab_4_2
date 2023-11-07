@@ -40,11 +40,9 @@ public class ObjectsInvestorController {
         log.info(propertyInvestorObjectDTO);
         PropertyInvestorObject propertyInvestorObject=ObjectInvestorMapper.INSTANCE.toEntity(propertyInvestorObjectDTO);
         log.info(propertyInvestorObject);
-
-
-
         if (bindingResult.hasErrors()) {
-            ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
+            log.info("error");
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }

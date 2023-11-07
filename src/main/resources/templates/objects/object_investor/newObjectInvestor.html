@@ -193,6 +193,9 @@
                         </div>
                     </div>
                     <br>
+                    <h6>Важные заметки</h6>
+                    <input class="form-control" type="text" id="notes" placeholder="Введите заметки">
+                    <br>
                     <h6>Прикрепить файлы</h6>
                     <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()">
                     <br>
@@ -209,7 +212,7 @@
                     <div class="row">
                         <div class="col-2">
                             <h6>Статус публикации</h6>
-                            <select class="select2 form-select form-select" name="publicationStatus" id="publicationStatus">
+                            <select class="select2 form-select form-select" id="publicationStatus">
                                 <option selected></option>
                                 <option th:each="status : ${publicationStatus}"
                                         th:value="${status}"
@@ -538,7 +541,7 @@
                 }
             }
             formData.append("administrationComment", $('[name="comment"]').val());
-            formData.append("publicationStatus", $('[name="publicationStatus"]').val());
+            formData.append("publicationStatus", $("#publicationStatus").val());
             formData.append("objectCode", $('[name="codeObject"]').val());
             formData.append("branchCode", $('[name="codeBranch"]').val());
             formData.append("employeeCode", $('[name="codeStaff"]').val());
@@ -550,6 +553,7 @@
             formData.append("employeeCode", $('[name="codeStaff"]').val());
             formData.append("roomQuantity", $("#rooms").val());
             formData.append("price", $("#price").val());
+            formData.append("notes", $("#notes").val());
 
             formData.append("areaTotal", $("#areaTotal").val());
             formData.append("areaLiving", $("#areaLiving").val());
@@ -610,11 +614,16 @@
                     showNotification("Объект сохранен!", "", true);
                 },
                 error: function (xhr, status, error) {
-                    var errors = JSON.parse(xhr.responseText);
-                    errors.forEach(function (error) {
-                        console.log("Ошибка: " + error);
-                        showNotification("Ошибка!", error, false);
-                    });
+                    if (xhr.status === 400) {
+                        var errors = JSON.parse(xhr.responseText);
+                        errors.forEach(function (error) {
+                            console.log("Ошибка: " + error);
+                            showNotification("Ошибка!", error, false);
+                        });
+                    } else {
+                        console.log("Другая ошибка: " + xhr.status + " - " + error);
+                        showNotification("Другая ошибка!", "Произошла ошибка на сервере", false);
+                    }
                 }
             })
 

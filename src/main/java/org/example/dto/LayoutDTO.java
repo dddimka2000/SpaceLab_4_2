@@ -11,7 +11,7 @@ public class LayoutDTO {
     private String nameLayout;
     @NotNull(message = "Заполните цену в планировке")
     @Min(value = 1, message = "Введите корректную цену для планировок")
-    @Max(value = 100000001, message = "Введите корректную площадь для планировок")
+    @Max(value = 100000001, message = "Введите корректную цену для планировок")
     private Integer priceLayout;
     @NotNull(message = "Заполните кол-во комнат в планировке")
     @Min(value = 1, message = "Введите корректное кол-во комнат")

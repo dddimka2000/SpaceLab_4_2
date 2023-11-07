@@ -43,8 +43,8 @@ public class _PropertyObject {
 
     private PropertyBuildStatus buildStatus;
 
-    @DateTimeFormat(pattern="yyyy/MM/dd")
-    private LocalDate buildFinishDate;
+//    @DateTimeFormat(pattern="yyyy/MM/dd")
+//    private LocalDate buildFinishDate;
 
     private Integer areaTotal, areaLiving, areaKitchen;
     private String roomMeters;
