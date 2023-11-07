@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Content page</title>
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
+    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+    <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
+    <script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
+    <script th:src="@{/vendor/libs/cleavejs/cleave-phone.js}"></script>
+</head>
+
+
+<body>
+
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Покупатель</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/buyer}">Покупатели</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Покупатель</li>
+                </ol>
+            </nav>
+        </div>
+
+        <ul class="nav nav-pills mb-3" role="tablist">
+            <li class="nav-item">
+                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home"
+                        aria-selected="true">
+                    Информация
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-top-application" aria-controls="navs-pills-top-application"
+                        aria-selected="false">
+                    Заявка
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#navs-pills-top-note" aria-controls="navs-pills-top-note"
+                        aria-selected="false">
+                    Заметки
+                </button>
+            </li>
+        </ul>
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="navs-pills-top-info">
+                        <div class="row">
+                            <div class="col">
+                                Фамилия
+                            </div>
+                            <div class="col">
+                                Имя
+                            </div>
+                            <div class="col">
+                                Отчество
+                            </div>
+                            <div class="col">
+                                Телефон
+                            </div>
+                            <div class="col">
+                                Email
+                            </div>
+                            <div class="col">
+                                Риелтор
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" id="surname">
+                            </div>
+                            <div class="col">
+                                <input class="form-control" id="name">
+                            </div>
+                            <div class="col">
+                                <input class="form-control" id="middleName">
+                            </div>
+                            <div class="col">
+                                <input class="form-control prefix-mask" id="phone">
+                            </div>
+                            <div class="col">
+                                <input class="form-control" id="email">
+                            </div>
+                            <div class="col">
+                                <select id="realtorSelect2" name="realtor"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                Паспорт Серия/Номер
+                            </div>
+                            <div class="col-2">
+                                Дата рождения
+                            </div>
+                            <div class="col-2">
+                                Источник информации
+                            </div>
+                            <div class="col-2">
+                                Дата последнего контакта
+                            </div>
+                            <div class="col-4">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <input class="form-control" id="passport" placeholder="XX 1234">
+                            </div>
+                            <div class="col-2">
+                                <input type="text" class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
+                                       id="birthdate"/>
+                            </div>
+                            <div class="col-2">
+                                <select id="informationSourceSelect2" name="informationSource"></select>
+                            </div>
+                            <div class="col-2">
+                                <input type="text" class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
+                                       id="lastVisit"/>
+                            </div>
+                            <div class="col-4">
+                                <a class="btn btn-success">Проверить номер телефона</a>
+                            </div>
+                        </div>
+                        Коментарий
+                        <br/>
+                        <textarea class="form-control bootstrap-maxlength-example" id="comment" rows="5"></textarea>
+                        <div class="row mt-2">
+                            <div class="col-5">
+                                Прикрепить файли
+                                <br/>
+                                <input type="file" class="form-control" id="files" accept=".pdf" multiple>
+                            </div>
+                            <div class="col-7"></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="navs-pills-top-application">
+                        <div class="row">
+                            <div class="col-4">
+                                Район
+                                <select class="form-control" id="district" multiple></select>
+                                Топзона
+                                <select class="form-control" id="topzone" multiple></select>
+                            </div>
+                            <div class="col-3">
+                                Количество комнат
+                                <br/>
+                                1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1" checked>
+                                2 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">
+                                3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">
+                                4 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">
+                            </div>
+                            <div class="col-5">
+                                <div class="row">
+                                    <div class="col">
+                                        Этаж:
+                                        <div style="display: flex">
+                                            <input class="form-control" id="floorMin">
+                                            <div class="mt-2">&mdash;</div>
+                                            <input class="form-control" id="floorMax">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        Цена ($):
+                                        <div style="display: flex">
+                                            <input class="form-control" id="priceMin">
+                                            <div class="mt-2">&mdash;</div>
+                                            <input class="form-control" id="priceMax">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        Участок(кв. м):
+                                        <div style="display: flex">
+                                            <input class="form-control" id="plotAreaMin">
+                                            <div class="mt-2">&mdash;</div>
+                                            <input class="form-control" id="plotAreaMax">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        Площадь(кв. м):
+                                        <div style="display: flex">
+                                            <input class="form-control" id="houseAreaMin">
+                                            <div class="mt-2">&mdash;</div>
+                                            <input class="form-control" id="houseAreaMax">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-2">
+                                ЖК
+                                <select class="form-control" id="builderObjects" name="builderObject"></select>
+                            </div>
+                            <div class="col-2">
+                                Статус
+                                <select class="form-control" id="status"></select>
+                            </div>
+                            <div class="col-3">
+                                Вид недвижемости
+                                <select class="form-control" id="propertyOrigin"></select>
+                            </div>
+                            <div class="col-3">
+                                Тип недвижимости
+                                <select class="form-control" id="propertyApplicationType"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                Телефон:
+                                <input class="form-control prefix-mask" id="phoneExample2">
+                            </div>
+                            <div class="col-4">
+                                Риелтор:
+                                <select class="form-control" id="realtorSelect2example2"></select>
+                            </div>
+                        </div>
+                        <br/>
+                        Коментарий
+                        <textarea class="form-control bootstrap-maxlength-example" id="commentExample" rows="4"></textarea>
+                        <a href="#" onclick="showModal()">Показать историю изменений</a>
+                    </div>
+                    <div class="tab-pane fade show" id="navs-pills-top-note">
+                        <div id="noteBlock"></div>
+                        <div style="width: 100%; display: flex; justify-content: flex-end">
+                            <button type="button" onclick="addNoteBlock()" class="btn btn-success mb-1">Добавить
+                                заметку
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="d-flex justify-content-end mt-2">
+                <a th:href="@{/realtors}" class="btn btn-default">Отменить</a>
+                <button onclick="sendForm()" class="btn btn-success">Сохранить</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal animate__animated animate__flipInX" id="modalForHistory" tabindex="-1"
+         aria-labelledby="flipInXAnimationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">История изменений</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control bootstrap-maxlength-example" name="history" rows="12" disabled></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function saveApplication(){
+            var districts = $("#district")
+            var topzones = $("#topzone")
+            var roomQuantity = $(".roomNumbers")
+            var floorMin = $("#floorMin")
+            var floorMax = $("#floorMax")
+            var priceMin = $("#priceMin")
+            var priceMax = $("#priceMax")
+            var plotAreaMin = $("#plotAreaMin")
+            var plotAreaMax = $("#plotAreaMax")
+            var houseAreaMin = $("#houseAreaMin")
+            var houseAreaMax = $("#houseAreaMax")
+
+            var builderObjects = $("#builderObjects")
+            var status = $("#status")
+            var origin = $("#propertyOrigin")
+            var type = $("#propertyApplicationType")
+            var phone = $("#phoneExample2")
+            var realtor = $("#realtorSelect2example2")
+            var comment = $("#commentExample")
+
+
+            districts.next().find(".select2-selection").css("border-color", "")
+            if(districts.val().length === 0){
+                showToast("Елемент має бути вибрано", "danger")
+                districts.next().find(".select2-selection").css("border", "1px solid #ff0000");
+                return
+            }
+            topzones.next().find(".select2-selection").css("border-color", "")
+            if(topzones.val().length === 0){
+                showToast("Елемент має бути вибрано", "danger")
+                topzones.next().find(".select2-selection").css("border", "1px solid #ff0000");
+                return
+            }
+            floorMin.css("border-color", "")
+            floorMax.css("border-color", "")
+            if(!validateNumber(3, 20, floorMin.val())) {
+                floorMin.css("border-color", "#ff0000")
+                floorMax.css("border-color", "#ff0000")
+                return
+            }
+            if(!validateNumber(3, 20, floorMax.val())) {
+                floorMin.css("border-color", "#ff0000")
+                floorMax.css("border-color", "#ff0000")
+                return
+            }
+            if(parseInt(floorMin.val()) > parseInt(floorMax.val())){
+                floorMin.css("border-color", "#ff0000")
+                floorMax.css("border-color", "#ff0000")
+                showToast("Поверх 'від' повинен бути менший за поверх 'до'", "danger")
+                return
+            }
+            priceMin.css("border-color", "")
+            priceMax.css("border-color", "")
+            if(!validateNumber(100, 20000, priceMin.val())) {
+                priceMin.css("border-color", "#ff0000")
+                priceMax.css("border-color", "#ff0000")
+                return
+            }
+            if(!validateNumber(100, 20000, priceMax.val())) {
+                priceMin.css("border-color", "#ff0000")
+                priceMax.css("border-color", "#ff0000")
+                return
+            }
+            if(parseInt(priceMin.val()) > parseInt(priceMax.val())){
+                priceMin.css("border-color", "#ff0000")
+                priceMax.css("border-color", "#ff0000")
+                showToast("Ціна 'від' повина бути менша за ціну 'до'", "danger")
+                return
+            }
+            plotAreaMin.css("border-color", "")
+            plotAreaMax.css("border-color", "")
+            if(!validateNumber(10, 80, plotAreaMin.val())) {
+                plotAreaMin.css("border-color", "#ff0000")
+                plotAreaMax.css("border-color", "#ff0000")
+                return
+            }
+            if(!validateNumber(10, 80, plotAreaMax.val())) {
+                plotAreaMin.css("border-color", "#ff0000")
+                plotAreaMax.css("border-color", "#ff0000")
+                return
+            }
+            if(parseInt(plotAreaMin.val()) > parseInt(plotAreaMax.val())){
+                plotAreaMin.css("border-color", "#ff0000")
+                plotAreaMax.css("border-color", "#ff0000")
+                showToast("Участок 'від' повинен бути меншим за участок 'до'", "danger")
+                return;
+            }
+            houseAreaMin.css("border-color", "")
+            houseAreaMax.css("border-color", "")
+            if(!validateNumber(30, 2000, houseAreaMin.val())) {
+                houseAreaMin.css("border-color", "#ff0000")
+                houseAreaMax.css("border-color", "#ff0000")
+                return
+            }
+            if(!validateNumber(30, 2000, houseAreaMax.val())) {
+                houseAreaMin.css("border-color", "#ff0000")
+                houseAreaMax.css("border-color", "#ff0000")
+                return
+            }
+            if(parseInt(houseAreaMin.val()) > parseInt(houseAreaMax.val())){
+                houseAreaMin.css("border-color", "#ff0000")
+                houseAreaMax.css("border-color", "#ff0000")
+                showToast("Площина 'від' повина бути менша за площину 'до'", "danger")
+                return;
+            }
+            if (builderObjects.val() === null) {
+                showToast("Елемент має бути вибрано", "danger");
+                builderObjects.next().find(".select2-selection").css("border", "1px solid #ff0000")
+                return;
+            }
+
+            if (status.val() === null) {
+                showToast("Елемент має бути вибрано", "danger");
+                status.next().find(".select2-selection").css("border", "1px solid #ff0000")
+                return;
+            }
+
+            if (origin.val() === null) {
+                showToast("Елемент має бути вибрано", "danger");
+                origin.next().find(".select2-selection").css("border", "1px solid #ff0000");
+                return;
+            }
+
+            if (type.val() === null) {
+                showToast("Елемент має бути вибрано", "danger");
+                type.next().find(".select2-selection").css("border", "1px solid #ff0000");
+                return;
+            }
+
+            if (!validatePhoneNumber(phone)) {
+                return;
+            }
+
+            if (realtor.val() === null) {
+                showToast("Елемент має бути вибрано", "danger");
+                realtor.next().find(".select2-selection").css("border", "1px solid #ff0000");
+                return;
+            }
+
+            if (!validString('1', '1000', comment)) {
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("districts", districts.val());
+            formData.append("topzones", topzones.val());
+            formData.append("roomQuantity", roomQuantity.val());
+            formData.append("floorMin", floorMin.val());
+            formData.append("floorMax", floorMax.val());
+            formData.append("priceMin", priceMin.val());
+            formData.append("priceMax", priceMax.val());
+            formData.append("plotAreaMin", plotAreaMin.val());
+            formData.append("plotAreaMax", plotAreaMax.val());
+            formData.append("houseAreaMin", houseAreaMin.val());
+            formData.append("houseAreaMax", houseAreaMax.val());
+            formData.append("builderObjects", builderObjects.val());
+            formData.append("status", status.val());
+            formData.append("origin", origin.val());
+            formData.append("type", type.val());
+            formData.append("phone", phone.val());
+            formData.append("realtor", realtor.val());
+            formData.append("comment", comment.val());
+
+
+            $.ajax({
+                url: '[[@{/buyers/add/application}]]',
+                method: "POST",
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function () {
+
+                },
+                error: function (xhr, status, error) {
+                    var errors = JSON.parse(xhr.responseText);
+                    errors.forEach(function (error) {
+                        console.log("Ошибка: " + error);
+                        showNotification("Ошибка!", error, false);
+                    });
+                }
+            })
+        }
+        $(document).ready(function () {
+            forSelect2WithSearch(undefined, undefined, "#realtorSelect2example2", "/realtors/for/select")
+            forSelect2WithSearch(undefined, undefined, "#builderObjects", "/builder_objects/for/select", "builderObject")
+            forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
+            forSelect2(undefined, undefined, "#district", "/enum/district")
+            forSelect2(undefined, undefined, "#status", "/enum/applicationStatus")
+            forSelect2(undefined, undefined, "#propertyOrigin", "/enum/propertyOrigin")
+            forSelect2(undefined, undefined, "#propertyApplicationType", "/enum/propertyApplicationType")
+            realtorSelect2()
+            informationSourceSelect2()
+
+            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
+
+            flatpickrDateTimes.forEach(function (element) {
+                element.flatpickr({
+                    dateFormat: "Y/m/d"
+                });
+            });
+
+            $(".bootstrap-maxlength-example").each(function () {
+                autosize(this);
+            })
+            const prefixMaskElements = document.querySelectorAll('.prefix-mask');
+            prefixMaskElements.forEach(element => {
+                new Cleave(element, {
+                    prefix: "+380",
+                    blocks: [4, 2, 3, 2, 2],
+                    numericOnly: true
+                });
+            });
+            new Cleave("#passport", {
+                blocks: [2, 4],
+                uppercase: true
+            })
+        })
+        function sendForm() {
+            cleanInputs()
+            saveApplication()
+            return;
+            var surname = $("#surname")
+            var name = $("#name")
+            var middleName = $("#middleName")
+            var phone = $("#phone")
+            var email = $("#email")
+            var realtor = $("#realtorSelect2")
+            var passport = $("#passport")
+            var birthdate = $("#birthdate")
+            var informationSourceSelect2 = $("#informationSourceSelect2")
+            var lastVisit = $("#lastVisit")
+            var files = $("#files")
+            var comment = $("#comment")
+
+            surname.css("border-color", "");
+            if (!validString("3", "50", surname)) {
+                return;
+            }
+            name.css("border-color", "");
+            if (!validString("3", "50", name)) {
+                return;
+            }
+            middleName.css("border-color", "");
+            if (!validString("3", "50", middleName)) {
+                return;
+            }
+            phone.css("border-color", "");
+            if (!validatePhoneNumber(phone)) {
+                return;
+            }
+            email.css("border-color", "");
+            if (!validateEmail(email)) {
+                return;
+            }
+            realtor.next().find(".select2-selection").css("border", "");
+            if (realtor.val() === null) {
+                showToast("Елемент має бути вибрано", "danger")
+                $("#realtorSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
+                return;
+            }
+            informationSourceSelect2.next().find(".select2-selection").css("border", "");
+            if (informationSourceSelect2.val() == null) {
+                showToast("Елемент має бути вибрано", "danger")
+                $("#informationSourceSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
+                return;
+            }
+            passport.css("border-color", "")
+            var regex = /^[A-Za-z]{2}\d{4}$/;
+            if (!regex.test(passport.val().replace(/\s/g, ''))){
+                showToast("Серія паспорта повина бути в такому форматі: XX 1234", "danger")
+                passport.css("border-color", "#ff0000")
+                return;
+            }
+            birthdate.css("border-color", "")
+            if(!validateDate(birthdate)){
+                return;
+            }
+            lastVisit.css("border-color", "")
+            if(!validateDate(lastVisit)){
+                return;
+            }
+            comment.css("border-color", "")
+            if(!validString("5", "300", comment)){
+                return;
+            }
+            files.css("border-color", "")
+            if(files[0].files.length <= 0){
+                showToast("Файл повинен бути вибраний", "danger")
+                files.css("border-color", "#ff0000")
+                return;
+            } else {
+                Array.from(files[0].files).forEach(function(file) {
+                    if(!validateOneFile(file, ['.pdf'])){
+                        files.css("border-color", "#ff0000")
+                        document.getElementById("#files").value = ''
+                        return;
+                    }
+                });
+            }
+
+            showToast('Файли успішно завантажено', 'success');
+
+            let formData = new FormData();
+            formData.append("surname", surname.val());
+            formData.append("name", name.val());
+            formData.append("middleName", middleName.val());
+            formData.append("phone", phone.val().replace(/\s/g, ''));
+            formData.append("email", email.val());
+            formData.append("realtor", realtor.val());
+            formData.append("passport", passport.val());
+            formData.append("birthdate", birthdate.val());
+            formData.append("informationSource", informationSourceSelect2.val());
+            formData.append("lastContactDate", lastVisit.val());
+            formData.append("comment", comment.val());
+            var filesElement = files[0].files;
+            for (var i = 0; i < filesElement.length; i++) {
+                formData.append("files", filesElement[i]);
+            }
+            $.ajax({
+                url: '[[@{/buyers/add}]]',
+                method: "POST",
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function () {
+
+                },
+                error: function (xhr, status, error) {
+                    var errors = JSON.parse(xhr.responseText);
+                    errors.forEach(function (error) {
+                        console.log("Ошибка: " + error);
+                        showNotification("Ошибка!", error, false);
+                    });
+                }
+            })
+        }
+
+        function addNoteBlock() {
+            var newElement = document.createElement("p");
+            newElement.innerHTML = `
+        <div class="card">
+            <div class="card-header">
+                ` + new Date().toLocaleDateString() + `
+                <button class="btn" onclick="deleteblock(this)" style='float: right;'>
+                    <i class='fa fa-trash'></i>
+                </button>
+            </div>
+            <div class="card-body">
+                <textarea rows="5" class="form-control" placeholder="текст заметки тут"></textarea>
+            </div>
+        </div>
+    `;
+            var noteBlock = document.getElementById("noteBlock");
+            noteBlock.appendChild(newElement);
+        }
+
+        function showModal() {
+            var modal = new bootstrap.Modal(document.getElementById('modalForHistory'))
+            var modalElement = document.getElementById('modalForHistory')
+            modalElement.querySelector('textarea[name="history"]').value = 'asdfasdfqefrgbnh gbhtthnhbgb bv rbg br gbrgv  brsf vaerf'
+            modal.show()
+        }
+
+        // $.ajax({
+        //     type: "Get",
+        //     url: '[[@{/proposals_for_changes/getById}]]',
+        //     data: {
+        //         id: id
+        //     },
+        //     success: function (offer) {
+        //         var modal = new bootstrap.Modal(document.getElementById('modalForOffer'))
+        //         var modalElement = document.getElementById('modalForOffer')
+        //         modalElement.querySelector('input[name="sender"]').value = offer.sender
+        //         modalElement.querySelector('textarea[name="text"]').value = offer.text
+        //         modal.show()
+        //     }
+        // })
+    </script>
+</section>
+
+</body>
+</html>

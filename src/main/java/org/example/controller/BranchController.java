@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.BranchDto;
 import org.example.entity.Branch;
-import org.example.service.BranchService;
+import org.example.service.BranchServiceImpl;
 import org.example.util.validator.BranchValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +27,7 @@ import java.security.NoSuchAlgorithmException;
 @RequiredArgsConstructor
 @Log4j2
 public class BranchController {
-    private final BranchService branchService;
+    private final BranchServiceImpl branchServiceImpl;
     private final BranchValidator branchValidator;
     @GetMapping
     public ModelAndView mainPage() {
@@ -36,7 +36,7 @@ public class BranchController {
 
     @GetMapping("/{id}")
     public ModelAndView infoPage(@PathVariable("id")int id) {
-        return new ModelAndView("branch/branch_info", "branch", branchService.getById(id));
+        return new ModelAndView("branch/branch_info", "branch", branchServiceImpl.getById(id));
     }
 
     @GetMapping("/create")
@@ -45,7 +45,7 @@ public class BranchController {
     }
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable("id")int id) {
-        return new ModelAndView("branch/branch_add", "branchDto", branchService.getById(id));
+        return new ModelAndView("branch/branch_add", "branchDto", branchServiceImpl.getById(id));
     }
 
     @PostMapping("/create")
@@ -54,7 +54,7 @@ public class BranchController {
         if(bindingResult.hasErrors()){
             return new ModelAndView("branch/branch_add");
         }else {
-            branchService.add(branchDto);
+            branchServiceImpl.add(branchDto);
             return new ModelAndView("redirect:/branches");
         }
     }
@@ -66,12 +66,12 @@ public class BranchController {
     @GetMapping("/get-all")
     @ResponseBody
     public Page<Branch> getAll(@RequestParam("code")String code, @RequestParam("name")String name, @RequestParam("address")String address, @RequestParam("page")int page){
-        return branchService.getAll(page, code, name, address);
+        return branchServiceImpl.getAll(page, code, name, address);
     }
     @GetMapping("/delete/{id}")
     @ResponseBody
     public ResponseEntity<String> deleteById(@PathVariable("id")int id){
-        branchService.deleteById(id);
+        branchServiceImpl.deleteById(id);
         return ResponseEntity.ok("Філіал був видалений");
     }
 
@@ -80,7 +80,7 @@ public class BranchController {
     public Page<Branch> search(@RequestParam("query") String name,
                                 @RequestParam("page") int page,
                                 @RequestParam("size") int size) {
-        Page<Branch> searchResults = branchService.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
+        Page<Branch> searchResults = branchServiceImpl.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
         return searchResults;
     }
 }

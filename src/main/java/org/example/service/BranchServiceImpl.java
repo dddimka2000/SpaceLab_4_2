@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -23,7 +24,7 @@ import java.security.NoSuchAlgorithmException;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class BranchService {
+public class BranchServiceImpl {
     private final MinioService minioService;
     private final BranchMapper branchMapper;
     private final BranchRepository branchRepository;
@@ -54,6 +55,7 @@ public class BranchService {
     public void deleteById(int id){
         branchRepository.deleteById(id);
     }
+    @Transactional
     public void save(Branch branch){
         branchRepository.save(branch);
     }

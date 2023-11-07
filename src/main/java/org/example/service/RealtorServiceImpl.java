@@ -5,6 +5,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.RealtorDto;
+import org.example.entity.Branch;
 import org.example.entity.Realtor;
 import org.example.entity.RealtorContact;
 import org.example.mapper.RealtorMapper;
@@ -62,8 +63,11 @@ public class RealtorServiceImpl {
     public void deleteById(int id) {
         realtorRepository.deleteById(id);
     }
-
+    @Transactional
     public void save(Realtor realtor) {
         realtorRepository.save(realtor);
+    }
+    public Page<Realtor> forSelect(String name, Pageable pageable) {
+        return realtorRepository.findAll(Specification.where(BranchSpecification.nameContains(name)), pageable);
     }
 }
