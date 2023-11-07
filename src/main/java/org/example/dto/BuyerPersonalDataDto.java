@@ -18,11 +18,12 @@ public class BuyerPersonalDataDto {
     private String phone;
     private String email;
     private Realtor realtor;
-    private String passportCode;
+    private String passport;
+    private String comment;
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate birthdate;
     private InformationSource informationSource;
     @DateTimeFormat(pattern = "yyyy/MM/dd")
-    private LocalDate lastVisit;
+    private LocalDate lastContactDate;
     private List<MultipartFile> files;
 }

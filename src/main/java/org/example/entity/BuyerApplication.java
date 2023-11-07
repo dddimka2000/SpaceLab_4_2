@@ -31,10 +31,13 @@ public class BuyerApplication {
     private Integer priceMin, priceMax;
     private Integer plotAreaMin, plotAreaMax;
     private Integer houseAreaMin, houseAreaMax;
-
+    @ManyToMany
+    private List<DistrictEntity> districts;
+    @ManyToMany
+    private List<TopozoneEntity> topzones;
+    private String comment;
     @OneToOne
     private Buyer buyer;
-
     @ManyToOne
     private Realtor realtor;
     private String phone;

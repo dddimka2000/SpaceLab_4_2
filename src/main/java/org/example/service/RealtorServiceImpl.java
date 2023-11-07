@@ -63,7 +63,7 @@ public class RealtorServiceImpl {
     public void deleteById(int id) {
         realtorRepository.deleteById(id);
     }
-
+    @Transactional
     public void save(Realtor realtor) {
         realtorRepository.save(realtor);
     }
