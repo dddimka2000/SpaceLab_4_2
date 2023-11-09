@@ -66,4 +66,6 @@ public class RealtorServiceImpl {
     public void save(Realtor realtor) {
         realtorRepository.save(realtor);
     }
+
+
 }

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.example.entity.property.type.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -56,7 +57,7 @@ public class PropertyInvestorObjectDTO {
     @Pattern(regexp = "\\+?[0-9]+", message = "Номер телефона должен начинаться с '+' и содержать только цифры.")
     public String ownerPhone;//
     @NotNull(message = "Заполните дату покупки")
-    public LocalDate boughtDate;//
+    public LocalDate boughtDate;
     @NotNull(message = "Заполните тип собственности")
     public OwnershipType ownershipType;//
     @Size( max = 450, message = "Заметки могут иметь до 450 символов.")
@@ -117,7 +118,6 @@ public class PropertyInvestorObjectDTO {
     public List<String> picturesName;
     public List<MultipartFile> files;
     public List<MultipartFile> pictures;
-    public RealtorDto realtor;
     @NotNull(message = "Заполните статус публикации")
     public PublicationStatus publicationStatus;
 }

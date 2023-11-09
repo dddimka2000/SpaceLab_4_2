@@ -162,7 +162,7 @@
                                    placeholder="Введите номер квартиры">
                         </div>
                         <div class="col-3" style="display: flex;align-items: end">
-                            <button class="btn btn-info">Проверить номер телефона</button>
+                            <button class="btn btn-info" onclick="checkNumber()">Проверить номер телефона</button>
                         </div>
                     </div>
                     <br>
@@ -179,7 +179,7 @@
                         <div class="col-3">
                             <h6>Дата приобретения</h6>
                             <input type="date" class="form-control" placeholder="yyyy/MM/dd"
-                                   aria-describedby="defaultFormControlHelp" id="boughtDate"
+                                   aria-describedby="defaultFormControlHelp" id="boughtDate" name="boughtDate"
                                    value="">
                         </div>
                         <div class="col-3">
@@ -281,7 +281,7 @@
                     </div>
                     <br>
                     <h6>Цена</h6>
-                    <input class="form-control" type="text" id="price" placeholder="Введите цену">
+                    <input class="form-control" type="number" id="price" placeholder="Введите цену">
                     <br>
                     <div class="row">
                         <div class="col-2">
@@ -388,7 +388,7 @@
                     <div class="row">
                         <div class="col-3">
                             <h6>Кухонная плита</h6>
-                            <select id="kitchenStove" class="select2 form-select form-select" name="kitchenStoveType">
+                            <select  class="select2 form-select form-select" name="kitchenStoveType" id="kitchenStove">
                                 <option selected></option>
                                 <option th:each="status : ${kitchenStoveType}"
                                         th:value="${status}"
@@ -517,19 +517,41 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
     <script th:inline="javascript">
+        function checkNumber() {
+            let checkNumber=$("#telephone").val()
+            var regExp = /^\+380(31|32|33|34|35|36|38|39|41|43|44|45|46|20|89|94|92|91|67|68|96|97|98|70|90|91|67|68|96|97|98|70|87|89|50|66|95|99)\d{7}$/;
+            console.log(checkNumber)
+            if(regExp.test(checkNumber)) {
+                showNotification("Номер корректный","",true)
+            }else {
+                showNotification("Такого номера не существует","",false)
+            }
+        }
+
+
 
         function sendForm() {
             let formData = new FormData();
-            formData.append("region", $("#region").val());
-            formData.append("street", $("#street").val());
-            formData.append("district", $('[name="district"]').val());
-            formData.append("city", $('[name="city"]').val());
-            formData.append("topozone", $('[name="topozone"]').val());
-            formData.append("section", $('[name="section"]').val());
+            var address = {
+                region: $("#region").val(),
+                street: $("#street").val(),
+                district: $('[name="district"]').val(),
+                city: $('[name="city"]').val(),
+                zone: $('[name="topozone"]').val(),
+                section: $('[name="section"]').val(),
+                houseNumber:  $('[name="houseNumber"]').val()
+            };
+            for (var key in address) {
+                if (address.hasOwnProperty(key)) {
+                    formData.append("address." + key, address[key]);
+                }
+            }
+
+
             formData.append("apartmentNumber", $('[name="apartmentNumber"]').val());
-            formData.append("houseNumber", $('[name="houseNumber"]').val());
             formData.append("ownerName", $('[name="owner"]').val());
             formData.append("ownerPhone", $('[name="telephone"]').val());
+            console.log($('[name="boughtDate"]').val())
             formData.append("boughtDate", $('[name="boughtDate"]').val());
             console.log($('[name="boughtDate"]').val());
             let indexFilesMap = 0;
@@ -589,7 +611,7 @@
 
             formData.append("advertisementHeadline", $('[name="advertisingName"]').val());
             formData.append("advertisementText", $('[name="advertisingText"]').val());
-            formData.append("advertisementHeadline", $('[name="statusPromotion"]').prop("checked"));
+            formData.append("advertisementEnabled", $('[name="statusPromotion"]').prop("checked"));
 
 
             let i = 1;

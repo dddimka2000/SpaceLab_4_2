@@ -19,7 +19,7 @@ public interface ObjectInvestorMapper {
 
     @Mappings({
             @Mapping(target = "pictures", source = "pictures", ignore = true),
-            @Mapping(target = "realtor", source = "realtor", ignore = true),
+            @Mapping(target = "realtor", source = "employeeCode", ignore = true),
             @Mapping(target = "files", source = "files", qualifiedByName = "map")
     })
     PropertyInvestorObject toEntity(PropertyInvestorObjectDTO entity);
