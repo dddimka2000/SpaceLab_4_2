@@ -43,6 +43,11 @@ public class GlobalMethods {
         List<String> list = districtRepository.findByCityNameCity(name).stream().map(s->s.getNameDistrict()).collect(Collectors.toList());
         return list;
     }
+    @GetMapping("/getAllDistricts")
+    public List<String> getDistrict() {
+        List<String> list = districtRepository.findAll().stream().map(s->s.getNameDistrict()).collect(Collectors.toList());
+        return list;
+    }
 
     @GetMapping("/getResidentialComplex/{name}")
     public List<String> getResidentialComplex(@PathVariable String name, String searchName,  @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {

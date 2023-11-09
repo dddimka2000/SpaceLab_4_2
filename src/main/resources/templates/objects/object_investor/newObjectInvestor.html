@@ -32,17 +32,8 @@
     <script th:src="@{/vendor/js/helpers.js}"></script>
     <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
+    <script th:src="@{/vendor/libs/select2/select2.js}"></script>
     <style>
-        /*.notification {*/
-        /*    position: fixed;*/
-        /*    bottom: 20px;*/
-        /*    left: 50%;*/
-        /*    transform: translateX(-50%);*/
-        /*    padding: 10px;*/
-        /*    border: 1px solid #ccc;*/
-        /*    text-align: center;*/
-        /*    transition: opacity 0.5s ease-in-out;*/
-        /*}*/
         .notification {
             position: fixed;
             top: 90px;
@@ -516,6 +507,7 @@
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+
     <script th:inline="javascript">
         function checkNumber() {
             let checkNumber=$("#telephone").val()
