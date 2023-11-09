@@ -1,7 +1,12 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.example.entity.property.type.ApplicationStatus;
 import org.example.entity.property.type.PropertyApplicationType;
 import org.example.entity.property.type.PropertyObjectAddress;
@@ -32,11 +37,14 @@ public class BuyerApplication {
     private Integer plotAreaMin, plotAreaMax;
     private Integer houseAreaMin, houseAreaMax;
     @ManyToMany
+    @ToString.Exclude
     private List<DistrictEntity> districts;
     @ManyToMany
     private List<TopozoneEntity> topzones;
     private String comment;
     @OneToOne
+    @JsonBackReference
+    @ToString.Exclude
     private Buyer buyer;
     @ManyToOne
     private Realtor realtor;
@@ -44,9 +52,11 @@ public class BuyerApplication {
 
     @ManyToOne
     @JoinColumn(name = "id_builder_object", referencedColumnName = "id")
+    @ToString.Exclude
     private BuilderObject builderObject;
 
     @OneToMany(mappedBy = "application")
+    @JsonManagedReference
     private List<BuyerApplicationEditLog> editHistory;
 
 }

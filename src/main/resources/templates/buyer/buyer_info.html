@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Покупатели</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/buyers}">Покупатели</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Пкуратель</li>
+                </ol>
+            </nav>
+        </div>
+        <hr style="margin-top: -5px">
+        <div id="main-content">
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '[[@{/buyers/getById/}]]' + getLastDigitFromPath(window.location.pathname),
+                success: function (buyer) {
+                    var districts = ''
+                    for (var i = 0; i < buyer.application.districts.length; i++) {
+                        districts+= buyer.application.districts[i].nameDistrict+',  '
+                    }
+                    var topzones = ''
+                    for (var i = 0; i < buyer.application.topzones.length; i++) {
+                        topzones+= buyer.application.topzones[i].name+',  '
+                    }
+                    var content = document.getElementById("main-content")
+                    content.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Информация
+                        <a href="[[@{/buyers/edit/}]]`+buyer.id+`"]] class="float-end btn btn-primary">Редактировать</a>
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-view">
+                            <tr>
+                                <td>ФИО</td>
+                                <td>` + buyer.middleName + ` ` + buyer.name + ` ` + buyer.surname + `</td>
+                            </tr>
+                            <tr>
+                                <td>Телефон</td>
+                                <td>` + buyer.phone+ `</td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>` + buyer.email + `</td>
+                            </tr>
+                            <tr>
+                                <td>Филиал</td>
+                                <td>` + (buyer.branch?buyer.branchid : '') + `</td>
+                            </tr>
+                            <tr>
+                                <td>Риелтор</td>
+                                <td>` + (buyer.realtor?buyer.realtor.name:'') + `</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-body">
+                        `+ buyer.comment +`
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3>Заявка</h3
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-view">
+                            <tr>
+                                <td>Райони</td>
+                                <td>` + districts + `</td>
+                            </tr>
+                            <tr>
+                                <td>Топзона</td>
+                                <td>` + topzones + `</td>
+                            </tr>
+                            <tr>
+                                <td>ЖК</td>
+                                <td>` + buyer.application.builderObject.name + `</td>
+                            </tr>
+                            <tr>
+                                <td>Вид недвижемости</td>
+                                <td>` + buyer.application.origin + `</td>
+                            </tr>
+                            <tr>
+                                <td>Тип недвижемости</td>
+                                <td>` + buyer.application.type + `</td>
+                            </tr>
+                            <tr>
+                                <td>Етаж</td>
+                                <td>` + buyer.application.floorMin + `-` + buyer.application.floorMax + `</td>
+                            </tr>
+                            <tr>
+                                <td>Комнат</td>
+                                <td>` + buyer.application.roomQuantity + `</td>
+                            </tr>
+                            <tr>
+                                <td>Площадь</td>
+                                <td>` + buyer.application.houseAreaMin + `-` + buyer.application.houseAreaMax + `</td>
+                            </tr>
+                            <tr>
+                                <td>Участок</td>
+                                <td>` + buyer.application.plotAreaMin + `-` + buyer.application.plotAreaMax + `</td>
+                            </tr>
+                            <tr>
+                                <td>Цена</td>
+                                <td>` + buyer.application.priceMin + `-` + buyer.application.priceMax + `</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                `}
+            })
+        })
+
+    </script>
+</section>
+
+</body>
+</html>

@@ -141,7 +141,10 @@
                                 <br/>
                                 <input type="file" class="form-control" id="files" accept=".pdf" multiple>
                             </div>
-                            <div class="col-7"></div>
+                            <div class="col-7">
+                            </div>
+                        </div>
+                        <div id="block-for-file">
                         </div>
                     </div>
                     <div class="tab-pane fade show" id="navs-pills-top-application">
@@ -155,7 +158,8 @@
                             <div class="col-3">
                                 Количество комнат
                                 <br/>
-                                1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1" checked>
+                                1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1"
+                                         checked>
                                 2 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">
                                 3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">
                                 4 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">
@@ -230,7 +234,8 @@
                         </div>
                         <br/>
                         Коментарий
-                        <textarea class="form-control bootstrap-maxlength-example" id="commentExample" rows="4"></textarea>
+                        <textarea class="form-control bootstrap-maxlength-example" id="commentExample"
+                                  rows="4"></textarea>
                         <a href="#" onclick="showModal()">Показать историю изменений</a>
                     </div>
                     <div class="tab-pane fade show" id="navs-pills-top-note">
@@ -261,13 +266,359 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <textarea class="form-control bootstrap-maxlength-example" name="history" rows="12" disabled></textarea>
+                    <textarea class="form-control" name="history" rows="12"
+                              disabled></textarea>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        function saveApplication(){
+        var ID
+        var APPLICATION_ID
+        $(document).ready(function () {
+            var buyerId = getLastDigitFromPath(window.location.pathname)
+            if (buyerId != null) {
+                $.ajax({
+                    type: "GET",
+                    url: '[[@{/buyers/getById/}]]' + buyerId,
+                    success: function (buyer) {
+                        ID = buyer.id
+                        APPLICATION_ID = buyer.application.id
+                        $("#surname").val(buyer.surname)
+                        $("#name").val(buyer.name)
+                        $("#middleName").val(buyer.middleName)
+                        $("#phone").val(buyer.phone)
+                        $("#email").val(buyer.email)
+                        $("#passport").val(buyer.passport)
+                        console.log(buyer.birthdate.replace(/-/g, '/'))
+                        console.log(buyer.lastContactDate.replace(/-/g, '/'))
+                        $("#birthdate").val(buyer.birthdate.replace(/-/g, '/'))
+                        $("#lastVisit").val(buyer.lastContactDate.replace(/-/g, '/'))
+                        $("#comment").val(buyer.comment)
+                        for (var note of buyer.notes) {
+                            addNoteBlock(note.id, note.comment)
+                        }
+                        for (let file of buyer.files) {
+                            var blockForFile = $("#block-for-file");
+
+                            var row = $("<div class='row'></div>");
+                            var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>Скачать файл</a></div>");
+                            col1.find('a').on("click", function () {
+                                downloadFileFrom(file);
+                            });
+
+                            var col2 = $("<div class='col'><a href='#' class='text-decoration-none for-delete'>х удалить</a></div>");
+                            col2.find('a').on("click", function () {
+                                deleteFile(this, file);
+                            });
+
+
+                            row.append(col1);
+                            row.append(col2);
+
+                            blockForFile.append(row);
+                        }
+
+                        $(".roomNumbers").val(buyer.application.roomQuantity)
+                        $("#floorMin").val(buyer.application.floorMin)
+                        $("#floorMax").val(buyer.application.floorMax)
+                        $("#priceMin").val(buyer.application.priceMin)
+                        $("#priceMax").val(buyer.application.priceMax)
+                        $("#plotAreaMin").val(buyer.application.plotAreaMin)
+                        $("#plotAreaMax").val(buyer.application.plotAreaMax)
+                        $("#houseAreaMin").val(buyer.application.houseAreaMin)
+                        $("#houseAreaMax").val(buyer.application.houseAreaMax)
+
+                        $("#phoneExample2").val(buyer.application.phone)
+                        $("#commentExample").val(buyer.application.comment)
+
+
+                        forSelect2WithSearch(buyer.application.realtor.id, buyer.application.realtor.name, "#realtorSelect2example2", "/realtors/for/select");
+                        forSelect2WithSearch(buyer.application.builderObject.id, buyer.application.builderObject.name, "#builderObjects", "/builder_objects/for/select", "builderObject");
+                        $("#district").select2({
+                            minimumResultsForSearch: -1,
+                            placeholder: "Елемент",
+                            ajax: {
+                                url: contextPath + "/enum/district",
+                                dataType: 'json',
+                                processResults: function (data) {
+                                    var index = 0;
+                                    var results = data.map(function (data) {
+                                        if (data.id) return {id: data.id, text: data.name};
+                                        return {id: data, text: data};
+                                    });
+                                    return {
+                                        results: results
+                                    };
+                                },
+                            }
+                        })
+                        for (var district of buyer.application.districts) {
+                            $("#district").append(new Option(district.nameDistrict.toString(), district.id.toString(), true, true));
+                            $("#district").trigger('change');
+                        }
+
+                        $("#topzone").select2({
+                            minimumResultsForSearch: -1,
+                            placeholder: "Елемент",
+                            ajax: {
+                                url: contextPath + "/enum/topzone",
+                                dataType: 'json',
+                                processResults: function (data) {
+                                    var index = 0;
+                                    var results = data.map(function (data) {
+                                        if (data.id) return {id: data.id, text: data.name};
+                                        return {id: data, text: data};
+                                    });
+                                    return {
+                                        results: results
+                                    };
+                                },
+                            }
+                        })
+                        for (var topzone of buyer.application.topzones) {
+                            $("#topzone").append(new Option(topzone.name.toString(), topzone.id.toString(), true, true));
+                            $("#topzone").trigger('change');
+                        }
+                        forSelect2(buyer.application.status, buyer.application.status, "#status", "/enum/applicationStatus");
+                        forSelect2(buyer.application.origin, buyer.application.origin, "#propertyOrigin", "/enum/propertyOrigin");
+                        forSelect2(buyer.application.type, buyer.application.type, "#propertyApplicationType", "/enum/propertyApplicationType");
+                        realtorSelect2(buyer.realtor.id, buyer.realtor.name);
+                        informationSourceSelect2(buyer.informationSource, buyer.informationSource);
+                    }
+                })
+
+
+            } else {
+                forSelect2WithSearch(undefined, undefined, "#realtorSelect2example2", "/realtors/for/select")
+                forSelect2WithSearch(undefined, undefined, "#builderObjects", "/builder_objects/for/select", "builderObject")
+                forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
+                forSelect2(undefined, undefined, "#district", "/enum/district")
+                forSelect2(undefined, undefined, "#status", "/enum/applicationStatus")
+                forSelect2(undefined, undefined, "#propertyOrigin", "/enum/propertyOrigin")
+                forSelect2(undefined, undefined, "#propertyApplicationType", "/enum/propertyApplicationType")
+                realtorSelect2()
+                informationSourceSelect2()
+            }
+
+            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
+
+            flatpickrDateTimes.forEach(function (element) {
+                element.flatpickr({
+                    dateFormat: "Y/m/d"
+                });
+            });
+
+            $(".bootstrap-maxlength-example").each(function () {
+                autosize(this);
+            })
+            const prefixMaskElements = document.querySelectorAll('.prefix-mask');
+            prefixMaskElements.forEach(element => {
+                new Cleave(element, {
+                    prefix: "+380",
+                    blocks: [4, 2, 3, 2, 2],
+                    numericOnly: true
+                });
+            });
+            new Cleave("#passport", {
+                blocks: [2, 4],
+                uppercase: true
+            })
+        })
+        function downloadFileFrom(url) {
+            $.ajax({
+                type: "GET",
+                url: "[[@{/users/download}]]",
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    url: url
+                },
+                success: function (data) {
+                    var blob = new Blob([data], {type: 'application/octet-stream'});
+                    var filename = "file.pdf";
+
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveOrOpenBlob(blob, filename);
+                    } else {
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
+                    }
+                },
+                error: function () {
+                    console.log("Помилка завантаження файлу");
+                }
+            });
+        }
+        function deleteFile(button, url) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var rowElement = button.closest('.row');
+                if (rowElement) {
+                    rowElement.remove();
+                }
+
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/buyers/delete/file}]]',
+                    data: {
+                        id: ID,
+                        url: url,
+                    },
+                    success: function (response) {
+                        showToast(response, "success")
+                    },
+                });
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+        function saveNote(buyer) {
+            var inputs = $('.for-note');
+            for (var i = 0; i < inputs.length; i += 3) {
+                var date = inputs[i].value
+                var text = inputs[i + 1].value
+                var id = inputs[i + 2].value
+                $.ajax({
+                    type: "POST",
+                    url: '[[@{/buyers/add/note}]]',
+                    data: {
+                        id: id,
+                        date: date,
+                        comment: text,
+                        buyer: buyer
+                    },
+                    success: function (response) {
+                        showToast(response, "success")
+                    }
+                })
+            }
+            return
+        }
+        function addNoteBlock(id, text) {
+            var newElement = document.createElement("p");
+            var currentDate = new Date().toISOString().split('T')[0].replace(/-/g, '/')
+            newElement.innerHTML = `
+        <div class="card">
+            <div class="card-header">
+                ` + new Date().toLocaleDateString() + `
+                <input type="text" value="` + currentDate + `" class="form-control for-note" hidden>
+                <button class="btn" onclick="deleteBlock(this)" style='float: right;'>
+                    <i class='fa fa-trash'></i>
+                </button>
+            </div>
+            <div class="card-body">
+                <textarea rows="5" class="form-control for-note" placeholder="текст заметки тут">` + (text == undefined ? "" : text) + `</textarea>
+                <input value="` + (id == undefined ? "" : id) + `" type="text" class="form-control for-note" hidden>
+            </div>
+        </div>
+    `;
+            var noteBlock = document.getElementById("noteBlock");
+            noteBlock.appendChild(newElement);
+        }
+        function deleteBlock(button) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var cardElement = button.closest(".card");
+                var inputElements = cardElement.querySelectorAll("input");
+                if (inputElements[1].value !== '') {
+                    $.ajax({
+                        type: "GET",
+                        url: '[[@{/buyers/delete/note/}]]' + inputElements[1].value,
+                        success: function (response) {
+                            showToast(response, "success")
+                        }
+                    })
+                }
+                if (cardElement) {
+                    cardElement.parentNode.removeChild(cardElement);
+                }
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+        function saveApplication(buyer) {
+            var districts = $("#district")
+            var topzones = $("#topzone")
+            var roomQuantity = $(".roomNumbers")
+            var floorMin = $("#floorMin")
+            var floorMax = $("#floorMax")
+            var priceMin = $("#priceMin")
+            var priceMax = $("#priceMax")
+            var plotAreaMin = $("#plotAreaMin")
+            var plotAreaMax = $("#plotAreaMax")
+            var houseAreaMin = $("#houseAreaMin")
+            var houseAreaMax = $("#houseAreaMax")
+
+            var builderObjects = $("#builderObjects")
+            var status = $("#status")
+            var origin = $("#propertyOrigin")
+            var type = $("#propertyApplicationType")
+            var phone = $("#phoneExample2")
+            var realtor = $("#realtorSelect2example2")
+            var comment = $("#commentExample")
+
+
+            let formData = new FormData();
+            formData.append("districts", districts.val());
+            formData.append("topzones", topzones.val());
+            formData.append("roomQuantity", roomQuantity.val());
+            formData.append("floorMin", floorMin.val());
+            formData.append("floorMax", floorMax.val());
+            formData.append("priceMin", priceMin.val());
+            formData.append("priceMax", priceMax.val());
+            formData.append("plotAreaMin", plotAreaMin.val());
+            formData.append("plotAreaMax", plotAreaMax.val());
+            formData.append("houseAreaMin", houseAreaMin.val());
+            formData.append("houseAreaMax", houseAreaMax.val());
+            formData.append("builderObject", builderObjects.val());
+            formData.append("status", status.val());
+            formData.append("origin", origin.val());
+            formData.append("type", type.val());
+            formData.append("phone", phone.val());
+            formData.append("realtor", realtor.val());
+            formData.append("comment", comment.val());
+            formData.append("buyer", buyer);
+            if(APPLICATION_ID)formData.append("id", APPLICATION_ID);
+
+
+            $.ajax({
+                url: '[[@{/buyers/add/application}]]',
+                method: "POST",
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (response) {
+                    showToast(response, "success")
+                },
+                error: function (xhr, status, error) {
+                    var errors = JSON.parse(xhr.responseText);
+                    errors.forEach(function (error) {
+                        console.log("Ошибка: " + error);
+                        showNotification("Ошибка!", error, false);
+                    });
+                }
+            })
+        }
+        function sendForm() {
+            cleanInputs()
+
             var districts = $("#district")
             var topzones = $("#topzone")
             var roomQuantity = $(".roomNumbers")
@@ -290,30 +641,30 @@
 
 
             districts.next().find(".select2-selection").css("border-color", "")
-            if(districts.val().length === 0){
+            if (districts.val().length === 0) {
                 showToast("Елемент має бути вибрано", "danger")
                 districts.next().find(".select2-selection").css("border", "1px solid #ff0000");
                 return
             }
             topzones.next().find(".select2-selection").css("border-color", "")
-            if(topzones.val().length === 0){
+            if (topzones.val().length === 0) {
                 showToast("Елемент має бути вибрано", "danger")
                 topzones.next().find(".select2-selection").css("border", "1px solid #ff0000");
                 return
             }
             floorMin.css("border-color", "")
             floorMax.css("border-color", "")
-            if(!validateNumber(3, 20, floorMin.val())) {
+            if (!validateNumber(3, 20, floorMin.val())) {
                 floorMin.css("border-color", "#ff0000")
                 floorMax.css("border-color", "#ff0000")
                 return
             }
-            if(!validateNumber(3, 20, floorMax.val())) {
+            if (!validateNumber(3, 20, floorMax.val())) {
                 floorMin.css("border-color", "#ff0000")
                 floorMax.css("border-color", "#ff0000")
                 return
             }
-            if(parseInt(floorMin.val()) > parseInt(floorMax.val())){
+            if (parseInt(floorMin.val()) > parseInt(floorMax.val())) {
                 floorMin.css("border-color", "#ff0000")
                 floorMax.css("border-color", "#ff0000")
                 showToast("Поверх 'від' повинен бути менший за поверх 'до'", "danger")
@@ -321,17 +672,17 @@
             }
             priceMin.css("border-color", "")
             priceMax.css("border-color", "")
-            if(!validateNumber(100, 20000, priceMin.val())) {
+            if (!validateNumber(100, 20000, priceMin.val())) {
                 priceMin.css("border-color", "#ff0000")
                 priceMax.css("border-color", "#ff0000")
                 return
             }
-            if(!validateNumber(100, 20000, priceMax.val())) {
+            if (!validateNumber(100, 20000, priceMax.val())) {
                 priceMin.css("border-color", "#ff0000")
                 priceMax.css("border-color", "#ff0000")
                 return
             }
-            if(parseInt(priceMin.val()) > parseInt(priceMax.val())){
+            if (parseInt(priceMin.val()) > parseInt(priceMax.val())) {
                 priceMin.css("border-color", "#ff0000")
                 priceMax.css("border-color", "#ff0000")
                 showToast("Ціна 'від' повина бути менша за ціну 'до'", "danger")
@@ -339,17 +690,17 @@
             }
             plotAreaMin.css("border-color", "")
             plotAreaMax.css("border-color", "")
-            if(!validateNumber(10, 80, plotAreaMin.val())) {
+            if (!validateNumber(10, 80, plotAreaMin.val())) {
                 plotAreaMin.css("border-color", "#ff0000")
                 plotAreaMax.css("border-color", "#ff0000")
                 return
             }
-            if(!validateNumber(10, 80, plotAreaMax.val())) {
+            if (!validateNumber(10, 80, plotAreaMax.val())) {
                 plotAreaMin.css("border-color", "#ff0000")
                 plotAreaMax.css("border-color", "#ff0000")
                 return
             }
-            if(parseInt(plotAreaMin.val()) > parseInt(plotAreaMax.val())){
+            if (parseInt(plotAreaMin.val()) > parseInt(plotAreaMax.val())) {
                 plotAreaMin.css("border-color", "#ff0000")
                 plotAreaMax.css("border-color", "#ff0000")
                 showToast("Участок 'від' повинен бути меншим за участок 'до'", "danger")
@@ -357,17 +708,17 @@
             }
             houseAreaMin.css("border-color", "")
             houseAreaMax.css("border-color", "")
-            if(!validateNumber(30, 2000, houseAreaMin.val())) {
+            if (!validateNumber(30, 2000, houseAreaMin.val())) {
                 houseAreaMin.css("border-color", "#ff0000")
                 houseAreaMax.css("border-color", "#ff0000")
                 return
             }
-            if(!validateNumber(30, 2000, houseAreaMax.val())) {
+            if (!validateNumber(30, 2000, houseAreaMax.val())) {
                 houseAreaMin.css("border-color", "#ff0000")
                 houseAreaMax.css("border-color", "#ff0000")
                 return
             }
-            if(parseInt(houseAreaMin.val()) > parseInt(houseAreaMax.val())){
+            if (parseInt(houseAreaMin.val()) > parseInt(houseAreaMax.val())) {
                 houseAreaMin.css("border-color", "#ff0000")
                 houseAreaMax.css("border-color", "#ff0000")
                 showToast("Площина 'від' повина бути менша за площину 'до'", "danger")
@@ -411,85 +762,6 @@
                 return;
             }
 
-            let formData = new FormData();
-            formData.append("districts", districts.val());
-            formData.append("topzones", topzones.val());
-            formData.append("roomQuantity", roomQuantity.val());
-            formData.append("floorMin", floorMin.val());
-            formData.append("floorMax", floorMax.val());
-            formData.append("priceMin", priceMin.val());
-            formData.append("priceMax", priceMax.val());
-            formData.append("plotAreaMin", plotAreaMin.val());
-            formData.append("plotAreaMax", plotAreaMax.val());
-            formData.append("houseAreaMin", houseAreaMin.val());
-            formData.append("houseAreaMax", houseAreaMax.val());
-            formData.append("builderObjects", builderObjects.val());
-            formData.append("status", status.val());
-            formData.append("origin", origin.val());
-            formData.append("type", type.val());
-            formData.append("phone", phone.val());
-            formData.append("realtor", realtor.val());
-            formData.append("comment", comment.val());
-
-
-            $.ajax({
-                url: '[[@{/buyers/add/application}]]',
-                method: "POST",
-                cache: false,
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function () {
-
-                },
-                error: function (xhr, status, error) {
-                    var errors = JSON.parse(xhr.responseText);
-                    errors.forEach(function (error) {
-                        console.log("Ошибка: " + error);
-                        showNotification("Ошибка!", error, false);
-                    });
-                }
-            })
-        }
-        $(document).ready(function () {
-            forSelect2WithSearch(undefined, undefined, "#realtorSelect2example2", "/realtors/for/select")
-            forSelect2WithSearch(undefined, undefined, "#builderObjects", "/builder_objects/for/select", "builderObject")
-            forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
-            forSelect2(undefined, undefined, "#district", "/enum/district")
-            forSelect2(undefined, undefined, "#status", "/enum/applicationStatus")
-            forSelect2(undefined, undefined, "#propertyOrigin", "/enum/propertyOrigin")
-            forSelect2(undefined, undefined, "#propertyApplicationType", "/enum/propertyApplicationType")
-            realtorSelect2()
-            informationSourceSelect2()
-
-            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
-
-            flatpickrDateTimes.forEach(function (element) {
-                element.flatpickr({
-                    dateFormat: "Y/m/d"
-                });
-            });
-
-            $(".bootstrap-maxlength-example").each(function () {
-                autosize(this);
-            })
-            const prefixMaskElements = document.querySelectorAll('.prefix-mask');
-            prefixMaskElements.forEach(element => {
-                new Cleave(element, {
-                    prefix: "+380",
-                    blocks: [4, 2, 3, 2, 2],
-                    numericOnly: true
-                });
-            });
-            new Cleave("#passport", {
-                blocks: [2, 4],
-                uppercase: true
-            })
-        })
-        function sendForm() {
-            cleanInputs()
-            saveApplication()
-            return;
             var surname = $("#surname")
             var name = $("#name")
             var middleName = $("#middleName")
@@ -537,37 +809,44 @@
             }
             passport.css("border-color", "")
             var regex = /^[A-Za-z]{2}\d{4}$/;
-            if (!regex.test(passport.val().replace(/\s/g, ''))){
+            if (!regex.test(passport.val().replace(/\s/g, ''))) {
                 showToast("Серія паспорта повина бути в такому форматі: XX 1234", "danger")
                 passport.css("border-color", "#ff0000")
                 return;
             }
             birthdate.css("border-color", "")
-            if(!validateDate(birthdate)){
+            if (!validateDate(birthdate)) {
                 return;
             }
             lastVisit.css("border-color", "")
-            if(!validateDate(lastVisit)){
+            if (!validateDate(lastVisit)) {
                 return;
             }
             comment.css("border-color", "")
-            if(!validString("5", "300", comment)){
+            if (!validString("5", "300", comment)) {
                 return;
             }
             files.css("border-color", "")
-            if(files[0].files.length <= 0){
+            if (files[0].files.length <= 0 && !ID) {
                 showToast("Файл повинен бути вибраний", "danger")
                 files.css("border-color", "#ff0000")
                 return;
             } else {
-                Array.from(files[0].files).forEach(function(file) {
-                    if(!validateOneFile(file, ['.pdf'])){
+                Array.from(files[0].files).forEach(function (file) {
+                    if (!validateOneFile(file, ['.pdf'])) {
                         files.css("border-color", "#ff0000")
                         document.getElementById("#files").value = ''
                         return;
                     }
                 });
             }
+
+
+            var inputs = $('.for-note');
+            for (var i = 0; i < inputs.length; i += 3) {
+                if (!validString("3", "300", $(inputs[i + 1]))) return
+            }
+
 
             showToast('Файли успішно завантажено', 'success');
 
@@ -583,6 +862,8 @@
             formData.append("informationSource", informationSourceSelect2.val());
             formData.append("lastContactDate", lastVisit.val());
             formData.append("comment", comment.val());
+            if(ID) formData.append("id", ID);
+
             var filesElement = files[0].files;
             for (var i = 0; i < filesElement.length; i++) {
                 formData.append("files", filesElement[i]);
@@ -594,8 +875,10 @@
                 processData: false,
                 contentType: false,
                 data: formData,
-                success: function () {
-
+                success: function (id) {
+                    saveNote(id)
+                    saveApplication(id)
+                    showToast("Покупця успішно збережено", "success")
                 },
                 error: function (xhr, status, error) {
                     var errors = JSON.parse(xhr.responseText);
@@ -606,47 +889,29 @@
                 }
             })
         }
-
-        function addNoteBlock() {
-            var newElement = document.createElement("p");
-            newElement.innerHTML = `
-        <div class="card">
-            <div class="card-header">
-                ` + new Date().toLocaleDateString() + `
-                <button class="btn" onclick="deleteblock(this)" style='float: right;'>
-                    <i class='fa fa-trash'></i>
-                </button>
-            </div>
-            <div class="card-body">
-                <textarea rows="5" class="form-control" placeholder="текст заметки тут"></textarea>
-            </div>
-        </div>
-    `;
-            var noteBlock = document.getElementById("noteBlock");
-            noteBlock.appendChild(newElement);
-        }
-
         function showModal() {
+
             var modal = new bootstrap.Modal(document.getElementById('modalForHistory'))
             var modalElement = document.getElementById('modalForHistory')
-            modalElement.querySelector('textarea[name="history"]').value = 'asdfasdfqefrgbnh gbhtthnhbgb bv rbg br gbrgv  brsf vaerf'
-            modal.show()
-        }
+            var vall = ''
+            if (ID) {
+                $.ajax({
+                    type: "GET",
+                    url: '[[@{/buyers/get/application/history/}]]' + ID,
+                    success: function (histories) {
+                        for (let i = 0; i < histories.length; i++) {
+                            vall += histories[i].date + '\n' + histories[i].description + "\n"
+                        }
+                        modalElement.querySelector('textarea[name="history"]').value = vall
+                        modal.show()
+                    }
+                })
+            }else{
+                modalElement.querySelector('textarea[name="history"]').value = 'Історія змін пуста'
+                modal.show()
+            }
 
-        // $.ajax({
-        //     type: "Get",
-        //     url: '[[@{/proposals_for_changes/getById}]]',
-        //     data: {
-        //         id: id
-        //     },
-        //     success: function (offer) {
-        //         var modal = new bootstrap.Modal(document.getElementById('modalForOffer'))
-        //         var modalElement = document.getElementById('modalForOffer')
-        //         modalElement.querySelector('input[name="sender"]').value = offer.sender
-        //         modalElement.querySelector('textarea[name="text"]').value = offer.text
-        //         modal.show()
-        //     }
-        // })
+        }
     </script>
 </section>
 

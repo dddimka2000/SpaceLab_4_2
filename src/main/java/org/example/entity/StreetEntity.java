@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import jakarta.persistence.*;
 
@@ -13,6 +14,7 @@ public class StreetEntity {
 
     @ManyToOne
     @JoinColumn(name = "district_id", referencedColumnName = "id")
+    @JsonBackReference
     private DistrictEntity district;
 
 }

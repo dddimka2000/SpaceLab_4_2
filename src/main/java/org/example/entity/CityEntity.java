@@ -1,7 +1,9 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -16,9 +18,11 @@ public class CityEntity {
 
     @ManyToOne
     @JoinColumn(name = "region_id", referencedColumnName = "id")
+    @JsonManagedReference
     private RegionEntity region;
 
     @OneToMany(mappedBy = "city")
+    @JsonManagedReference
     private List<DistrictEntity> districtEntityList;
 
 }

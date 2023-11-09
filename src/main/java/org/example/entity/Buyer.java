@@ -3,6 +3,9 @@ package org.example.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.example.entity.property.type.InformationSource;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -42,6 +45,7 @@ public class Buyer {
     private Realtor realtor;
 
     @OneToOne
+    @JsonManagedReference
     private BuyerApplication application;
 
     @ManyToOne
@@ -49,6 +53,7 @@ public class Buyer {
     private Branch branch;
 
     @OneToMany(mappedBy = "buyer")
+    @JsonManagedReference
     private List<BuyerNote> notes;
 
     @OneToMany(mappedBy = "buyer")

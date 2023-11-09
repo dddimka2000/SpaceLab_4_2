@@ -21,5 +21,6 @@ public class RealtorContact {
     @ManyToOne
     @JoinColumn(name = "realtor_id")
     @JsonBackReference
+    @ToString.Exclude
     private Realtor realtor;
 }

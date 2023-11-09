@@ -32,6 +32,7 @@ public interface BuyerMapper {
     default void updateEntityFromDto(BuyerPersonalDataDto buyerPersonalDataDto, Buyer buyer, MinioService minioService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         updateEntityFromDto(buyerPersonalDataDto, buyer);
         if(buyer.getFiles() == null) buyer.setFiles(new ArrayList<>());
+        if(buyerPersonalDataDto.getFiles() != null)
         for (MultipartFile file : buyerPersonalDataDto.getFiles()) {
             buyer.getFiles().add(minioService.putImage(file));
         }

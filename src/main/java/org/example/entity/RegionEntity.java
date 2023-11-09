@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,5 +16,6 @@ public class RegionEntity {
     String nameRegion;
 
     @OneToMany(mappedBy = "region")
+    @JsonBackReference
     private List<CityEntity> cityEntityList;
 }

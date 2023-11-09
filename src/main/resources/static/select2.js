@@ -129,7 +129,7 @@ function informationSourceSelect2(text, id){
         $(selectName).trigger('change');
     }
 }
-function forSelect2(text, id, selectName, url){
+function forSelect2(id, text, selectName, url){
     $(selectName).select2({
         minimumResultsForSearch: -1,
         placeholder: "Елемент",

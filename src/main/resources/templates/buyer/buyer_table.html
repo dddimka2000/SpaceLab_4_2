@@ -42,29 +42,106 @@
                             <th>Цена до</th>
                             <th></th>
                         </tr>
+                        <tr>
+                            <th></th>
+                            <th><select class="form-control for-filter" id="branchSelect2"></select></th>
+                            <th><select class="form-control for-filter" id="realtorSelect2"></select></th>
+                            <th><input class="form-control"></th>
+                            <th><input class="form-control"></th>
+                            <th><input class="form-control"></th>
+                            <th><input class="form-control"></th>
+                            <th></th>
+                        </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>
-                                <div class="d-flex">
-                                    <i class="fas fa-info-circle" style="color: green"></i>
-                                </div>
-                            </td>
-                            <td><a href="#">#123443</a></td>
-                            <td>123443</td>
-                            <td>123443</td>
-                            <td>123443</td>
-                            <td>123443</td>
-                            <td>123443</td>
-                            <td>123443</td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-
     </div>
+    <script>
+        $(document).ready(function () {
+            branchSelect2()
+            realtorSelect2()
+            getPageWithFilter(0)
+        });
+        function getPageWithFilter(page) {
+            this.page = page
+            var filterElements = $('.for-filter');
+            $.ajax({
+                type: "Get",
+                url: '[[@{/buyers/get-all}]]',
+                data: {
+                    page: page,
+                },
+                success: function (buyers) {
+                    var table = document.getElementById("buyerTable");
+                    var tbody = table.querySelector("tbody");
+                    $('#usersTable tbody').empty();
+
+                    for (var buyer of buyers.content) {
+                        var newRow = tbody.insertRow();
+                        var buyerId = buyer.id;
+
+                        var cell0 = newRow.insertCell(0);
+                        cell0.appendChild(createStatusIcon(buyer.lastContactDate))
+                        cell0.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
+
+                        var cell1 = newRow.insertCell(1);
+                        if(buyer.branch)cell1.innerHTML = buyer.branch.id;
+                        else cell1.innerHTML = 'не вибрано'
+                        cell1.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
+
+                        var cell2 = newRow.insertCell(2);
+                        cell2.innerHTML = buyer.realtor.name;
+                        cell2.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
+
+                        var cell3 = newRow.insertCell(3);
+                        cell3.innerHTML = buyer.name;
+                        cell3.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
+
+                        var cell4 = newRow.insertCell(4);
+                        cell4.innerHTML = buyer.phone;
+                        cell4.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
+
+                        var cell5 = newRow.insertCell(5);
+                        cell5.innerHTML = buyer.email;
+                        cell5.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
+
+                        var cell6 = newRow.insertCell(6);
+                        cell6.innerHTML = buyer.application.priceMax;
+                        cell6.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
+
+                        var cell7 = newRow.insertCell(7);
+                        cell7.innerHTML = `
+                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + buyerId + `);" title='Удалить'><i class='fa fa-trash'></i></button>
+                        <a class='btn btn-default btn-sm float-right' href='[[@{/users/edit/}]]` + buyerId + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
+                    }
+                    $('#pagination_container').empty();
+                    if (buyers.totalPages > 1) updatePagination(page, buyers.totalPages, 'pagination_container')
+                },
+            });
+        }
+        function createStatusIcon(dateString) {
+            const inputDate = new Date(dateString);
+            const currentDate = new Date();
+            const timeDiff = inputDate - currentDate;
+            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) * -1;
+            let color = "red";
+            if (daysDiff <= 3) {
+                color = "green";
+            } else if (daysDiff <= 7) {
+                color = "blue";
+            } else if (daysDiff <= 21) {
+                color = "orange";
+            }
+            const icon = document.createElement("div");
+            icon.className = "d-flex";
+            icon.innerHTML = `<i class="fas fa-info-circle" style="color: ${color}"></i>`;
+            return icon;
+        }
+    </script>
 </section>
 
 </body>

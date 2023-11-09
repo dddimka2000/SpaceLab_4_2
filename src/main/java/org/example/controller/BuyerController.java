@@ -3,26 +3,29 @@ package org.example.controller;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.BuyerPersonalDataDto;
-import org.example.entity.BuyerApplication;
+import org.example.entity.*;
 import org.example.mapper.BuyerMapper;
 import org.example.service.BuyerServiceImpl;
+import org.example.service.MinioService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/buyers")
 public class BuyerController {
     private final BuyerServiceImpl buyerService;
+    private final MinioService minioService;
     @GetMapping
     public ModelAndView index(){
         return new ModelAndView("buyer/buyer_table");
@@ -31,14 +34,56 @@ public class BuyerController {
     public ModelAndView add(){
         return new ModelAndView("buyer/buyer_add");
     }
+    @GetMapping("/{id}")
+    public ModelAndView info(){
+        return new ModelAndView("buyer/buyer_info");
+    }
+    @GetMapping("/edit/{id}")
+    public ModelAndView edit(){
+        return new ModelAndView("buyer/buyer_add");
+    }
+    @GetMapping("/getById/{id}")
+    @ResponseBody
+    public Buyer getById(@PathVariable("id")Integer id){
+        return buyerService.getById(id);
+    }
     @PostMapping("/add")
-    public ResponseEntity<String> add(@ModelAttribute BuyerPersonalDataDto buyerPersonalDataDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        buyerService.addPersonalData(buyerPersonalDataDto);
-        return ResponseEntity.ok().body("Покупця успішно збережено");
+    @ResponseBody
+    public Integer add(@ModelAttribute BuyerPersonalDataDto buyerPersonalDataDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        return buyerService.addPersonalData(buyerPersonalDataDto);
     }
     @PostMapping("/add/application")
     public ResponseEntity<String> addApplication(@ModelAttribute BuyerApplication buyerApplication){
         buyerService.addApplication(buyerApplication);
         return ResponseEntity.ok().body("Заявку успішно збережено");
     }
+    @PostMapping("/add/note")
+    public ResponseEntity<String> addNote(@ModelAttribute BuyerNote buyerNote){
+        buyerService.addNote(buyerNote);
+        return ResponseEntity.ok().body("Заметка успішно збережена");
+    }
+    @GetMapping("/delete/note/{id}")
+    public ResponseEntity<String> deleteNote(@PathVariable Integer id){
+        buyerService.deleteNote(id);
+        return ResponseEntity.ok().body("Замітку успішно видалено");
+    }
+    @GetMapping("/delete/file")
+    public ResponseEntity<String> deleteFile(@RequestParam("id")int id, @RequestParam("url")String url) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        minioService.deleteImg(url, "images");
+        Buyer buyer = buyerService.getById(id);
+        buyer.getFiles().remove(url);
+        buyerService.save(buyer);
+        return ResponseEntity.ok("Файл видалено успішно");
+    }
+    @GetMapping("/get/application/history/{id}")
+    @ResponseBody
+    public List<BuyerApplicationEditLog> getHistory(@PathVariable Integer id) {
+        return buyerService.getById(id).getApplication().getEditHistory();
+    }
+    @GetMapping("/get-all")
+    @ResponseBody
+    public Page<Buyer> getAll(@RequestParam Integer page){
+        return buyerService.getAll(page);
+    }
+
 }
