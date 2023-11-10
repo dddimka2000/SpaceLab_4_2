@@ -55,7 +55,7 @@ public class BuyerApplication {
     @ToString.Exclude
     private BuilderObject builderObject;
 
-    @OneToMany(mappedBy = "application")
+    @OneToMany(mappedBy = "application", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<BuyerApplicationEditLog> editHistory;
 

@@ -12,10 +12,13 @@ import org.example.repository.BuyerApplicationEditLogRepository;
 import org.example.repository.BuyerApplicationRepository;
 import org.example.repository.BuyerNoteRepository;
 import org.example.repository.BuyerRepository;
+import org.example.service.specification.BuyerSpecification;
+import org.example.service.specification.UserSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,8 +77,14 @@ public class BuyerServiceImpl {
         buyerNoteRepository.deleteById(id);
     }
 
-    public Page<Buyer> getAll(Integer page) {
+    public Page<Buyer> getAll(Integer page, String branch, String realtor, String name, String phone, String email, String price) {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
-        return buyerRepository.findAll(pageable);
+        return buyerRepository.findAll(Specification.where(BuyerSpecification.branchContains(branch).and(BuyerSpecification.realtorContains(realtor))
+                .and(BuyerSpecification.middleNameContains(name).or(BuyerSpecification.nameContains(name)).or(BuyerSpecification.surnameContains(name)))
+                .and(BuyerSpecification.phoneContains(phone)).and(BuyerSpecification.emailContains(email)).and(BuyerSpecification.priceGreaterThanOrEqual(price))),pageable);
+    }
+
+    public void deleteById(Integer id) {
+        buyerRepository.deleteById(id);
     }
 }

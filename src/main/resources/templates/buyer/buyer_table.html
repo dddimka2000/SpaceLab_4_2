@@ -28,6 +28,11 @@
         </div>
 
         <div class="card border">
+            <div class="card-header border">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-default" id="clean-filter">Очистить</button>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped linkedRow" id="buyerTable">
@@ -36,20 +41,20 @@
                             <th>Дата контакта</th>
                             <th>Филиал</th>
                             <th>Риелтор</th>
-                            <th>ФИО</th>
+                            <th style="min-width: 230px;">ФИО</th>
                             <th>Телефон</th>
                             <th>Email</th>
-                            <th>Цена до</th>
-                            <th></th>
+                            <th style="min-width: 130px;">Цена до</th>
+                            <th style="min-width: 130px;"></th>
                         </tr>
                         <tr>
                             <th></th>
                             <th><select class="form-control for-filter" id="branchSelect2"></select></th>
                             <th><select class="form-control for-filter" id="realtorSelect2"></select></th>
-                            <th><input class="form-control"></th>
-                            <th><input class="form-control"></th>
-                            <th><input class="form-control"></th>
-                            <th><input class="form-control"></th>
+                            <th><input class="form-control for-filter"></th>
+                            <th><input class="form-control for-filter"></th>
+                            <th><input class="form-control for-filter"></th>
+                            <th><input class="form-control for-filter"></th>
                             <th></th>
                         </tr>
                         </thead>
@@ -57,6 +62,11 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="card-footer">
+                <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                    id="pagination_container">
+                </ul>
             </div>
         </div>
     </div>
@@ -66,6 +76,40 @@
             realtorSelect2()
             getPageWithFilter(0)
         });
+        var buyerId
+        function deleteElement(button, userId) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var table = document.getElementById("buyerTable");
+                var row = button.parentElement.parentElement;
+                table.deleteRow(row.rowIndex);
+
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/buyers/delete/}]]' + buyerId,
+                    success: function (response) {
+                        getPageWithFilter(page)
+                        showToast(response, "success")
+                    },
+                });
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+        $('.for-filter').on('input', function () {
+            clearTimeout($(this).data('timeout'));
+            var $input = $(this);
+            var timeout = setTimeout(function () {
+                getPageWithFilter(0);
+            }, 700);
+            $input.data('timeout', timeout);
+        });
         function getPageWithFilter(page) {
             this.page = page
             var filterElements = $('.for-filter');
@@ -74,15 +118,22 @@
                 url: '[[@{/buyers/get-all}]]',
                 data: {
                     page: page,
+                    branch: filterElements[0].value,
+                    realtor: filterElements[1].value,
+                    name: filterElements[2].value,
+                    phone: filterElements[3].value,
+                    email: filterElements[4].value,
+                    price: filterElements[5].value
+
                 },
                 success: function (buyers) {
                     var table = document.getElementById("buyerTable");
                     var tbody = table.querySelector("tbody");
-                    $('#usersTable tbody').empty();
+                    $('#buyerTable tbody').empty();
 
                     for (var buyer of buyers.content) {
                         var newRow = tbody.insertRow();
-                        var buyerId = buyer.id;
+                        buyerId = buyer.id;
 
                         var cell0 = newRow.insertCell(0);
                         cell0.appendChild(createStatusIcon(buyer.lastContactDate))
@@ -98,7 +149,7 @@
                         cell2.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
 
                         var cell3 = newRow.insertCell(3);
-                        cell3.innerHTML = buyer.name;
+                        cell3.innerHTML = buyer.middleName + ' ' +buyer.name + ' ' + buyer.surname;
                         cell3.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
 
                         var cell4 = newRow.insertCell(4);
@@ -116,13 +167,25 @@
                         var cell7 = newRow.insertCell(7);
                         cell7.innerHTML = `
                         <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + buyerId + `);" title='Удалить'><i class='fa fa-trash'></i></button>
-                        <a class='btn btn-default btn-sm float-right' href='[[@{/users/edit/}]]` + buyerId + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
+                        <a class='btn btn-default btn-sm float-right' href='[[@{/buyers/edit/}]]` + buyerId + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
                     }
                     $('#pagination_container').empty();
                     if (buyers.totalPages > 1) updatePagination(page, buyers.totalPages, 'pagination_container')
                 },
             });
         }
+        $('#clean-filter').click(function () {
+            var filterElements = $('.for-filter');
+            $('#realtorSelect2').append(new Option(null, '', true, true));
+            $('#realtorSelect2').trigger('change');
+            $('#branchSelect2').append(new Option(null, '', true, true));
+            $('#branchSelect2').trigger('change');
+            filterElements[2].value = "";
+            filterElements[3].value = "";
+            filterElements[4].value = "";
+            filterElements[5].value = "";
+            getPageWithFilter(0)
+        });
         function createStatusIcon(dateString) {
             const inputDate = new Date(dateString);
             const currentDate = new Date();
@@ -141,6 +204,7 @@
             icon.innerHTML = `<i class="fas fa-info-circle" style="color: ${color}"></i>`;
             return icon;
         }
+
     </script>
 </section>
 

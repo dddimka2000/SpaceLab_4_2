@@ -82,8 +82,12 @@ public class BuyerController {
     }
     @GetMapping("/get-all")
     @ResponseBody
-    public Page<Buyer> getAll(@RequestParam Integer page){
-        return buyerService.getAll(page);
+    public Page<Buyer> getAll(@RequestParam Integer page, @RequestParam String branch, @RequestParam String realtor, @RequestParam String name, @RequestParam String phone, @RequestParam String email, @RequestParam String price){
+        return buyerService.getAll(page, branch, realtor, name, phone, email, price);
     }
-
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable Integer id){
+        buyerService.deleteById(id);
+        return ResponseEntity.ok().body("Покупця видалено успішно");
+    }
 }

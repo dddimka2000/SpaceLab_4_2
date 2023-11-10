@@ -44,7 +44,7 @@ public class Buyer {
     @ManyToOne
     private Realtor realtor;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private BuyerApplication application;
 
@@ -52,7 +52,7 @@ public class Buyer {
     @JoinColumn(name = "id_branch", referencedColumnName = "id")
     private Branch branch;
 
-    @OneToMany(mappedBy = "buyer")
+    @OneToMany(mappedBy = "buyer", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<BuyerNote> notes;
 

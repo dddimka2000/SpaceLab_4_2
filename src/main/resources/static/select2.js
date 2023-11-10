@@ -29,10 +29,6 @@ function branchSelect2(id, text) {
             },
             cache: true
         }
-    }).on('select2:select', function (e) {
-        var selectedBranchId = e.params.data.id;
-        var input = document.querySelector('select[name="branch"]');
-        input.value=selectedBranchId;
     })
     if(text !== undefined && id !== undefined) {
         $('#branchSelect2').append(new Option(text.toString(), id.toString(), true, true));
@@ -68,10 +64,6 @@ function realtorSelect2(id, text) {
             },
             cache: true
         }
-    }).on('select2:select', function (e) {
-        var selectedRealtorId = e.params.data.id;
-        var input = document.querySelector('select[name="realtor"]');
-        input.value=selectedRealtorId;
     })
     if(text !== undefined && id !== undefined) {
         $('#realtorSelect2').append(new Option(text.toString(), id.toString(), true, true));
