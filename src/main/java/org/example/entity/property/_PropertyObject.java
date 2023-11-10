@@ -3,6 +3,7 @@ package org.example.entity.property;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.example.entity.BuilderObject;
+import org.example.entity.Realtor;
 import org.example.entity.UserEntity;
 import org.example.entity.property.type.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,7 +22,7 @@ public class _PropertyObject {
 
     private Boolean status;
 
-    private String objectCode, branchCode, employeeCode;
+    private String objectCode, branchCode;
     private Integer price;
     private String landmark;
 
@@ -43,8 +44,8 @@ public class _PropertyObject {
 
     private PropertyBuildStatus buildStatus;
 
-    @DateTimeFormat(pattern="yyyy/MM/dd")
-    private LocalDate buildFinishDate;
+//    @DateTimeFormat(pattern="yyyy/MM/dd")
+//    private LocalDate buildFinishDate;
 
     private Integer areaTotal, areaLiving, areaKitchen;
     private String roomMeters;
@@ -54,7 +55,7 @@ public class _PropertyObject {
 
     private PropertyOrigin propertyOrigin;   // состояние квартиры/интерьера: от строителей / от инвесторов
 
-    private Boolean top, exclusive, urgent, free, open, intermediary;
+    private Boolean bargain, exclusive, urgent, free, open, intermediary;
 
     @DateTimeFormat(pattern="yyyy/MM/dd")
     private LocalDate lastContactDate;
@@ -80,5 +81,5 @@ public class _PropertyObject {
     private BuilderObject builderObject;
 
     @ManyToOne
-    private UserEntity realtor;
+    private Realtor realtor;
 }
