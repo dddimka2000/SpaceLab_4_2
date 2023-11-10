@@ -6,6 +6,8 @@ import org.example.repository.RealtorFeedBackRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RealtorFeedBackServiceImpl {
@@ -16,5 +18,9 @@ public class RealtorFeedBackServiceImpl {
     @Transactional
     public void save(RealtorFeedBack realtorFeedBack){
         realtorFeedBackRepository.save(realtorFeedBack);
+    }
+
+    public List<RealtorFeedBack> getAll() {
+        return realtorFeedBackRepository.findAll();
     }
 }

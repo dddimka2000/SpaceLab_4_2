@@ -16,5 +16,13 @@ public class RealtorFeedBack {
     private Integer id;
     private String name;
     private String phone;
+    private String email;
     private String description;
+
+    public RealtorFeedBack(Integer id, String name, String phone, String description) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.description = description;
+    }
 }

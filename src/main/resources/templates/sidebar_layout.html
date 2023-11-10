@@ -54,12 +54,6 @@
                 <div data-i18n="Buyers">Покупатели</div>
             </a>
         </li>
-        <li th:class="'menu-item ' + ${applicationsActive != null  ? 'active' : ''}">
-            <a th:href="@{/applications}" class="menu-link">
-                <i class="menu-icon tf-icons ti ti-clipboard-list"></i>
-                <div data-i18n="Applications">Заявки</div>
-            </a>
-        </li>
         <li th:class="'menu-item ' + ${branchesActive != null  ? 'active' : ''}">
             <a th:href="@{/branches}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-git-branch"></i>
@@ -78,6 +72,12 @@
                 <div data-i18n="Website Management">Управление сайтом</div>
             </a>
             <ul class="menu-sub">
+                <li th:class="'menu-item ' + ${applicationsActive != null  ? 'active' : ''}">
+                    <a th:href="@{/applications}" class="menu-link">
+                        <i class="menu-icon tf-icons ti ti-flag-3-filled"></i>
+                        <div data-i18n="Applications">Заявки</div>
+                    </a>
+                </li>
                 <li th:class="'menu-item ' + ${bannersActive != null  ? 'active' : ''}">
                     <a th:href="@{/banners}" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-flag-3-filled"></i>
