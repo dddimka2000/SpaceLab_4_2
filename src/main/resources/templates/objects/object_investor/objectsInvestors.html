@@ -35,6 +35,33 @@
 
     <!--    <script th:src="@{/css/modal.css}"></script>-->
 
+    <style>
+        @media print {
+            @page {
+                size: landscape; /* или portrait для книжной ориентации */
+            }
+            body * {
+                visibility: hidden;
+            }
+
+            #printElements * {
+                visibility: visible;
+            }
+            #printElements {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            #printElements .btn-group *{
+                visibility: hidden;
+                display: none;
+            }
+            #printElements .form-check-input *{
+                visibility: hidden;
+                display: none;
+            }
+        }
+    </style>
 
 </head>
 <body>
@@ -58,7 +85,7 @@
                 <div class="row">
                     <div class="col-md-8"></div>
                     <div class="col-md-1">
-                        <button class="btn btn-submit" id="printButton">Распечатать</button>
+                        <button class="btn btn-submit" id="printButton" onclick="printButton()">Распечатать</button>
                     </div>
                     <div class="col-md-1"></div>
                     <div class="col-md-2">
@@ -273,7 +300,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Вы точно хотите удалить объект от
-                                строителя?</h5>
+                                инвесторов?</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             </button>
                         </div>
@@ -292,16 +319,82 @@
 
     </div>
     <script th:src="@{/js/pagination.js}"></script>
-    <script>
+    <script th:inline="javascript">
+        function printButton() {
+            var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
+
+            if (selectedCheckboxes.length === 0) {
+                showNotification("Выберите хотя бы один чекбокс для печати.","",false);
+                return;
+            }
+
+            var printDocument = document.createElement('div');
+            printDocument.id = "printElements"
+            var printTable = document.createElement('table');
+            printTable.className = "invoice-list-table table border-top dataTable no-footer dtr-column";
+            printTable.id = "branchTable";
+
+            var tableHead = document.createElement('thead');
+            tableHead.innerHTML = '<tr style="text-align: center"><th>Дата контакта</th><th>Код</th><th>Район</th><th>Топозона</th><th>Улица</th><th>Комнат</th><th>Этаж</th><th>Этажность</th><th>Площадь</th><th>Реклама</th><th>Статус</th><th>Фото</th><th></th><th></th></tr>';
+            printTable.appendChild(tableHead);
+
+            var tableBody = document.createElement('tbody');
+            tableBody.style.textAlign = "center";
+
+            selectedCheckboxes.forEach(function (checkbox) {
+                var rowId = checkbox.getAttribute('data-id');
+                var originalRow = document.querySelector('tr[data-id="' + rowId + '"]');
+
+                // Клонируйте и добавьте клон в таблицу
+                var clonedRow = originalRow.cloneNode(true);
+                tableBody.appendChild(clonedRow);
+            });
+
+            printTable.appendChild(tableBody);
+            printDocument.appendChild(printTable);
+
+            // Отправьте документ для печати
+            document.body.appendChild(printDocument);
+            window.print();
+            document.body.removeChild(printDocument);
+
+
+        }
+
         $(function () {
             $("#select2Multiple24").select2();
             $("#select2MultipleTopozone").select2();
             select2MultipleResidential();
             getPageWithFilter(0);
-        })
-    </script>
-    <script th:inline="javascript">
+        });
+
+        function openModal(elem) {
+            console.log(elem);
+            elementDelete = elem;
+            $("#deleteModal").modal("show");
+        }
+
+        $(document).on("click", "#okBtn", function () {
+            let contextPath =/*[[@{/}]]*/ '';
+            let url = contextPath + "investor_objects/delete/" + elementDelete;
+            console.log(url)
+            $.ajax({
+                url: url,
+                method: "DELETE",
+                success: function (response) {
+                    $("#elementTable" + elementDelete).empty();
+                    $("#cancelBtn").click();
+                    console.log(response);
+                    showNotification("Warn! ", response, false);
+                    getPageWithFilter(0);
+                },
+                error: function (context) {
+                    console.log("ERROR " + context);
+                }
+            })
+        });
         let page = 0;
+        let elementTr = 0;
 
         function getPageWithFilter(page) {
             let filterElements = $('.for-filter');
@@ -378,6 +471,7 @@
                         $('#branchTable tbody').empty().css('text-align', 'center');
                         for (var object of builderObjects.content) {
                             var newRow = tbody.insertRow();
+                            newRow.setAttribute('data-id', elementTr);
                             var cell1 = newRow.insertCell(0);
                             var today = new Date();
                             var otherDate = new Date(object.lastContactDate)
@@ -394,8 +488,7 @@
                             }
                             if (daysDifference > 18) {
                                 cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: darkred"></i>`;
-                            }
-                            else {
+                            } else {
                                 cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: forestgreen"></i>`;
                             }
 
@@ -445,8 +538,8 @@
                             cell12.innerHTML = '<alert class="alert alert-success">Да</alert>';
 
                             var cell13 = newRow.insertCell(12);
-                            cell13.innerHTML = `<input className="form-check-input" type="checkbox" name="checkPrint"
-                                   value="` + object.id + `">`;
+                            cell13.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint"
+                                   value="` + object.id + `" data-id="` + elementTr + `">`;
 
                             var cell14 = newRow.insertCell(13);
                             cell14.innerHTML = `
@@ -459,6 +552,7 @@
                          <button class="btn btn-default btn-sm float-right for-delete"
                                                     onclick="openModal(` + object.id + `)"><i class="fa fa-trash"></i></button>
                         </div>`;
+                            elementTr++;
                         }
                         $('#paginationItems').empty();
                         if (builderObjects.totalPages > 1) {
@@ -478,8 +572,12 @@
             filterElements.each(function () {
                 $(this).val("");
             });
-            getPageWithFilter(0)
+            $(".select2-container").find(".select2-selection__choice").remove();
+
+            let radioFilters = $('[name="flexRadioDefault"]');
+            radioFilters.prop("checked", false);
         });
+
         $('#search-btn').click(function () {
             getPageWithFilter(0)
         });

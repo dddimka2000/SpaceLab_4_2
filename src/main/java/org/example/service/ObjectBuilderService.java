@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class ObjectBuilderService {
         builderObjectRepository.save(entity);
         log.info("ObjectBuilderService-save successfully");
     }
-
+    @Transactional
     public void deleteById(Integer id) {
         log.info("ObjectBuilderService-deleteById start");
         builderObjectRepository.deleteById(id);

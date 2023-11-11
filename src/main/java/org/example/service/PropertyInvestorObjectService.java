@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Log4j2
@@ -35,6 +36,24 @@ public class PropertyInvestorObjectService {
         log.info("PropertyInvestorObjectService-save start");
         propertyInvestorObjectRepository.save(entity);
         log.info("PropertyInvestorObjectService-save successfully");
+    }
+
+    public Optional<PropertyInvestorObject> findByCode(String code) {
+        log.info("PropertyInvestorObjectService-findByCode start");
+        Optional<PropertyInvestorObject> propertyInvestorObject=propertyInvestorObjectRepository.findByObjectCode(code);
+        log.info("PropertyInvestorObjectService-findByCode successfully");
+        return propertyInvestorObject;
+    }
+    public Optional<PropertyInvestorObject> findById(Integer id) {
+        log.info("PropertyInvestorObjectService-findById start");
+        Optional<PropertyInvestorObject> propertyInvestorObject=propertyInvestorObjectRepository.findById(id);
+        log.info("PropertyInvestorObjectService-findById successfully");
+        return propertyInvestorObject;
+    }
+    public void deleteById(Integer entity) {
+        log.info("PropertyInvestorObjectService-deleteById start");
+        propertyInvestorObjectRepository.deleteById(entity);
+        log.info("PropertyInvestorObjectService-deleteById successfully");
     }
 
     public Page<PropertyInvestorObject> forSelect(String name, Pageable pageable) {

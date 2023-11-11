@@ -50,6 +50,29 @@
         tr.disabled {
             pointer-events: none; /* Запретить события мыши (клики и т. д.) на дизейбленной строке */
         }
+
+    </style>
+    <style>
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #branchTable * {
+                visibility: visible;
+
+            }
+            #branchTable .btn-group *{
+                visibility: hidden;
+                display: none;
+            }
+
+            #branchTable {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -89,7 +112,7 @@
                         <button class="btn btn-submit" id="clean-filter">Очистить</button>
                     </div>
                     <div class="card-body">
-                        <table class="invoice-list-table table border-top dataTable no-footer dtr-column"
+                        <table class="invoice-list-table table border-top"
                                id="branchTable">
                             <thead>
                             <tr style="text-align: center">
@@ -171,70 +194,58 @@
     <script th:inline="javascript">
         let dtoArray = new Map();
         document.getElementById("printButton").addEventListener("click", function () {
+                window.print();
 
-
-                var branchTable = $("#branchTable");
-                var rows = branchTable.find('tbody').find('tr');
-                var data = [];
-
-                rows.each(function () {
-                    var rowData = {
-                        name: '',
-                        district: '',
-                        street: '',
-                        topozone: '',
-                        floorQuantity: 0,
-                        minPrice: 0
-                    };
-
-                    var tds = $(this).find('td');
-
-                    rowData.name = tds.eq(0).text();
-                    rowData.district = tds.eq(1).text();
-                    rowData.topozone = tds.eq(2).text();
-                    rowData.street = tds.eq(3).text();
-                    rowData.floorQuantity = parseInt(tds.eq(4).text());
-                    rowData.minPrice = parseInt(tds.eq(5).text());
-
-                    data.push(rowData);
-
-                });
-
-
-                let contextPath =/*[[@{/}]]*/'';
-                let url = contextPath.toString() + "builder_objects/generate-excel";
-                $.ajax({
-                    url: url,
-                    method: "POST",
-                    contentType: 'application/json',
-                    data: JSON.stringify(data), // Преобразуйте данные в формат JSON
-                    xhrFields: {
-                        responseType: 'blob'
-                    }, success: function (data) {
-                        var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
-                        var blobUrl = window.URL.createObjectURL(blob);
-
-                        // Открываем новую вкладку с Excel-файлом
-                        var newTab = window.open(blobUrl, '_blank');
-
-                        // var link = document.createElement('a');
-                        // link.href = window.URL.createObjectURL(blob);
-                        // link.printLink = filename || 'example.xlsx';
-                        // document.body.appendChild(link);
-                        // console.log(link)
-                        // console.log(link.href)
-                        // var newTab = window.open(link.href, '_blank');
-                        // newTab.onload = function() {
-                        //     newTab.print();
-                        // };
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error)
-                    }
-                })
-
-
+                //
+                // var rows = branchTable.find('tbody').find('tr');
+                // var data = [];
+                // rows.each(function () {
+                //     var rowData = {
+                //         name: '',
+                //         district: '',
+                //         street: '',
+                //         topozone: '',
+                //         floorQuantity: 0,
+                //         minPrice: 0
+                //     };
+                //     var tds = $(this).find('td');
+                //     rowData.name = tds.eq(0).text();
+                //     rowData.district = tds.eq(1).text();
+                //     rowData.topozone = tds.eq(2).text();
+                //     rowData.street = tds.eq(3).text();
+                //     rowData.floorQuantity = parseInt(tds.eq(4).text());
+                //     rowData.minPrice = parseInt(tds.eq(5).text());
+                //     data.push(rowData);
+                // });
+                // let contextPath =/*[[@{/}]]*/'';
+                // let url = contextPath.toString() + "builder_objects/generate-excel";
+                // $.ajax({
+                //     url: url,
+                //     method: "POST",
+                //     contentType: 'application/json',
+                //     data: JSON.stringify(data), // Преобразуйте данные в формат JSON
+                //     xhrFields: {
+                //         responseType: 'blob'
+                //     }, success: function (data) {
+                //         var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                //         var blobUrl = window.URL.createObjectURL(blob);
+                //         // Открываем новую вкладку с Excel-файлом
+                //         var newTab = window.open(blobUrl, '_blank');
+                //         // var link = document.createElement('a');
+                //         // link.href = window.URL.createObjectURL(blob);
+                //         // link.printLink = filename || 'example.xlsx';
+                //         // document.body.appendChild(link);
+                //         // console.log(link)
+                //         // console.log(link.href)
+                //         // var newTab = window.open(link.href, '_blank');
+                //         // newTab.onload = function() {
+                //         //     newTab.print();
+                //         // };
+                //     },
+                //     error: function (xhr, status, error) {
+                //         console.log(error)
+                //     }
+                // })
             }
         )
 
