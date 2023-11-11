@@ -166,3 +166,11 @@ function validateDate(input) {
     showToast("Дата вказана не коректно", "danger")
     return false;
 }
+function validSelect2(select){
+    if (select.val() === null) {
+        showToast("Елемент має бути вибрано", "danger");
+        select.next().find(".select2-selection").css("border", "1px solid #ff0000");
+        return false;
+    }
+    return true
+}

@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Content page</title>
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
+    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+    <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
+    <script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
+    <script th:src="@{/vendor/libs/cleavejs/cleave-phone.js}"></script>
+    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
+</head>
+<body>
+<section layout:fragment="content">
+
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <br>
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold">Новый объект</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/houses}">Дома и участки</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Новый объект
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <hr style="margin-top: -5px">
+            <br>
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-home"
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true">Адрессная часть
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-profile"
+                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Основное
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-contact"
+                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Галерея
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="row">
+                        <div class="col-2">
+                            Номер дома
+                            <input type="text" class="form-control onlyNumber" id="houseNumber" placeholder="34">
+                        </div>
+                        <div class="col-2">
+                            Обл. Район
+                            <select class="form-control" id="region"> </select>
+                        </div>
+                        <div class="col-2">
+                            Нас.пункт
+                            <select class="form-control" id="city" disabled></select>
+                        </div>
+                        <div class="col-2">
+                            Район
+                            <select class="form-control" id="district" disabled></select>
+                        </div>
+                        <div class="col-2">
+                            Улица
+                            <select class="form-control" id="street" disabled></select>
+                        </div>
+                        <div class="col-2">
+                            Топозона
+                            <select id="topzone"></select>
+                        </div>
+                    </div>
+                    <br>
+                    <button class="btn btn-info" style="width: auto; margin-right: 5px">Проверить адрес</button>
+                    <button class="btn btn-info" style="width: auto">Проверить номер телефона</button>
+
+                    <br>
+                    <div class="row">
+                        <div class="col-3">
+                            ФИО владельца
+                            <input class="form-control" type="text" id="owner" placeholder="Введите ФИО владельца">
+                        </div>
+                        <div class="col-3">
+                            Телефон
+                            <input type="tel" id="telephone" class="form-control"
+                                   placeholder="Введите номер телефона">
+                        </div>
+                        <div class="col-3">
+                            Дата приобретения
+                            <input type="text" id="dateOfPurchase" class="form-control flatpickr-datetime"
+                                   placeholder="YYYY/MM/DD"/>
+                        </div>
+                        <div class="col-3">
+                            Право собственности
+                            <select id="ownership"></select>
+                        </div>
+                    </div>
+                    <br>
+                    Важные заметки
+                    <input class="form-control" id="note" type="text" placeholder="Введите заметки">
+                    <br>
+                    Кадастровий номер участка
+                    <input class="form-control" id="cadastralNumber" type="text" style="width: 40%"
+                           placeholder="XXX XXX XXX">
+                    <br>
+                    Назначение участка
+                    <input class="form-control" id="ideaPlot" type="text" placeholder="Введите заметки">
+                    <br>
+                    Прикрепить файлы
+                    <input type="file" id="housesFiles" class="form-control" style="width: 40%" multiple>
+                    <br>
+                    <div id="fileList">
+
+                    </div>
+                    <br>
+                    <h3>Комментарий администратора</h3>
+                    <textarea class="form-control" style="width: 100%; height: 300px" id="administrationComment"
+                              placeholder="Введите комментарий"></textarea>
+                    <br>
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="row">
+                        <div class="col-3">
+                            Статус публикации
+                            <select id="publicationStatus"></select>
+                        </div>
+                        <div class="col-3">
+                            Код объекта
+                            <input class="form-control" type="text" id="codeObject" placeholder="XX XXXX XX">
+                        </div>
+                        <div class="col-5">
+                            <div class="row">
+                                <div class="col-6" style="white-space: nowrap;">
+                                    Код филиала — Код сотрудника
+                                </div>
+                            </div>
+                            <div class="row" style="display:flex; align-items: center">
+                                <div class="col-3" style="text-align: right">
+                                    <input class="form-control onlyNumber" id="codeBranch" placeholder="Код филиала"
+                                           name="codeBranch">
+                                </div>
+                                <div class="col-1">
+                                    <span>—</span>
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control onlyNumber" id="codeStaff" name="codeStaff"
+                                           placeholder="Код сотрудника">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    Ориентир
+                    <input class="form-control" style="width: 40%;" type="text" id="landmark"
+                           placeholder="Введите ориентир">
+                    <br>
+                    Цена
+                    <input class="form-control onlyNumber" style="width: 40%;" type="text" id="price"
+                           placeholder="Введите цену">
+                    <br>
+                    <div class="row">
+                        <div class="col-3">
+                            Тип недвижимости
+                            <select id="propertyType"></select>
+                        </div>
+                        <div class="col-2">
+                            S уч.(сот)
+                            <input class="form-control onlyNumber" id="plotAreaTotal" placeholder="12">
+                        </div>
+                        <div class="col-2">
+                            S уч.свободно(сот)
+                            <input class="form-control onlyNumber" id="plotAreaFree" placeholder="12">
+                        </div>
+                        <div class="col-2">
+                            Собственость на землю
+                            <select class="form-control" id="landOwnershipPresent">
+                                <option></option>
+                                <option value="true">есть</option>
+                                <option value="false">нет</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            Целевое назначение земли
+                            <select id="plotPurposeType"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                            Кол.домов
+                            <input class="form-control onlyNumber" id="houseQuantity" placeholder="12">
+                        </div>
+                        <div class="col-1">
+                            Етажей
+                            <input class="form-control onlyNumber" id="floorQuantity" placeholder="12">
+                        </div>
+                        <div class="col-1">
+                            Комнат
+                            <input class="form-control onlyNumber" id="roomQuantity" placeholder="12">
+                        </div>
+                        <div class="col-1">
+                            Спален
+                            <input class="form-control onlyNumber" id="bedroomQuantity" placeholder="12">
+                        </div>
+                        <div class="col-2">
+                            Высота потолка (м)
+                            <input class="form-control onlyNumber" step="0.01" id="myNumberInput"
+                                   placeholder="Введите высоту потолка">
+                        </div>
+                        <div class="col-2">
+                            S общая (м.кв.)*
+                            <input class="form-control onlyNumber" id="areaTotal"
+                                   placeholder="Введите общую площадь">
+                        </div>
+                        <div class="col-2">
+                            S жилая (м.кв.)*
+                            <input class="form-control onlyNumber" id="areaLiving"
+                                   placeholder="Введите жилую площадь">
+                        </div>
+                        <div class="col-2">
+                            S кухни (м.кв.)*
+                            <input class="form-control onlyNumber" id="areaKitchen"
+                                   placeholder="Введите площадь кухни">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-3">
+                            Материал стен
+                            <input class="form-control" type="text" id="wall_material"
+                                   placeholder="Введите материал стен">
+                        </div>
+                        <div class="col-3">
+                            Состояние интерьера
+                            <select id="stateInterior"></select>
+                        </div>
+                        <div class="col-3">
+                            Состояние дома
+                            <select id="stateHouse"></select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-3">
+                            Кухня
+                            <select id="kitchenType"></select>
+                        </div>
+                        <div class="col-3">
+                            Санузел
+                            <select id="bathroomType"></select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-3">
+                            Газ
+                            <select id="gasType"></select>
+                        </div>
+                        <div class="col-3">
+                            Вода
+                            <select id="waterType"></select>
+                        </div>
+                        <div class="col-3">
+                            Канализация
+                            <select id="sewageType"></select>
+                        </div>
+                        <div class="col-3">
+                            Отопление
+                            <select id="heatingType"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            Лестница
+                            <select id="ladderType"></select>
+                        </div>
+                        <div class="col-3">
+                            Кровля
+                            <select id="roofType"></select>
+                        </div>
+                        <div class="col-3">
+                            Пол
+                            <select id="floorType"></select>
+                        </div>
+                        <div class="col-3">
+                            Тип окон
+                            <select id="windowType"></select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-3">
+                            Столярка
+                            <select id="carpentryType"></select>
+                        </div>
+                        <div class="col-3">
+                            Входная дверь
+                            <select id="frontDoorType"></select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-2" style="white-space: nowrap;">
+                            Дата последнего контакта
+                            <input type="text" class="form-control flatpickr-datetime" id="lastContactDate" placeholder="YYYY/MM/DD"/>
+                        </div>
+                        <div class="col-1" style="display: flex; align-items: end">
+                            <input class="form-check-input" type="checkbox" value="true" id="vnp" name="statusVNP">
+                            <span class="checkmark"> ВНП</span>
+                        </div>
+                        <div class="col-2">
+                            Дата внп до
+                            <input type="text" class="form-control flatpickr-datetime" id="vnpExpirationDate" placeholder="YYYY/MM/DD"/>
+                        </div>
+                        <div class="col-2">
+                            Источник информации
+                            <input type="text" class="form-control" id="informationSource"
+                                   placeholder="Введите источник информации">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-2">
+                            <input class="form-check-input" type="checkbox" value="true" id="bargain">
+                            <span class="checkmark">Торг</span>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-check-input" type="checkbox" value="true" id="exclusive">
+                            <span class="checkmark">Ексклюзив</span>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-check-input" type="checkbox" value="true" id="urgent">
+                            <span class="checkmark">Срочно</span>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-check-input" type="checkbox" value="true" id="free">
+                            <span class="checkmark">Свободная</span>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-check-input" type="checkbox" value="true" id="open">
+                            <span class="checkmark">Объект открыт</span>
+                        </div>
+                        <div class="col-2">
+                            <input class="form-check-input" type="checkbox" value="true" id="intermediary">
+                            <span class="checkmark">От посредника</span>
+                        </div>
+                    </div>
+                    <br>
+                    <ul class="nav nav-pills mb-3" id="pills-block" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-for-uk" data-bs-toggle="pill"
+                                    data-bs-target="#pills-uk"
+                                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">UK
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-for-ru" data-bs-toggle="pill"
+                                    data-bs-target="#pills-ru"
+                                    type="button" role="tab" aria-controls="pills-profile" aria-selected="false">RU
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-for-en" data-bs-toggle="pill"
+                                    data-bs-target="#pills-en"
+                                    type="button" role="tab" aria-controls="pills-contact" aria-selected="false">EN
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-blovk-content">
+                        <div class="tab-pane fade show active" id="pills-uk" role="tabpanel" aria-labelledby="pills-for-uk">
+                            Описание
+                            <textarea class="form-control" style="width: 100%; height: 300px"
+                                      id="descriptionUk" placeholder="Введите описание"></textarea>
+                            <br>
+                            Рекламный заголовок
+                            <input type="text" id="advertisementHeadlineUk" class="form-control"
+                                   placeholder="Укажите рекламный заголовок">
+                            <br>
+                            Рекламный текст
+                            <textarea style="width: 100%; height: 300px" id="advertisementTextUk"
+                                      class="form-control" placeholder="Введите рекламный текст"></textarea>
+                            <br>
+                        </div>
+                        <div class="tab-pane fade show" id="pills-ru" role="tabpanel" aria-labelledby="pills-for-ru">
+                            Описание
+                            <textarea class="form-control" style="width: 100%; height: 300px"
+                                      id="descriptionRu" placeholder="Введите описание"></textarea>
+                            <br>
+                            Рекламный заголовок
+                            <input type="text" id="advertisementHeadlineRu" class="form-control"
+                                   placeholder="Укажите рекламный заголовок">
+                            <br>
+                            Рекламный текст
+                            <textarea style="width: 100%; height: 300px" id="advertisementTextRu"
+                                      class="form-control" placeholder="Введите рекламный текст"></textarea>
+                            <br>
+                        </div>
+                        <div class="tab-pane fade show" id="pills-en" role="tabpanel" aria-labelledby="pills-for-en">
+                            Описание
+                            <textarea class="form-control" style="width: 100%; height: 300px"
+                                      id="descriptionEn" placeholder="Введите описание"></textarea>
+                            <br>
+                            Рекламный заголовок
+                            <input type="text" id="advertisementHeadlineEn" class="form-control"
+                                   placeholder="Укажите рекламный заголовок">
+                            <br>
+                            Рекламный текст
+                            <textarea style="width: 100%; height: 300px" id="advertisementTextEn"
+                                      class="form-control" placeholder="Введите рекламный текст"></textarea>
+                            <br>
+                        </div>
+                    </div>
+                    <input class="form-check-input" type="checkbox" value="true" id="advertisementEnabled">
+                    <span class="checkmark">Рекламировать</span>
+                    <br>
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card-body">
+                                <form action="/uploadFileInvestor" class="dropzone needsclick dz-clickable"
+                                      id="my-dropzoneInvestor">
+                                    <div class="dz-message needsclick">
+                                        <span class="note needsclick"></span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div style="text-align: right; margin: 20px">
+                <button class="btn btn-submit">Отмена</button>
+                <span>
+                <button class="btn btn-success" hx-trigger="click" onclick="sendForm()">
+                Сохранить </button>
+            </span>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
+    <script>
+        function validAllInput(formForMaterial, formForInfo, formForAddress){
+            cleanInputs()
+            var publicationStatus = $("#publicationStatus");
+            var codeObject = $("#codeObject");
+            var codeBranch = $("#codeBranch");
+            var codeStaff = $("#codeStaff");
+            var landmark = $("#landmark");
+            var price = $("#price");
+            var propertyHouseType = $("#propertyType");
+            var plotAreaTotal = $("#plotAreaTotal");
+            var plotAreaFree = $("#plotAreaFree");
+            var landOwnershipPresent = $("#landOwnershipPresent");
+            var plotPurposeType = $("#plotPurposeType");
+            var houseQuantity = $("#houseQuantity");
+            var floorQuantity = $("#floorQuantity");
+            var roomQuantity = $("#roomQuantity");
+            var bedroomQuantity = $("#bedroomQuantity");
+            var roomMeters = $("#myNumberInput");
+            var areaTotal = $("#areaTotal");
+            var areaLiving = $("#areaLiving");
+            var areaKitchen = $("#areaKitchen");
+            var lastContactDate = $("#lastContactDate");
+            var vnp = $("#vnp");
+            var vnpExpirationDate = $("#vnpExpirationDate");
+            var informationSource = $("#informationSource");
+            var bargain = $("#bargain");
+            var exclusive = $("#exclusive");
+            var urgent = $("#urgent");
+            var free = $("#free");
+            var open = $("#open");
+            var intermediary = $("#intermediary");
+            var descriptionUk = $("#descriptionUk");
+            var advertisementHeadlineUk = $("#advertisementHeadlineUk");
+            var advertisementTextUk = $("#advertisementTextUk");
+            var descriptionRu = $("#descriptionRu");
+            var advertisementHeadlineRu = $("#advertisementHeadlineRu");
+            var advertisementTextRu = $("#advertisementTextRu");
+            var descriptionEn = $("#descriptionEn");
+            var advertisementHeadlineEn = $("#advertisementHeadlineEn");
+            var advertisementTextEn = $("#advertisementTextEn");
+            var advertisementEnabled = $("#advertisementEnabled");
+
+            formForInfo.append("publicationStatus", publicationStatus.val());
+            formForInfo.append("codeObject", codeObject.val());
+            formForInfo.append("codeBranch", codeBranch.val());
+            formForInfo.append("codeStaff", codeStaff.val());
+            formForInfo.append("landmark", landmark.val());
+            formForInfo.append("price", price.val());
+            formForInfo.append("propertyHouseType", propertyHouseType.val());
+            formForInfo.append("plotAreaTotal", plotAreaTotal.val());
+            formForInfo.append("plotAreaFree", plotAreaFree.val());
+            formForInfo.append("landOwnershipPresent", landOwnershipPresent.val());
+            formForInfo.append("plotPurposeType", plotPurposeType.val());
+            formForInfo.append("houseQuantity", houseQuantity.val());
+            formForInfo.append("floorQuantity", floorQuantity.val());
+            formForInfo.append("roomQuantity", roomQuantity.val());
+            formForInfo.append("bedroomQuantity", bedroomQuantity.val());
+            formForInfo.append("roomMeters", roomMeters.val());
+            formForInfo.append("areaTotal", areaTotal.val());
+            formForInfo.append("areaLiving", areaLiving.val());
+            formForInfo.append("areaKitchen", areaKitchen.val());
+            formForInfo.append("lastContactDate", lastContactDate.val());
+            formForInfo.append("vnp", vnp.prop("checked"));
+            formForInfo.append("vnpExpirationDate", vnpExpirationDate.val());
+            formForInfo.append("informationSource", informationSource.val());
+            formForInfo.append("bargain", bargain.prop("checked"));
+            formForInfo.append("exclusive", exclusive.prop("checked"));
+            formForInfo.append("urgent", urgent.prop("checked"));
+            formForInfo.append("free", free.prop("checked"));
+            formForInfo.append("open", open.prop("checked"));
+            formForInfo.append("intermediary", intermediary.prop("checked"));
+            formForInfo.append("descriptionUk", descriptionUk.val());
+            formForInfo.append("advertisementHeadlineUk", advertisementHeadlineUk.val());
+            formForInfo.append("advertisementTextUk", advertisementTextUk.val());
+            formForInfo.append("descriptionRu", descriptionRu.val());
+            formForInfo.append("advertisementHeadlineRu", advertisementHeadlineRu.val());
+            formForInfo.append("advertisementTextRu", advertisementTextRu.val());
+            formForInfo.append("descriptionEn", descriptionEn.val());
+            formForInfo.append("advertisementHeadlineEn", advertisementHeadlineEn.val());
+            formForInfo.append("advertisementTextEn", advertisementTextEn.val());
+            formForInfo.append("advertisementEnabled", advertisementEnabled.val());
+
+            var wallMaterial = $("#wall_material");
+            var stateInterior = $("#stateInterior");
+            var stateHouse = $("#stateHouse");
+            var kitchenType = $("#kitchenType");
+            var bathroomType = $("#bathroomType");
+            var gasType = $("#gasType");
+            var waterType = $("#waterType");
+            var sewageType = $("#sewageType");
+            var heatingType = $("#heatingType");
+            var ladderType = $("#ladderType");
+            var roofType = $("#roofType");
+            var floorType = $("#floorType");
+            var windowType = $("#windowType");
+            var carpentryType = $("#carpentryType");
+            var frontDoorType = $("#frontDoorType");
+
+            formForMaterial.append("wallMaterial", wallMaterial.val());
+            formForMaterial.append("stateInterior", stateInterior.val());
+            formForMaterial.append("stateHouse", stateHouse.val());
+            formForMaterial.append("kitchenType", kitchenType.val());
+            formForMaterial.append("bathroomType", bathroomType.val());
+            formForMaterial.append("gasType", gasType.val());
+            formForMaterial.append("waterType", waterType.val());
+            formForMaterial.append("sewageType", sewageType.val());
+            formForMaterial.append("heatingType", heatingType.val());
+            formForMaterial.append("ladderType", ladderType.val());
+            formForMaterial.append("roofType", roofType.val());
+            formForMaterial.append("floorType", floorType.val());
+            formForMaterial.append("windowType", windowType.val());
+            formForMaterial.append("carpentryType", carpentryType.val());
+            formForMaterial.append("frontDoorType", frontDoorType.val());
+
+            var houseNumber = $("#houseNumber")
+            var region = $("#region")
+            var city = $("#city")
+            var district = $("#district")
+            var street = $("#street")
+            var zone = $("#topzone")
+            var ownerName = $("#owner")
+            var ownerPhone = $("#telephone")
+            var boughtDate = $("#dateOfPurchase")
+            var ownershipType = $("#ownership")
+            var notes = $("#note")
+            var cadastralNumber = $("#cadastralNumber")
+            var plotDescription = $("#ideaPlot")
+            var files = $("#housesFiles")
+            var administrationComment = $("#commentByAdmin")
+
+            if(!validateNumber(0,9999,houseNumber.val()))return false
+            if(!validSelect2(region))return false
+            if(!validSelect2(city))return false
+            if(!validSelect2(district))return false
+            if(!validSelect2(street))return false
+            if(!validSelect2(zone))return false
+            if(!validString("5","70",ownerName))return false
+            if(!validatePhoneNumber(ownerPhone))return false
+            if(!validateDate(boughtDate))return false
+            if(!validSelect2(ownershipType))return false
+            if(!validString("3", "1000", notes))return false
+            if(cadastralNumber.val().length !== 11) {
+                cadastralNumber.css("border", "1px solid #ff0000");
+                showToast("Кадастровий номер не коректний")
+                return false
+            }
+            if(!validString("3","1000",plotDescription))return false
+            if(!validateFile('housesFiles', [".pdf"])) return false
+            if(!validString("3","1000",administrationComment))return false
+
+            formForAddress.append("houseNumber", houseNumber.val());
+            formForAddress.append("region", region.val());
+            formForAddress.append("city", city.val());
+            formForAddress.append("district", district.val());
+            formForAddress.append("street", street.val());
+            formForAddress.append("zone", zone.val());
+            formForAddress.append("ownerName", ownerName.val());
+            formForAddress.append("ownerPhone", ownerPhone.val());
+            formForAddress.append("boughtDate", boughtDate.val());
+            formForAddress.append("ownershipType", ownershipType.val());
+            formForAddress.append("notes", notes.val());
+            formForAddress.append("cadastralNumber", cadastralNumber.val());
+            formForAddress.append("plotDescription", plotDescription.val());
+            var filesElement = files[0].files;
+            for (var i = 0; i < filesElement.length; i++) {
+                formForAddress.append("files", filesElement[i]);
+            }
+            formForAddress.append("administrationComment", administrationComment.val());
+            console.log(formForAddress.getAll());
+        }
+        function sendForm() {
+            let formForInfo = new FormData();
+            let formForMaterial = new FormData();
+            let formForAddress = new FormData();
+            if(!validAllInput(formForMaterial, formForInfo, formForAddress))return
+            // var allUploadedFiles = myDropzone.getAcceptedFiles();
+            // allUploadedFiles.forEach(function(file) {
+            //     formData.append('images', file);
+            // });
+            console.log(formForInfo)
+            console.log(formForMaterial)
+            console.log(formForAddress)
+            $.ajax({
+                type: 'POST',
+                url: '[[@{/houses/add/address}]]',
+                data: formForAddress,
+                contentType: false,
+                processData: false,
+                success: function () {
+                },
+                error: function (error) {
+                    console.error('Помилка відправки файлів на сервер:', error);
+                }
+            });
+            $.ajax({
+                type: 'POST',
+                url: '[[@{/houses/add/info}]]',
+                data: formForInfo,
+                contentType: false,
+                processData: false,
+                success: function () {
+                },
+                error: function (error) {
+                    console.error('Помилка відправки файлів на сервер:', error);
+                }
+            });
+            $.ajax({
+                type: 'POST',
+                url: '[[@{/houses/add/material}]]',
+                data: formForMaterial,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.error('Помилка відправки файлів на сервер:', error);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
+            forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
+            forSelect2(undefined, undefined, "#publicationStatus", "/enum/publicationStatus")
+            forSelect2(undefined, undefined, "#buildStatus", "/enum/propertyBuildStatus")
+            forSelect2(undefined, undefined, "#propertyType", "/enum/propertyType")
+            forSelect2(undefined, undefined, "#plotPurposeType", "/enum/plotPurposeType")
+            forSelect2(undefined, undefined, "#stateInterior", "/enum/stateHouse")
+            forSelect2(undefined, undefined, "#stateHouse", "/enum/stateHouse")
+
+            forSelect2(undefined, undefined, "#kitchenType", "/enum/kitchen")
+            forSelect2(undefined, undefined, "#bathroomType", "/enum/bathroom")
+            forSelect2(undefined, undefined, "#gasType", "/enum/gas")
+            forSelect2(undefined, undefined, "#waterType", "/enum/water")
+            forSelect2(undefined, undefined, "#sewageType", "/enum/sewerage")
+            forSelect2(undefined, undefined, "#heatingType", "/enum/heating")
+            forSelect2(undefined, undefined, "#ladderType", "/enum/ladder")
+            forSelect2(undefined, undefined, "#roofType", "/enum/roof")
+            forSelect2(undefined, undefined, "#floorType", "/enum/floor")
+            forSelect2(undefined, undefined, "#windowType", "/enum/window")
+            forSelect2(undefined, undefined, "#carpentryType", "/enum/carpentryType")
+            forSelect2(undefined, undefined, "#frontDoorType", "/enum/frontDoorType")
+
+            addressSelect2()
+            $('.onlyNumber').on('input', function () {
+                $(this).val(function (_, value) {
+                    return value.replace(/[^\d.]+/g, '').replace(/^(\d*\.\d*)\..*$/, '$1');
+                });
+            });
+
+
+            new Cleave("#cadastralNumber", {
+                blocks: [3, 3, 3],
+                numericOnly: true
+            })
+            new Cleave("#codeObject", {
+                blocks: [2, 4, 2],
+                numericOnly: true
+            })
+
+            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
+
+            flatpickrDateTimes.forEach(function (element) {
+                element.flatpickr({
+                    dateFormat: "Y/m/d"
+                });
+            });
+        })
+
+        function addressSelect2() {
+            $("#region").select2({
+                minimumResultsForSearch: -1,
+                placeholder: "Елемент",
+                ajax: {
+                    url: '[[@{/enum/region}]]',
+                    dataType: 'json',
+                    processResults: function (data) {
+                        var index = 0;
+                        var results = data.map(function (data) {
+                            if (data.id) return {id: data.id, text: data.name};
+                            return {id: data, text: data};
+                        });
+                        return {
+                            results: results
+                        };
+                    },
+                }
+            })
+            $('#region').on('select2:select', function (e) {
+                var element = e.params.data.text
+                $("#city").empty();
+                $("#city").removeAttr("disabled");
+                $("#city").select2({
+                    minimumResultsForSearch: -1,
+                    placeholder: "Елемент",
+                    ajax: {
+                        url: '[[@{/getCity/}]]' + element,
+                        dataType: 'json',
+                        processResults: function (data) {
+                            var index = 0;
+                            var results = data.map(function (data) {
+                                if (data.id) return {id: data.id, text: data.name};
+                                return {id: data, text: data};
+                            });
+                            return {
+                                results: results
+                            };
+                        },
+                    }
+                })
+            });
+            $('#city').on('select2:select', function (e) {
+                var element = e.params.data.text
+                $("#district").empty();
+                $("#district").removeAttr("disabled");
+                $("#district").select2({
+                    minimumResultsForSearch: -1,
+                    placeholder: "Елемент",
+                    ajax: {
+                        url: '[[@{/getDistrict/}]]' + element,
+                        dataType: 'json',
+                        processResults: function (data) {
+                            var index = 0;
+                            var results = data.map(function (data) {
+                                if (data.id) return {id: data.id, text: data.name};
+                                return {id: data, text: data};
+                            });
+                            return {
+                                results: results
+                            };
+                        },
+                    }
+                })
+            });
+            $('#district').on('select2:select', function (e) {
+                var element = e.params.data.text
+                $("#street").empty();
+                $("#street").removeAttr("disabled");
+                $("#street").select2({
+                    minimumResultsForSearch: -1,
+                    placeholder: "Елемент",
+                    ajax: {
+                        url: '[[@{/getStreet/}]]' + element,
+                        dataType: 'json',
+                        processResults: function (data) {
+                            var index = 0;
+                            var results = data.map(function (data) {
+                                if (data.id) return {id: data.id, text: data.name};
+                                return {id: data, text: data};
+                            });
+                            return {
+                                results: results
+                            };
+                        },
+                    }
+                })
+            });
+        }
+
+
+        const previewTemplate = `<div class="dz-preview dz-file-preview">
+<div class="dz-details">
+  <div class="dz-thumbnail">
+    <img data-dz-thumbnail>
+    <span class="dz-nopreview">No preview</span>
+    <div class="dz-success-mark"></div>
+    <div class="dz-error-mark"></div>
+    <div class="dz-error-message"><span data-dz-errormessage></span></div>
+    <div class="progress">
+      <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuemin="0" aria-valuemax="1000" data-dz-uploadprogress></div>
+    </div>
+  </div>
+  <div class="dz-filename" data-dz-name></div>
+  <div class="dz-size" data-dz-size></div>
+</div>
+</div>`;
+        let uploadedFiles = new Map();
+        let oldImagesArray = [];
+        let currentFiles = 0;
+
+        var myDropzone = new Dropzone("#my-dropzoneInvestor", {
+            url: "/uploadFileInvestor",
+            acceptedFiles: ".jpg, .png, .icon, .jpeg",
+            previewTemplate: previewTemplate,
+            parallelUploads: 5,
+            maxFilesize: 10,
+            addRemoveLinks: true,
+            maxFiles: 15,
+            autoProcessQueue: true,
+            success: function (file, response) {
+                console.log("Файл загружен: " + file.name);
+                console.log("Ответ сервера: " + response);
+                console.log(currentFiles);
+                console.log(myDropzone.maxFiles);
+                currentFiles++;
+                const imageElement = file.previewElement.querySelector("img[data-dz-thumbnail]");
+                imageElement.src = file.dataURL;
+            }
+        })
+        myDropzone.on('success', function (file, response) {
+            console.log('Файл успешно загружен:', file.name);
+            if (oldImagesArray.includes(file.name)) {
+                uploadedFiles.set("wrr2142" + file.name, file);
+            } else {
+                uploadedFiles.set(file.name, file);
+            }
+        });
+        myDropzone.on('removedfile', function (file) {
+            console.log('Файл был удален:', file.name);
+            currentFiles--;
+            if (uploadedFiles.has(file.name)) {
+                uploadedFiles.delete(file.name);
+            } else {
+                console.log('Файл не найден в uploadedFiles Map.');
+                oldImagesArray = oldImagesArray.filter(function (item) {
+                    return item !== file.name;
+                });
+                console.log(oldImagesArray);
+            }
+            updateDropzoneMaxFiles()
+        });
+        myDropzone.on("addedfile", function (file) {
+            console.log("Начало загрузки файла: " + file.name);
+
+        });
+        myDropzone.on('queuecomplete', function () {
+            console.log('Загрузка всех файлов завершена.');
+        });
+
+        function updateDropzoneMaxFiles() {
+            const newMaxFiles = (15 - oldImagesArray.length);
+            myDropzone.options.maxFiles = newMaxFiles;
+        }
+
+    </script>
+</section>
+</body>
+</html>

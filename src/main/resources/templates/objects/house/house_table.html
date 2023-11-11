@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Дома и участки</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Дома и участки</li>
+                </ol>
+            </nav>
+        </div>
+        <hr style="margin-top: -5px">
+        <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
+            <p style="margin-right: 5px"><input type="checkbox" style="margin-top: 3px">печать с адресом</p>
+            <button class="btn btn-success" th:onclick="|window.location.href='@{/houses/add}'|" style="margin-right: 5px">Добавить об'єкт</button>
+            <button class="btn btn-success">Распечатать</button>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        Район
+                        <select id="district"></select>
+                        Топзона
+                        <select id="topzone"></select>
+                    </div>
+                    <div class="col-3">
+                        Количество комнат
+                        <br/>
+                        1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1"
+                                 checked>
+                        2 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">
+                        3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">
+                        4 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">
+                    </div>
+                    <div class="col-5">
+                        <div class="row">
+                            <div class="col">
+                                Этаж:
+                                <div style="display: flex">
+                                    <input class="form-control" id="floorMin">
+                                    <div class="mt-2">&mdash;</div>
+                                    <input class="form-control" id="floorMax">
+                                </div>
+                            </div>
+                            <div class="col">
+                                Цена ($):
+                                <div style="display: flex">
+                                    <input class="form-control" id="priceMin">
+                                    <div class="mt-2">&mdash;</div>
+                                    <input class="form-control" id="priceMax">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Участок(кв. м):
+                                <div style="display: flex">
+                                    <input class="form-control" id="plotAreaMin">
+                                    <div class="mt-2">&mdash;</div>
+                                    <input class="form-control" id="plotAreaMax">
+                                </div>
+                            </div>
+                            <div class="col">
+                                Площадь(кв. м):
+                                <div style="display: flex">
+                                    <input class="form-control" id="houseAreaMin">
+                                    <div class="mt-2">&mdash;</div>
+                                    <input class="form-control" id="houseAreaMax">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-4">
+                        Вулиця
+                        <select id="street"></select>
+                    </div>
+                    <div class="col-3">
+                        Дата контакта
+                        <select class="form-control" style="width: 60%;">
+                            <option value=""></option>
+                            <option value="3">3</option>
+                            <option value="7">7</option>
+                            <option value="21">21</option>
+                            <option value="22">21+</option>
+                        </select>
+                    </div>
+                    <div class="col-5">
+                        <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
+                            <button class="btn btn-success" style="margin-right: 5px">Очистить фильтр</button>
+                            <button class="btn btn-success">Поиск</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card border mt-3">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped linkedRow" id="applicationsTable">
+                        <thead>
+                        <tr>
+                            <th>Дата контакта</th>
+                            <th>Код</th>
+                            <th>Район</th>
+                            <th>Топзона</th>
+                            <th>Улица</th>
+                            <th>Комнат</th>
+                            <th>Етаж</th>
+                            <th>Етажность</th>
+                            <th>Площадь</th>
+                            <th>Цена</th>
+                            <th>Реклама</th>
+                            <th>Статус</th>
+                            <th>Фото</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            forSelect2(undefined, undefined, "#district", "/enum/district")
+            forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
+            forSelect2(undefined, undefined, "#street", "/enum/street")
+        });
+    </script>
+</section>
+</body>
+</html>

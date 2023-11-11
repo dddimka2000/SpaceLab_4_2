@@ -66,7 +66,10 @@ public class _PropertyObject {
     private LocalDate vnpExpirationDate;
     private String informationSource;
 
-    private String description, advertisementHeadline, advertisementText;
+    private String descriptionUk, advertisementHeadlineUk, advertisementTextUk;
+    private String descriptionRu, advertisementHeadlineRu, advertisementTextRu;
+    private String descriptionEn, advertisementHeadlineEn, advertisementTextEn;
+
     private Boolean advertisementEnabled;
 
     private String administrationComment;
