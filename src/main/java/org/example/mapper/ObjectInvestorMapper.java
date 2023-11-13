@@ -36,5 +36,12 @@ public interface ObjectInvestorMapper {
         return result;
     }
 
+    @Mappings({
+            @Mapping(target = "pictures", source = "pictures", ignore = true),
+            @Mapping(target = "realtor", source = "employeeCode", ignore = true),
+            @Mapping(target = "files", source = "files", qualifiedByName = "map")
+    })
+    void toOldEntity(@MappingTarget PropertyInvestorObject propertyInvestorObject, PropertyInvestorObjectDTO entity);
+
 
 }

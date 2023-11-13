@@ -10,4 +10,8 @@ public enum PropertyBuildStatus {
     IN_PROGRESS("В процессе"),
     NOT_STARTED("Еще не начата");
     private final String status;
+
+    public String getStatus() {
+        return status;
+    }
 }

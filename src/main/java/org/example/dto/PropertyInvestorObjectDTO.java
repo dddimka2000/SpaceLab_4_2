@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -114,10 +115,12 @@ public class PropertyInvestorObjectDTO {
     public Boolean advertisementEnabled;
     @Size(max = 1000, message = "Комментарий должен быть до 1000 символов.")
     public String administrationComment;//
-    public List<String> filesName;
-    public List<String> picturesName;
-    public List<MultipartFile> files;
-    public List<MultipartFile> pictures;
+    public List<String> filesName= new ArrayList<>();
+    public List<String> picturesName= new ArrayList<>();
+    public List<MultipartFile> files= new ArrayList<>();
+    public List<MultipartFile> pictures= new ArrayList<>();
+    public List<String> oldFiles= new ArrayList<>();
+    public List<String> oldPictures= new ArrayList<>();
     @NotNull(message = "Заполните статус публикации")
     public PublicationStatus publicationStatus;
 }

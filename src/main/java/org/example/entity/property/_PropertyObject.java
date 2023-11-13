@@ -80,7 +80,7 @@ public class _PropertyObject {
     @ElementCollection
     private List<String> pictures;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private BuilderObject builderObject;
 
     @ManyToOne

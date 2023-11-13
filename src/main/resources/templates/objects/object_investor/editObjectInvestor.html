@@ -58,13 +58,13 @@
         <div class="container-fluid">
             <br>
             <div class="d-flex justify-content-between">
-                <h4 class="fw-bold">Новый объект</h4>
+                <h4 class="fw-bold">Редактировать объект</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
                         <li class="breadcrumb-item"><a th:href="@{/investor_objects}">Объекты от инвесторов</a></li>
                         <li class="breadcrumb-item active" aria-current="page" th:href="@{/investor_objects/create}">
-                            Создание объекта от инвестора
+                            Редакция объекта от инвестора
                         </li>
                     </ol>
                 </nav>
@@ -102,7 +102,8 @@
                                 <option selected></option>
                                 <option th:each="entity : ${selectRegion}"
                                         th:value="${entity}"
-                                        th:text="${entity}"></option>
+                                        th:text="${entity}"
+                                        th:selected="${element.getAddress().getRegion() == entity}"></option>
                             </select>
 
                         </div>
@@ -122,7 +123,7 @@
                         <div class="col-2">
                             <h6>Улица</h6>
                             <input class="form-control" type="text" name="street" id="street"
-                                   placeholder="Введите улицу">
+                                   placeholder="Введите улицу" th:value="${element.getAddress().getStreet()}">
                         </div>
                         <div class="col-2">
                             <h6>Топозона</h6>
@@ -130,7 +131,8 @@
                                 <option value="" selected></option>
                                 <option th:each="entity : ${selectTopozone}"
                                         th:value="${entity}"
-                                        th:text="${entity}"></option>
+                                        th:text="${entity}"
+                                        th:selected="${element.getAddress().getZone() == entity}"></option>
                             </select>
 
                         </div>
@@ -140,17 +142,17 @@
                         <div class="col-2">
                             <h6>Номер дома</h6>
                             <input class="form-control" type="number" name="houseNumber"
-                                   placeholder="Введите номер дома">
+                                   placeholder="Введите номер дома" th:value="${element.getAddress().getHouseNumber()}">
                         </div>
                         <div class="col-2">
                             <h6>Секция/Корпус</h6>
                             <input class="form-control" type="number" name="section"
-                                   placeholder="Введите секцию/корпус">
+                                   placeholder="Введите секцию/корпус" th:value="${element.getAddress().getSection()}">
                         </div>
                         <div class="col-2">
                             <h6>Номер квартиры</h6>
                             <input type="text" class="form-control" name="apartmentNumber" id="apartmentNumber"
-                                   placeholder="Введите номер квартиры">
+                                   placeholder="Введите номер квартиры" th:value="${element.getApartmentNumber()}">
                         </div>
                         <div class="col-3" style="display: flex;align-items: end">
                             <button class="btn btn-info" onclick="checkNumber()">Проверить номер телефона</button>
@@ -160,32 +162,34 @@
                     <div class="row">
                         <div class="col-3">
                             <h6>ФИО владельца </h6>
-                            <input class="form-control" type="text" name="owner" placeholder="Введите ФИО владельца">
+                            <input class="form-control" type="text" name="owner" placeholder="Введите ФИО владельца"
+                                   th:value="${element.getOwnerName()}">
                         </div>
                         <div class="col-3">
                             <h6>Телефон</h6>
                             <input type="tel" name="telephone" id="telephone" class="form-control"
-                                   placeholder="Введите номер телефона">
+                                   placeholder="Введите номер телефона" th:value="${element.getOwnerPhone()}">
                         </div>
                         <div class="col-3">
                             <h6>Дата приобретения</h6>
                             <input type="date" class="form-control" placeholder="yyyy/MM/dd"
                                    aria-describedby="defaultFormControlHelp" id="boughtDate" name="boughtDate"
-                                   value="">
+                                   value="" th:value="${element.getBoughtDate()}">
                         </div>
                         <div class="col-3">
                             <h6>Право собственности</h6>
                             <select class="select2 form-select form-select" name="ownership">
-                                <option selected></option>
                                 <option th:each="status : ${ownershipType}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status.status}"
+                                        th:selected="${element.getOwnershipType() == status}"></option>
                             </select>
                         </div>
                     </div>
                     <br>
                     <h6>Важные заметки</h6>
-                    <input class="form-control" type="text" id="notes" placeholder="Введите заметки">
+                    <input class="form-control" type="text" id="notes" placeholder="Введите заметки"
+                           th:value="${element.getNotes()}">
                     <br>
                     <h6>Прикрепить файлы</h6>
                     <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()">
@@ -196,7 +200,8 @@
                     <br>
                     <h3>Комментарий администратора</h3>
                     <textarea class="form-control" style="width: 100%; height: 300px"
-                              name="comment" placeholder="Введите комментарий"></textarea>
+                              name="comment" placeholder="Введите комментарий"
+                              th:text="${element.getAdministrationComment()}"></textarea>
                     <br>
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-contact-tab">
@@ -207,14 +212,14 @@
                                 <option selected></option>
                                 <option th:each="status : ${publicationStatus}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status.status}"
+                                        th:selected="${element.getPublicationStatus() == status}"></option>
                             </select>
-
-
                         </div>
                         <div class="col-2">
                             <h6>Код объекта</h6>
-                            <input class="form-control" type="text" id="codeObject" placeholder="100-101-102" name="codeObject">
+                            <input class="form-control" type="text" id="codeObject" placeholder="100-101-102"
+                                   name="codeObject" th:value="${element.getObjectCode()}">
                         </div>
                         <div class="col-5">
                             <div class="row">
@@ -230,14 +235,15 @@
                             </div>
                             <div class="row" style="display:flex; align-items: center">
                                 <div class="col-3" style="text-align: right">
-                                    <input class="form-control" type="number" id="codeBranch" placeholder="Код филиала" name="codeBranch">
+                                    <input class="form-control" type="number" id="codeBranch" placeholder="Код филиала"
+                                           name="codeBranch" th:value="${element.getBranchCode()}">
                                 </div>
                                 <div class="col-1">
                                     <span><h6>—</h6></span>
                                 </div>
                                 <div class="col-3">
                                     <input class="form-control" type="number" id="codeStaff" name="codeStaff"
-                                           placeholder="Код сотрудника">
+                                           placeholder="Код сотрудника" th:value="${element.getRealtor().getId()}">
                                 </div>
                             </div>
                         </div>
@@ -252,27 +258,31 @@
                         </div>
                         <div class="col-2">
                             <h6>Ориентир</h6>
-                            <input class="form-control" type="text" id="reference_point" placeholder="Введите ориентир">
+                            <input class="form-control" type="text" id="reference_point" placeholder="Введите ориентир"
+                                   th:value="${element.getLandmark()}">
                         </div>
                         <div class="col-2">
                             <h6>Этажность</h6>
                             <input class="form-control" type="number" name="floorQuantity"
-                                   placeholder="Введите этажность">
+                                   placeholder="Введите этажность" th:value="${element.getFloorQuantity()}">
                         </div>
                         <div class="col-2">
                             <h6>Этаж</h6>
-                            <input class="form-control" type="number" name="floor" placeholder="Введите этаж">
+                            <input class="form-control" type="number" name="floor" placeholder="Введите этаж"
+                                   th:value="${element.getFloor()}">
                         </div>
                         <div class="col-2">
                             <h6>Комнат</h6>
-                            <input class="form-control" type="number" id="rooms" placeholder="Введите кол-во комнат">
+                            <input class="form-control" type="number" id="rooms" placeholder="Введите кол-во комнат"
+                                   th:value="${element.getRoomQuantity()}">
                         </div>
                         <div class="col-2">
                         </div>
                     </div>
                     <br>
                     <h6>Цена</h6>
-                    <input class="form-control" type="number" id="price" placeholder="Введите цену">
+                    <input class="form-control" type="number" id="price" placeholder="Введите цену"
+                           th:value="${element.getPrice()}">
                     <br>
                     <div class="row">
                         <div class="col-2">
@@ -281,40 +291,43 @@
                                 <option selected></option>
                                 <option th:each="status : ${propertyBuildStatus}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status.status}"
+                                        th:selected="${element.getBuildStatus() == status}"
+                                ></option>
                             </select>
                         </div>
-<!--                        <div class="col-2">-->
-<!--                            <h6>Год срока сдачи дома</h6>-->
-<!--                            <input type="number" class="form-control" placeholder="Введите год срока сдачи дома">-->
-<!--                        </div>-->
+                        <!--                        <div class="col-2">-->
+                        <!--                            <h6>Год срока сдачи дома</h6>-->
+                        <!--                            <input type="number" class="form-control" placeholder="Введите год срока сдачи дома">-->
+                        <!--                        </div>-->
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-2">
                             <h6>S общая (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaTotal"
-                                   placeholder="Введите общую площадь" >
+                                   placeholder="Введите общую площадь" th:value="${element.getAreaTotal()}">
                         </div>
                         <div class="col-2">
                             <h6>S жилая (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaLiving" placeholder="Введите жилую площадь">
+                            <input class="form-control" type="number" id="areaLiving"
+                                   placeholder="Введите жилую площадь" th:value="${element.getAreaLiving()}">
                         </div>
                         <div class="col-2">
                             <h6>S кухни (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaKitchen"
-                                   placeholder="Введите площадь кухни" >
+                                   placeholder="Введите площадь кухни" th:value="${element.getAreaKitchen()}">
                         </div>
                         <div class="col-2">
                             <h6>Метраж комнат</h6>
                             <input class="form-control" type="text" id="footageOfRooms"
-                                   placeholder="10+10+10">
+                                   placeholder="10+10+10" th:value="${element.getRoomMeters()}">
 
                         </div>
                         <div class="col-2">
                             <h6>Высота потолка (м)</h6>
                             <input class="form-control" type="number" step="0.01" id="myNumberInput"
-                                   placeholder="Введите высоту потолка">
+                                   placeholder="Введите высоту потолка" th:value="${element.getHeightCeiling()}">
                         </div>
                         <div class="col-2">
                         </div>
@@ -324,7 +337,7 @@
                         <div class="col-3">
                             <h6>Материал стен</h6>
                             <input class="form-control" type="text" id="wall_material"
-                                   placeholder="Введите материал стен">
+                                   placeholder="Введите материал стен" th:value="${element.getWallMaterial()}">
                         </div>
                         <div class="col-3">
                             <h6>Состояние квартиры</h6>
@@ -332,7 +345,8 @@
                                 <option selected></option>
                                 <option th:each="status : ${propertyOrigin}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status.status}"
+                                        th:selected="${element.getPropertyOrigin()}"></option>
                             </select>
                         </div>
                     </div>
@@ -344,7 +358,8 @@
                                 <option selected></option>
                                 <option th:each="status : ${kitchenType}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status.status}"
+                                        th:selected="${element.getKitchenType()}"></option>
                             </select></div>
                         <div class="col-3">
                             <h6>Санузел</h6>
@@ -352,7 +367,8 @@
                                 <option selected></option>
                                 <option th:each="status : ${bathroomType}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status.status}"
+                                        th:selected="${element.getBathroomType()}"></option>
                             </select>
                         </div>
                         <div class="col-2">
@@ -361,7 +377,8 @@
                                 <option selected></option>
                                 <option th:each="status : ${balconyType}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status.status}"
+                                        th:selected="${element.getBalconyType()}"></option>
                             </select>
                         </div>
                         <div class="col-2">
@@ -370,7 +387,8 @@
                                 <option selected></option>
                                 <option th:each="status : ${windowViewType}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status.status}"
+                                        th:selected="${element.getWindowViewType()}"></option>
                             </select>
                         </div>
                     </div>
@@ -378,11 +396,12 @@
                     <div class="row">
                         <div class="col-3">
                             <h6>Кухонная плита</h6>
-                            <select  class="select2 form-select form-select" name="kitchenStoveType" id="kitchenStove">
+                            <select class="select2 form-select form-select" name="kitchenStoveType" id="kitchenStove">
                                 <option selected></option>
                                 <option th:each="status : ${kitchenStoveType}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status.status}"
+                                        th:selected="${element.getKitchenStoveType()}"></option>
                             </select></div>
                         <div class="col-3">
                             <h6>Отопление
@@ -391,7 +410,8 @@
                                 <option selected></option>
                                 <option th:each="status : ${heatingType}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status.status}"
+                                        th:selected="${element.getHeatingType()}"></option>
                             </select>
                         </div>
                         <br>
@@ -403,48 +423,55 @@
                             <h6>Дата последнего контакта</h6>
                             <input type="date" class="form-control" placeholder="yyyy/MM/dd"
                                    aria-describedby="defaultFormControlHelp" id="dateLastContact" name="dateLastContact"
-                                   value="">
+                                   th:value="${element.getLastContactDate()}">
                         </div>
                         <div class="col-1" style="display: flex; align-items: end">
-                            <input class="form-check-input" type="checkbox" value="true" name="statusVNP">
+                            <input class="form-check-input" type="checkbox" value="true" name="statusVNP"
+                                   th:checked="${element.getVnp}">
                             <span class="checkmark"> ВНП</span>
                         </div>
                         <div class="col-2">
                             <h6>Дата внп до</h6>
                             <input type="date" class="form-control" placeholder="yyyy/MM/dd"
                                    aria-describedby="defaultFormControlHelp" id="dateVNP" name="dateVnp"
-                                   value="">
+                                   th:value="${element.getVnpExpirationDate()}">
                         </div>
                         <div class="col-2">
                             <h6>Источник информации</h6>
                             <input type="text" class="form-control" id="sourceInformation"
-                                   placeholder="Введите источник информации">
+                                   placeholder="Введите источник информации" th:value="${element.informationSource}">
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" name="tor">
-                            <span class="checkmark">Торг</span>
+                            <input class="form-check-input" type="checkbox" value="true" name="tor"
+                                   th:checked="${element.bargain}">
+                            <span class="checkmark" t>Торг</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" name="exclusive">
+                            <input class="form-check-input" type="checkbox" value="true" name="exclusive"
+                                   th:checked="${element.exclusive}">
                             <span class="checkmark">Ексклюзив</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" name="urgently">
+                            <input class="form-check-input" type="checkbox" value="true" name="urgently"
+                                   th:checked="${element.urgent}">
                             <span class="checkmark">Срочно</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" name="free">
+                            <input class="form-check-input" type="checkbox" value="true" name="free"
+                                   th:checked="${element.free}">
                             <span class="checkmark">Свободная</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" name="objectOpen">
+                            <input class="form-check-input" type="checkbox" value="true" name="objectOpen"
+                                   th:checked="${element.open}">
                             <span class="checkmark">Объект открыт</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" name="fromIntermediary">
+                            <input class="form-check-input" type="checkbox" value="true" name="fromIntermediary"
+                                   th:checked="${element.intermediary}">
                             <span class="checkmark">От посредника</span>
                         </div>
                     </div>
@@ -452,18 +479,20 @@
                     <br>
                     <h6>Описание</h6>
                     <textarea class="form-control" style="width: 100%; height: 300px"
-                              name="descriptionObject" placeholder="Введите описание"></textarea>
+                              name="descriptionObject" placeholder="Введите описание"
+                              th:text="${element.description}"></textarea>
                     <br>
                     <h6>Рекламный заголовок</h6>
                     <input type="text" name="advertisingName" id="promotionName" class="form-control"
-                           placeholder="Укажите рекламный заголовок">
+                           placeholder="Укажите рекламный заголовок" th:value="${element.advertisementHeadline}">
                     <br>
                     <h6>Рекламный текст</h6>
                     <textarea style="width: 100%; height: 300px" name="advertisingText"
-                              class="form-control" placeholder="Введите рекламный текст"></textarea>
+                              class="form-control" placeholder="Введите рекламный текст"
+                              th:text="${element.advertisementText}"></textarea>
                     <br>
                     <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"><span
-                        class="checkmark">Рекламировать</span>
+                        class="checkmark" th:checked="${element.advertisementEnabled}">Рекламировать</span>
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-profile-tab">
 
@@ -509,17 +538,15 @@
 
     <script th:inline="javascript">
         function checkNumber() {
-            let checkNumber=$("#telephone").val()
+            let checkNumber = $("#telephone").val()
             var regExp = /^\+380(31|32|33|34|35|36|38|39|41|43|44|45|46|20|89|94|92|91|67|68|96|97|98|70|90|91|67|68|96|97|98|70|87|89|50|66|95|99)\d{7}$/;
             console.log(checkNumber)
-            if(regExp.test(checkNumber)) {
-                showNotification("Номер корректный","",true)
-            }else {
-                showNotification("Такого номера не существует","",false)
+            if (regExp.test(checkNumber)) {
+                showNotification("Номер корректный", "", true)
+            } else {
+                showNotification("Такого номера не существует", "", false)
             }
         }
-
-
 
         function sendForm() {
             let formData = new FormData();
@@ -530,7 +557,7 @@
                 city: $('[name="city"]').val(),
                 zone: $('[name="topozone"]').val(),
                 section: $('[name="section"]').val(),
-                houseNumber:  $('[name="houseNumber"]').val()
+                houseNumber: $('[name="houseNumber"]').val()
             };
             for (var key in address) {
                 if (address.hasOwnProperty(key)) {
@@ -550,6 +577,15 @@
                 for (const [key, file] of fileMap) {
                     formData.append(key, file);
                     formData.append(`files[${indexFilesMap}]`, file);
+                    indexFilesMap++;
+                }
+            }
+            indexFilesMap = 0
+
+            if (oldFileMap.size > 0) {
+                for (const [key, file] of oldFileMap) {
+                    formData.append(key, file);
+                    formData.append(`oldFiles[${indexFilesMap}]`, file);
                     indexFilesMap++;
                 }
             }
@@ -607,16 +643,19 @@
 
             let i = 1;
             for (let [fileName, file] of uploadedFiles) {
-                if (i > 15) {
+                if (i > (15 - oldImagesArray.length)) {
                     break;
                 }
                 formData.append("pictures[]", file);
                 i++;
             }
+
+            formData.append("oldPictures", oldImagesArray);
+
             console.log(formData.get("pictures[]"))
 
             let contextPath =/*[[@{/}]]*/'';
-            let url = contextPath.toString() + "investor_objects/create";
+            let url = contextPath.toString() + "investor_objects/edit/"+idEntity;
             $.ajax({
                 url: url,
                 method: "POST",
@@ -628,7 +667,7 @@
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status === 400) {
-                        var errors = JSON.parse(xhr.responseText);
+                        let errors = JSON.parse(xhr.responseText);
                         errors.forEach(function (error) {
                             console.log("Ошибка: " + error);
                             showNotification("Ошибка!", error, false);
@@ -639,7 +678,6 @@
                     }
                 }
             })
-
         }
 
         var fileInput = document.getElementById("fileInput");
@@ -673,7 +711,7 @@
                         lineBreak2.id = "lineBreak2" + numFile;
                         let numListener = numFile;
                         deleteButton.addEventListener("click", function () {
-                            deleteFile(fileLink.id, deleteButton.id, lineBreak.id, lineBreak2.id, numListener);
+                            deleteFile(fileLink.id, deleteButton.id, lineBreak.id, lineBreak2.id, numListener,fileMap);
                         });
                         fileList.appendChild(lineBreak);
                         fileList.appendChild(lineBreak2);
@@ -691,27 +729,33 @@
             branchSelect3()
         })
 
-        function deleteFile(e, e2, e3, e4, num) {
+        function deleteFile(e, e2, e3, e4, num, fileMap) {
             $("#" + e).remove();
             $("#" + e2).remove();
             $("#" + e3).remove();
             $("#" + e4).remove();
             fileMap.delete(num);
+
         }
+
         var inputElement = document.getElementById("codeObject");
-        inputElement.addEventListener("input", function() {
+        inputElement.addEventListener("input", function () {
             var inputValue = inputElement.value;
             var numericValue = inputValue.replace(/[^0-9-]/g, '');
             inputElement.value = numericValue;
         });
         var inputElement2 = document.getElementById("footageOfRooms");
-        inputElement2.addEventListener("input", function() {
+        inputElement2.addEventListener("input", function () {
             var inputValue = inputElement2.value;
             var numericValue = inputValue.replace(/[^0-9+]/g, '');
             inputElement2.value = numericValue;
         });
+
         function branchSelect3() {
             let contextPath = /*[[@{/}]]*/ '';
+            let residentialComplexId = /*[[${element.getResidentialComplexId()}]]*/ '';
+            let elementObjectBuilder = /*[[${elementObjectBuilder}]]*/ '';
+
             $('#branchSelect3').select2({
                 ajax: {
                     url: contextPath + 'builder_objects/for/select',
@@ -738,8 +782,12 @@
                         };
                     },
                     cache: true
-                }
+                },
             });
+            console.log(residentialComplexId)
+            $('#branchSelect3').append(new Option(elementObjectBuilder, residentialComplexId, true, true));
+            // Установка начального значения
+            $('#branchSelect3').val(residentialComplexId).trigger('change');
         }
 
 
@@ -908,11 +956,152 @@
                 });
             }
         });
+        document.addEventListener("DOMContentLoaded", function () {
+            let imagesDropzoneBase64 = /*[[${base64Images}]]*/ '';
+            let base64ImagesSize = /*[[${base64ImagesSize}]]*/ '';
+            let base64ImagesName = /*[[${base64ImagesListName}]]*/ '';
+            let i = 1;
+            imagesDropzoneBase64.forEach(function (base64Image) {
+                let img = `data:image/jpeg;base64, ${base64Image}`;
+                oldImagesArray.push(base64ImagesName[i - 1])
+                const mockFile = {name: base64ImagesName[i - 1], dataURL: img, size: base64ImagesSize[i - 1]};
+                myDropzone.emit("addedfile", mockFile);
+                myDropzone.emit("thumbnail", mockFile, img);
+                myDropzone.emit("complete", mockFile);
+
+                i++;
+            });
+            updateDropzoneMaxFiles()
+
+            let contextPath = /*[[@{/}]]*/ '';
+            let checkObject = /*[[${element.getAddress().getRegion()}]]*/ '';
+            let checkObjectCity = /*[[${element.getAddress().getCity()}]]*/ '';
+            let checkObjectDistrict = /*[[${element.getAddress().getDistrict()}]]*/ '';
+            let url = contextPath.toString() + "getCity/" + checkObject.toString();
+            console.log(url)
+            $.ajax({
+                url: url,
+                method: "GET",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    if (Array.isArray(data)) {
+                        const container = $('[name="city"]');
+                        if (container.is(':disabled')) {
+                            container.removeAttr('disabled');
+                        }
+                        container.empty();
+                        let selectionItem = '<option value=""></option> ';
+                        if (data.length > 0) {
+                            data.forEach(function (category) {
+                                selectionItem += '<option value="' + category + '"';
+                                if (category === checkObjectCity) {
+                                    console.log("Успех")
+                                    selectionItem += ' selected '
+                                }
+                                selectionItem += '>' + category + '</option>';
+
+                            });
+                        }
+                        container.append(selectionItem);
+                    }
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+
+            url = contextPath.toString() + "getDistrict/" + checkObjectCity.toString();
+            $.ajax({
+                url: url,
+                method: "GET",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    if (Array.isArray(data)) {
+                        const container = $('[name="district"]');
+                        if (container.is(':disabled')) {
+                            container.removeAttr('disabled');
+                        }
+                        container.empty();
+                        let selectionItem = '<option value=""></option> ';
+                        if (data.length > 0) {
+                            data.forEach(function (category) {
+                                selectionItem += '<option value="' + category + '"';
+                                console.log(category)
+                                if (category === checkObjectDistrict) {
+                                    selectionItem += ' selected '
+                                }
+                                selectionItem += '>' + category + '</option>';
+
+                            });
+                        }
+                        container.append(selectionItem);
+                    }
+                },
+                error: function (error) {
+                    console.log("Error:", error);
+                }
+            });
+
+
+
+            fetch(contextPath+"investor_objects/files/"+idEntity)
+                .then(response => response.json())  // Преобразование ответа в JSON
+                .then(data => {
+                    console.log("Received data from server:", data);
+                    displayFiles(data);
+                })
+                .catch(error => console.error('Error fetching files:', error));
+        });
+        let idEntity =/*[[${element.id}]]*/ '';
+
+        function displayFiles(base64FileList) {
+            if (!Array.isArray(base64FileList)) {
+                console.error("Invalid data format. Expected an array.");
+                return;
+            }
+
+            var fileList = document.getElementById("fileList");
+            let filesElement =/*[[${element.files}]]*/ [];
+
+            // Создание элементов для отображения или скачивания файлов
+            base64FileList.forEach(function (base64Data, index) {
+                var fileName = filesElement[index];
+                var link = document.createElement("a");
+                link.href = "data:application/octet-stream;base64," + base64Data;
+                link.download = filesElement[index];
+                link.textContent = fileName;
+                link.id="oldFile"+index;
+                fileList.appendChild(link);
+
+                let deleteButton = document.createElement("button");
+                deleteButton.style.marginLeft = "20px";
+                deleteButton.classList.add("btn", "btn-danger", "btn-sm", "float-right", "for-delete");
+                deleteButton.innerHTML = `<i class="fa fa-trash"></i>`;
+                deleteButton.id = "deleteOldFile" + index;
+                fileList.appendChild(deleteButton);
+                var lineBreak = document.createElement("br");
+                lineBreak.id = "lineBreakOld" + index;
+                var lineBreak2 = document.createElement("br");
+                lineBreak2.id = "lineBreakOld2" + index;
+                let numListener = index;
+
+                deleteButton.addEventListener("click", function () {
+                    deleteFile(link.id, deleteButton.id, lineBreak.id, lineBreak2.id, numListener, oldFileMap);
+                });
+                fileList.appendChild(lineBreak);
+                fileList.appendChild(lineBreak2);
+                oldFileMap.set(numListener, fileName);
+                numFile++;
+            });
+        }
+        oldFileMap=new Map();
+
+
 
 
     </script>
 </main>
-
-
 </body>
 </html>

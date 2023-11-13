@@ -50,7 +50,7 @@ public class BuyerApplication {
     private Realtor realtor;
     private String phone;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_builder_object", referencedColumnName = "id")
     @ToString.Exclude
     private BuilderObject builderObject;

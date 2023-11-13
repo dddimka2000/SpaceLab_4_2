@@ -566,56 +566,56 @@ public class ObjectsBuilderController {
                 .body(resource);
     }
 
-    @PostMapping("/generate-excel")
-    public ResponseEntity generateExcel(HttpServletResponse response, @RequestBody ArrayList<ObjectBuilderDtoSearch> objectBuilderDTOSearchList) throws IOException {
-        log.info(objectBuilderDTOSearchList);
-
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Название листа");
-
-        CellStyle boldStyle = workbook.createCellStyle();
-        Font font = workbook.createFont();
-        font.setBold(true);
-        boldStyle.setFont(font);
-
-        Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Название");
-        headerRow.createCell(1).setCellValue("Район");
-        headerRow.createCell(2).setCellValue("Топозона");
-        headerRow.createCell(3).setCellValue("Улица");
-        headerRow.createCell(4).setCellValue("Этажность");
-        headerRow.createCell(5).setCellValue("Цена от");
-
-        for (int i = 0; i < 6; i++) {
-            headerRow.getCell(i).setCellStyle(boldStyle);
-        }
-        int num=1;
-        for (ObjectBuilderDtoSearch objectBuilderDtoSearch:objectBuilderDTOSearchList){
-            Row row = sheet.createRow(num);
-            row.createCell(0).setCellValue(objectBuilderDtoSearch.getName());
-            row.createCell(1).setCellValue(objectBuilderDtoSearch.getDistrict());
-            row.createCell(2).setCellValue(objectBuilderDtoSearch.getTopozone());
-            row.createCell(3).setCellValue(objectBuilderDtoSearch.getStreet());
-            row.createCell(4).setCellValue(objectBuilderDtoSearch.getFloorQuantity());
-            row.createCell(5).setCellValue(objectBuilderDtoSearch.getMinPrice());
-            num++;
-        }
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        workbook.write(bos);
-        byte[] bytes = bos.toByteArray();
-
-        log.info(bytes);
-        HttpHeaders headers = new HttpHeaders();
-
-        headers.add("Content-Disposition", "inline; filename=example.xlsx");
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(bytes);    }
-
+//    @PostMapping("/generate-excel")
+//    public ResponseEntity generateExcel(HttpServletResponse response, @RequestBody ArrayList<ObjectBuilderDtoSearch> objectBuilderDTOSearchList) throws IOException {
+//        log.info(objectBuilderDTOSearchList);
+//
+//        Workbook workbook = new XSSFWorkbook();
+//        Sheet sheet = workbook.createSheet("Название листа");
+//
+//        CellStyle boldStyle = workbook.createCellStyle();
+//        Font font = workbook.createFont();
+//        font.setBold(true);
+//        boldStyle.setFont(font);
+//
+//        Row headerRow = sheet.createRow(0);
+//        headerRow.createCell(0).setCellValue("Название");
+//        headerRow.createCell(1).setCellValue("Район");
+//        headerRow.createCell(2).setCellValue("Топозона");
+//        headerRow.createCell(3).setCellValue("Улица");
+//        headerRow.createCell(4).setCellValue("Этажность");
+//        headerRow.createCell(5).setCellValue("Цена от");
+//
+//        for (int i = 0; i < 6; i++) {
+//            headerRow.getCell(i).setCellStyle(boldStyle);
+//        }
+//        int num=1;
+//        for (ObjectBuilderDtoSearch objectBuilderDtoSearch:objectBuilderDTOSearchList){
+//            Row row = sheet.createRow(num);
+//            row.createCell(0).setCellValue(objectBuilderDtoSearch.getName());
+//            row.createCell(1).setCellValue(objectBuilderDtoSearch.getDistrict());
+//            row.createCell(2).setCellValue(objectBuilderDtoSearch.getTopozone());
+//            row.createCell(3).setCellValue(objectBuilderDtoSearch.getStreet());
+//            row.createCell(4).setCellValue(objectBuilderDtoSearch.getFloorQuantity());
+//            row.createCell(5).setCellValue(objectBuilderDtoSearch.getMinPrice());
+//            num++;
+//        }
+//
+//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//        workbook.write(bos);
+//        byte[] bytes = bos.toByteArray();
+//
+//        log.info(bytes);
+//        HttpHeaders headers = new HttpHeaders();
+//
+//        headers.add("Content-Disposition", "inline; filename=example.xlsx");
+//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+//
+//        return ResponseEntity.ok()
+//                .headers(headers)
+//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+//                .body(bytes);    }
+//
 
     @GetMapping("/for/select")
     @ResponseBody
