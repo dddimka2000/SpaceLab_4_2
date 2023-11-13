@@ -51,7 +51,8 @@ public class BuyerApplication {
     private String phone;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_builder_object", referencedColumnName = "id")
+    @JoinColumn(name = "id_builder_object", referencedColumnName = "id", nullable = true)
+    @JsonManagedReference
     @ToString.Exclude
     private BuilderObject builderObject;
 

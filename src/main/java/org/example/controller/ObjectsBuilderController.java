@@ -332,7 +332,6 @@ public class ObjectsBuilderController {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional
     @PostMapping("/edit/{id}")
     public ResponseEntity EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDtoEdit objectBuilderDtoEdit, BindingResult bindingResult, @PathVariable Integer id)
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException

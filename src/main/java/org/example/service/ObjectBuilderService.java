@@ -30,17 +30,19 @@ public class ObjectBuilderService {
 
     public Optional<BuilderObject> findById(Integer id) {
         log.info("ObjectBuilderService-findById start");
-        Optional<BuilderObject> entity=builderObjectRepository.findById(id);
+        Optional<BuilderObject> entity = builderObjectRepository.findById(id);
         log.info("ObjectBuilderService-findById successfully");
         return entity;
     }
-    public Page<BuilderObject> findBuilderObjectsByCriteria(String name, String district,String zone, String street, Integer floorQuantity,  Integer minPrice, Pageable pageable) {
+
+    public Page<BuilderObject> findBuilderObjectsByCriteria(String name, String district, String zone, String street, Integer floorQuantity, Integer minPrice, Pageable pageable) {
         Specification<BuilderObject> spec = new BuilderObjectSpecification(name, district, zone, street, floorQuantity, minPrice);
         return builderObjectRepository.findAll(spec, pageable);
     }
+
     public Optional<BuilderObject> findByName(String name) {
         log.info("ObjectBuilderService-findByName start");
-        Optional<BuilderObject> entity=builderObjectRepository.findByName(name);
+        Optional<BuilderObject> entity = builderObjectRepository.findByName(name);
         log.info("ObjectBuilderService-findByName successfully");
         return entity;
     }
@@ -52,9 +54,14 @@ public class ObjectBuilderService {
     }
 
     public void deleteById(Integer id) {
-        log.info("ObjectBuilderService-deleteById start");
-        builderObjectRepository.deleteById(id);
-        log.info("ObjectBuilderService-deleteById successfully");
+        log.info("ObjectBuilderService-deleteById start: " + id);
+        Optional<BuilderObject> builderObject = builderObjectRepository.findById(id);
+        if (builderObject.isPresent()) {
+            builderObjectRepository.delete(builderObject.get());
+            log.info("ObjectBuilderService-deleteById successfully: " + id);
+        } else {
+            log.error("builderObject empty");
+        }
     }
 
     public Page<BuilderObject> findBuilderObjectsPage(Integer pageNumber, Integer pageSize) {
@@ -66,6 +73,7 @@ public class ObjectBuilderService {
         log.info("ObjectBuilderService-findAllQuestionPages successfully");
         return page;
     }
+
     public Page<BuilderObject> forSelect(String name, Pageable pageable) {
         return builderObjectRepository.findAll(Specification.where(BuilderObjectSpecification.nameContains(name)), pageable);
     }

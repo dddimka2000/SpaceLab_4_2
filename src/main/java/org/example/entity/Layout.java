@@ -26,7 +26,7 @@ public class Layout {
     private String img3;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_builder_object", referencedColumnName = "id")
     private BuilderObject builderObject;
 

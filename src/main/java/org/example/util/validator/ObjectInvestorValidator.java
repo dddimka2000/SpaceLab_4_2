@@ -5,7 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.example.dto.ObjectBuilderDto;
 import org.example.dto.ObjectBuilderDtoEdit;
 import org.example.dto.PropertyInvestorObjectDTO;
-import org.example.service.BranchService;
+import org.example.service.BranchServiceImpl;
 import org.example.service.ObjectBuilderService;
 import org.example.service.PropertyInvestorObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class ObjectInvestorValidator implements Validator {
     private final
     PropertyInvestorObjectService propertyInvestorObjectService;
 
-    public ObjectInvestorValidator(PropertyInvestorObjectService propertyInvestorObjectService, BranchService branchService) {
+    public ObjectInvestorValidator(PropertyInvestorObjectService propertyInvestorObjectService, BranchServiceImpl branchService) {
         this.propertyInvestorObjectService = propertyInvestorObjectService;
         this.branchService = branchService;
     }
@@ -42,7 +42,7 @@ public class ObjectInvestorValidator implements Validator {
         return PropertyInvestorObjectDTO.class.isAssignableFrom(clazz) || ObjectBuilderDtoEdit.class.isAssignableFrom(clazz);
     }
     private final
-    BranchService branchService;
+    BranchServiceImpl branchService;
 
     @Override
     public void validate(Object target, Errors errors) {

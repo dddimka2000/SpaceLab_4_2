@@ -1,7 +1,9 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.example.entity.property.type.PropertyBuildStatus;
 import org.example.entity.property.type.PropertyObjectAddress;
 
@@ -34,7 +36,11 @@ public class BuilderObject {
     })
     private BuilderObjectPromotion promotion;
 
-    @OneToMany(mappedBy = "builderObject",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "builderObject",fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Layout> layouts;
+
+    @OneToMany(mappedBy = "builderObject", cascade = CascadeType.DETACH)
+    private List<BuyerApplication> buyerApplications;
 
 }

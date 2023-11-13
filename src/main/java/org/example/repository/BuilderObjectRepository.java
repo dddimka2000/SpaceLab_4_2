@@ -23,7 +23,6 @@ public interface BuilderObjectRepository extends JpaRepository<BuilderObject, In
     Optional<BuilderObject> findByName(String name);
 
 
-    @Override
     void deleteById(Integer integer);
 
 

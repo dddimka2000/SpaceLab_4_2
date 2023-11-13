@@ -21,34 +21,24 @@ public class LayoutService {
     }
 
     public List<Layout> findByBuilderObject(BuilderObject entity) {
-        log.info("LayoutService-findByBuilderObject start");
         List<Layout> list=layoutRepository.findByBuilderObject(entity);
-        log.info("LayoutService-findByBuilderObject successfully");
         return list;
     }
     public void save(Layout entity) {
-        log.info("LayoutService-save start");
         layoutRepository.save(entity);
-        log.info("LayoutService-save successfully");
     }
 
     public void deleteById(Integer id) {
-        log.info("LayoutService-deleteById start");
         layoutRepository.deleteById(id);
-        log.info("LayoutService-deleteById successfully");
     }
 
     public List<Layout> findLayoutsPage(BuilderObject builderObject) {
-        log.info("LayoutService-findById start");
         List<Layout> list=layoutRepository.findByBuilderObject(builderObject);
-        log.info("LayoutService-findById successfully");
         return list;
     }
 
     public void deleteAllByBuilderObject(BuilderObject builderObject) {
-        log.info("LayoutService-deleteAllByBuilderObject start");
         layoutRepository.deleteAllByBuilderObject(builderObject);
-        log.info("LayoutService-deleteAllByBuilderObject successfully");
     }
 
 }
