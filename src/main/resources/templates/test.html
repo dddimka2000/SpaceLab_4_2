@@ -7,6 +7,10 @@
 >
 <head>
     <title>Content page</title>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 
 <body>
@@ -14,12 +18,8 @@
 <section layout:fragment="content">
     <select id="branchSelect3" style="margin-right: 12px; margin-left: 12px;"></select>
     <br>
-    <form id="testEmailForm" th:action="@{/testEmail}" method="POST">
-        <button type="submit" class="btn btn-success">TEST EMAIL</button>
-    </form>
-
     <br>
-
+<h1>title</h1>
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
@@ -36,6 +36,13 @@
                 </div>
             </div>
         </div>
+
+        <span th:text="#{title}"></span>:
+        <select id="locales">
+            <option value=""></option>
+            <option value="eng" th:text="#{title.eng}"></option>
+            <option value="ru" th:text="#{title.ru}"></option>
+        </select>
 
         <div class="card-body" hidden>
             <form action="/upload" class="dropzone needsclick dz-clickable" id="dropzone-multi">
@@ -86,6 +93,22 @@
         }
 
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#locales").change(function () {
+                var selectedOption = $('#locales').val();
+                if (selectedOption != ''){
+                    window.location.replace('test?translation=' + selectedOption);
+                }
+            });
+        });
+    </script>
+
+
+
+
 </section>
 </body>
 </html>
