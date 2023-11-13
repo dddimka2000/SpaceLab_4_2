@@ -48,3 +48,21 @@ function textForTable(str, length) {
     return str;
 }
 
+function createStatusIcon(dateString) {
+    const inputDate = new Date(dateString);
+    const currentDate = new Date();
+    const timeDiff = inputDate - currentDate;
+    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) * -1;
+    let color = "red";
+    if (daysDiff <= 3) {
+        color = "green";
+    } else if (daysDiff <= 7) {
+        color = "blue";
+    } else if (daysDiff <= 21) {
+        color = "orange";
+    }
+    const icon = document.createElement("div");
+    icon.className = "d-flex";
+    icon.innerHTML = `<i class="fas fa-info-circle" style="color: ${color}"></i>`;
+    return icon;
+}

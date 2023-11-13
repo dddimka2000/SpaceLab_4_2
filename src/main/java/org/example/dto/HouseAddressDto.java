@@ -16,15 +16,5 @@ public class HouseAddressDto {
     private String district;
     private String street;
     private String zone;
-    private String ownerName;
-    private String ownerPhone;
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    private LocalDate boughtDate;
-    private OwnershipType ownershipType;
-    private String notes;
-    private String cadastralNumber;
-    private String plotDescription;
-    private List<MultipartFile> files;
-    private String administrationComment;
 
 }

@@ -33,18 +33,17 @@
                 <div class="row">
                     <div class="col-4">
                         Район
-                        <select id="district"></select>
+                        <select id="district" multiple></select>
                         Топзона
-                        <select id="topzone"></select>
+                        <select id="topzone" multiple></select>
                     </div>
                     <div class="col-3">
                         Количество комнат
                         <br/>
-                        1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1"
-                                 checked>
+                        1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1">
                         2 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">
                         3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">
-                        4 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">
+                        >3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">
                     </div>
                     <div class="col-5">
                         <div class="row">
@@ -92,8 +91,8 @@
                     </div>
                     <div class="col-3">
                         Дата контакта
-                        <select class="form-control" style="width: 60%;">
-                            <option value=""></option>
+                        <select class="form-control" style="width: 60%;" id="lastContactDate">
+                            <option></option>
                             <option value="3">3</option>
                             <option value="7">7</option>
                             <option value="21">21</option>
@@ -102,8 +101,8 @@
                     </div>
                     <div class="col-5">
                         <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
-                            <button class="btn btn-success" style="margin-right: 5px">Очистить фильтр</button>
-                            <button class="btn btn-success">Поиск</button>
+                            <button class="btn btn-label-secondary" onclick="clearFilter()" style="margin-right: 5px">Очистить фильтр</button>
+                            <button class="btn btn-label-secondary" onclick="getPageWithFilter(0)">Поиск</button>
                         </div>
                     </div>
                 </div>
@@ -112,7 +111,7 @@
         <div class="card border mt-3">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped linkedRow" id="applicationsTable">
+                    <table class="table table-bordered table-hover table-striped linkedRow" id="houseTable">
                         <thead>
                         <tr>
                             <th>Дата контакта</th>
@@ -122,14 +121,12 @@
                             <th>Улица</th>
                             <th>Комнат</th>
                             <th>Етаж</th>
-                            <th>Етажность</th>
                             <th>Площадь</th>
                             <th>Цена</th>
                             <th>Реклама</th>
                             <th>Статус</th>
                             <th>Фото</th>
-                            <th></th>
-                            <th></th>
+                            <th style="min-width: 130px;"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -137,14 +134,125 @@
                     </table>
                 </div>
             </div>
+            <div class="card-footer">
+                <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                    id="pagination_container">
+                </ul>
+            </div>
         </div>
     </div>
     <script>
         $(document).ready(function () {
             forSelect2(undefined, undefined, "#district", "/enum/district")
             forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
-            forSelect2(undefined, undefined, "#street", "/enum/street")
+            forSelect2('', '', "#street", "/enum/street")
+            getPageWithFilter(0)
+            $('#lastContactDate').select2({
+                minimumResultsForSearch: -1,
+            })
         });
+        function getPageWithFilter(page) {
+            this.page = page
+            let formData = new FormData();
+            formData.append('page', page)
+            formData.append('district', $('#district').val())
+            console.log($('.roomNumbers:checked').val())
+            if($('.roomNumbers:checked').val())formData.append('numberRooms', $('.roomNumbers:checked').val())
+            else formData.append('numberRooms', 0)
+            formData.append('minFloor', $('#floorMin').val())
+            formData.append('maxFloor', $('#floorMax').val())
+            formData.append('minPrice', $('#priceMin').val())
+            formData.append('maxPrice', $('#priceMax').val())
+            formData.append('topozone', $('#topzone').val())
+            formData.append('plotAreaMin', $('#plotAreaMin').val())
+            formData.append('plotAreaMax', $('#plotAreaMax').val())
+            formData.append('minArea', $('#houseAreaMin').val())
+            formData.append('maxArea', $('#houseAreaMax').val())
+            formData.append('street', $('#street').val())
+            formData.append('lastContactDate', $('#lastContactDate').val())
+            $.ajax({
+                type: "Post",
+                url: '[[@{/houses/get/all}]]',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (houses) {
+                    var table = document.getElementById("houseTable");
+                    var tbody = table.querySelector("tbody");
+                    $('#houseTable tbody').empty();
+
+                    for (var house of houses.content) {
+                        var newRow = tbody.insertRow();
+                        console.log(house)
+                        var cell0 = newRow.insertCell(0);
+                        cell0.appendChild(createStatusIcon(house.lastContactDate))
+                        cell0.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
+
+                        var cell1 = newRow.insertCell(1);
+                        cell1.innerHTML = house.objectCode;
+                        cell1.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
+
+                        var cell2 = newRow.insertCell(2);
+                        if(house.address)cell2.innerHTML = house.address.district;
+                        cell2.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
+
+                        var cell3 = newRow.insertCell(3);
+                        if(house.address)cell3.innerHTML = house.address.zone;
+                        cell3.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
+
+                        var cell4 = newRow.insertCell(4);
+                        if(house.address)cell4.innerHTML = house.address.street;
+                        cell4.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
+
+                        var cell5 = newRow.insertCell(5);
+                        cell5.innerHTML = house.roomQuantity;
+                        cell5.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
+
+                        var cell6 = newRow.insertCell(6);
+                        cell6.innerHTML = house.floorQuantity;
+                        cell6.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
+
+                        var cell7 = newRow.insertCell(7);
+                        cell7.innerHTML = house.areaTotal;
+                        cell7.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
+
+                        var cell8 = newRow.insertCell(8);
+                        cell8.innerHTML = house.price;
+                        cell8.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
+
+                        var cell9 = newRow.insertCell(9);
+                        cell9.innerHTML = house.advertisementEnabled?'<span class="badge bg-label-success me-1">Да</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'
+                        cell9.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')
+
+                        var cell10 = newRow.insertCell(10);
+                        cell10.innerHTML=house.status?'<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'
+                        cell10.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')
+
+                        var cell11 = newRow.insertCell(11);
+                        cell11.innerHTML=house.pictures?'<span class="badge bg-label-success me-1">Есть</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'
+                        cell11.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')
+
+                        var cell12 = newRow.insertCell(12);
+                        cell12.innerHTML = `
+                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>
+                        <a class='btn btn-default btn-sm float-right' href='[[@{/houses/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
+                    }
+                    $('#pagination_container').empty();
+                    if (houses.totalPages > 1) updatePagination(page, houses.totalPages, 'pagination_container')
+                },
+            });
+        }
+        function clearFilter() {
+            var elements = document.querySelectorAll('input, select, textarea');
+            elements.forEach(function(element) {
+                element.value = null
+            });
+            $(".select2-container").find(".select2-selection__choice").remove();
+
+            let radioFilters = $('[name="roomNumbers"]');
+            radioFilters.prop("checked", false);
+
+        }
     </script>
 </section>
 </body>

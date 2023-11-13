@@ -118,7 +118,7 @@
                     <input class="form-control" id="ideaPlot" type="text" placeholder="Введите заметки">
                     <br>
                     Прикрепить файлы
-                    <input type="file" id="housesFiles" class="form-control" style="width: 40%" multiple>
+                    <input type="file" id="housesFiles" accept=".pdf" class="form-control" style="width: 40%" multiple>
                     <br>
                     <div id="fileList">
 
@@ -184,8 +184,7 @@
                         </div>
                         <div class="col-2">
                             Собственость на землю
-                            <select class="form-control" id="landOwnershipPresent">
-                                <option></option>
+                            <select id="landOwnershipPresent">
                                 <option value="true">есть</option>
                                 <option value="false">нет</option>
                             </select>
@@ -331,27 +330,27 @@
                     <br>
                     <div class="row">
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" id="bargain">
+                            <input class="form-check-input" type="checkbox" id="bargain">
                             <span class="checkmark">Торг</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" id="exclusive">
+                            <input class="form-check-input" type="checkbox" id="exclusive">
                             <span class="checkmark">Ексклюзив</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" id="urgent">
+                            <input class="form-check-input" type="checkbox" id="urgent">
                             <span class="checkmark">Срочно</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" id="free">
+                            <input class="form-check-input" type="checkbox" id="free">
                             <span class="checkmark">Свободная</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" id="open">
+                            <input class="form-check-input" type="checkbox" id="open">
                             <span class="checkmark">Объект открыт</span>
                         </div>
                         <div class="col-2">
-                            <input class="form-check-input" type="checkbox" value="true" id="intermediary">
+                            <input class="form-check-input" type="checkbox" id="intermediary">
                             <span class="checkmark">От посредника</span>
                         </div>
                     </div>
@@ -451,8 +450,41 @@
     </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
     <script>
-        function validAllInput(formForMaterial, formForInfo, formForAddress){
+        function validAllInput(formData){
             cleanInputs()
+            var houseNumber = $("#houseNumber")
+            var region = $("#region")
+            var city = $("#city")
+            var district = $("#district")
+            var street = $("#street")
+            var zone = $("#topzone")
+            var ownerName = $("#owner")
+            var ownerPhone = $("#telephone")
+            var boughtDate = $("#dateOfPurchase")
+            var ownershipType = $("#ownership")
+            var notes = $("#note")
+            var cadastralNumber = $("#cadastralNumber")
+            var plotDescription = $("#ideaPlot")
+            var files = $("#housesFiles")
+            var administrationComment = $("#administrationComment")
+            formData.append("houseNumber", houseNumber.val());
+            formData.append("region", region.val());
+            formData.append("city", city.val());
+            formData.append("district", district.val());
+            formData.append("street", street.val());
+            formData.append("zone", zone.val());
+            formData.append("ownerName", ownerName.val());
+            formData.append("ownerPhone", ownerPhone.val());
+            formData.append("boughtDate", boughtDate.val());
+            formData.append("ownershipType", ownershipType.val());
+            formData.append("notes", notes.val());
+            formData.append("cadastralNumber", cadastralNumber.val());
+            formData.append("plotDescription", plotDescription.val());
+            var filesElement = files[0].files;
+            for (var i = 0; i < filesElement.length; i++) {
+                formData.append("files", filesElement[i]);
+            }
+            formData.append("administrationComment", administrationComment.val());
             var publicationStatus = $("#publicationStatus");
             var codeObject = $("#codeObject");
             var codeBranch = $("#codeBranch");
@@ -492,46 +524,49 @@
             var advertisementHeadlineEn = $("#advertisementHeadlineEn");
             var advertisementTextEn = $("#advertisementTextEn");
             var advertisementEnabled = $("#advertisementEnabled");
-
-            formForInfo.append("publicationStatus", publicationStatus.val());
-            formForInfo.append("codeObject", codeObject.val());
-            formForInfo.append("codeBranch", codeBranch.val());
-            formForInfo.append("codeStaff", codeStaff.val());
-            formForInfo.append("landmark", landmark.val());
-            formForInfo.append("price", price.val());
-            formForInfo.append("propertyHouseType", propertyHouseType.val());
-            formForInfo.append("plotAreaTotal", plotAreaTotal.val());
-            formForInfo.append("plotAreaFree", plotAreaFree.val());
-            formForInfo.append("landOwnershipPresent", landOwnershipPresent.val());
-            formForInfo.append("plotPurposeType", plotPurposeType.val());
-            formForInfo.append("houseQuantity", houseQuantity.val());
-            formForInfo.append("floorQuantity", floorQuantity.val());
-            formForInfo.append("roomQuantity", roomQuantity.val());
-            formForInfo.append("bedroomQuantity", bedroomQuantity.val());
-            formForInfo.append("roomMeters", roomMeters.val());
-            formForInfo.append("areaTotal", areaTotal.val());
-            formForInfo.append("areaLiving", areaLiving.val());
-            formForInfo.append("areaKitchen", areaKitchen.val());
-            formForInfo.append("lastContactDate", lastContactDate.val());
-            formForInfo.append("vnp", vnp.prop("checked"));
-            formForInfo.append("vnpExpirationDate", vnpExpirationDate.val());
-            formForInfo.append("informationSource", informationSource.val());
-            formForInfo.append("bargain", bargain.prop("checked"));
-            formForInfo.append("exclusive", exclusive.prop("checked"));
-            formForInfo.append("urgent", urgent.prop("checked"));
-            formForInfo.append("free", free.prop("checked"));
-            formForInfo.append("open", open.prop("checked"));
-            formForInfo.append("intermediary", intermediary.prop("checked"));
-            formForInfo.append("descriptionUk", descriptionUk.val());
-            formForInfo.append("advertisementHeadlineUk", advertisementHeadlineUk.val());
-            formForInfo.append("advertisementTextUk", advertisementTextUk.val());
-            formForInfo.append("descriptionRu", descriptionRu.val());
-            formForInfo.append("advertisementHeadlineRu", advertisementHeadlineRu.val());
-            formForInfo.append("advertisementTextRu", advertisementTextRu.val());
-            formForInfo.append("descriptionEn", descriptionEn.val());
-            formForInfo.append("advertisementHeadlineEn", advertisementHeadlineEn.val());
-            formForInfo.append("advertisementTextEn", advertisementTextEn.val());
-            formForInfo.append("advertisementEnabled", advertisementEnabled.val());
+            var allUploadedFiles = myDropzone.getAcceptedFiles();
+            allUploadedFiles.forEach(function(file) {
+                formData.append('pictures', file)
+            })
+            formData.append("publicationStatus", publicationStatus.val());
+            formData.append("objectCode", codeObject.val());
+            formData.append("branchCode", codeBranch.val());
+            formData.append("codeStaff", codeStaff.val());
+            formData.append("landmark", landmark.val());
+            formData.append("price", price.val());
+            formData.append("houseType", propertyHouseType.val());
+            formData.append("plotAreaTotal", plotAreaTotal.val());
+            formData.append("plotAreaFree", plotAreaFree.val());
+            formData.append("landOwnershipPresent", landOwnershipPresent.val());
+            formData.append("plotPurposeType", plotPurposeType.val());
+            formData.append("houseQuantity", houseQuantity.val());
+            formData.append("floorQuantity", floorQuantity.val());
+            formData.append("roomQuantity", roomQuantity.val());
+            formData.append("bedroomQuantity", bedroomQuantity.val());
+            formData.append("roomMeters", roomMeters.val());
+            formData.append("areaTotal", areaTotal.val());
+            formData.append("areaLiving", areaLiving.val());
+            formData.append("areaKitchen", areaKitchen.val());
+            formData.append("lastContactDate", lastContactDate.val());
+            formData.append("vnp", vnp.is(':checked'));
+            formData.append("vnpExpirationDate", vnpExpirationDate.val());
+            formData.append("informationSource", informationSource.val());
+            formData.append("bargain", bargain.is(':checked'));
+            formData.append("exclusive", exclusive.is(':checked'));
+            formData.append("urgent", urgent.is(':checked'));
+            formData.append("free", free.is(':checked'));
+            formData.append("open", open.is(':checked'));
+            formData.append("intermediary", intermediary.is(':checked'));
+            formData.append("descriptionUk", descriptionUk.val());
+            formData.append("advertisementHeadlineUk", advertisementHeadlineUk.val());
+            formData.append("advertisementTextUk", advertisementTextUk.val());
+            formData.append("description", descriptionRu.val());
+            formData.append("advertisementHeadline", advertisementHeadlineRu.val());
+            formData.append("advertisementText", advertisementTextRu.val());
+            formData.append("descriptionEn", descriptionEn.val());
+            formData.append("advertisementHeadlineEn", advertisementHeadlineEn.val());
+            formData.append("advertisementTextEn", advertisementTextEn.val());
+            formData.append("advertisementEnabled", advertisementEnabled.is(':checked'));
 
             var wallMaterial = $("#wall_material");
             var stateInterior = $("#stateInterior");
@@ -549,39 +584,7 @@
             var carpentryType = $("#carpentryType");
             var frontDoorType = $("#frontDoorType");
 
-            formForMaterial.append("wallMaterial", wallMaterial.val());
-            formForMaterial.append("stateInterior", stateInterior.val());
-            formForMaterial.append("stateHouse", stateHouse.val());
-            formForMaterial.append("kitchenType", kitchenType.val());
-            formForMaterial.append("bathroomType", bathroomType.val());
-            formForMaterial.append("gasType", gasType.val());
-            formForMaterial.append("waterType", waterType.val());
-            formForMaterial.append("sewageType", sewageType.val());
-            formForMaterial.append("heatingType", heatingType.val());
-            formForMaterial.append("ladderType", ladderType.val());
-            formForMaterial.append("roofType", roofType.val());
-            formForMaterial.append("floorType", floorType.val());
-            formForMaterial.append("windowType", windowType.val());
-            formForMaterial.append("carpentryType", carpentryType.val());
-            formForMaterial.append("frontDoorType", frontDoorType.val());
-
-            var houseNumber = $("#houseNumber")
-            var region = $("#region")
-            var city = $("#city")
-            var district = $("#district")
-            var street = $("#street")
-            var zone = $("#topzone")
-            var ownerName = $("#owner")
-            var ownerPhone = $("#telephone")
-            var boughtDate = $("#dateOfPurchase")
-            var ownershipType = $("#ownership")
-            var notes = $("#note")
-            var cadastralNumber = $("#cadastralNumber")
-            var plotDescription = $("#ideaPlot")
-            var files = $("#housesFiles")
-            var administrationComment = $("#commentByAdmin")
-
-            if(!validateNumber(0,9999,houseNumber.val()))return false
+            if(!validateNumber(0,9999,houseNumber))return false
             if(!validSelect2(region))return false
             if(!validSelect2(city))return false
             if(!validSelect2(district))return false
@@ -594,77 +597,118 @@
             if(!validString("3", "1000", notes))return false
             if(cadastralNumber.val().length !== 11) {
                 cadastralNumber.css("border", "1px solid #ff0000");
-                showToast("Кадастровий номер не коректний")
+                showToast("Кадастровий номер не коректний", "danger")
                 return false
             }
             if(!validString("3","1000",plotDescription))return false
             if(!validateFile('housesFiles', [".pdf"])) return false
             if(!validString("3","1000",administrationComment))return false
-
-            formForAddress.append("houseNumber", houseNumber.val());
-            formForAddress.append("region", region.val());
-            formForAddress.append("city", city.val());
-            formForAddress.append("district", district.val());
-            formForAddress.append("street", street.val());
-            formForAddress.append("zone", zone.val());
-            formForAddress.append("ownerName", ownerName.val());
-            formForAddress.append("ownerPhone", ownerPhone.val());
-            formForAddress.append("boughtDate", boughtDate.val());
-            formForAddress.append("ownershipType", ownershipType.val());
-            formForAddress.append("notes", notes.val());
-            formForAddress.append("cadastralNumber", cadastralNumber.val());
-            formForAddress.append("plotDescription", plotDescription.val());
-            var filesElement = files[0].files;
-            for (var i = 0; i < filesElement.length; i++) {
-                formForAddress.append("files", filesElement[i]);
+            if(!validSelect2(publicationStatus))return false
+            if(codeObject.val().replace(/\s/g, '').length!==8){
+                codeObject.css("border", "1px solid #ff0000")
+                showToast("Код об'єкта має містити 8 символів","danger")
+                return false
             }
-            formForAddress.append("administrationComment", administrationComment.val());
-            console.log(formForAddress.getAll());
+            if(!validateNumber(1,1000000,codeBranch))return false
+            if(!validString("0","500", landmark))return false
+            if(!validateNumber(20000,999999, price))return false
+            if(!validSelect2(propertyHouseType))return false
+            if(!validateNumber(3,10000,plotAreaTotal))return false
+            if(!validateNumber(3,10000,plotAreaFree))return false
+            if(!validSelect2(landOwnershipPresent))return false
+            if(!validSelect2(plotPurposeType)) return false
+            if(!validateNumber(1,1000, houseQuantity))return false
+            if(!validateNumber(1,10000,floorQuantity))return false
+            if(!validateNumber(1,10000,roomQuantity))return false
+            if(!validateNumber(1,10000,bedroomQuantity))return false
+            if(!validateNumber(1,10,roomMeters))return false
+            if(!validateNumber(3,10000,areaTotal))return false
+            if(!validateNumber(3,10000,areaLiving))return false
+            if(!validateNumber(3,10000,areaKitchen))return false
+            if(!validateDate(lastContactDate))return false
+            if(!validateDate(vnpExpirationDate))return false
+            if(!validString("1","300",informationSource))return false
+            if(!validString("1","5000",descriptionUk))return false
+            if(!validString("1","5000",descriptionRu))return false
+            if(!validString("1","5000",descriptionEn))return false
+            if(!validString("1","500",advertisementHeadlineUk))return false
+            if(!validString("1","500",advertisementHeadlineRu))return false
+            if(!validString("1","500",advertisementHeadlineEn))return false
+            if(!validString("1","5000",advertisementTextUk))return false
+            if(!validString("1","5000",advertisementTextRu))return false
+            if(!validString("1","5000",advertisementTextEn))return false
+            if(allUploadedFiles.length < 0){
+                showToast("Як мінімум одне фото повино бути завантажене в дропзону","danger")
+                return false
+            }
+            if(!validString("1","100",wallMaterial))return false
+            if(!validSelect2(stateInterior))return false
+            if(!validSelect2(stateHouse))return false
+            if(!validSelect2(kitchenType))return false
+            if(!validSelect2(bathroomType))return false
+            if(!validSelect2(gasType))return false
+            if(!validSelect2(waterType))return false
+            if(!validSelect2(sewageType))return false
+            if(!validSelect2(heatingType))return false
+            if(!validSelect2(ladderType))return false
+            if(!validSelect2(roofType))return false
+            if(!validSelect2(floorType))return false
+            if(!validSelect2(windowType))return false
+            if(!validSelect2(carpentryType))return false
+            if(!validSelect2(frontDoorType))return false
+
+            formData.append("wallMaterial", wallMaterial.val());
+            formData.append("stateInterior", stateInterior.val());
+            formData.append("stateHouse", stateHouse.val());
+            formData.append("kitchenType", kitchenType.val());
+            formData.append("bathroomType", bathroomType.val());
+            formData.append("gasType", gasType.val());
+            formData.append("waterType", waterType.val());
+            formData.append("sewageType", sewageType.val());
+            formData.append("heatingType", heatingType.val());
+            formData.append("ladderType", ladderType.val());
+            formData.append("roofType", roofType.val());
+            formData.append("floorType", floorType.val());
+            formData.append("windowType", windowType.val());
+            formData.append("carpentryType", carpentryType.val());
+            formData.append("frontDoorType", frontDoorType.val());
+
+            return new Promise(function(resolve, reject) {
+                $.ajax({
+                    type: 'GET',
+                    url: '[[@{/realtors/getById/}]]' + codeStaff.val(),
+                    success: function(realtor) {
+                        if (realtor === '') {
+                            showToast("Користувача за таким кодом не знайдено", "danger")
+                            codeStaff.css("border", "1px solid #ff0000");
+                            reject(false);
+                        } else if (realtor.branch.id.toString() !== codeBranch.val().toString()) {
+                            showToast("Ріелтор не належить вказаному філіалу", "danger")
+                            codeBranch.css("border", "1px solid #ff0000");
+                            reject(false);
+                        } else {
+                            resolve(true);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Помилка відправки файлів на сервер:', error);
+                        reject(false);
+                    }
+                });
+            });
         }
         function sendForm() {
-            let formForInfo = new FormData();
-            let formForMaterial = new FormData();
-            let formForAddress = new FormData();
-            if(!validAllInput(formForMaterial, formForInfo, formForAddress))return
-            // var allUploadedFiles = myDropzone.getAcceptedFiles();
-            // allUploadedFiles.forEach(function(file) {
-            //     formData.append('images', file);
-            // });
-            console.log(formForInfo)
-            console.log(formForMaterial)
-            console.log(formForAddress)
-            $.ajax({
-                type: 'POST',
-                url: '[[@{/houses/add/address}]]',
-                data: formForAddress,
-                contentType: false,
-                processData: false,
-                success: function () {
-                },
-                error: function (error) {
-                    console.error('Помилка відправки файлів на сервер:', error);
-                }
-            });
+            let formData = new FormData();
+            if(!validAllInput(formData))return
+
             $.ajax({
                 type: 'POST',
                 url: '[[@{/houses/add/info}]]',
-                data: formForInfo,
-                contentType: false,
-                processData: false,
-                success: function () {
-                },
-                error: function (error) {
-                    console.error('Помилка відправки файлів на сервер:', error);
-                }
-            });
-            $.ajax({
-                type: 'POST',
-                url: '[[@{/houses/add/material}]]',
-                data: formForMaterial,
+                data: formData,
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    console.log(response);
+                    showToast(response, "success")
                 },
                 error: function (error) {
                     console.error('Помилка відправки файлів на сервер:', error);
@@ -673,6 +717,9 @@
         }
 
         $(document).ready(function () {
+            $('#landOwnershipPresent').select2({
+                minimumResultsForSearch: -1,
+            })
             forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
             forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
             forSelect2(undefined, undefined, "#publicationStatus", "/enum/publicationStatus")

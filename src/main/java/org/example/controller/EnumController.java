@@ -58,7 +58,7 @@ public class EnumController {
         List<ForSelect> forSelects = new ArrayList<>();
         for (RegionEntity region : regionRepository.findAll()) {
             ForSelect forSelect = new ForSelect();
-            forSelect.setId(region.getId().toString());
+            forSelect.setId(region.getNameRegion());
             forSelect.setName(region.getNameRegion());
             forSelects.add(forSelect);
         }
@@ -70,7 +70,7 @@ public class EnumController {
         List<ForSelect> forSelects = new ArrayList<>();
         for (TopozoneEntity topozoneEntity : topozoneRepository.findAll()) {
             ForSelect forSelect = new ForSelect();
-            forSelect.setId(topozoneEntity.getId().toString());
+            forSelect.setId(topozoneEntity.getName());
             forSelect.setName(topozoneEntity.getName());
             forSelects.add(forSelect);
         }
@@ -82,7 +82,7 @@ public class EnumController {
         List<ForSelect> forSelects = new ArrayList<>();
         for (DistrictEntity districtEntity : districtRepository.findAll()) {
             ForSelect forSelect = new ForSelect();
-            forSelect.setId(districtEntity.getId().toString());
+            forSelect.setId(districtEntity.getNameDistrict());
             forSelect.setName(districtEntity.getNameDistrict());
             forSelects.add(forSelect);
         }
@@ -94,7 +94,7 @@ public class EnumController {
         List<ForSelect> forSelects = new ArrayList<>();
         for (StreetEntity street : streetEntityRepository.findAll()) {
             ForSelect forSelect = new ForSelect();
-            forSelect.setId(street.getId().toString());
+            forSelect.setId(street.getName());
             forSelect.setName(street.getName());
             forSelects.add(forSelect);
         }
@@ -106,7 +106,7 @@ public class EnumController {
         List<ForSelect> forSelects = new ArrayList<>();
         for (CityEntity city : cityRepository.findAll()) {
             ForSelect forSelect = new ForSelect();
-            forSelect.setId(city.getId().toString());
+            forSelect.setId(city.getNameCity());
             forSelect.setName(city.getNameCity());
             forSelects.add(forSelect);
         }

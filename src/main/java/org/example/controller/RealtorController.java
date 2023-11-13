@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import io.minio.errors.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -150,5 +151,14 @@ public class RealtorController {
                                @RequestParam("size") int size) {
         Page<Realtor> searchResults = realtorService.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
         return searchResults;
+    }
+    @GetMapping("/getById/{id}")
+    @ResponseBody
+    public Realtor getById(@PathVariable Integer id){
+        try{
+            return realtorService.getById(id);
+        }catch (EntityNotFoundException e) {
+            return null;
+        }
     }
 }

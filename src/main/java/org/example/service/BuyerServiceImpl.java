@@ -1,6 +1,7 @@
 package org.example.service;
 
 import io.minio.errors.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.BuyerPersonalDataDto;
 import org.example.entity.Buyer;
@@ -48,7 +49,7 @@ public class BuyerServiceImpl {
         return save(buyer).getId();
     }
     public Buyer getById(int id) {
-        return buyerRepository.findById(id).get();
+        return buyerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A buyer with an id = "+id +" was not found"));
     }
     @Transactional
     public Buyer save(Buyer buyer){

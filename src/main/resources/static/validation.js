@@ -71,12 +71,14 @@ function validateFile(imageId, allowedExtensions) {
 
     if (!file) {
         showToast('Файл не вибрано', 'danger');
+        fileInput.style.borderColor='#ff0000'
         fileInput.value = '';
         return false;
     }
 
     if (file.size > 20 * 1024 * 1024) {
         showToast('Файл перевищує 20 МБ', 'danger');
+        fileInput.style.borderColor='#ff0000'
         fileInput.value = '';
         return false;
     }
@@ -86,21 +88,24 @@ function validateFile(imageId, allowedExtensions) {
 
     if (!allowedExtensions.includes(lowerCaseExtension)) {
         showToast(`Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`, 'danger');
+        fileInput.style.borderColor='#ff0000'
         fileInput.value = '';
         return false;
     }
-
-    showToast('Файл успішно завантажено', 'success');
     return true;
 }
 
 function validateNumber(min, max, number) {
-    if(number === ''){
+    if(number.val() === ''){
         showToast("Число повинно бути вказане", "danger")
+        number.css("border", "1px solid #ff0000");
         return false;
     }
-    var result = number >= min && number <= max
-    if(result === false)showToast("Число повинно бути в діапазоні від "+min+" до "+max, "danger")
+    var result = number.val() >= min && number.val() <= max
+    if(result === false) {
+        number.css("border", "1px solid #ff0000");
+        showToast("Число повинно бути в діапазоні від " + min + " до " + max, "danger")
+    }
     return result
 }
 function cleanInputs(){
@@ -116,8 +121,12 @@ function cleanInputs(){
     }
 }
 function validString(minLength, maxLength, inputString) {
-    var length = inputString.val().length
-    var result = length >= minLength && length <= maxLength
+    try {
+        var length = inputString.val().length
+        var result = length >= minLength && length <= maxLength
+    }catch (e){
+        result = false
+    }
     if(!result) {
         showToast("Поле повино містити від " + minLength + " до " + maxLength + " символів", "danger")
         inputString.css("border", "1px solid #ff0000");
