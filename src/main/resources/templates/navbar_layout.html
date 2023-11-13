@@ -1,88 +1,127 @@
 <nav layout:fragment="navbar"
-        class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-        id="layout-navbar"
+     class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+     id="layout-navbar"
 >
-  <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-      <i class="ti ti-menu-2 ti-sm"></i>
-    </a>
-  </div>
-
-  <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-    <div class="navbar-nav align-items-center">
-      <a class="nav-link style-switcher-toggle hide-arrow" href="javascript:void(0);">
-        <i class="ti ti-sm"></i>
-      </a>
+    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+            <i class="ti ti-menu-2 ti-sm"></i>
+        </a>
     </div>
 
-    <ul class="navbar-nav flex-row align-items-center ms-auto">
-      <!-- Language -->
-      <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
-        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
-          <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item selected" href="javascript:void(0);" data-language="en">
-              <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
-              <span class="align-middle">English</span>
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <div class="navbar-nav align-items-center">
+            <a class="nav-link style-switcher-toggle hide-arrow" href="javascript:void(0);">
+                <i class="ti ti-sm"></i>
             </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="fr">
-              <i class="fi fi-fr fis rounded-circle me-1 fs-3"></i>
-              <span class="align-middle">French</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="de">
-              <i class="fi fi-de fis rounded-circle me-1 fs-3"></i>
-              <span class="align-middle">German</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);" data-language="pt">
-              <i class="fi fi-pt fis rounded-circle me-1 fs-3"></i>
-              <span class="align-middle">Portuguese</span>
-            </a>
-          </li>
+        </div>
+
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- Language -->
+            <li class="nav-item dropdown-language dropdown me-2 me-xl-0" id="languageSelector">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item selected" data-language="eng" onclick="sendLanguage(this)">
+                            <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
+                            <span class="align-middle">English</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" data-language="ru" onclick="sendLanguage(this)">
+                            <i class="fi fi-ru fis rounded-circle me-1 fs-3"></i>
+                            <span class="align-middle">Русский</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" data-language="ukr" onclick="sendLanguage(this)">
+                            <i class="fi fi-de fis rounded-circle me-1 fs-3"></i>
+                            <span class="align-middle">Український</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!-- User -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                        <img th:src="@{/img/avatars/1.png}" alt class="h-auto rounded-circle"/>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar avatar-online">
+                                        <img th:src="@{/img/avatars/1.png}" alt class="h-auto rounded-circle"/>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="fw-semibold d-block">John Doe</span>
+                                    <small class="text-muted">Admin</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" th:href="@{/logout}">
+                            <i class="ti ti-logout me-2 ti-sm"></i>
+                            <span class="align-middle">Log Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!--/ User -->
         </ul>
-      </li>
-      <!-- User -->
-      <li class="nav-item navbar-dropdown dropdown-user dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-          <div class="avatar avatar-online">
-            <img th:src="@{/img/avatars/1.png}" alt class="h-auto rounded-circle" />
-          </div>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item" href="#">
-              <div class="d-flex">
-                <div class="flex-shrink-0 me-3">
-                  <div class="avatar avatar-online">
-                    <img th:src="@{/img/avatars/1.png}" alt class="h-auto rounded-circle" />
-                  </div>
-                </div>
-                <div class="flex-grow-1">
-                  <span class="fw-semibold d-block">John Doe</span>
-                  <small class="text-muted">Admin</small>
-                </div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <div class="dropdown-divider"></div>
-          </li>
-          <li>
-            <a class="dropdown-item" th:href="@{/logout}">
-              <i class="ti ti-logout me-2 ti-sm"></i>
-              <span class="align-middle">Log Out</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!--/ User -->
-    </ul>
-  </div>
+    </div>
+    <script type="text/javascript">
+        function sendLanguage(el) {
+            var selectedLanguage = el.getAttribute('data-language');
+            console.log('Выбран язык:', selectedLanguage);
+            changeLanguage(selectedLanguage);
+        };
+        let path = /*[[@{/}]]*/ '';
+        console.log(path);
+
+        function changeLanguage(language) {
+            // Загрузка новых переводов с сервера
+            fetch(path + 'api/translations?language=' + language)
+                .then(response => response.json())
+                .then(newTranslations => {
+                    var translations = newTranslations;
+
+                    for (var lang in translations) {
+                        if (translations.hasOwnProperty(lang)) {
+                            var langTranslations = translations[lang];
+                            for (var key in langTranslations) {
+                                if (langTranslations.hasOwnProperty(key)) {
+                                    var value = langTranslations[key];
+                                    var elements = document.querySelectorAll('[data-translate="' + key + '"]');
+                                    console.log(key);
+                                    console.log(elements);
+                                    elements.forEach(function (element) {
+                                        element.innerText = value;
+                                        console.log(element);
+                                        console.log(element.innerText)
+                                        console.log(key + " k - v " + value)
+                                    })
+                                }
+                            }
+                        }
+                    }
+                })
+                .catch(error => console.error('Error fetching translations:', error));
+        }
+
+        document.getElementById('languageSelector').addEventListener('change', function () {
+            let selectedLanguage = this.value;
+            changeLanguage(selectedLanguage);
+        });
+    </script>
 </nav>

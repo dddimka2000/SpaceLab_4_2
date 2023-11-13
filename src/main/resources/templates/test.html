@@ -4,13 +4,13 @@
         lang="en"
         class="light-style layout-navbar-fixed layout-menu-fixed"
         layout:decorate="~{layout.html}"
->
+        xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <title>Content page</title>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
 </head>
 
 <body>
@@ -19,7 +19,7 @@
     <select id="branchSelect3" style="margin-right: 12px; margin-left: 12px;"></select>
     <br>
     <br>
-<h1>title</h1>
+    <h1>title</h1>
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
@@ -37,11 +37,11 @@
             </div>
         </div>
 
-        <span th:text="#{title}"></span>:
-        <select id="locales">
+        <span data-translate="title">цкцк</span>:
+        <select id="languageSelector">
             <option value=""></option>
-            <option value="eng" th:text="#{title.eng}"></option>
-            <option value="ru" th:text="#{title.ru}"></option>
+            <option value="eng">eng</option>
+            <option value="ru">ru</option>
         </select>
 
         <div class="card-body" hidden>
@@ -58,8 +58,11 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
-    <script> $(document).ready(function () {
-        branchSelect3() })
+    <script>
+        $(document).ready(function () {
+            branchSelect3()
+        })
+
         function branchSelect3() {
             $('#branchSelect3').select2({
                 allowClear: true,
@@ -68,16 +71,16 @@
                     dataType: 'json',
                     delay: 1500,
                     data: function (params) {
-                        var number = params.page > 0 ? params.page-1 : 0;
+                        var number = params.page > 0 ? params.page - 1 : 0;
                         return {
                             query: params.term || '',
                             page: number,
                             size: 10
                         };
                     },
-                    processResults: function(data, params) {
-                        var results = data.content.map(function(item) {
-                            return { id: item.id, text: item.name };
+                    processResults: function (data, params) {
+                        var results = data.content.map(function (item) {
+                            return {id: item.id, text: item.name};
                         });
                         var hasMore = data.totalPages > data.number;
                         return {
@@ -91,21 +94,7 @@
                 }
             });
         }
-
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#locales").change(function () {
-                var selectedOption = $('#locales').val();
-                if (selectedOption != ''){
-                    window.location.replace('test?translation=' + selectedOption);
-                }
-            });
-        });
-    </script>
-
 
 
 
