@@ -7,6 +7,9 @@
 >
 <head>
     <title>Content page</title>
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
+    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+
 </head>
 
 <body>
@@ -118,10 +121,9 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label">Дата рождения</label>
-                                    <input type="text" class="form-control" id="datepicker"
-                                           th:field="*{birthdate}"
-                                           th:style="${#fields.hasErrors('birthdate') ? 'border-color: #ff0000' : ''}">
-
+                                    <input type="text" id="dateOfPurchase" class="form-control flatpickr-datetime"
+                                           placeholder="YYYY/MM/DD" th:field="*{birthdate}"
+                                           th:style="${#fields.hasErrors('birthdate') ? 'border-color: #ff0000' : ''}"/>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('birthdate')}"
                                          th:errors="*{birthdate}">
@@ -251,7 +253,7 @@
             <div class="card-footer">
                 <div class="d-flex justify-content-end">
                     <a th:href="@{/realtors}" class="btn btn-default">Отменить</a>
-                    <button onclick="sendForm()" class="btn btn-success">Сохранить</button>
+                    <button onclick="sendForm()" type="button" class="btn btn-success">Сохранить</button>
                 </div>
             </div>
         </div>
@@ -260,9 +262,12 @@
     <script>
         const urlForAddFeedBack = '[[@{/realtors/feedback/save}]]'
         $(document).ready(function () {
-            $('#datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true
+            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
+
+            flatpickrDateTimes.forEach(function (element) {
+                element.flatpickr({
+                    dateFormat: "Y/m/d"
+                });
             });
             if (realtor.branch != null) branchSelect2(realtor.branch.id, realtor.branch.name)
             else branchSelect2()
@@ -428,6 +433,17 @@
         var realtor = [[${realtorDto}]]
 
         function sendForm() {
+            if (!validateNumber(3, 99999, $("#code"))) return
+            if (!validString(3, 50, $("#surname"))) return
+            if (!validSelect2($("#branch"))) return
+            if (!validString(3, 50, $("#name"))) return
+            if (!validString(3, 50, $("#middleName"))) return
+            if (!validateDate($("#dateOfPurchase"))) return
+            if (!validateEmail($("#email"))) return
+            if (!validString(3, 50, $("#middleName"))) return
+
+
+
             const phoneContainer = document.getElementById("phones");
             const id = document.getElementById("id");
             const password = document.getElementById("password");
@@ -456,32 +472,22 @@
             }
             var index = 0;
             for (let i = 0; i < inputsAndSelects.length; i += 3) {
-                if (!validatePhoneNumber(inputsAndSelects[i + 1].value)) {
-                    inputsAndSelects[i + 1].style.borderColor = '#ff0000'
-                    showToast("Номер телефона не коректний. Зразок: +380_________", 'danger')
+                if (!validatePhoneNumber($(inputsAndSelects[i + 1]))) {
                     return
                 }
                 inputsAndSelects[i].name = "contacts[" + index + "].id"
                 inputsAndSelects[i + 1].name = "contacts[" + index + "].phone"
                 inputsAndSelects[i + 2].name = "contacts[" + (index++) + "].type"
             }
-
-            $('#realtorAdd').submit();
             var feedbacks = document.getElementsByClassName('for-feedback');
             for (let i = 0; i < feedbacks.length; i += 4) {
-                if (!validString(3, 50, feedbacks[i + 1].value)) {
-                    feedbacks[i + 1].style.borderColor = '#ff0000'
-                    showToast("Ім'я повинно бути від 3 до 50 символів", 'danger')
+                if (!validString(3, 50, $(feedbacks[i + 1]))) {
                     return
                 }
-                if (!validatePhoneNumber(feedbacks[i + 2].value)) {
-                    feedbacks[i + 2].style.borderColor = '#ff0000'
-                    showToast("Номер телефона не коректний. Зразок: +380_________", 'danger')
+                if (!validatePhoneNumber($(feedbacks[i + 2]))) {
                     return
                 }
-                if (!validString(3, 300, feedbacks[i + 3].value)) {
-                    feedbacks[i + 3].style.borderColor = '#ff0000'
-                    showToast("Опис повинен бути від 3 до 300 символів", 'danger')
+                if (!validString(3, 300, $(feedbacks[i + 3]))) {
                     return
                 }
             }
@@ -500,6 +506,7 @@
                     },
                 });
             }
+            $('#realtorAdd').submit();
         }
 
 

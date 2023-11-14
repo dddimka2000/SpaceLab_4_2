@@ -7,7 +7,8 @@
 >
 <head>
     <title>Content page</title>
-
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
+    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
 </head>
 
 <body>
@@ -64,7 +65,7 @@
                                 <input type="text" class="form-control for-filter">
                             </td>
                             <td>
-                                <input type="text" class="form-control for-filter" id="datepicker">
+                                <input type="text" class="form-control flatpickr-datetime for-filter " id="datepicker">
                             </td>
                             <td>
                             </td>
@@ -87,11 +88,14 @@
     <script>
         var page;
         $(document).ready(function () {
-            getPageWithFilter(0)
-            $('#datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true
+            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
+
+            flatpickrDateTimes.forEach(function (element) {
+                element.flatpickr({
+                    dateFormat: "Y-m-d"
+                });
             });
+            getPageWithFilter(0)
         });
 
 
