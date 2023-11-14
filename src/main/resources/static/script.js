@@ -66,3 +66,38 @@ function createStatusIcon(dateString) {
     icon.innerHTML = `<i class="fas fa-info-circle" style="color: ${color}"></i>`;
     return icon;
 }
+function printTable(headerRow, bodyRows) {
+    console.log(bodyRows)
+    if (!headerRow || !bodyRows || !Array.isArray(bodyRows)) {
+        console.error('Не вказано необхідні параметри або bodyRows не є масивом.');
+        return;
+    }
+    var tableHtml = '<table style="width: 100%; border: 1px solid black;">' + headerRow;
+    bodyRows.forEach(function(row) {
+        tableHtml += '<tr style="border: 1px solid black;">' + row + '</tr>';
+    });
+
+    tableHtml += '</table>';
+    var printDiv = document.createElement('div');
+    printDiv.innerHTML = tableHtml;
+    var bodyElements = document.body.children;
+    for (var i = 0; i < bodyElements.length; i++) {
+        if (bodyElements[i] !== printDiv) {
+            bodyElements[i].style.display = 'none';
+        }
+    }
+    document.body.appendChild(printDiv);
+    window.print();
+    for (var i = 0; i < bodyElements.length; i++) {
+        bodyElements[i].style.display = '';
+    }
+    document.body.removeChild(printDiv);
+}
+function removeBeforeFirstDot(input) {
+    const indexOfDot = input.indexOf('.');
+    if (indexOfDot !== -1) {
+        return input.substring(indexOfDot + 1);
+    } else {
+        return input;
+    }
+}

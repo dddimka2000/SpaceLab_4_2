@@ -138,6 +138,9 @@ function forSelect2(id, text, selectName, url){
                     results: results
                 };
             },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('AJAX error: ', textStatus, errorThrown);
+            }
         }
     })
     if(text !== undefined && id !== undefined) {

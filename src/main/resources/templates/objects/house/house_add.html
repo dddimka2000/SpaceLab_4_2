@@ -83,7 +83,7 @@
                     </div>
                     <br>
                     <button class="btn btn-info" style="width: auto; margin-right: 5px">Проверить адрес</button>
-                    <button class="btn btn-info" style="width: auto">Проверить номер телефона</button>
+                    <button class="btn btn-info" onclick="checkPhone(this)" style="width: auto">Проверить номер телефона</button>
 
                     <br>
                     <div class="row">
@@ -120,8 +120,7 @@
                     Прикрепить файлы
                     <input type="file" id="housesFiles" accept=".pdf" class="form-control" style="width: 40%" multiple>
                     <br>
-                    <div id="fileList">
-
+                    <div id="block-for-file">
                     </div>
                     <br>
                     <h3>Комментарий администратора</h3>
@@ -311,7 +310,8 @@
                     <div class="row">
                         <div class="col-2" style="white-space: nowrap;">
                             Дата последнего контакта
-                            <input type="text" class="form-control flatpickr-datetime" id="lastContactDate" placeholder="YYYY/MM/DD"/>
+                            <input type="text" class="form-control flatpickr-datetime" id="lastContactDate"
+                                   placeholder="YYYY/MM/DD"/>
                         </div>
                         <div class="col-1" style="display: flex; align-items: end">
                             <input class="form-check-input" type="checkbox" value="true" id="vnp" name="statusVNP">
@@ -319,7 +319,8 @@
                         </div>
                         <div class="col-2">
                             Дата внп до
-                            <input type="text" class="form-control flatpickr-datetime" id="vnpExpirationDate" placeholder="YYYY/MM/DD"/>
+                            <input type="text" class="form-control flatpickr-datetime" id="vnpExpirationDate"
+                                   placeholder="YYYY/MM/DD"/>
                         </div>
                         <div class="col-2">
                             Источник информации
@@ -376,7 +377,8 @@
                         </li>
                     </ul>
                     <div class="tab-content" id="pills-blovk-content">
-                        <div class="tab-pane fade show active" id="pills-uk" role="tabpanel" aria-labelledby="pills-for-uk">
+                        <div class="tab-pane fade show active" id="pills-uk" role="tabpanel"
+                             aria-labelledby="pills-for-uk">
                             Описание
                             <textarea class="form-control" style="width: 100%; height: 300px"
                                       id="descriptionUk" placeholder="Введите описание"></textarea>
@@ -450,7 +452,65 @@
     </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
     <script>
-        function validAllInput(formData){
+        function checkPhone(button){
+            if (validatePhoneNumber($('#telephone')))showToast("Телефон коректний", "success")
+        }
+        function deleteFile(button, url) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var rowElement = button.closest('.row');
+                if (rowElement) {
+                    rowElement.remove();
+                }
+                $.ajax({
+                    type: "Delete",
+                    url: '[[@{/houses/deleteFile}]]',
+                    data: {
+                        id: getLastDigitFromPath(window.location.pathname),
+                        url: url,
+                    },
+                    success: function (response) {
+                        showToast(response, "success")
+                    },
+                });
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+        function downloadFileFrom(url) {
+            $.ajax({
+                type: "GET",
+                url: "[[@{/users/download}]]",
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    url: url
+                },
+                success: function (data) {
+                    var blob = new Blob([data], {type: 'application/octet-stream'});
+                    var filename = "file.pdf";
+
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveOrOpenBlob(blob, filename);
+                    } else {
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
+                    }
+                },
+                error: function () {
+                    console.log("Помилка завантаження файлу");
+                }
+            });
+        }
+        function validAllInput(formData) {
             cleanInputs()
             var houseNumber = $("#houseNumber")
             var region = $("#region")
@@ -467,6 +527,8 @@
             var plotDescription = $("#ideaPlot")
             var files = $("#housesFiles")
             var administrationComment = $("#administrationComment")
+            if (getLastDigitFromPath(window.location.pathname))
+                formData.append("id", getLastDigitFromPath(window.location.pathname));
             formData.append("houseNumber", houseNumber.val());
             formData.append("region", region.val());
             formData.append("city", city.val());
@@ -525,7 +587,7 @@
             var advertisementTextEn = $("#advertisementTextEn");
             var advertisementEnabled = $("#advertisementEnabled");
             var allUploadedFiles = myDropzone.getAcceptedFiles();
-            allUploadedFiles.forEach(function(file) {
+            allUploadedFiles.forEach(function (file) {
                 formData.append('pictures', file)
             })
             formData.append("publicationStatus", publicationStatus.val());
@@ -584,78 +646,78 @@
             var carpentryType = $("#carpentryType");
             var frontDoorType = $("#frontDoorType");
 
-            if(!validateNumber(0,9999,houseNumber))return false
-            if(!validSelect2(region))return false
-            if(!validSelect2(city))return false
-            if(!validSelect2(district))return false
-            if(!validSelect2(street))return false
-            if(!validSelect2(zone))return false
-            if(!validString("5","70",ownerName))return false
-            if(!validatePhoneNumber(ownerPhone))return false
-            if(!validateDate(boughtDate))return false
-            if(!validSelect2(ownershipType))return false
-            if(!validString("3", "1000", notes))return false
-            if(cadastralNumber.val().length !== 11) {
+            if (!validateNumber(0, 9999, houseNumber)) return false
+            if (!validSelect2(region)) return false
+            if (!validSelect2(city)) return false
+            if (!validSelect2(district)) return false
+            if (!validSelect2(street)) return false
+            if (!validSelect2(zone)) return false
+            if (!validString("5", "70", ownerName)) return false
+            if (!validatePhoneNumber(ownerPhone)) return false
+            if (!validateDate(boughtDate)) return false
+            if (!validSelect2(ownershipType)) return false
+            if (!validString("3", "1000", notes)) return false
+            if (cadastralNumber.val().length !== 11) {
                 cadastralNumber.css("border", "1px solid #ff0000");
                 showToast("Кадастровий номер не коректний", "danger")
                 return false
             }
-            if(!validString("3","1000",plotDescription))return false
-            if(!validateFile('housesFiles', [".pdf"])) return false
-            if(!validString("3","1000",administrationComment))return false
-            if(!validSelect2(publicationStatus))return false
-            if(codeObject.val().replace(/\s/g, '').length!==8){
+            if (!validString("3", "1000", plotDescription)) return false
+            if (!getLastDigitFromPath(window.location.pathname)  &&  !validateFile('housesFiles', [".pdf"])) return false
+            if (!validString("3", "1000", administrationComment)) return false
+            if (!validSelect2(publicationStatus)) return false
+            if (codeObject.val().replace(/\s/g, '').length !== 8) {
                 codeObject.css("border", "1px solid #ff0000")
-                showToast("Код об'єкта має містити 8 символів","danger")
+                showToast("Код об'єкта має містити 8 символів", "danger")
                 return false
             }
-            if(!validateNumber(1,1000000,codeBranch))return false
-            if(!validString("0","500", landmark))return false
-            if(!validateNumber(20000,999999, price))return false
-            if(!validSelect2(propertyHouseType))return false
-            if(!validateNumber(3,10000,plotAreaTotal))return false
-            if(!validateNumber(3,10000,plotAreaFree))return false
-            if(!validSelect2(landOwnershipPresent))return false
-            if(!validSelect2(plotPurposeType)) return false
-            if(!validateNumber(1,1000, houseQuantity))return false
-            if(!validateNumber(1,10000,floorQuantity))return false
-            if(!validateNumber(1,10000,roomQuantity))return false
-            if(!validateNumber(1,10000,bedroomQuantity))return false
-            if(!validateNumber(1,10,roomMeters))return false
-            if(!validateNumber(3,10000,areaTotal))return false
-            if(!validateNumber(3,10000,areaLiving))return false
-            if(!validateNumber(3,10000,areaKitchen))return false
-            if(!validateDate(lastContactDate))return false
-            if(!validateDate(vnpExpirationDate))return false
-            if(!validString("1","300",informationSource))return false
-            if(!validString("1","5000",descriptionUk))return false
-            if(!validString("1","5000",descriptionRu))return false
-            if(!validString("1","5000",descriptionEn))return false
-            if(!validString("1","500",advertisementHeadlineUk))return false
-            if(!validString("1","500",advertisementHeadlineRu))return false
-            if(!validString("1","500",advertisementHeadlineEn))return false
-            if(!validString("1","5000",advertisementTextUk))return false
-            if(!validString("1","5000",advertisementTextRu))return false
-            if(!validString("1","5000",advertisementTextEn))return false
-            if(allUploadedFiles.length < 0){
-                showToast("Як мінімум одне фото повино бути завантажене в дропзону","danger")
+            if (!validateNumber(1, 1000000, codeBranch)) return false
+            if (!validString("0", "500", landmark)) return false
+            if (!validateNumber(20000, 999999, price)) return false
+            if (!validSelect2(propertyHouseType)) return false
+            if (!validateNumber(3, 10000, plotAreaTotal)) return false
+            if (!validateNumber(3, 10000, plotAreaFree)) return false
+            if (!validSelect2(landOwnershipPresent)) return false
+            if (!validSelect2(plotPurposeType)) return false
+            if (!validateNumber(1, 1000, houseQuantity)) return false
+            if (!validateNumber(1, 10000, floorQuantity)) return false
+            if (!validateNumber(1, 10000, roomQuantity)) return false
+            if (!validateNumber(1, 10000, bedroomQuantity)) return false
+            if (!validateNumber(1, 10, roomMeters)) return false
+            if (!validateNumber(3, 10000, areaTotal)) return false
+            if (!validateNumber(3, 10000, areaLiving)) return false
+            if (!validateNumber(3, 10000, areaKitchen)) return false
+            if (!validateDate(lastContactDate)) return false
+            if (!validateDate(vnpExpirationDate)) return false
+            if (!validString("1", "300", informationSource)) return false
+            if (!validString("1", "5000", descriptionUk)) return false
+            if (!validString("1", "5000", descriptionRu)) return false
+            if (!validString("1", "5000", descriptionEn)) return false
+            if (!validString("1", "500", advertisementHeadlineUk)) return false
+            if (!validString("1", "500", advertisementHeadlineRu)) return false
+            if (!validString("1", "500", advertisementHeadlineEn)) return false
+            if (!validString("1", "5000", advertisementTextUk)) return false
+            if (!validString("1", "5000", advertisementTextRu)) return false
+            if (!validString("1", "5000", advertisementTextEn)) return false
+            if (getLastDigitFromPath(window.location.pathname)  &&  allUploadedFiles.length < 0) {
+                showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
                 return false
             }
-            if(!validString("1","100",wallMaterial))return false
-            if(!validSelect2(stateInterior))return false
-            if(!validSelect2(stateHouse))return false
-            if(!validSelect2(kitchenType))return false
-            if(!validSelect2(bathroomType))return false
-            if(!validSelect2(gasType))return false
-            if(!validSelect2(waterType))return false
-            if(!validSelect2(sewageType))return false
-            if(!validSelect2(heatingType))return false
-            if(!validSelect2(ladderType))return false
-            if(!validSelect2(roofType))return false
-            if(!validSelect2(floorType))return false
-            if(!validSelect2(windowType))return false
-            if(!validSelect2(carpentryType))return false
-            if(!validSelect2(frontDoorType))return false
+            if (!validString("1", "100", wallMaterial)) return false
+            if (!validSelect2(stateInterior)) return false
+            if (!validSelect2(stateHouse)) return false
+            if (!validSelect2(kitchenType)) return false
+            if (!validSelect2(bathroomType)) return false
+            if (!validSelect2(gasType)) return false
+            if (!validSelect2(waterType)) return false
+            if (!validSelect2(sewageType)) return false
+            if (!validSelect2(heatingType)) return false
+            if (!validSelect2(ladderType)) return false
+            if (!validSelect2(roofType)) return false
+            if (!validSelect2(floorType)) return false
+            if (!validSelect2(windowType)) return false
+            if (!validSelect2(carpentryType)) return false
+            if (!validSelect2(frontDoorType)) return false
 
             formData.append("wallMaterial", wallMaterial.val());
             formData.append("stateInterior", stateInterior.val());
@@ -673,11 +735,11 @@
             formData.append("carpentryType", carpentryType.val());
             formData.append("frontDoorType", frontDoorType.val());
 
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 $.ajax({
                     type: 'GET',
                     url: '[[@{/realtors/getById/}]]' + codeStaff.val(),
-                    success: function(realtor) {
+                    success: function (realtor) {
                         if (realtor === '') {
                             showToast("Користувача за таким кодом не знайдено", "danger")
                             codeStaff.css("border", "1px solid #ff0000");
@@ -690,7 +752,7 @@
                             resolve(true);
                         }
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.error('Помилка відправки файлів на сервер:', error);
                         reject(false);
                     }
@@ -699,7 +761,7 @@
         }
         function sendForm() {
             let formData = new FormData();
-            if(!validAllInput(formData))return
+            if (!validAllInput(formData)) return
 
             $.ajax({
                 type: 'POST',
@@ -715,34 +777,132 @@
                 }
             });
         }
-
         $(document).ready(function () {
             $('#landOwnershipPresent').select2({
                 minimumResultsForSearch: -1,
             })
-            forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
-            forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
-            forSelect2(undefined, undefined, "#publicationStatus", "/enum/publicationStatus")
-            forSelect2(undefined, undefined, "#buildStatus", "/enum/propertyBuildStatus")
-            forSelect2(undefined, undefined, "#propertyType", "/enum/propertyType")
-            forSelect2(undefined, undefined, "#plotPurposeType", "/enum/plotPurposeType")
-            forSelect2(undefined, undefined, "#stateInterior", "/enum/stateHouse")
-            forSelect2(undefined, undefined, "#stateHouse", "/enum/stateHouse")
+            var houseId = getLastDigitFromPath(window.location.pathname)
+            if (houseId != null) {
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/houses/getById/}]]' + houseId,
+                    success: function (house) {
+                        $("#houseNumber").val(house.address.houseNumber)
+                        $("#owner").val(house.ownerName)
+                        $("#telephone").val(house.ownerPhone)
+                        $("#dateOfPurchase").val(house.boughtDate.replaceAll('-', '/'))
+                        $("#note").val(house.notes)
+                        $("#cadastralNumber").val(house.cadastralNumber)
+                        $("#ideaPlot").val(house.plotDescription)
+                        $("#administrationComment").val(house.administrationComment)
 
-            forSelect2(undefined, undefined, "#kitchenType", "/enum/kitchen")
-            forSelect2(undefined, undefined, "#bathroomType", "/enum/bathroom")
-            forSelect2(undefined, undefined, "#gasType", "/enum/gas")
-            forSelect2(undefined, undefined, "#waterType", "/enum/water")
-            forSelect2(undefined, undefined, "#sewageType", "/enum/sewerage")
-            forSelect2(undefined, undefined, "#heatingType", "/enum/heating")
-            forSelect2(undefined, undefined, "#ladderType", "/enum/ladder")
-            forSelect2(undefined, undefined, "#roofType", "/enum/roof")
-            forSelect2(undefined, undefined, "#floorType", "/enum/floor")
-            forSelect2(undefined, undefined, "#windowType", "/enum/window")
-            forSelect2(undefined, undefined, "#carpentryType", "/enum/carpentryType")
-            forSelect2(undefined, undefined, "#frontDoorType", "/enum/frontDoorType")
+                        $("#codeObject").val(house.objectCode)
+                        $("#codeBranch").val(house.realtor.branch.id)
+                        $("#codeStaff").val(house.realtor.id)
+                        $("#landmark").val(house.landmark)
+                        $("#price").val(house.price)
+                        $("#plotAreaTotal").val(house.plotAreaTotal)
+                        $("#plotAreaFree").val(house.plotAreaFree)
+                        $("#houseQuantity").val(house.houseQuantity)
+                        $("#floorQuantity").val(house.floorQuantity)
+                        $("#roomQuantity").val(house.roomQuantity)
+                        $("#bedroomQuantity").val(house.bedroomQuantity)
+                        $("#myNumberInput").val(house.roomMeters)
+                        $("#areaTotal").val(house.areaTotal)
+                        $("#areaLiving").val(house.areaLiving)
+                        $("#areaKitchen").val(house.areaKitchen)
 
-            addressSelect2()
+                        $("#wall_material").val(house.wallMaterial)
+
+                        $("#lastContactDate").val(house.lastContactDate.replaceAll('-', '/'));
+                        $("#vnpExpirationDate").val(house.vnpExpirationDate.replaceAll('-', '/'))
+
+                        $("#vnp").prop('checked',house.vnp)
+                        $("#informationSource").val(house.informationSource)
+                        $('#bargain').prop('checked', house.bargain);
+                        $('#exclusive').prop('checked', house.exclusive);
+                        $('#urgent').prop('checked', house.urgent);
+                        $('#free').prop('checked', house.free);
+                        $('#open').prop('checked', house.open);
+                        $('#intermediary').prop('checked', house.intermediary);
+                        $('#advertisementEnabled').prop('checked', house.advertisementEnabled);
+
+                        $("#descriptionUk").val(house.descriptionUk)
+                        $("#advertisementHeadlineUk").val(house.advertisementHeadlineUk)
+                        $("#advertisementTextUk").val(house.advertisementTextUk)
+                        $("#descriptionRu").val(house.description)
+                        $("#advertisementHeadlineRu").val(house.advertisementHeadline)
+                        $("#advertisementTextRu").val(house.advertisementText)
+                        $("#descriptionEn").val(house.descriptionEn)
+                        $("#advertisementHeadlineEn").val(house.advertisementHeadlineEn)
+                        $("#advertisementTextEn").val(house.advertisementTextEn)
+                        $("#advertisementEnabled").val(house.advertisementEnabled)
+
+                        forSelect2(house.address.zone, house.address.zone, "#topzone", "/enum/topzone")
+                        forSelect2(house.ownershipType, house.ownershipType, "#ownership", "/enum/ownership")
+                        forSelect2(house.publicationStatus, house.publicationStatus, "#publicationStatus", "/enum/publicationStatus")
+                        forSelect2(house.houseType, house.houseType, "#propertyType", "/enum/propertyType")
+                        forSelect2(house.plotPurposeType, house.plotPurposeType, "#plotPurposeType", "/enum/plotPurposeType")
+                        forSelect2(house.stateInterior, house.stateInterior, "#stateInterior", "/enum/stateHouse")
+                        forSelect2(house.stateHouse, house.stateHouse, "#stateHouse", "/enum/stateHouse")
+
+                        forSelect2(house.kitchenType, house.kitchenType, "#kitchenType", "/enum/kitchen")
+                        forSelect2(house.bathroomType, house.bathroomType, "#bathroomType", "/enum/bathroom")
+                        forSelect2(house.gasType, house.gasType, "#gasType", "/enum/gas")
+                        forSelect2(house.waterType, house.waterType, "#waterType", "/enum/water")
+                        forSelect2(house.sewageType, house.sewageType, "#sewageType", "/enum/sewerage")
+                        forSelect2(house.heatingType, house.heatingType, "#heatingType", "/enum/heating")
+                        forSelect2(house.ladderType, house.ladderType, "#ladderType", "/enum/ladder")
+                        forSelect2(house.roofType, house.roofType, "#roofType", "/enum/roof")
+                        forSelect2(house.floorType, house.floorType, "#floorType", "/enum/floor")
+                        forSelect2(house.windowType, house.windowType, "#windowType", "/enum/window")
+                        forSelect2(house.carpentryType, house.carpentryType, "#carpentryType", "/enum/carpentryType")
+                        forSelect2(house.frontDoorType, house.frontDoorType, "#frontDoorType", "/enum/frontDoorType")
+
+                        addressSelect2(house)
+
+                        for (let file of house.files) {
+                            var blockForFile = $("#block-for-file");
+                            var row = $("<div class='row'></div>");
+                            var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>"+removeBeforeFirstDot(file)+"</a></div>");
+                            col1.find('a').on("click", function () {
+                                downloadFileFrom(file);
+                            });
+                            var col2 = $("<div class='col'><a href='#' class='text-decoration-none for-delete'>х удалить</a></div>");
+                            col2.find('a').on("click", function () {
+                                deleteFile(this, file);
+                            });
+                            row.append(col1);
+                            row.append(col2);
+                            blockForFile.append(row);
+                        }
+                    }
+                })
+            } else {
+                forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
+                forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
+                forSelect2(undefined, undefined, "#publicationStatus", "/enum/publicationStatus")
+                forSelect2(undefined, undefined, "#propertyType", "/enum/propertyType")
+                forSelect2(undefined, undefined, "#plotPurposeType", "/enum/plotPurposeType")
+                forSelect2(undefined, undefined, "#stateInterior", "/enum/stateHouse")
+                forSelect2(undefined, undefined, "#stateHouse", "/enum/stateHouse")
+
+                forSelect2(undefined, undefined, "#kitchenType", "/enum/kitchen")
+                forSelect2(undefined, undefined, "#bathroomType", "/enum/bathroom")
+                forSelect2(undefined, undefined, "#gasType", "/enum/gas")
+                forSelect2(undefined, undefined, "#waterType", "/enum/water")
+                forSelect2(undefined, undefined, "#sewageType", "/enum/sewerage")
+                forSelect2(undefined, undefined, "#heatingType", "/enum/heating")
+                forSelect2(undefined, undefined, "#ladderType", "/enum/ladder")
+                forSelect2(undefined, undefined, "#roofType", "/enum/roof")
+                forSelect2(undefined, undefined, "#floorType", "/enum/floor")
+                forSelect2(undefined, undefined, "#windowType", "/enum/window")
+                forSelect2(undefined, undefined, "#carpentryType", "/enum/carpentryType")
+                forSelect2(undefined, undefined, "#frontDoorType", "/enum/frontDoorType")
+
+                addressSelect2()
+            }
+
             $('.onlyNumber').on('input', function () {
                 $(this).val(function (_, value) {
                     return value.replace(/[^\d.]+/g, '').replace(/^(\d*\.\d*)\..*$/, '$1');
@@ -767,26 +927,35 @@
                 });
             });
         })
-
-        function addressSelect2() {
-            $("#region").select2({
-                minimumResultsForSearch: -1,
-                placeholder: "Елемент",
-                ajax: {
-                    url: '[[@{/enum/region}]]',
-                    dataType: 'json',
-                    processResults: function (data) {
-                        var index = 0;
-                        var results = data.map(function (data) {
-                            if (data.id) return {id: data.id, text: data.name};
-                            return {id: data, text: data};
-                        });
-                        return {
-                            results: results
-                        };
-                    },
-                }
-            })
+        function addressSelect2(house) {
+            if (house) {
+                $("#district").removeAttr("disabled");
+                $("#city").removeAttr("disabled");
+                $("#street").removeAttr("disabled");
+                forSelect2(house.address.region, house.address.region, "#region", "/enum/region")
+                forSelect2(house.address.district, house.address.district, "#district", "/getDistrict/" + house.address.city)
+                forSelect2(house.address.city, house.address.city, "#city", "/getCity/" + house.address.region)
+                forSelect2(house.address.street, house.address.street, "#street", "/getStreet/" + house.address.district)
+            } else {
+                $("#region").select2({
+                    minimumResultsForSearch: -1,
+                    placeholder: "Елемент",
+                    ajax: {
+                        url: '[[@{/enum/region}]]',
+                        dataType: 'json',
+                        processResults: function (data) {
+                            var index = 0;
+                            var results = data.map(function (data) {
+                                if (data.id) return {id: data.id, text: data.name};
+                                return {id: data, text: data};
+                            });
+                            return {
+                                results: results
+                            };
+                        },
+                    }
+                })
+            }
             $('#region').on('select2:select', function (e) {
                 var element = e.params.data.text
                 $("#city").empty();
@@ -857,8 +1026,6 @@
                 })
             });
         }
-
-
         const previewTemplate = `<div class="dz-preview dz-file-preview">
 <div class="dz-details">
   <div class="dz-thumbnail">
@@ -878,7 +1045,6 @@
         let uploadedFiles = new Map();
         let oldImagesArray = [];
         let currentFiles = 0;
-
         var myDropzone = new Dropzone("#my-dropzoneInvestor", {
             url: "/uploadFileInvestor",
             acceptedFiles: ".jpg, .png, .icon, .jpeg",
@@ -912,6 +1078,21 @@
             if (uploadedFiles.has(file.name)) {
                 uploadedFiles.delete(file.name);
             } else {
+                if(file.description){
+                    $.ajax({
+                        url: "[[@{/houses/getPicture/}]]" + getLastDigitFromPath(window.location.pathname),
+                        method: "Delete",
+                        data: {
+                            url: file.description,
+                        },
+                        success: function (response) {
+                            showToast(response, "success")
+                        },
+                        error: function (error) {
+                            console.error("Помилка при отриманні списку файлів: ", error);
+                        }
+                    });
+                }
                 console.log('Файл не найден в uploadedFiles Map.');
                 oldImagesArray = oldImagesArray.filter(function (item) {
                     return item !== file.name;
@@ -927,12 +1108,28 @@
         myDropzone.on('queuecomplete', function () {
             console.log('Загрузка всех файлов завершена.');
         });
-
+        if (getLastDigitFromPath(window.location.pathname)) {
+            $.ajax({
+                url: "[[@{/houses/getPicture/}]]" + getLastDigitFromPath(window.location.pathname),
+                method: "GET",
+                success: function (files) {
+                    files.forEach(function (file) {
+                        console.log(file)
+                        var mockFile = {name: removeBeforeFirstDot(file.originUrl), size: 2048, description: file.originUrl};
+                        myDropzone.emit("addedfile", mockFile);
+                        myDropzone.emit("thumbnail", mockFile, file.url);
+                        myDropzone.emit("complete", mockFile);
+                    });
+                },
+                error: function (error) {
+                    console.error("Помилка при отриманні списку файлів: ", error);
+                }
+            });
+        }
         function updateDropzoneMaxFiles() {
             const newMaxFiles = (15 - oldImagesArray.length);
             myDropzone.options.maxFiles = newMaxFiles;
         }
-
     </script>
 </section>
 </body>

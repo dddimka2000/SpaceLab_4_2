@@ -41,6 +41,7 @@ public class BuilderObject {
     private List<Layout> layouts;
 
     @OneToMany(mappedBy = "builderObject", cascade = CascadeType.DETACH)
+    @JsonBackReference
     private List<BuyerApplication> buyerApplications;
 
 }

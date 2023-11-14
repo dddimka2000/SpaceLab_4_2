@@ -74,4 +74,8 @@ public class HousesServiceImpl {
         Pageable pageable = PageRequest.of(houseForFilterDto.getPage(), 10, Sort.by(Sort.Order.desc("id")));
         return propertyHouseObjectRepository.findAll(specification, pageable);
     }
+
+    public void deleteById(Integer id) {
+        propertyHouseObjectRepository.deleteById(id);
+    }
 }

@@ -24,9 +24,12 @@
         </div>
         <hr style="margin-top: -5px">
         <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
-            <p style="margin-right: 5px"><input type="checkbox" style="margin-top: 3px">печать с адресом</p>
-            <button class="btn btn-success" th:onclick="|window.location.href='@{/houses/add}'|" style="margin-right: 5px">Добавить об'єкт</button>
-            <button class="btn btn-success">Распечатать</button>
+            <p style="margin-right: 5px"><input type="checkbox" style="margin-top: 3px" id="printWithAddress">печать с
+                адресом</p>
+            <button class="btn btn-success" th:onclick="|window.location.href='@{/houses/add}'|"
+                    style="margin-right: 5px">Добавить об'єкт
+            </button>
+            <button class="btn btn-success" onclick="printElements()">Распечатать</button>
         </div>
         <div class="card">
             <div class="card-body">
@@ -96,12 +99,13 @@
                             <option value="3">3</option>
                             <option value="7">7</option>
                             <option value="21">21</option>
-                            <option value="22">21+</option>
                         </select>
                     </div>
                     <div class="col-5">
                         <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
-                            <button class="btn btn-label-secondary" onclick="clearFilter()" style="margin-right: 5px">Очистить фильтр</button>
+                            <button class="btn btn-label-secondary" onclick="clearFilter()" style="margin-right: 5px">
+                                Очистить фильтр
+                            </button>
                             <button class="btn btn-label-secondary" onclick="getPageWithFilter(0)">Поиск</button>
                         </div>
                     </div>
@@ -126,6 +130,7 @@
                             <th>Реклама</th>
                             <th>Статус</th>
                             <th>Фото</th>
+                            <th></th>
                             <th style="min-width: 130px;"></th>
                         </tr>
                         </thead>
@@ -142,6 +147,90 @@
         </div>
     </div>
     <script>
+        function printElements() {
+            var bodyRows = []
+            var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
+            if (selectedCheckboxes.length === 0) {
+                showToast("Виберіть хоча б один чекбокс для друку.", "danger");
+                return;
+            }
+            var ajaxPromises = [];
+            var headerRow
+            if (document.getElementById('printWithAddress').checked) {
+                selectedCheckboxes.forEach(function (checkbox) {
+                    var promise = new Promise(function (resolve, reject) {
+                        $.ajax({
+                            type: "Get",
+                            url: '[[@{/houses/getById/}]]' + checkbox.value,
+                            success: function (house) {
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + house.realtorName + `</td><td style="border: 1px solid black;">` + house.administrationComment + `</td>`)
+                                resolve();
+                            },
+                            error: function () {
+                                reject();
+                            }
+                        });
+                    });
+                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Район</th><th style="border: 1px solid black;">Топозона</th><th style="border: 1px solid black;">Улиця</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th><th style="border: 1px solid black;">Примітка</th></tr>';
+                    ajaxPromises.push(promise);
+                });
+            }else {
+                selectedCheckboxes.forEach(function (checkbox) {
+                    var promise = new Promise(function (resolve, reject) {
+                        $.ajax({
+                            type: "Get",
+                            url: '[[@{/houses/getById/}]]' + checkbox.value,
+                            success: function (house) {
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + house.realtorName + `</td><td style="border: 1px solid black;">` + house.administrationComment + `</td>`)
+                                resolve();
+                            },
+                            error: function () {
+                                reject();
+                            }
+                        });
+                    });
+                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th><th style="border: 1px solid black;">Примітка</th></tr>';
+                    ajaxPromises.push(promise);
+                })
+            }
+
+            Promise.all(ajaxPromises)
+                .then(function () {
+                    printTable(headerRow, bodyRows);
+                })
+                .catch(function (error) {
+                    console.error("Error fetching data:", error);
+                });
+
+        }
+
+
+        function deleteElement(button, houseId) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var table = document.getElementById("houseTable");
+                var row = button.parentElement.parentElement;
+                table.deleteRow(row.rowIndex);
+
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/houses/delete/}]]' + houseId,
+                    success: function (response) {
+                        getPageWithFilter(page)
+                        showToast(response, "success")
+                    },
+                });
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+
         $(document).ready(function () {
             forSelect2(undefined, undefined, "#district", "/enum/district")
             forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
@@ -151,13 +240,13 @@
                 minimumResultsForSearch: -1,
             })
         });
+
         function getPageWithFilter(page) {
             this.page = page
             let formData = new FormData();
             formData.append('page', page)
             formData.append('district', $('#district').val())
-            console.log($('.roomNumbers:checked').val())
-            if($('.roomNumbers:checked').val())formData.append('numberRooms', $('.roomNumbers:checked').val())
+            if ($('.roomNumbers:checked').val()) formData.append('numberRooms', $('.roomNumbers:checked').val())
             else formData.append('numberRooms', 0)
             formData.append('minFloor', $('#floorMin').val())
             formData.append('maxFloor', $('#floorMax').val())
@@ -169,7 +258,11 @@
             formData.append('minArea', $('#houseAreaMin').val())
             formData.append('maxArea', $('#houseAreaMax').val())
             formData.append('street', $('#street').val())
-            formData.append('lastContactDate', $('#lastContactDate').val())
+            var lastVisitDate = new Date()
+            console.log(lastVisitDate)
+            console.log(lastVisitDate.getDate())
+            console.log(lastVisitDate.setDate(lastVisitDate.getDate() - $('#lastContactDate').val()))
+            if ($('#lastContactDate').val()) formData.append('lastContactDate', lastVisitDate.toISOString().split('T')[0])
             $.ajax({
                 type: "Post",
                 url: '[[@{/houses/get/all}]]',
@@ -183,7 +276,6 @@
 
                     for (var house of houses.content) {
                         var newRow = tbody.insertRow();
-                        console.log(house)
                         var cell0 = newRow.insertCell(0);
                         cell0.appendChild(createStatusIcon(house.lastContactDate))
                         cell0.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
@@ -193,15 +285,15 @@
                         cell1.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
 
                         var cell2 = newRow.insertCell(2);
-                        if(house.address)cell2.innerHTML = house.address.district;
+                        if (house.address) cell2.innerHTML = house.address.district;
                         cell2.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
 
                         var cell3 = newRow.insertCell(3);
-                        if(house.address)cell3.innerHTML = house.address.zone;
+                        if (house.address) cell3.innerHTML = house.address.zone;
                         cell3.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
 
                         var cell4 = newRow.insertCell(4);
-                        if(house.address)cell4.innerHTML = house.address.street;
+                        if (house.address) cell4.innerHTML = house.address.street;
                         cell4.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
 
                         var cell5 = newRow.insertCell(5);
@@ -221,19 +313,22 @@
                         cell8.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
 
                         var cell9 = newRow.insertCell(9);
-                        cell9.innerHTML = house.advertisementEnabled?'<span class="badge bg-label-success me-1">Да</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'
+                        cell9.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1">Да</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'
                         cell9.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')
 
                         var cell10 = newRow.insertCell(10);
-                        cell10.innerHTML=house.status?'<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'
+                        cell10.innerHTML = house.status ? '<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'
                         cell10.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')
 
                         var cell11 = newRow.insertCell(11);
-                        cell11.innerHTML=house.pictures?'<span class="badge bg-label-success me-1">Есть</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'
+                        cell11.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1">Есть</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'
                         cell11.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')
 
                         var cell12 = newRow.insertCell(12);
-                        cell12.innerHTML = `
+                        cell12.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint" value="` + house.id + `">`
+
+                        var cell13 = newRow.insertCell(13);
+                        cell13.innerHTML = `
                         <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>
                         <a class='btn btn-default btn-sm float-right' href='[[@{/houses/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
                     }
@@ -242,16 +337,16 @@
                 },
             });
         }
+
         function clearFilter() {
             var elements = document.querySelectorAll('input, select, textarea');
-            elements.forEach(function(element) {
+            elements.forEach(function (element) {
                 element.value = null
             });
             $(".select2-container").find(".select2-selection__choice").remove();
 
             let radioFilters = $('[name="roomNumbers"]');
             radioFilters.prop("checked", false);
-
         }
     </script>
 </section>

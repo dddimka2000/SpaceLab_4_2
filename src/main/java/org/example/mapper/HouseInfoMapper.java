@@ -27,16 +27,17 @@ public interface HouseInfoMapper {
     void updateEntityFromDto(HouseInfoDto houseInfoDto, @MappingTarget PropertyHouseObject propertyHouseObject);
     default void updateEntityFromDto(HouseInfoDto houseInfoDto, PropertyHouseObject propertyHouseObject, MinioService minioService, RealtorServiceImpl realtorService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         updateEntityFromDto(houseInfoDto, propertyHouseObject);
-        List<String> files = new ArrayList<>();
+        if(propertyHouseObject.getFiles() == null) propertyHouseObject.setFiles(new ArrayList<>());
+        if(houseInfoDto.getFiles() != null)
         for (MultipartFile file : houseInfoDto.getFiles()) {
-            files.add(minioService.putImage(file));
+            propertyHouseObject.getFiles().add(minioService.putImage(file));
         }
-        List<String> pictures = new ArrayList<>();
+
+        if(propertyHouseObject.getPictures() == null) propertyHouseObject.setPictures(new ArrayList<>());
+        if(houseInfoDto.getPictures() != null)
         for (MultipartFile file : houseInfoDto.getPictures()) {
-            pictures.add(minioService.putImage(file));
+            propertyHouseObject.getPictures().add(minioService.putImage(file));
         }
         propertyHouseObject.setRealtor(realtorService.getById(houseInfoDto.getCodeStaff()));
-        propertyHouseObject.setFiles(files);
-        propertyHouseObject.setPictures(pictures);
     }
 }
