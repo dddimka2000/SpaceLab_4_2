@@ -1,5 +1,5 @@
 <nav layout:fragment="navbar"
-     class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+     class="layout-navbar navbar navbar-expand-lg navbar-detached align-items-center bg-navbar-theme "
      id="layout-navbar"
 >
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
@@ -81,46 +81,9 @@
         </ul>
     </div>
     <script type="text/javascript">
-        function sendLanguage(el) {
-            var selectedLanguage = el.getAttribute('data-language');
-
-            document.cookie = "selectedLanguage=" + selectedLanguage;
-
-
-            changeLanguage(selectedLanguage);
-        };
-        document.addEventListener('DOMContentLoaded', function () {
-            let allCookies = document.cookie;
-            let cookiesArray = allCookies.split("; ");
-            let cookies = {};
-            for (let i = 0; i < cookiesArray.length; i++) {
-                let cookie = cookiesArray[i].split("=");
-                cookies[cookie[0]] = cookie[1];
-            }
-            var selectedLanguage = cookies["selectedLanguage"];
-            if (selectedLanguage==undefined){
-                document.cookie = "selectedLanguage=ru";
-                let allCookies = document.cookie;
-                let cookiesArray = allCookies.split("; ");
-                let cookies = {};
-                for (let i = 0; i < cookiesArray.length; i++) {
-                    let cookie = cookiesArray[i].split("=");
-                    cookies[cookie[0]] = cookie[1];
-                }
-                selectedLanguage = cookies["selectedLanguage"]
-            }
-            console.log(selectedLanguage)
-
-            let s = $('[data-language="' + selectedLanguage + '"]')
-            console.log(s);
-            s.click();
-        });
-        let path = /*[[@{/}]]*/ '';
-        console.log(path);
 
         function changeLanguage(language) {
-            // Загрузка новых переводов с сервера
-            fetch(path + 'api/translations?language=' + language)
+            fetch('/ProminadaDD' + '/api/translations?language=' + language)
                 .then(response => response.json())
                 .then(newTranslations => {
                     var translations = newTranslations;
@@ -132,13 +95,8 @@
                                 if (langTranslations.hasOwnProperty(key)) {
                                     var value = langTranslations[key];
                                     var elements = document.querySelectorAll('[data-translate="' + key + '"]');
-                                    console.log(key);
-                                    console.log(elements);
                                     elements.forEach(function (element) {
                                         element.innerText = value;
-                                        console.log(element);
-                                        console.log(element.innerText)
-                                        console.log(key + " k - v " + value)
                                     })
                                 }
                             }
@@ -147,6 +105,41 @@
                 })
                 .catch(error => console.error('Error fetching translations:', error));
         }
+
+
+        function sendLanguage(el) {
+            var selectedLanguage = el.getAttribute('data-language');
+            document.cookie = "selectedLanguage=" + selectedLanguage;
+            changeLanguage(selectedLanguage);
+        };
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let allCookies = document.cookie;
+            let cookiesArray = allCookies.split("; ");
+            let cookies = {};
+            for (let i = 0; i < cookiesArray.length; i++) {
+                let cookie = cookiesArray[i].split("=");
+                cookies[cookie[0]] = cookie[1];
+            }
+            var selectedLanguage = cookies["selectedLanguage"];
+            if (selectedLanguage == undefined) {
+                document.cookie = "selectedLanguage=ru";
+                let allCookies = document.cookie;
+                let cookiesArray = allCookies.split("; ");
+                let cookies = {};
+                for (let i = 0; i < cookiesArray.length; i++) {
+                    let cookie = cookiesArray[i].split("=");
+                    cookies[cookie[0]] = cookie[1];
+                }
+                selectedLanguage = cookies["selectedLanguage"]
+            }
+            let s = $('[data-language="' + selectedLanguage + '"]')
+            s.click();
+        });
+        let path = /*[[@{/}]]*/ '';
+
+
 
         document.getElementById('languageSelector').addEventListener('change', function () {
             let selectedLanguage = this.value;

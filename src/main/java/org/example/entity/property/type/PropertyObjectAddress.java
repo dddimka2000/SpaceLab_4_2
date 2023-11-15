@@ -21,7 +21,7 @@ public class PropertyObjectAddress {
     private String zone;
     @Size(min = 1, max = 31, message = "Улица должна быть от 2 до 30 символов.")
     @Pattern(regexp = "^[ а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Улица должна содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
-    private String street;
+    private String street, streetEng, streetUkr;
     @NotNull(message = "Введите номер дома")
     @Min(value = 1, message = "Введите корректный номер дома")
     @Max(value = 100000001, message = "Введите корректный номер дома")

@@ -58,12 +58,12 @@
         <div class="container-fluid">
             <br>
             <div class="d-flex justify-content-between">
-                <h4 class="fw-bold">Новый объект</h4>
+                <h4 class="fw-bold" data-translate="new_object">Новый объект</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                        <li class="breadcrumb-item"><a th:href="@{/investor_objects}">Объекты от инвесторов</a></li>
-                        <li class="breadcrumb-item active" aria-current="page" th:href="@{/investor_objects/create}">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/investor_objects}" data-translate="investor_objects">Объекты от инвесторов</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="create_investor_object" th:href="@{/investor_objects/create}">
                             Создание объекта от инвестора
                         </li>
                     </ol>
@@ -75,19 +75,19 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-home"
-                            type="button" role="tab" aria-controls="pills-home" aria-selected="true">Адрессная часть
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true" data-translate="address_section">Адрессная часть
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-profile"
-                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Основное
+                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false" data-translate="main_section">Основное
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-contact"
-                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Галерея
+                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false" data-translate="gallery">Галерея
                     </button>
                 </li>
             </ul>
@@ -96,7 +96,7 @@
                     <div class="row">
 
                         <div class="col-3">
-                            <h6>Обл.район</h6>
+                            <h6  data-translate="region_district">Обл.район</h6>
                             <select class="select2 form-select form-select" data-allow-clear="true" name="region"
                                     id="region">
                                 <option selected></option>
@@ -107,12 +107,12 @@
 
                         </div>
                         <div class="col-3">
-                            <h6>Нас.пункт</h6>
+                            <h6 data-translate="city">Нас.пункт</h6>
                             <select class="select2 form-select form-select" name="city" disabled>
                             </select>
                         </div>
                         <div class="col-2">
-                            <h6>Район</h6>
+                            <h6 data-translate="district">Район</h6>
                             <select class="select2 form-select form-select" name="district" disabled>
                                 <option selected value=""></option>
                                 <option value="1">One</option>
@@ -120,12 +120,12 @@
                                 <option value="3">Three</option>
                             </select></div>
                         <div class="col-2">
-                            <h6>Улица</h6>
+                            <h6 data-translate="street">Улица</h6>
                             <input class="form-control" type="text" name="street" id="street"
                                    placeholder="Введите улицу">
                         </div>
                         <div class="col-2">
-                            <h6>Топозона</h6>
+                            <h6 data-translate="topozone">Топозона</h6>
                             <select class="select2 form-select form-select" name="topozone">
                                 <option value="" selected></option>
                                 <option th:each="entity : ${selectTopozone}"
@@ -138,17 +138,17 @@
                     <br>
                     <div class="row">
                         <div class="col-2">
-                            <h6>Номер дома</h6>
+                            <h6 data-translate="house_number">Номер дома</h6>
                             <input class="form-control" type="number" name="houseNumber"
                                    placeholder="Введите номер дома">
                         </div>
                         <div class="col-2">
-                            <h6>Секция/Корпус</h6>
+                            <h6 data-translate="section_building">Секция/Корпус</h6>
                             <input class="form-control" type="number" name="section"
                                    placeholder="Введите секцию/корпус">
                         </div>
                         <div class="col-2">
-                            <h6>Номер квартиры</h6>
+                            <h6 data-translate="apartment_number">Номер квартиры</h6>
                             <input type="text" class="form-control" name="apartmentNumber" id="apartmentNumber"
                                    placeholder="Введите номер квартиры">
                         </div>
@@ -159,22 +159,22 @@
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            <h6>ФИО владельца </h6>
+                            <h6 data-translate="owner_name">ФИО владельца </h6>
                             <input class="form-control" type="text" name="owner" placeholder="Введите ФИО владельца">
                         </div>
                         <div class="col-3">
-                            <h6>Телефон</h6>
+                            <h6 data-translate="phone" a>Телефон</h6>
                             <input type="tel" name="telephone" id="telephone" class="form-control"
                                    placeholder="Введите номер телефона">
                         </div>
                         <div class="col-3">
-                            <h6>Дата приобретения</h6>
+                            <h6 data-translate="acquisition_date">Дата приобретения</h6>
                             <input type="date" class="form-control" placeholder="yyyy/MM/dd"
                                    aria-describedby="defaultFormControlHelp" id="boughtDate" name="boughtDate"
                                    value="">
                         </div>
                         <div class="col-3">
-                            <h6>Право собственности</h6>
+                            <h6 data-translate="ownership_rights">Право собственности</h6>
                             <select class="select2 form-select form-select" name="ownership">
                                 <option selected></option>
                                 <option th:each="status : ${ownershipType}"

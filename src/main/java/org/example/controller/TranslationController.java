@@ -1,15 +1,15 @@
 package org.example.controller;
 
 import lombok.extern.log4j.Log4j2;
+import org.example.dto.LanguageRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +26,8 @@ import java.util.Properties;
 public class TranslationController {
 
     private final ResourceLoader resourceLoader = new DefaultResourceLoader();
+
+
 
     @GetMapping("/translations")
     @ResponseBody
@@ -72,4 +74,22 @@ public class TranslationController {
 
         return translations;
     }
+//    @Autowired
+//    private final MessageSource messageSource;
+//
+//
+//
+//    @GetMapping("/")
+//    public String home(Model model, Locale locale) {
+//        String greeting = messageSource.getMessage("greeting", null, locale);
+//        model.addAttribute("greeting", greeting);
+//        return "index";
+//    }
+//
+//    @PostMapping("/change-language")
+//    public String changeLanguage(@RequestBody LanguageRequest request, Model model, Locale locale) {
+//        Locale newLocale = new Locale(request.getTranslation());
+//        model.addAttribute("translation", messageSource.getMessage("translation", null, newLocale));
+//        return "forward:/";
+//    }
 }

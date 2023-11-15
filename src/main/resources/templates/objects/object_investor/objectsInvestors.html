@@ -40,6 +40,7 @@
             @page {
                 size: landscape; /* или portrait для книжной ориентации */
             }
+
             body * {
                 visibility: hidden;
             }
@@ -47,16 +48,19 @@
             #printElements * {
                 visibility: visible;
             }
+
             #printElements {
                 position: absolute;
                 left: 0;
                 top: 0;
             }
-            #printElements .btn-group *{
+
+            #printElements .btn-group * {
                 visibility: hidden;
                 display: none;
             }
-            #printElements .form-check-input *{
+
+            #printElements .form-check-input * {
                 visibility: hidden;
                 display: none;
             }
@@ -212,8 +216,8 @@
                             </div>
                             <div class="col-4">
                                 <h6>Дата последнего контакта</h6>
-                                <select name="day" class="form-select for-filter">
-                                    <option selected value="">Выберите день</option>
+                                <select id="day" name="day" class="form-select for-filter select2">
+                                    <option selected value="" disabled></option>
                                     <option value="1">1 день</option>
                                     <script>
                                         for (let i = 2; i <= 31; i++) {
@@ -291,6 +295,15 @@
                                 </nav>
                             </div>
                         </div>
+                        <div class="col-2">
+                            <p>Колличество строк:</p>
+                            <select class="form-select form-control select2" id="pageSize">
+                                <option value="2">2</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -320,11 +333,13 @@
     </div>
     <script th:src="@{/js/pagination.js}"></script>
     <script th:inline="javascript">
+        $("#day").select2();
+        $("#pageSize").select2();
         function printButton() {
             var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
 
             if (selectedCheckboxes.length === 0) {
-                showNotification("Выберите хотя бы один чекбокс для печати.","",false);
+                showNotification("Выберите хотя бы один чекбокс для печати.", "", false);
                 return;
             }
 
@@ -395,6 +410,10 @@
         });
         let page = 0;
         let elementTr = 0;
+        $("#pageSize").on("change", function () {
+            getPageWithFilter(0);
+        });
+
 
         function getPageWithFilter(page) {
             let filterElements = $('.for-filter');
@@ -443,10 +462,15 @@
             } else {
                 console.log("Invalid number of days");
             }
+            let pageSize = $("#pageSize").val();
+            if (!pageSize) {
+                pageSize = 10;
+            }
             $.ajax({
                     method: "GET",
                     url: url,
                     data: {
+                        pageSize: pageSize,
                         page: page,
                         district: selectMultipartDistrict,
                         numberRooms: rooms,
@@ -584,6 +608,7 @@
 
         function select2MultipleResidential() {
             let contextPath = /*[[@{/}]]*/ '';
+
             $('#select2MultipleResidentialComplexId').select2({
                 ajax: {
                     url: contextPath + 'builder_objects/for/select',
