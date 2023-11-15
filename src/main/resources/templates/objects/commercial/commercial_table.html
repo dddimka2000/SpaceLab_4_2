@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+        xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Content page</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold">Комерческая недвижемось</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Дома и участки</li>
+                </ol>
+            </nav>
+        </div>
+        <hr style="margin-top: -5px">
+        <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
+            <p style="margin-right: 5px"><input type="checkbox" style="margin-top: 3px" id="printWithAddress">печать с
+                адресом</p>
+            <button class="btn btn-success" th:onclick="|window.location.href='@{/commercial/add}'|"
+                    style="margin-right: 5px">Добавить об'єкт
+            </button>
+            <button class="btn btn-success" onclick="printElements()">Распечатать</button>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        Район
+                        <select id="district" multiple></select>
+                        Топзона
+                        <select id="topzone" multiple></select>
+                    </div>
+                    <div class="col-3">
+                        Количество комнат
+                        <br/>
+                        1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1">
+                        2 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">
+                        3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">
+                        >3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">
+                        <div class="mb-3"></div>
+                        ЖК
+                        <select id="buildObject" multiple></select>
+                    </div>
+                    <div class="col-5">
+                        <div class="row">
+                            <div class="col">
+                                Этаж:
+                                <div style="display: flex">
+                                    <input class="form-control" id="floorMin">
+                                    <div class="mt-2">&mdash;</div>
+                                    <input class="form-control" id="floorMax">
+                                </div>
+                            </div>
+                            <div class="col">
+                                Цена ($):
+                                <div style="display: flex">
+                                    <input class="form-control" id="priceMin">
+                                    <div class="mt-2">&mdash;</div>
+                                    <input class="form-control" id="priceMax">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Участок(кв. м):
+                                <div style="display: flex">
+                                    <input class="form-control" id="plotAreaMin">
+                                    <div class="mt-2">&mdash;</div>
+                                    <input class="form-control" id="plotAreaMax">
+                                </div>
+                            </div>
+                            <div class="col">
+                                Площадь(кв. м):
+                                <div style="display: flex">
+                                    <input class="form-control" id="houseAreaMin">
+                                    <div class="mt-2">&mdash;</div>
+                                    <input class="form-control" id="houseAreaMax">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-4">
+                        Вулиця
+                        <input class="form-control" id="street">
+                    </div>
+                    <div class="col-3">
+                        Дата контакта
+                        <select class="form-control" style="width: 60%;" id="lastContactDate">
+                            <option></option>
+                            <option value="3">3</option>
+                            <option value="7">7</option>
+                            <option value="21">21</option>
+                        </select>
+                    </div>
+                    <div class="col-5">
+                        <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
+                            <button class="btn btn-label-secondary" onclick="clearFilter()" style="margin-right: 5px">
+                                Очистить фильтр
+                            </button>
+                            <button class="btn btn-label-secondary" onclick="getPageWithFilter(0)">Поиск</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card border mt-3">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped linkedRow" id="houseTable">
+                        <thead>
+                        <tr>
+                            <th>Дата контакта</th>
+                            <th>Код</th>
+                            <th>Район</th>
+                            <th>Топзона</th>
+                            <th>Улица</th>
+                            <th>Комнат</th>
+                            <th>Етаж</th>
+                            <th>Етажность</th>
+                            <th>Площадь</th>
+                            <th>Цена</th>
+                            <th>Реклама</th>
+                            <th>Статус</th>
+                            <th>Фото</th>
+                            <th></th>
+                            <th style="min-width: 130px;"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                    id="pagination_container">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            forSelect2(undefined, undefined, "#district", "/enum/district")
+            forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
+            forSelect2WithSearch(undefined, undefined, "#buildObject", "/builder_objects/for/select")
+            $('#lastContactDate').select2({
+                minimumResultsForSearch: -1,
+            })
+            // getPageWithFilter(0)
+        });
+
+
+        function clearFilter() {
+            var elements = document.querySelectorAll('input, select, textarea');
+            elements.forEach(function (element) {
+                element.value = null
+            });
+            $(".select2-container").find(".select2-selection__choice").remove();
+
+            let radioFilters = $('[name="roomNumbers"]');
+            radioFilters.prop("checked", false);
+
+            $('#lastContactDate').select2({
+                minimumResultsForSearch: -1,
+            })
+        }
+    </script>
+<!--    <script>-->
+<!--        function printElements() {-->
+<!--            var bodyRows = []-->
+<!--            var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');-->
+<!--            if (selectedCheckboxes.length === 0) {-->
+<!--                showToast("Виберіть хоча б один чекбокс для друку.", "danger");-->
+<!--                return;-->
+<!--            }-->
+<!--            var ajaxPromises = [];-->
+<!--            var headerRow-->
+<!--            if (document.getElementById('printWithAddress').checked) {-->
+<!--                selectedCheckboxes.forEach(function (checkbox) {-->
+<!--                    var promise = new Promise(function (resolve, reject) {-->
+<!--                        $.ajax({-->
+<!--                            type: "Get",-->
+<!--                            url: '[[@{/houses/getById/}]]' + checkbox.value,-->
+<!--                            success: function (house) {-->
+<!--                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + house.realtorName + `</td><td style="border: 1px solid black;">` + house.administrationComment + `</td>`)-->
+<!--                                resolve();-->
+<!--                            },-->
+<!--                            error: function () {-->
+<!--                                reject();-->
+<!--                            }-->
+<!--                        });-->
+<!--                    });-->
+<!--                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Район</th><th style="border: 1px solid black;">Топозона</th><th style="border: 1px solid black;">Улиця</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th><th style="border: 1px solid black;">Примітка</th></tr>';-->
+<!--                    ajaxPromises.push(promise);-->
+<!--                });-->
+<!--            }else {-->
+<!--                selectedCheckboxes.forEach(function (checkbox) {-->
+<!--                    var promise = new Promise(function (resolve, reject) {-->
+<!--                        $.ajax({-->
+<!--                            type: "Get",-->
+<!--                            url: '[[@{/houses/getById/}]]' + checkbox.value,-->
+<!--                            success: function (house) {-->
+<!--                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + house.realtorName + `</td><td style="border: 1px solid black;">` + house.administrationComment + `</td>`)-->
+<!--                                resolve();-->
+<!--                            },-->
+<!--                            error: function () {-->
+<!--                                reject();-->
+<!--                            }-->
+<!--                        });-->
+<!--                    });-->
+<!--                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th><th style="border: 1px solid black;">Примітка</th></tr>';-->
+<!--                    ajaxPromises.push(promise);-->
+<!--                })-->
+<!--            }-->
+
+<!--            Promise.all(ajaxPromises)-->
+<!--                .then(function () {-->
+<!--                    printTable(headerRow, bodyRows);-->
+<!--                })-->
+<!--                .catch(function (error) {-->
+<!--                    console.error("Error fetching data:", error);-->
+<!--                });-->
+
+<!--        }-->
+
+
+<!--        function deleteElement(button, houseId) {-->
+<!--            $('#confirmationModal').modal('show');-->
+
+<!--            $('.confirm-delete').on('click', function () {-->
+<!--                var table = document.getElementById("houseTable");-->
+<!--                var row = button.parentElement.parentElement;-->
+<!--                table.deleteRow(row.rowIndex);-->
+
+<!--                $.ajax({-->
+<!--                    type: "Get",-->
+<!--                    url: '[[@{/houses/delete/}]]' + houseId,-->
+<!--                    success: function (response) {-->
+<!--                        getPageWithFilter(page)-->
+<!--                        showToast(response, "success")-->
+<!--                    },-->
+<!--                });-->
+
+<!--                $('#confirmationModal').modal('hide');-->
+<!--                $('.confirm-delete').off('click');-->
+<!--            });-->
+<!--            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {-->
+<!--                $('#confirmationModal').modal('hide');-->
+<!--                $('.confirm-delete').off('click');-->
+<!--            });-->
+<!--        }-->
+
+<!--        $(document).ready(function () {-->
+<!--            forSelect2(undefined, undefined, "#district", "/enum/district")-->
+<!--            forSelect2(undefined, undefined, "#topzone", "/enum/topzone")-->
+<!--            getPageWithFilter(0)-->
+<!--            $('#lastContactDate').select2({-->
+<!--                minimumResultsForSearch: -1,-->
+<!--            })-->
+<!--        });-->
+
+<!--        function getPageWithFilter(page) {-->
+<!--            this.page = page-->
+<!--            let formData = new FormData();-->
+<!--            formData.append('page', page)-->
+<!--            formData.append('district', $('#district').val())-->
+<!--            if ($('.roomNumbers:checked').val()) formData.append('numberRooms', $('.roomNumbers:checked').val())-->
+<!--            else formData.append('numberRooms', 0)-->
+<!--            formData.append('minFloor', $('#floorMin').val())-->
+<!--            formData.append('maxFloor', $('#floorMax').val())-->
+<!--            formData.append('minPrice', $('#priceMin').val())-->
+<!--            formData.append('maxPrice', $('#priceMax').val())-->
+<!--            formData.append('topozone', $('#topzone').val())-->
+<!--            formData.append('plotAreaMin', $('#plotAreaMin').val())-->
+<!--            formData.append('plotAreaMax', $('#plotAreaMax').val())-->
+<!--            formData.append('minArea', $('#houseAreaMin').val())-->
+<!--            formData.append('maxArea', $('#houseAreaMax').val())-->
+<!--            formData.append('street', $('#street').val())-->
+<!--            var lastVisitDate = new Date()-->
+<!--            if ($('#lastContactDate').val()) formData.append('lastContactDate', lastVisitDate.toISOString().split('T')[0])-->
+<!--            $.ajax({-->
+<!--                type: "Post",-->
+<!--                url: '[[@{/houses/get/all}]]',-->
+<!--                data: formData,-->
+<!--                contentType: false,-->
+<!--                processData: false,-->
+<!--                success: function (houses) {-->
+<!--                    var table = document.getElementById("houseTable");-->
+<!--                    var tbody = table.querySelector("tbody");-->
+<!--                    $('#houseTable tbody').empty();-->
+
+<!--                    for (var house of houses.content) {-->
+<!--                        var newRow = tbody.insertRow();-->
+<!--                        var cell0 = newRow.insertCell(0);-->
+<!--                        cell0.appendChild(createStatusIcon(house.lastContactDate))-->
+<!--                        cell0.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
+
+<!--                        var cell1 = newRow.insertCell(1);-->
+<!--                        cell1.innerHTML = house.objectCode;-->
+<!--                        cell1.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
+
+<!--                        var cell2 = newRow.insertCell(2);-->
+<!--                        if (house.address) cell2.innerHTML = house.address.district;-->
+<!--                        cell2.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
+
+<!--                        var cell3 = newRow.insertCell(3);-->
+<!--                        if (house.address) cell3.innerHTML = house.address.zone;-->
+<!--                        cell3.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
+
+<!--                        var cell4 = newRow.insertCell(4);-->
+<!--                        if (house.address) cell4.innerHTML = house.address.street;-->
+<!--                        cell4.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
+
+<!--                        var cell5 = newRow.insertCell(5);-->
+<!--                        cell5.innerHTML = house.roomQuantity;-->
+<!--                        cell5.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
+
+<!--                        var cell6 = newRow.insertCell(6);-->
+<!--                        cell6.innerHTML = house.floorQuantity;-->
+<!--                        cell6.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
+
+<!--                        var cell7 = newRow.insertCell(7);-->
+<!--                        cell7.innerHTML = house.areaTotal;-->
+<!--                        cell7.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
+
+<!--                        var cell8 = newRow.insertCell(8);-->
+<!--                        cell8.innerHTML = house.price;-->
+<!--                        cell8.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
+
+<!--                        var cell9 = newRow.insertCell(9);-->
+<!--                        cell9.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1">Да</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'-->
+<!--                        cell9.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')-->
+
+<!--                        var cell10 = newRow.insertCell(10);-->
+<!--                        cell10.innerHTML = house.status ? '<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'-->
+<!--                        cell10.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')-->
+
+<!--                        var cell11 = newRow.insertCell(11);-->
+<!--                        cell11.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1">Есть</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'-->
+<!--                        cell11.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')-->
+
+<!--                        var cell12 = newRow.insertCell(12);-->
+<!--                        cell12.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint" value="` + house.id + `">`-->
+
+<!--                        var cell13 = newRow.insertCell(13);-->
+<!--                        cell13.innerHTML = `-->
+<!--                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>-->
+<!--                        <a class='btn btn-default btn-sm float-right' href='[[@{/houses/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;-->
+<!--                    }-->
+<!--                    $('#pagination_container').empty();-->
+<!--                    if (houses.totalPages > 1) updatePagination(page, houses.totalPages, 'pagination_container')-->
+<!--                },-->
+<!--            });-->
+<!--        }-->
+
+<!--        function clearFilter() {-->
+<!--            var elements = document.querySelectorAll('input, select, textarea');-->
+<!--            elements.forEach(function (element) {-->
+<!--                element.value = null-->
+<!--            });-->
+<!--            $(".select2-container").find(".select2-selection__choice").remove();-->
+
+<!--            let radioFilters = $('[name="roomNumbers"]');-->
+<!--            radioFilters.prop("checked", false);-->
+
+<!--            $('#lastContactDate').select2({-->
+<!--                minimumResultsForSearch: -1,-->
+<!--            })-->
+<!--        }-->
+<!--    </script>-->
+</section>
+</body>
+</html>

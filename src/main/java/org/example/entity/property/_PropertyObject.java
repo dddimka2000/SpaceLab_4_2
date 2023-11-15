@@ -33,7 +33,7 @@ public class _PropertyObject {
     private Integer roomQuantity;
 
     private String apartmentNumber;
-    private String ownerName;
+    private String ownerName, ownerNameEng, ownerNameUkr;
     private String ownerPhone;
 
     @DateTimeFormat(pattern="yyyy/MM/dd")
@@ -51,8 +51,7 @@ public class _PropertyObject {
     private String roomMeters;
     private Double heightCeiling;
 
-    private String wallMaterial;
-
+    private String wallMaterial ,wallMaterialEng, wallMaterialUkr;
     private PropertyOrigin propertyOrigin;   // состояние квартиры/интерьера: от строителей / от инвесторов
 
     private Boolean bargain, exclusive, urgent, free, open, intermediary;

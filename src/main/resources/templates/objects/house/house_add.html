@@ -246,16 +246,26 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-3">
-                            Материал стен
+                        <div class="col-2">
+                            Материал стен(RU)
                             <input class="form-control" type="text" id="wall_material"
                                    placeholder="Введите материал стен">
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
+                            Материал стен(UK)
+                            <input class="form-control" type="text" id="wall_materialUkr"
+                                   placeholder="Введите материал стен">
+                        </div>
+                        <div class="col-2">
+                            Материал стен(EN)
+                            <input class="form-control" type="text" id="wall_materialEng"
+                                   placeholder="Введите материал стен">
+                        </div>
+                        <div class="col-2">
                             Состояние интерьера
                             <select id="stateInterior"></select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
                             Состояние дома
                             <select id="stateHouse"></select>
                         </div>
@@ -648,6 +658,8 @@
             formData.append("advertisementEnabled", advertisementEnabled.is(':checked'));
 
             var wallMaterial = $("#wall_material");
+            var wallMaterialUkr = $("#wall_materialUkr");
+            var wallMaterialEng = $("#wall_materialEng");
             var stateInterior = $("#stateInterior");
             var stateHouse = $("#stateHouse");
             var kitchenType = $("#kitchenType");
@@ -723,6 +735,8 @@
                 return false
             }
             if (!validString("1", "100", wallMaterial)) return false
+            if (!validString("1", "100", wallMaterialUkr)) return false
+            if (!validString("1", "100", wallMaterialEng)) return false
             if (!validSelect2(stateInterior)) return false
             if (!validSelect2(stateHouse)) return false
             if (!validSelect2(kitchenType)) return false
@@ -739,6 +753,8 @@
             if (!validSelect2(frontDoorType)) return false
 
             formData.append("wallMaterial", wallMaterial.val());
+            formData.append("wallMaterialUkr", wallMaterialUkr.val());
+            formData.append("wallMaterialEng", wallMaterialEng.val());
             formData.append("stateInterior", stateInterior.val());
             formData.append("stateHouse", stateHouse.val());
             formData.append("kitchenType", kitchenType.val());
@@ -835,6 +851,8 @@
                         $("#areaKitchen").val(house.areaKitchen)
 
                         $("#wall_material").val(house.wallMaterial)
+                        $("#wall_materialUkr").val(house.wallMaterialUkr)
+                        $("#wall_materialEng").val(house.wallMaterialEng)
 
                         $("#lastContactDate").val(house.lastContactDate.replaceAll('-', '/'));
                         $("#vnpExpirationDate").val(house.vnpExpirationDate.replaceAll('-', '/'))

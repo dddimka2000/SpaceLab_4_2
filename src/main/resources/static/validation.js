@@ -122,7 +122,7 @@ function cleanInputs(){
 }
 function validString(minLength, maxLength, inputString) {
     try {
-        var length = inputString.val().length
+        var length = inputString.val().replace(/\s/g, '').length
         var result = length >= minLength && length <= maxLength
     }catch (e){
         result = false

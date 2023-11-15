@@ -5,7 +5,7 @@ import org.example.entity.property.type.*;
 
 @Data
 public class HouseMaterialDto {
-    private String wallMaterial;
+    private String wallMaterial,wallMaterialEng, wallMaterialUkr;
     private HouseState stateInterior;
     private HouseState stateHouse;
     private KitchenType kitchenType;

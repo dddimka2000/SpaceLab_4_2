@@ -231,4 +231,34 @@ public class EnumController {
     public List<FrontDoorType> getFrontDoorType() {
         return List.of(FrontDoorType.values());
     }
+    @GetMapping("/airConditioning")
+    @ResponseBody
+    public List<AirConditioningType> getAirConditioning() {
+        return List.of(AirConditioningType.values());
+    }
+    @GetMapping("/ventilation")
+    @ResponseBody
+    public List<VentilationType> getVentilation() {
+        return List.of(VentilationType.values());
+    }
+    @GetMapping("/electricity")
+    @ResponseBody
+    public List<ElectricityType> getElectricity() {
+        return List.of(ElectricityType.values());
+    }
+    @GetMapping("/windowViewType")
+    @ResponseBody
+    public List<WindowViewType> getWindowViewType() {
+        return List.of(WindowViewType.values());
+    }
+    @GetMapping("/propertyStructureState")
+    @ResponseBody
+    public List<PropertyStructureState> getPropertyStructureState() {
+        return List.of(PropertyStructureState.values());
+    }
+    @GetMapping("/buildStatus")
+    @ResponseBody
+    public List<PropertyBuildStatus> getBuildStatus() {
+        return List.of(PropertyBuildStatus.values());
+    }
 }
