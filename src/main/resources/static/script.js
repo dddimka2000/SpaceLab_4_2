@@ -32,6 +32,7 @@ function showToast(message, type) {
     });
 }
 function getLastDigitFromPath(relativePath) {
+    if(!relativePath)relativePath=window.location.pathname
     var pathSegments = relativePath.split("/");
     var lastSegment = pathSegments[pathSegments.length - 1];
     if (/^\d+$/.test(lastSegment)) {

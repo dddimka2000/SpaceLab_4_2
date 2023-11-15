@@ -25,6 +25,12 @@ public class Realtor {
     private String name;
     private String surname;
     private String middleName;
+    private String nameUK;
+    private String surnameUK;
+    private String middleNameUK;
+    private String nameEN;
+    private String surnameEN;
+    private String middleNameEN;
     private String email;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")

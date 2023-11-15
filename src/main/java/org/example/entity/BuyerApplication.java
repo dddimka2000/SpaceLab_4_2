@@ -36,11 +36,9 @@ public class BuyerApplication {
     private Integer priceMin, priceMax;
     private Integer plotAreaMin, plotAreaMax;
     private Integer houseAreaMin, houseAreaMax;
-    @ManyToMany
     @ToString.Exclude
-    private List<DistrictEntity> districts;
-    @ManyToMany
-    private List<TopozoneEntity> topzones;
+    private List<String> districts;
+    private List<String> topzones;
     private String comment;
     @OneToOne
     @JsonBackReference

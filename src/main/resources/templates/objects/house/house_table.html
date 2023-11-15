@@ -90,7 +90,7 @@
                 <div class="row mt-1">
                     <div class="col-4">
                         Вулиця
-                        <select id="street"></select>
+                        <input class="form-control" id="street">
                     </div>
                     <div class="col-3">
                         Дата контакта
@@ -234,7 +234,6 @@
         $(document).ready(function () {
             forSelect2(undefined, undefined, "#district", "/enum/district")
             forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
-            forSelect2('', '', "#street", "/enum/street")
             getPageWithFilter(0)
             $('#lastContactDate').select2({
                 minimumResultsForSearch: -1,
@@ -259,9 +258,6 @@
             formData.append('maxArea', $('#houseAreaMax').val())
             formData.append('street', $('#street').val())
             var lastVisitDate = new Date()
-            console.log(lastVisitDate)
-            console.log(lastVisitDate.getDate())
-            console.log(lastVisitDate.setDate(lastVisitDate.getDate() - $('#lastContactDate').val()))
             if ($('#lastContactDate').val()) formData.append('lastContactDate', lastVisitDate.toISOString().split('T')[0])
             $.ajax({
                 type: "Post",
@@ -347,6 +343,10 @@
 
             let radioFilters = $('[name="roomNumbers"]');
             radioFilters.prop("checked", false);
+
+            $('#lastContactDate').select2({
+                minimumResultsForSearch: -1,
+            })
         }
     </script>
 </section>

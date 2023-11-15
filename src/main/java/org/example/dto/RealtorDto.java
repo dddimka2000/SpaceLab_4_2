@@ -15,22 +15,41 @@ import java.util.List;
 public class RealtorDto {
     private Integer id;
     private String password;
-    @NotNull(message = "Поле повинно бути заповненим")
-    @Min(value = 1, message = "Число повинно бути більшим за 1")
-    @Max(value = 99999999, message = "Число повинно бути меншим за 99999999")
+    @Min(value = 1, message = "{error.field.min-value}")
+    @Max(value = 100000000, message ="{error.field.max-value}")
+    @NotNull(message = "{error.field.empty}")
     private Integer code;
-    @NotBlank(message = "Поле повинно бути заповненим")
-    @Size(max = 50, message = "Поле може містити максимум 50 символів")
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
     private String name;
-    @NotBlank(message = "Поле повинно бути заповненим")
-    @Size(max = 50, message = "Поле може містити максимум 50 символів")
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
     private String surname;
-    @NotBlank(message = "Поле повинно бути заповненим")
-    @Size(max = 50, message = "Поле може містити максимум 50 символів")
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
     private String middleName;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
+    private String nameUK;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
+    private String surnameUK;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
+    private String middleNameUK;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
+    private String nameEN;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
+    private String surnameEN;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
+    private String middleNameEN;
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Некоректний email")
     private String email;
     @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @NotNull(message = "{error.field.empty}")
     private LocalDate birthdate;
     private MultipartFile img;
     private Branch branch;

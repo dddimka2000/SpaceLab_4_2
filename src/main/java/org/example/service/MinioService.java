@@ -115,4 +115,18 @@ public class MinioService {
                 .build();
         return minioClient.getPresignedObjectUrl(args);
     }
+    public long getObjectSize(String objectName) throws ErrorResponseException, InsufficientDataException,
+            InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException,
+            XmlParserException, IOException {
+        String prefix = "/images/";
+        String objectNameToRetrieve = prefix + objectName;
+
+        StatObjectResponse stat = minioClient.statObject(
+                StatObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(objectNameToRetrieve)
+                        .build());
+
+        return stat.size();
+    }
 }

@@ -1,20 +1,36 @@
 package org.example.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.example.entity.property.type.OwnershipType;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Data
 public class HouseAddressDto {
+    @Min(value = 1, message = "{error.field.min-value}")
+    @Max(value = 1000000, message ="{error.field.max-value}")
+    @NotNull(message = "{error.field.empty}")
     private Integer houseNumber;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
     private String region;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
     private String city;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
     private String district;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
     private String street;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
+    private String streetUkr;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
+    private String streetEng;
+    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @NotNull(message = "{error.field.empty}")
     private String zone;
-
 }

@@ -7,19 +7,19 @@ import lombok.Data;
 @Data
 @Embeddable
 public class PropertyObjectAddress {
-    @Size(min = 1, max = 31, message = "Регион должен быть от 2 до 30 символов.")
+    @Size(min = 1, max = 999, message = "Регион должен быть от 2 до 999 символов.")
     @Pattern(regexp = "^[ а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Регион должен содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String region;
-    @Size(min = 1, max = 31, message = "Регион должен быть от 2 до 30 символов.")
+    @Size(min = 1, max = 999, message = "Регион должен быть от 2 до 999 символов.")
     @Pattern(regexp = "^[ а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Регион должен содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String city;
-    @Size(min = 1, max = 31, message = "Регион должен быть от 2 до 30 символов.")
+    @Size(min = 1, max = 999, message = "Регион должен быть от 2 до 999 символов.")
     @Pattern(regexp = "^[ а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Регион должен содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String district;
-    @Size(min = 1, max = 31, message = "Топозона должна быть от 2 до 30 символов.")
+    @Size(min = 1, max = 999, message = "Топозона должна быть от 2 до 999 символов.")
     @Pattern(regexp = "^[ а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Топозона должна содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String zone;
-    @Size(min = 1, max = 31, message = "Улица должна быть от 2 до 30 символов.")
+    @Size(min = 1, max = 999, message = "Улица должна быть от 2 до 999 символов.")
     @Pattern(regexp = "^[ а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Улица должна содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String street, streetEng, streetUkr;
     @NotNull(message = "Введите номер дома")

@@ -57,90 +57,98 @@
                                          style="width: 50%; height: 200px">
                                     <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png"
                                            onchange="validateAndUpload('previewImage', ['.jpg', '.jpeg', '.png'])"
-                                           th:field="*{img}"
-                                           th:style="${#fields.hasErrors('img') ? 'border-color: #ff0000' : ''}">
-                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                         th:if="${#fields.hasErrors('img')}" th:errors="*{img}">
-                                    </div>
+                                           th:field="*{img}">
                                     <input th:field="*{id}" type="text" class="form-control" hidden>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
                                     <label class="form-label">Код</label>
-                                    <input placeholder="11" type="number" class="form-control" th:field="*{code}"
-                                           th:style="${#fields.hasErrors('code') ? 'border-color: #ff0000' : ''}">
-                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                         th:if="${#fields.hasErrors('code')}" th:errors="*{code}">
-                                    </div>
-                                </div>
-                                <div class="col-6">
+                                    <input placeholder="11" type="number" class="form-control" th:field="*{code}">
+                                    <br/>
                                     <label class="form-label">Филиалы</label>
                                     <select id="branchSelect2" style="margin-right: 12px; margin-left: 12px;"
-                                            th:field="*{branch}"
-                                            th:style="${#fields.hasErrors('branch') ? 'border-color: #ff0000' : ''}"></select>
-                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                         th:if="${#fields.hasErrors('branch')}" th:errors="*{branch}">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-6">
-                                    <label class="form-label">Фамилия</label>
-                                    <input type="text" class="form-control" th:field="*{surname}"
-                                           th:style="${#fields.hasErrors('surname') ? 'border-color: #ff0000' : ''}"
-                                           placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
-                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                         th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <label class="form-label">Имя</label>
-                                    <input type="text" class="form-control" th:field="*{name}"
-                                           th:style="${#fields.hasErrors('name') ? 'border-color: #ff0000' : ''}"
-                                           placeholder="Александр"
-                                           aria-describedby="defaultFormControlHelp"/>
-                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                         th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-6">
-                                    <label class="form-label">Отчество</label>
-                                    <input type="text" class="form-control" th:field="*{middleName}"
-                                           th:style="${#fields.hasErrors('middleName') ? 'border-color: #ff0000' : ''}"
-                                           placeholder="Сергеевич"
-                                           aria-describedby="defaultFormControlHelp"/>
-                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                         th:if="${#fields.hasErrors('middleName')}"
-                                         th:errors="*{middleName}">
-                                    </div>
-                                </div>
-                                <div class="col-6">
+                                            th:field="*{branch}"></select>
+                                    <br/>
+                                    <br/>
                                     <label class="form-label">Дата рождения</label>
                                     <input type="text" id="dateOfPurchase" class="form-control flatpickr-datetime"
-                                           placeholder="YYYY/MM/DD" th:field="*{birthdate}"
-                                           th:style="${#fields.hasErrors('birthdate') ? 'border-color: #ff0000' : ''}"/>
-                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                         th:if="${#fields.hasErrors('birthdate')}"
-                                         th:errors="*{birthdate}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-6">
+                                           placeholder="YYYY/MM/DD" th:field="*{birthdate}"/>
+                                    <br/>
                                     <label class="form-label">Email</label>
                                     <input type="text" class="form-control"
                                            th:field="*{email}"
-                                           th:style="${#fields.hasErrors('email') ? 'border-color: #ff0000' : ''}"
                                            placeholder="test@gmail.com"
                                            aria-describedby="defaultFormControlHelp"/>
-                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                         th:if="${#fields.hasErrors('email')}"
-                                         th:errors="*{email}">
+                                </div>
+                                <div class="col-6">
+
+                                    <ul class="nav nav-pills mb-3" id="pills-block" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="pills-for-uk" data-bs-toggle="pill"
+                                                    data-bs-target="#pills-uk"
+                                                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">UK
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="pills-for-ru" data-bs-toggle="pill"
+                                                    data-bs-target="#pills-ru"
+                                                    type="button" role="tab" aria-controls="pills-profile" aria-selected="false">RU
+                                            </button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="pills-for-en" data-bs-toggle="pill"
+                                                    data-bs-target="#pills-en"
+                                                    type="button" role="tab" aria-controls="pills-contact" aria-selected="false">EN
+                                            </button>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="pills-blovk-content">
+                                        <div class="tab-pane fade show active" id="pills-uk" role="tabpanel"
+                                             aria-labelledby="pills-for-uk">
+                                            <label class="form-label">Фамилия</label>
+                                            <input type="text" class="form-control" th:field="*{surnameUK}"
+                                                   placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
+                                            <br/>
+                                            <label class="form-label">Имя</label>
+                                            <input type="text" class="form-control" th:field="*{nameUK}"
+                                                   placeholder="Александр"
+                                                   aria-describedby="defaultFormControlHelp"/>
+                                            <br/>
+                                            <label class="form-label">Отчество</label>
+                                            <input type="text" class="form-control" th:field="*{middleNameUK}"
+                                                   placeholder="Сергеевич"
+                                                   aria-describedby="defaultFormControlHelp"/>
+                                        </div>
+                                        <div class="tab-pane fade show" id="pills-ru" role="tabpanel" aria-labelledby="pills-for-ru">
+                                            <label class="form-label">Фамилия</label>
+                                            <input type="text" class="form-control" th:field="*{surname}"
+                                                   placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
+                                            <br/>
+                                            <label class="form-label">Имя</label>
+                                            <input type="text" class="form-control" th:field="*{name}"
+                                                   placeholder="Александр"
+                                                   aria-describedby="defaultFormControlHelp"/>
+                                            <br/>
+                                            <label class="form-label">Отчество</label>
+                                            <input type="text" class="form-control" th:field="*{middleName}"
+                                                   placeholder="Сергеевич"
+                                                   aria-describedby="defaultFormControlHelp"/>
+                                        </div>
+                                        <div class="tab-pane fade show" id="pills-en" role="tabpanel" aria-labelledby="pills-for-en">
+                                            <label class="form-label">Фамилия</label>
+                                            <input type="text" class="form-control" th:field="*{surnameEN}"
+                                                   placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
+                                            <br/>
+                                            <label class="form-label">Имя</label>
+                                            <input type="text" class="form-control" th:field="*{nameEN}"
+                                                   placeholder="Александр"
+                                                   aria-describedby="defaultFormControlHelp"/>
+                                            <br/>
+                                            <label class="form-label">Отчество</label>
+                                            <input type="text" class="form-control" th:field="*{middleNameEN}"
+                                                   placeholder="Сергеевич"
+                                                   aria-describedby="defaultFormControlHelp"/>
                                     </div>
                                 </div>
                             </div>
@@ -262,6 +270,8 @@
     <script>
         const urlForAddFeedBack = '[[@{/realtors/feedback/save}]]'
         $(document).ready(function () {
+            console.log(!getLastDigitFromPath())
+
             var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
 
             flatpickrDateTimes.forEach(function (element) {
@@ -433,15 +443,27 @@
         var realtor = [[${realtorDto}]]
 
         function sendForm() {
+            cleanInputs()
+            if (!getLastDigitFromPath() && !validateOneFile($('.fileInput').file, ['.jpg', '.jpeg', '.png'])){
+                $('.fileInput').css('border-color', '#ff0000')
+                return;
+            }
             if (!validateNumber(3, 99999, $("#code"))) return
             if (!validString(3, 50, $("#surname"))) return
             if (!validSelect2($("#branch"))) return
             if (!validString(3, 50, $("#name"))) return
             if (!validString(3, 50, $("#middleName"))) return
+            if (!validString(3, 50, $("#surnameUK"))) return
+            if (!validString(3, 50, $("#nameUK"))) return
+            if (!validString(3, 50, $("#middleNameUK"))) return
+            if (!validString(3, 50, $("#surnameEN"))) return
+            if (!validString(3, 50, $("#nameEN"))) return
+            if (!validString(3, 50, $("#middleNameEN"))) return
+
+
             if (!validateDate($("#dateOfPurchase"))) return
             if (!validateEmail($("#email"))) return
             if (!validString(3, 50, $("#middleName"))) return
-
 
 
             const phoneContainer = document.getElementById("phones");
@@ -508,7 +530,6 @@
             }
             $('#realtorAdd').submit();
         }
-
 
 
         function addBlockForPhone() {

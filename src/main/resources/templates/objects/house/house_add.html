@@ -73,8 +73,8 @@
                             <select class="form-control" id="district" disabled></select>
                         </div>
                         <div class="col-2">
-                            Улица
-                            <select class="form-control" id="street" disabled></select>
+                            Улица(RU)
+                            <input class="form-control" id="street">
                         </div>
                         <div class="col-2">
                             Топозона
@@ -82,9 +82,22 @@
                         </div>
                     </div>
                     <br>
-                    <button class="btn btn-info" style="width: auto; margin-right: 5px">Проверить адрес</button>
-                    <button class="btn btn-info" onclick="checkPhone(this)" style="width: auto">Проверить номер телефона</button>
-
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-info mt-4" style="width: auto; margin-right: 5px">Проверить адрес</button>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto">Проверить номер телефона</button>
+                        </div>
+                        <div class="col">
+                            Улица(UK)
+                            <input class="form-control" id="streetUkr">
+                        </div>
+                        <div class="col">
+                            Улица(EN)
+                            <input class="form-control" id="streetEng">
+                        </div>
+                    </div>
                     <br>
                     <div class="row">
                         <div class="col-3">
@@ -517,6 +530,8 @@
             var city = $("#city")
             var district = $("#district")
             var street = $("#street")
+            var streetUkr = $("#streetUkr")
+            var streetEng = $("#streetEng")
             var zone = $("#topzone")
             var ownerName = $("#owner")
             var ownerPhone = $("#telephone")
@@ -534,6 +549,8 @@
             formData.append("city", city.val());
             formData.append("district", district.val());
             formData.append("street", street.val());
+            formData.append("streetEng", streetEng.val());
+            formData.append("streetUkr", streetUkr.val());
             formData.append("zone", zone.val());
             formData.append("ownerName", ownerName.val());
             formData.append("ownerPhone", ownerPhone.val());
@@ -650,7 +667,9 @@
             if (!validSelect2(region)) return false
             if (!validSelect2(city)) return false
             if (!validSelect2(district)) return false
-            if (!validSelect2(street)) return false
+            if (!validString("5","300",street)) return false
+            if (!validString("5","300",streetUkr)) return false
+            if (!validString("5","300",streetEng)) return false
             if (!validSelect2(zone)) return false
             if (!validString("5", "70", ownerName)) return false
             if (!validatePhoneNumber(ownerPhone)) return false
@@ -788,6 +807,9 @@
                     url: '[[@{/houses/getById/}]]' + houseId,
                     success: function (house) {
                         $("#houseNumber").val(house.address.houseNumber)
+                        $("#street").val(house.address.street)
+                        $("#streetEng").val(house.address.streetEng)
+                        $("#streetUkr").val(house.address.streetUkr)
                         $("#owner").val(house.ownerName)
                         $("#telephone").val(house.ownerPhone)
                         $("#dateOfPurchase").val(house.boughtDate.replaceAll('-', '/'))
@@ -931,11 +953,9 @@
             if (house) {
                 $("#district").removeAttr("disabled");
                 $("#city").removeAttr("disabled");
-                $("#street").removeAttr("disabled");
                 forSelect2(house.address.region, house.address.region, "#region", "/enum/region")
                 forSelect2(house.address.district, house.address.district, "#district", "/getDistrict/" + house.address.city)
                 forSelect2(house.address.city, house.address.city, "#city", "/getCity/" + house.address.region)
-                forSelect2(house.address.street, house.address.street, "#street", "/getStreet/" + house.address.district)
             } else {
                 $("#region").select2({
                     minimumResultsForSearch: -1,
@@ -988,29 +1008,6 @@
                     placeholder: "Елемент",
                     ajax: {
                         url: '[[@{/getDistrict/}]]' + element,
-                        dataType: 'json',
-                        processResults: function (data) {
-                            var index = 0;
-                            var results = data.map(function (data) {
-                                if (data.id) return {id: data.id, text: data.name};
-                                return {id: data, text: data};
-                            });
-                            return {
-                                results: results
-                            };
-                        },
-                    }
-                })
-            });
-            $('#district').on('select2:select', function (e) {
-                var element = e.params.data.text
-                $("#street").empty();
-                $("#street").removeAttr("disabled");
-                $("#street").select2({
-                    minimumResultsForSearch: -1,
-                    placeholder: "Елемент",
-                    ajax: {
-                        url: '[[@{/getStreet/}]]' + element,
                         dataType: 'json',
                         processResults: function (data) {
                             var index = 0;
@@ -1080,7 +1077,7 @@
             } else {
                 if(file.description){
                     $.ajax({
-                        url: "[[@{/houses/getPicture/}]]" + getLastDigitFromPath(window.location.pathname),
+                        url: "[[@{/houses/deletePicture/}]]" + getLastDigitFromPath(window.location.pathname),
                         method: "Delete",
                         data: {
                             url: file.description,
@@ -1114,8 +1111,7 @@
                 method: "GET",
                 success: function (files) {
                     files.forEach(function (file) {
-                        console.log(file)
-                        var mockFile = {name: removeBeforeFirstDot(file.originUrl), size: 2048, description: file.originUrl};
+                        var mockFile = {name: removeBeforeFirstDot(file.originUrl), size: file.size, description: file.originUrl};
                         myDropzone.emit("addedfile", mockFile);
                         myDropzone.emit("thumbnail", mockFile, file.url);
                         myDropzone.emit("complete", mockFile);
