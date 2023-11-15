@@ -46,6 +46,18 @@ public class ObjectBuilderService {
         log.info("ObjectBuilderService-findByName successfully");
         return entity;
     }
+    public Optional<BuilderObject> findByNameEnglish(String name) {
+        log.info("ObjectBuilderService-findByNameEnglish start");
+        Optional<BuilderObject> entity = builderObjectRepository.findByNameEnglish(name);
+        log.info("ObjectBuilderService-findByNameEnglish successfully");
+        return entity;
+    }
+    public Optional<BuilderObject> findByNameUkraine(String name) {
+        log.info("ObjectBuilderService-findByNameUkraine start");
+        Optional<BuilderObject> entity = builderObjectRepository.findByNameUkraine(name);
+        log.info("ObjectBuilderService-findByNameUkraine successfully");
+        return entity;
+    }
 
     public void save(BuilderObject entity) {
         log.info("ObjectBuilderService-save start");

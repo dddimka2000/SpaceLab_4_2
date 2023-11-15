@@ -13,13 +13,13 @@ public class Layout {
     @Id
     private Integer id;
 
-    private String name;
+    private String name, nameEng, nameUkr;
     private Integer price;
     private Integer roomQuantity;
     private Integer areaLiving, areaTotal, areaKitchen;
     private Boolean active;
 
-    private String description;
+    private String description, descriptionEng, descriptionUkr;
 
     private String img1;
     private String img2;

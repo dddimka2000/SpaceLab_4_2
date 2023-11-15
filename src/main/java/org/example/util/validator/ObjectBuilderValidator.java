@@ -89,7 +89,15 @@ public class ObjectBuilderValidator implements Validator {
         try {
             Optional<BuilderObject> tryFindName = objectBuilderService.findByName(entity.getNameObject());
             if (tryFindName.isPresent()) {
-                errors.rejectValue("nameObject", "", "Объект новостроя с таким именем уже существует");
+                errors.rejectValue("nameObject", "", "(Ру)Объект новостроя с таким именем уже существует");
+            }
+            Optional<BuilderObject> tryFindName2 = objectBuilderService.findByNameEnglish(entity.getNameObjectEng());
+            if (tryFindName2.isPresent()) {
+                errors.rejectValue("nameObject", "", "(Англ)Объект новостроя с таким именем уже существует");
+            }
+            Optional<BuilderObject> tryFindName3 = objectBuilderService.findByNameUkraine(entity.getNameObjectUkr());
+            if (tryFindName3.isPresent()) {
+                errors.rejectValue("nameObject", "", "(Укр)Объект новостроя с таким именем уже существует");
             }
             for (MultipartFile multipartFile : entity.getFiles()) {
                 if (!supportedImageFormats.contains(multipartFile.getContentType())) {

@@ -45,7 +45,6 @@ public class TranslationController {
         for (String lang : languages) {
             translations.put(lang, loadTranslationsForLanguage(lang, currentLocale));
         }
-        log.info(translations);
 
         return translations;
     }

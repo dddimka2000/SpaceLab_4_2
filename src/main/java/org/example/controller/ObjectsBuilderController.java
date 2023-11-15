@@ -165,8 +165,8 @@ public class ObjectsBuilderController {
         builderObject.setAddress(propertyObjectAddress);
 
         builderObject.setName(objectBuilderDto.getNameObject());
-        builderObject.setNameEng(objectBuilderDto.getNameObjectEng());
-        builderObject.setNameUkr(objectBuilderDto.getNameObjectUkr());
+        builderObject.setNameEnglish(objectBuilderDto.getNameObjectEng());
+        builderObject.setNameUkraine(objectBuilderDto.getNameObjectUkr());
 
 
 
@@ -184,7 +184,11 @@ public class ObjectsBuilderController {
 
         BuilderObjectPromotion builderObjectPromotion = new BuilderObjectPromotion();
         builderObjectPromotion.setName(objectBuilderDto.getPromotionName());
-        builderObjectPromotion.setDescription(objectBuilderDto.getDescriptionPromotion());
+        builderObjectPromotion.setNameEng(objectBuilderDto.getPromotionNameEng());
+        builderObjectPromotion.setNameUkr(objectBuilderDto.getPromotionNameUkr());
+        builderObjectPromotion.setDescription(objectBuilderDto.getDescription());
+        builderObjectPromotion.setDescriptionEng(objectBuilderDto.getDescriptionEng());
+        builderObjectPromotion.setDescriptionUkr(objectBuilderDto.getDescriptionUkr());
         Boolean statusPromotion = Boolean.parseBoolean(objectBuilderDto.getStatusPromotion());
         builderObjectPromotion.setActive(statusPromotion);
         builderObject.setPromotion(builderObjectPromotion);

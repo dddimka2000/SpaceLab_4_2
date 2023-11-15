@@ -12,26 +12,26 @@ import java.util.Optional;
 
 @Data
 public class ObjectBuilderDto {
-    @Size(min = 1, max = 31, message = "Название должно быть от 2 до 30 символов.")
-    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Название должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
+    @Size(min = 1, max = 31, message = "(Ру) Название должно быть от 2 до 30 символов.")
+    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "(Ру)Название должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String nameObject;
     @Size(min = 1, max = 31, message = "(Англ) Название должно быть от 2 до 30 символов.")
-    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Название должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
+    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "(Англ)Название должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String nameObjectEng;
     @Size(min = 1, max = 31, message = "(Укр) Название должно быть от 2 до 30 символов.")
-    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Название должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
+    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "(Укр)Название должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String nameObjectUkr;
     @Size(min = 1, max = 31, message = "Название области должно быть от 2 до 30 символов.")
     @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Название области должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String region;
-    @Size(min = 1, max = 31, message = "Название улицы должно быть от 2 до 30 символов.")
-    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Название улицы должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
+    @Size(min = 1, max = 31, message = "(Ру)Название улицы должно быть от 2 до 30 символов.")
+    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "(Ру)Название улицы должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String street;
     @Size(min = 1, max = 31, message = "(Укр) Название улицы должно быть от 2 до 30 символов.")
-    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Название улицы должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
+    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "(Укр)Название улицы должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String streetUkr;
     @Size(min = 1, max = 31, message = "(Англ) Название улицы должно быть от 2 до 30 символов.")
-    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Название улицы должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
+    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "(Англ)Название улицы должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String streetEng;
     @Size(min = 1, max = 31, message = "Название района должно быть от 2 до 30 символов.")
     @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Название района должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
@@ -61,10 +61,18 @@ public class ObjectBuilderDto {
     @Size(min = 10, max = 15, message ="Номер должен быть от 11 до 15 символов.")
     @Pattern(regexp = "\\+?[0-9]+", message = "Номер телефона должен начинаться с '+' и содержать только цифры.")
     private String telephone;
-
-    @Size(min = 1, max = 31, message = "Название акции быть от 2 до 30 символов.")
-    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "Название акции должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
+    @Size(min = 1, max = 31, message = "(Ру)Название акции быть от 2 до 30 символов.")
+    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "(Ру)Название акции должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
     private String promotionName;
+
+    @Size(min = 1, max = 31, message = "(Англ)Название акции быть от 2 до 30 символов.")
+    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "(Англ) Название акции должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
+    private String promotionNameEng;
+
+    @Size(min = 1, max = 31, message = "(Укр)Название акции быть от 2 до 30 символов.")
+    @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s.,!?_-]+$", message = "(Укр) Название акции должно содержать только буквы a-z A-Z, цифры 0-9 и \"_\",\"-\".")
+    private String promotionNameUkr;
+
     @NotNull(message = "Файлы не могут быть пусты")
     private MultipartFile chessboardFile;
     @NotNull(message = "Файлы не могут быть пусты")
