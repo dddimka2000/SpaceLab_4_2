@@ -37,7 +37,7 @@
             <artifactId>stripe-java</artifactId>
             <version>22.31.0</version>
         </dependency>
-
+а
 <!--Для чата-->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->

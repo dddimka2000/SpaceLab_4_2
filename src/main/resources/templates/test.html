@@ -8,7 +8,12 @@
 <head>
     <title>Content page</title>
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
+    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+
+    <!--    <link th:href="@{/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css}" />-->
+    <!--    <script th:src="@{/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js}" />-->
 
 </head>
 
@@ -19,6 +24,24 @@
     <br>
     <br>
     <h1>title</h1>
+    autosize
+    <textarea id="autosize-demo" rows="3" class="form-control w-px-300"></textarea>
+    <br>
+    clave
+    <div class="input-group input-group-merge">
+        <input type="text" id="creditCardMask" name="creditCardMask" class="form-control credit-card-mask"
+               placeholder="1356 3215 6548 7898" aria-describedby="creditCardMask2"/>
+        <span class="input-group-text cursor-pointer p-1" id="creditCardMask2"><span class="card-type"></span></span>
+    </div>
+    <br>
+    <div class="input-group">
+        <span class="input-group-text">UKR (+380)</span>
+        <input class="form-control phone-number-mask" type="text" placeholder="Enter Phone Number"/>
+    </div>
+    <br>
+    <input type="text" id="flatpickr-date" class="form-control flatpickr-datetime"
+           placeholder="YYYY/MM/DD"/>
+    <br>
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
@@ -57,9 +80,41 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+    <script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
+    <script th:src="@{/vendor/libs/cleavejs/cleave-phone.js}"></script>
+    <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
+
+
+    <!-- Подключение Moment.js -->
+    <!-- Далее подключение daterangepicker.js -->
+
     <script>
+
         $(document).ready(function () {
-            branchSelect3()
+            var flatpickrDate = document.querySelector("#flatpickr-date");
+
+            flatpickrDate.flatpickr({
+                dateFormat: "Y/m/d"
+            });
+            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
+
+
+            let textarea = $("#autosize-demo");
+            autosize(textarea);
+            new Cleave(".credit-card-mask", {
+                creditCard: true
+            });
+            new Cleave(".phone-number-mask", {
+                // phone: true,
+                // phoneRegionCode: "US",
+                phoneRegionCode: "UA",
+                phoneCountryCode: "+380",
+                delimiter: ' ',
+                numericOnly: true,
+                blocks: [3, 2, 3, 2, 2],
+            });
+            branchSelect3();
+
         })
 
         function branchSelect3() {
@@ -94,7 +149,6 @@
             });
         }
     </script>
-
 
 
 </section>
