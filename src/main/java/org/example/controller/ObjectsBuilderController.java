@@ -158,13 +158,25 @@ public class ObjectsBuilderController {
         propertyObjectAddress.setRegion(objectBuilderDto.getRegion());
         propertyObjectAddress.setSection(objectBuilderDto.getSection());
         propertyObjectAddress.setStreet(objectBuilderDto.getStreet());
+        propertyObjectAddress.setStreetUkr(objectBuilderDto.getStreetUkr());
+        propertyObjectAddress.setStreetEng(objectBuilderDto.getStreetEng());
+
         propertyObjectAddress.setZone(objectBuilderDto.getTopozone());
         builderObject.setAddress(propertyObjectAddress);
 
         builderObject.setName(objectBuilderDto.getNameObject());
+        builderObject.setNameEng(objectBuilderDto.getNameObjectEng());
+        builderObject.setNameUkr(objectBuilderDto.getNameObjectUkr());
+
+
+
+
         builderObject.setFloorQuantity(objectBuilderDto.getFloorQuantity());
         builderObject.setPhone(objectBuilderDto.getTelephone());
         builderObject.setDescription_builder(objectBuilderDto.getDescription());
+        builderObject.setDescription_builderEng(objectBuilderDto.getDescriptionEng());
+        builderObject.setDescription_builderUkr(objectBuilderDto.getDescriptionUkr());
+
         builderObject.setNameCompany(objectBuilderDto.getNameCompany());
 
         builderObject.setBuildStatus(PropertyBuildStatus.valueOf(objectBuilderDto.getBuildStatus()));

@@ -123,7 +123,7 @@ public class ObjectsInvestorController {
     @GetMapping("/filter")
     @ResponseBody
     public Page<PropertyInvestorObject> showPageObjectBuilder(@ModelAttribute InvestorObjectDtoSearch objectDto
-            , @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
+            , @RequestParam(name = "page", defaultValue = "0") Integer numberPage, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         log.info(objectDto);
         Pageable pageable = PageRequest.of(numberPage, pageSize);
         Page<PropertyInvestorObject> pageElements = propertyInvestorObjectService.findBuilderObjectsByCriteria(

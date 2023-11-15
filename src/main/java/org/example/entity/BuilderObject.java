@@ -19,10 +19,10 @@ public class BuilderObject {
     private Integer id;
     @Embedded
     private PropertyObjectAddress address;
-    private String name;
+    private String name, nameEng, nameUkr;
     private Integer floorQuantity;
     private String phone;
-    private String description_builder;
+    private String description_builder, description_builderEng, description_builderUkr;
     private PropertyBuildStatus buildStatus;
     private String nameCompany;
     private String filePrices;
@@ -37,7 +37,6 @@ public class BuilderObject {
     private BuilderObjectPromotion promotion;
 
     @OneToMany(mappedBy = "builderObject",fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @JsonBackReference
     private List<Layout> layouts;
 
     @OneToMany(mappedBy = "builderObject", cascade = CascadeType.DETACH)

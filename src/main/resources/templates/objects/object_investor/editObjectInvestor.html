@@ -480,16 +480,16 @@
                     <h6>Описание</h6>
                     <textarea class="form-control" style="width: 100%; height: 300px"
                               name="descriptionObject" placeholder="Введите описание"
-                              th:text="${element.description}"></textarea>
+                              th:text="${element.descriptionRu}"></textarea>
                     <br>
                     <h6>Рекламный заголовок</h6>
                     <input type="text" name="advertisingName" id="promotionName" class="form-control"
-                           placeholder="Укажите рекламный заголовок" th:value="${element.advertisementHeadline}">
+                           placeholder="Укажите рекламный заголовок" th:value="${element.advertisementHeadlineRu}">
                     <br>
                     <h6>Рекламный текст</h6>
                     <textarea style="width: 100%; height: 300px" name="advertisingText"
                               class="form-control" placeholder="Введите рекламный текст"
-                              th:text="${element.advertisementText}"></textarea>
+                              th:text="${element.advertisementTextRu}"></textarea>
                     <br>
                     <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"><span
                         class="checkmark" th:checked="${element.advertisementEnabled}">Рекламировать</span>
@@ -634,10 +634,10 @@
             formData.append("open", $('[name="objectOpen"]').prop("checked"));
             formData.append("intermediary", $('[name="fromIntermediary"]').prop("checked"));
 
-            formData.append("description", $('[name="descriptionObject"]').val());
+            formData.append("descriptionRu", $('[name="descriptionObject"]').val());
 
-            formData.append("advertisementHeadline", $('[name="advertisingName"]').val());
-            formData.append("advertisementText", $('[name="advertisingText"]').val());
+            formData.append("advertisementHeadlineRu", $('[name="advertisingName"]').val());
+            formData.append("advertisementTextRu", $('[name="advertisingText"]').val());
             formData.append("advertisementEnabled", $('[name="statusPromotion"]').prop("checked"));
 
 

@@ -68,6 +68,24 @@
                 </div>
                 <hr style="margin-top: -5px">
                 <br>
+                <ul class="nav nav-pills mb-3" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" type="button" aria-selected="true" data-toggle="tab" role="tab"
+                                data-bs-toggle="pill" onclick="changeInput('ru')">Ру
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                                data-bs-toggle="pill" onclick="changeInput('eu')">Eu
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                                data-bs-toggle="pill" onclick="changeInput('ukr')">Укр
+                        </button>
+                    </li>
+                </ul>
+                <br>
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
@@ -347,6 +365,10 @@
     </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
     <script th:inline="javascript">
+        function changeInput(lang) {
+            $(".nameContent").css("display","none")
+            $("." + lang + "Content").css("display", "block");
+        }
 
         const previewTemplate = `<div class="dz-preview dz-file-preview">
 <div class="dz-details">
