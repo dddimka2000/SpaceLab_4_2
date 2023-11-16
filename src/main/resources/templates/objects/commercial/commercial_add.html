@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-2">
                             Топозона
-                            <select id="topzone"></select>
+                            <select id="zone"></select>
                         </div>
                     </div>
 
@@ -119,7 +119,7 @@
                         </div>
                         <div class="col-3">
                             Телефон
-                            <input type="tel" id="telephone" class="form-control"
+                            <input type="tel" id="ownerPhone" class="form-control"
                                    placeholder="Введите номер телефона">
                         </div>
                         <div class="col-3">
@@ -356,7 +356,7 @@
                     <br/>
                     <div class="row">
                         <div class="col-3">
-                            Вентиляция
+                            Кондиционер
                             <select id="airConditioningType"></select>
                         </div>
                         <div class="col-3">
@@ -526,7 +526,7 @@
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
     <script>
         $(document).ready(function () {
-            forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
+            forSelect2(undefined, undefined, "#zone", "/enum/topzone")
             forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
             forSelect2WithSearch(undefined, undefined, "#builderObject", "/builder_objects/for/select")
             forSelect2(undefined, undefined, "#publicationStatus", "/enum/publicationStatus")
@@ -582,76 +582,151 @@
                     dateFormat: "Y/m/d"
                 });
             });
-            validAllInputs()
         });
+        function sendForm() {
+            var formData = new FormData();
+            if(!validAllInputs(formData))return false
+            $.ajax({
+                type: 'POST',
+                url: '[[@{/commercial/add}]]',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showToast(response, "success")
+                },
+                error: function (error) {
+                    console.error('Помилка відправки файлів на сервер:', error);
+                }
+            });
+        }
     </script>
     <script>
-        function validAllInputs(formDate){
+        function validAllInputs(formData){
+            cleanInputs()
             var streetUkr = $("#streetUkr");
+            if (!validString("1", "300", streetUkr)) return false
             var street = $("#street");
+            if (!validString("1", "300", street)) return false
             var streetEng = $("#streetEng");
-            var topzone = $("#topzone");
+            if (!validString("1", "300", streetEng)) return false
+            var zone = $("#zone");
+            if (!validSelect2(zone)) return false
             var region = $("#region");
+            if (!validSelect2(region)) return false
             var city = $("#city");
+            if (!validSelect2(city)) return false
             var district = $("#district");
+            if (!validSelect2(district)) return false
             var houseNumber = $("#houseNumber");
+            if (!validateNumber(1, 1000000, houseNumber)) return false
             var section = $("#section");
+            if (!validateNumber(1, 1000, section)) return false
             var apartmentNumber = $("#apartmentNumber");
+            if (!validateNumber(1, 100, apartmentNumber)) return false
             var ownerName = $("#ownerName");
-            var telephone = $("#telephone");
+            if (!validString("1", "300", ownerName)) return false
+            var ownerPhone = $("#ownerPhone");
+            if (!validatePhoneNumber(ownerPhone)) return false
             var boughtDate = $("#boughtDate");
+            if (!validateDate(boughtDate)) return false
             var ownership = $("#ownership");
+            if (!validSelect2(ownership)) return false
             var notes = $("#notes");
+            if (!validString("1", "990", notes)) return false
             var cadastralNumber = $("#cadastralNumber");
+            if (!validString("9", "9", cadastralNumber)) return false
             var plotDescription = $("#plotDescription");
+            if (!validString("1", "990", plotDescription)) return false
             var files = $("#files");
+            if (!getLastDigitFromPath(window.location.pathname)  &&  !validateFile('files', [".pdf"])) return false
             var administrationComment = $("#administrationComment");
+            if (!validString("1", "990", administrationComment)) return false
             var publicationStatus = $("#publicationStatus");
+            if (!validSelect2(publicationStatus)) return false
             var objectCode = $("#objectCode");
+            if (!validString("10", "10", objectCode)) return false
             var branchCode = $("#branchCode");
+            if (!validateNumber(1, 1000000, branchCode)) return false
             var staffCode = $("#staffCode");
+            if (!validateNumber(1, 1000000, staffCode)) return false
             var price = $("#price");
+            if (!validateNumber(1, 100000000, price)) return false
             var landmark = $("#landmark");
+            if (!validString("1", "500", landmark)) return false
             var builderObject = $("#builderObject");
+            if (!validSelect2(builderObject)) return false
             var buildStatus = $("#buildStatus");
+            if (!validSelect2(buildStatus)) return false
             var dateDeliveryHouse = $("#dateDeliveryHouse");
+            if (!validateDate(dateDeliveryHouse))return false
             var floor = $("#floor");
+            if (!validateNumber(1, 1000000, floor)) return false
             var floorQuantity = $("#floorQuantity");
+            if (!validateNumber(1, 1000000, floorQuantity)) return false
             var roomQuantity = $("#roomQuantity");
+            if (!validateNumber(1, 1000000, roomQuantity)) return false
             var houseType = $("#houseType");
+            if (!validSelect2(houseType)) return false
             var vnp = $("#vnp");
             var vnpExpirationDate = $("#vnpExpirationDate");
+            if (!validateDate(vnpExpirationDate))return false
             var informationSource = $("#informationSource");
+            if (!validString("1", "300", informationSource)) return false
             var areaTotal = $("#areaTotal");
+            if (!validateNumber(1, 1000000, areaTotal)) return false
             var areaUseful = $("#areaUseful");
+            if (!validateNumber(1, 1000000, areaUseful)) return false
             var roomMeters = $("#roomMeters");
+            if (!validString("11", "11", roomMeters)) return false
             var heightCeiling = $("#heightCeiling");
+            if (!validateNumber(1, 10, heightCeiling)) return false
             var plotAreaTotal = $("#plotAreaTotal");
+            if (!validateNumber(1, 1000000, plotAreaTotal)) return false
             var plotAreaFree = $("#plotAreaFree");
+            if (!validateNumber(1, 1000000, plotAreaFree)) return false
             var plotPurposeType = $("#plotPurposeType");
+            if (!validSelect2(plotPurposeType)) return false
             var landOwnershipPresent = $("#landOwnershipPresent");
             var stateInterior = $("#stateInterior");
-            var propertyStructureState = $("#propertyStructureState");
+            if (!validSelect2(stateInterior)) return false
+            var propertyStructureState = $("#propertyStructureState")
+            if (!validSelect2(propertyStructureState)) return false
             var bathroomType = $("#bathroomType");
+            if (!validSelect2(bathroomType)) return false
             var windowViewType = $("#windowViewType");
+            if (!validSelect2(windowViewType)) return false
             var environment = $("#environment");
             var parking = $("#parking");
             var fund = $("#fund");
             var facade = $("#facade");
             var railway = $("#railway");
             var gasType = $("#gasType");
+            if (!validSelect2(gasType)) return false
             var waterType = $("#waterType");
+            if (!validSelect2(waterType)) return false
             var sewageType = $("#sewageType");
+            if (!validSelect2(sewageType)) return false
             var heatingType = $("#heatingType");
+            if (!validSelect2(heatingType)) return false
             var airConditioningType = $("#airConditioningType");
+            if (!validSelect2(airConditioningType)) return false
             var ventilationType = $("#ventilationType");
+            if (!validSelect2(ventilationType)) return false
             var ladderType = $("#ladderType");
+            if (!validSelect2(ladderType)) return false
             var electricityType = $("#electricityType");
+            if (!validSelect2(electricityType)) return false
             var floorType = $("#floorType");
+            if (!validSelect2(floorType)) return false
             var windowType = $("#windowType");
+            if (!validSelect2(windowType)) return false
             var carpentryType = $("#carpentryType");
+            if (!validSelect2(carpentryType)) return false
             var frontDoorType = $("#frontDoorType");
+            if (!validSelect2(frontDoorType)) return false
             var lastContactDate = $("#lastContactDate");
+            if (!validateDate(lastContactDate))return false
             var bargain = $("#bargain");
             var exclusive = $("#exclusive");
             var urgent = $("#urgent");
@@ -660,15 +735,117 @@
             var intermediary = $("#intermediary");
             var advertisementEnabled = $("#advertisementEnabled");
             var descriptionUk = $("#descriptionUk");
+            if (!validString("1", "990", descriptionUk)) return false
             var advertisementHeadlineUk = $("#advertisementHeadlineUk");
+            if (!validString("1", "300", advertisementHeadlineUk)) return false
             var advertisementTextUk = $("#advertisementTextUk");
-            var descriptionRu = $("#description");
-            var advertisementHeadlineRu = $("#advertisementHeadline");
-            var advertisementTextRu = $("#advertisementText");
+            if (!validString("1", "990", advertisementTextUk)) return false
+            var description = $("#description");
+            if (!validString("1", "990", description)) return false
+            var advertisementHeadline = $("#advertisementHeadline");
+            if (!validString("1", "300", advertisementHeadline)) return false
+            var advertisementText = $("#advertisementText");
+            if (!validString("1", "990", advertisementText)) return false
             var descriptionEn = $("#descriptionEn");
+            if (!validString("1", "990", descriptionEn)) return false
             var advertisementHeadlineEn = $("#advertisementHeadlineEn");
+            if (!validString("1", "300", advertisementHeadlineEn)) return false
             var advertisementTextEn = $("#advertisementTextEn");
+            if (!validString("1", "990", advertisementTextEn)) return false
 
+            var pictures = myDropzone.getAcceptedFiles();
+            if (getLastDigitFromPath(window.location.pathname)  &&  allUploadedFiles.length < 0) {
+                showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
+                return false
+            }
+            formData.append("streetUkr", streetUkr.val());
+            formData.append("street", street.val());
+            formData.append("streetEng", streetEng.val());
+            formData.append("zone", zone.val());
+            formData.append("region", region.val());
+            formData.append("city", city.val());
+            formData.append("district", district.val());
+            formData.append("houseNumber", houseNumber.val());
+            formData.append("section", section.val());
+            formData.append("apartmentNumber", apartmentNumber.val());
+            formData.append("ownerName", ownerName.val());
+            formData.append("ownerPhone", ownerPhone.val());
+            formData.append("boughtDate", boughtDate.val());
+            formData.append("ownershipType", ownership.val());
+            formData.append("notes", notes.val());
+            formData.append("cadastralNumber", cadastralNumber.val());
+            formData.append("plotDescription", plotDescription.val());
+            formData.append("administrationComment", administrationComment.val());
+            formData.append("publicationStatus", publicationStatus.val());
+            formData.append("objectCode", objectCode.val());
+            formData.append("branchCode", branchCode.val());
+            formData.append("staffCode", staffCode.val());
+            formData.append("price", price.val());
+            formData.append("landmark", landmark.val());
+            formData.append("builderObject", builderObject.val());
+            formData.append("buildStatus", buildStatus.val());
+            formData.append("dateDeliveryHouse", dateDeliveryHouse.val());
+            formData.append("floor", floor.val());
+            formData.append("floorQuantity", floorQuantity.val());
+            formData.append("roomQuantity", roomQuantity.val());
+            formData.append("houseType", houseType.val());
+            formData.append("vnp", vnp.val());
+            formData.append("vnpExpirationDate", vnpExpirationDate.val());
+            formData.append("informationSource", informationSource.val());
+            formData.append("areaTotal", areaTotal.val());
+            formData.append("areaUseful", areaUseful.val());
+            formData.append("roomMeters", roomMeters.val());
+            formData.append("heightCeiling", heightCeiling.val());
+            formData.append("plotAreaTotal", plotAreaTotal.val());
+            formData.append("plotAreaFree", plotAreaFree.val());
+            formData.append("plotPurposeType", plotPurposeType.val());
+            formData.append("landOwnershipPresent", landOwnershipPresent.val());
+            formData.append("stateInterior", stateInterior.val());
+            formData.append("propertyStructureState", propertyStructureState.val());
+            formData.append("bathroomType", bathroomType.val());
+            formData.append("windowViewType", windowViewType.val());
+            formData.append("environment", environment.val());
+            formData.append("parking", parking.val());
+            formData.append("fund", fund.val());
+            formData.append("facade", facade.val());
+            formData.append("railway", railway.val());
+            formData.append("gasType", gasType.val());
+            formData.append("waterType", waterType.val());
+            formData.append("sewageType", sewageType.val());
+            formData.append("heatingType", heatingType.val());
+            formData.append("airConditioningType", airConditioningType.val());
+            formData.append("ventilationType", ventilationType.val());
+            formData.append("ladderType", ladderType.val());
+            formData.append("electricityType", electricityType.val());
+            formData.append("floorType", floorType.val());
+            formData.append("windowType", windowType.val());
+            formData.append("carpentryType", carpentryType.val());
+            formData.append("frontDoorType", frontDoorType.val());
+            formData.append("lastContactDate", lastContactDate.val());
+            formData.append("bargain", bargain.val());
+            formData.append("exclusive", exclusive.val());
+            formData.append("urgent", urgent.val());
+            formData.append("free", free.val());
+            formData.append("open", open.val());
+            formData.append("intermediary", intermediary.val());
+            formData.append("advertisementEnabled", advertisementEnabled.val());
+            formData.append("descriptionUk", descriptionUk.val());
+            formData.append("advertisementHeadlineUk", advertisementHeadlineUk.val());
+            formData.append("advertisementTextUk", advertisementTextUk.val());
+            formData.append("description", description.val());
+            formData.append("advertisementHeadline", advertisementHeadline.val());
+            formData.append("advertisementText", advertisementText.val());
+            formData.append("descriptionEn", descriptionEn.val());
+            formData.append("advertisementHeadlineEn", advertisementHeadlineEn.val());
+            formData.append("advertisementTextEn", advertisementTextEn.val());
+            pictures.forEach(function (file) {
+                formData.append('pictures', file)
+            })
+            var filesElement = files[0].files;
+            for (var i = 0; i < filesElement.length; i++) {
+                formData.append("files", filesElement[i]);
+            }
+            return true
         }
         function addressSelect2(house) {
             if (house) {

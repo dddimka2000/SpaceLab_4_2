@@ -5,7 +5,7 @@ import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.HouseAddressDto;
-import org.example.dto.HouseForFilterDto;
+import org.example.dto.ObjectForFilterDto;
 import org.example.dto.HouseInfoDto;
 import org.example.dto.HouseMaterialDto;
 import org.example.entity.property.PropertyHouseObject;
@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -58,20 +56,10 @@ public class HousesServiceImpl {
     public PropertyHouseObject getById(Integer id) {
         return propertyHouseObjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A house with an id = "+id +" was not found"));
     }
-    private static LocalDate generateRandomDate() {
-        Faker faker = new Faker();
-        LocalDate startDate = LocalDate.of(2023, 10, 10);
-        LocalDate endDate = LocalDate.of(2023, 11, 13);
-        long startEpochDay = startDate.toEpochDay();
-        long endEpochDay = endDate.toEpochDay();
-        long randomEpochDay = startEpochDay + faker.number().numberBetween(0, endEpochDay - startEpochDay + 1);
 
-        return LocalDate.ofEpochDay(randomEpochDay);
-    }
-
-    public Page<PropertyHouseObject> getAll(HouseForFilterDto houseForFilterDto) {
-        Specification<PropertyHouseObject> specification = new HouseObjectSpecification(houseForFilterDto);
-        Pageable pageable = PageRequest.of(houseForFilterDto.getPage(), 10, Sort.by(Sort.Order.desc("id")));
+    public Page<PropertyHouseObject> getAll(ObjectForFilterDto objectForFilterDto) {
+        Specification<PropertyHouseObject> specification = new HouseObjectSpecification(objectForFilterDto);
+        Pageable pageable = PageRequest.of(objectForFilterDto.getPage(), 10, Sort.by(Sort.Order.desc("id")));
         return propertyHouseObjectRepository.findAll(specification, pageable);
     }
 

@@ -5,7 +5,8 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.example.dto.ObjectForFilterDto;
-import org.example.entity.property.PropertyHouseObject;
+import org.example.entity.BuilderObject;
+import org.example.entity.property.PropertyCommercialObject;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HouseObjectSpecification implements Specification<PropertyHouseObject> {
+public class CommercialObjectSpecification implements Specification<PropertyCommercialObject> {
     List<String> district;
     Integer numberRooms;
     Integer minFloor;
@@ -27,8 +28,9 @@ public class HouseObjectSpecification implements Specification<PropertyHouseObje
     Integer maxArea;
     String street;
     LocalDate lastContactDate;
+    List<Integer> residentialComplexId;
 
-    public HouseObjectSpecification(ObjectForFilterDto objectForFilterDto) {
+    public CommercialObjectSpecification(ObjectForFilterDto objectForFilterDto) {
         district = objectForFilterDto.getDistrict();
         numberRooms = objectForFilterDto.getNumberRooms();
         minFloor = objectForFilterDto.getMinFloor();
@@ -42,11 +44,13 @@ public class HouseObjectSpecification implements Specification<PropertyHouseObje
         maxArea = objectForFilterDto.getMaxArea();
         street = objectForFilterDto.getStreet();
         lastContactDate = objectForFilterDto.getLastContactDate();
+        residentialComplexId = objectForFilterDto.getBuilderObject();
     }
 
     @Override
-    public Predicate toPredicate(Root<PropertyHouseObject> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+    public Predicate toPredicate(Root<PropertyCommercialObject> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
+
         if (district != null && district.size() > 0) {
             List<Predicate> districtPredicates = district.stream().map(d -> criteriaBuilder.like(root.get("address").get("district"), "%" + d + "%"))
                     .collect(Collectors.toList());
@@ -96,6 +100,12 @@ public class HouseObjectSpecification implements Specification<PropertyHouseObje
         }
         if (lastContactDate != null) {
             predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("lastContactDate"), lastContactDate));
+        }
+        if (residentialComplexId != null && residentialComplexId.size() > 0) {
+            List<Predicate> residentialComplexIdPredicates = residentialComplexId.stream().map(d -> criteriaBuilder.equal(root.get("residentialComplexId"),d))
+                    .collect(Collectors.toList());
+            Predicate orPredicate = criteriaBuilder.or(residentialComplexIdPredicates.toArray(new Predicate[0]));
+            predicates.add(orPredicate);
         }
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
