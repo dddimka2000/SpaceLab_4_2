@@ -21,9 +21,10 @@ public class LayoutService {
     }
 
     public List<Layout> findByBuilderObject(BuilderObject entity) {
-        List<Layout> list=layoutRepository.findByBuilderObject(entity);
+        List<Layout> list = layoutRepository.findByBuilderObject(entity);
         return list;
     }
+
     public void save(Layout entity) {
         layoutRepository.save(entity);
     }
@@ -33,12 +34,14 @@ public class LayoutService {
     }
 
     public List<Layout> findLayoutsPage(BuilderObject builderObject) {
-        List<Layout> list=layoutRepository.findByBuilderObject(builderObject);
+        List<Layout> list = layoutRepository.findByBuilderObject(builderObject);
         return list;
     }
 
+    @Transactional
     public void deleteAllByBuilderObject(BuilderObject builderObject) {
         layoutRepository.deleteAllByBuilderObject(builderObject);
+        log.info("LayoutService deleteAllByBuilderObject");
     }
 
 }

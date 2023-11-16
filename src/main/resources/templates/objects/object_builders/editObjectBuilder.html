@@ -9,7 +9,8 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="">
-    <link rel="icon" type="image/x-icon" th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
+    <link rel="icon" type="image/x-icon"
+          th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
@@ -111,9 +112,22 @@
                          aria-labelledby="pills-home-tab">
                         <div class="row">
                             <div class="col-2">
-                                <h6>Название</h6>
-                                <input type="text" class="form-control" name="nameObject" id="nameObject"
-                                       th:value="${objectBuilder.getName()}" placeholder="Введите имя объекта">
+                                <div style="display:block;" class="ruContent nameContent">
+                                    <h6>Название</h6>
+                                    <input type="text" class="form-control" name="nameObject" id="nameObject"
+                                           placeholder="Введите название объекта" th:value="${objectBuilder.getName()}">
+                                </div>
+                                <div style="display:none;" class="euContent nameContent">
+                                    <h6>Название</h6>
+                                    <input type="text" class="form-control" name="nameObjectEu" id="nameObjectEu"
+                                           placeholder="Input name" th:value="${objectBuilder.getNameEnglish()}">
+                                </div>
+                                <div style="display:none;" class="ukrContent nameContent">
+                                    <h6>Название</h6>
+                                    <input type="text" class="form-control" name="nameObjectUkr" id="nameObjectUkr"
+                                           placeholder="Введіть назву об'єкта"
+                                           th:value="${objectBuilder.getNameUkraine()}">
+                                </div>
                             </div>
                             <div class="col-3">
                                 <h6>Обл.район</h6>
@@ -155,9 +169,23 @@
                                 </select>
                             </div>
                             <div class="col-2">
-                                <h6>Улица</h6>
-                                <input class="form-control" type="text" name="street" id="street"
-                                       th:value="${objectBuilder.getAddress().getStreet()}" placeholder="Введите название улицы">
+                                <div style="display:block;" class="ruContent nameContent">
+                                    <h6>Улица</h6>
+                                    <input class="form-control" type="text" name="street" id="street"
+                                           placeholder="Введите улицу"
+                                           th:value="${objectBuilder.getAddress().getStreet()}">
+                                </div>
+                                <div style="display:none;" class="euContent nameContent">
+                                    <h6>Улица</h6>
+                                    <input class="form-control" type="text" name="streetEu" id="streetEu"
+                                           placeholder="Введите улицу"
+                                           th:value="${objectBuilder.getAddress().getStreetEng()}">
+                                </div>
+                                <div style="display:none;" class="ukrContent nameContent">
+                                    <h6>Вулиця</h6>
+                                    <input class="form-control" type="text" name="streetUkr" id="streetUkr"
+                                           placeholder="Введите улицу" th:value="${objectBuilder.getAddress().getStreetUkr()}">
+                                </div>
                             </div>
                             <div class="col-8"></div>
                         </div>
@@ -170,12 +198,14 @@
                             <div class="col-2">
                                 <h6>Номер дома</h6>
                                 <input class="form-control" type="number" name="houseNumber"
-                                       th:value="${objectBuilder.getAddress().getHouseNumber()}" placeholder="Введите номер дома">
+                                       th:value="${objectBuilder.getAddress().getHouseNumber()}"
+                                       placeholder="Введите номер дома">
                             </div>
                             <div class="col-2">
                                 <h6>Секция/Корпус</h6>
                                 <input class="form-control" type="number" name="section"
-                                       th:value="${objectBuilder.getAddress().getSection()}" placeholder="Введите секцию/корпус">
+                                       th:value="${objectBuilder.getAddress().getSection()}"
+                                       placeholder="Введите секцию/корпус">
                             </div>
                             <div class="col-2">
                                 <h6>Этажность</h6>
@@ -221,20 +251,73 @@
                         <h6>Файл с ценами</h6>
                         <input type="file" class="form-control" name="prices" id="prices">
                         <br>
+                        <div>
+                            <div style="display:block;" class="ruContent nameContent">
+                                <h3>Описание</h3>
+                                <textarea class="form-control" style="width: 100%; height: 300px"
+                                          name="descriptionObject"
+                                          placeholder="Введите описание"
+                                          th:text="${objectBuilder.getDescription_builder()}"></textarea>
+                            </div>
+                            <div style="display:none;" class="euContent nameContent">
+                                <h3>Описание</h3>
+                                <textarea class="form-control" style="width: 100%; height: 300px"
+                                          name="descriptionObjectEu"
+                                          placeholder="Введите описание"
+                                          th:text="${objectBuilder.getDescription_builderEng()}"></textarea>
+                            </div>
+                            <div style="display:none;" class="ukrContent nameContent">
+                                <h3>Описание</h3>
+                                <textarea class="form-control" style="width: 100%; height: 300px"
+                                          name="descriptionObjectUkr"
+                                          placeholder="Введите описание"
+                                          th:text="${objectBuilder.getDescription_builderUkr()}"></textarea>
+                            </div>
+                        </div>
                         <br>
-                        <h3>Описание</h3>
-                        <textarea style="width: 100%; height: 300px" name="descriptionObject"
-                                  class="form-control"
-                                  th:text="${objectBuilder.getDescription_builder()}" placeholder="Введите описание"></textarea>
+                        <div>
+                            <div style="display:block;" class="ruContent nameContent">
+                                <h1>Акция</h1>
+                                <input type="text" name="promotionName" id="promotionName" class="form-control"
+                                       placeholder="Введите название акции"
+                                       th:value="${objectBuilder.getPromotion().getName()}">
+                            </div>
+                            <div style="display:none;" class="euContent nameContent">
+                                <h1>Акция</h1>
+                                <input type="text" name="promotionNameEu" id="promotionNameEu" class="form-control"
+                                       placeholder="Введите название акции"
+                                       th:value="${objectBuilder.getPromotion().getNameEng()}">
+                            </div>
+                            <div style="display:none;" class="ukrContent nameContent">
+                                <h1>Акция</h1>
+                                <input type="text" name="promotionNameUkr" id="promotionNameUkr" class="form-control"
+                                       placeholder="Введите название акции"
+                                       th:value="${objectBuilder.getPromotion().getNameUkr()}">
+                            </div>
+                        </div>
                         <br>
-                        <h1>Акция</h1>
-                        <input type="text" name="promotionName" id="promotionName" class="form-control"
-                               th:value="${objectBuilder.getPromotion().getName()}" placeholder="Введите имя акции">
-                        <br>
-                        <h3>Описание</h3>
-                        <textarea style="width: 100%; height: 300px" name="descriptionPromotion"
-                                  class="form-control"
-                                  th:text="${objectBuilder.getPromotion().getDescription()}" placeholder="Введите описание акции"></textarea>
+                        <div>
+                            <div style="display:block;" class="ruContent nameContent">
+                                <h3>Описание</h3>
+                                <textarea style="width: 100%; height: 300px" name="descriptionPromotion"
+                                          class="form-control" placeholder="Введите описание акции"
+                                          th:text="${objectBuilder.getPromotion().getDescription()}"></textarea>
+                            </div>
+                            <div style="display:none;" class="euContent nameContent">
+                                <h3>Описание</h3>
+                                <textarea style="width: 100%; height: 300px" name="descriptionPromotionEu"
+                                          class="form-control" placeholder="Введите описание акции"
+                                          th:text="${objectBuilder.getPromotion().getDescriptionEng()}"></textarea>
+                            </div>
+                            <div style="display:none;" class="ukrContent nameContent">
+                                <h3>Описание</h3>
+                                <textarea style="width: 100%; height: 300px" name="descriptionPromotionUkr"
+                                          class="form-control" placeholder="Введите описание акции"
+                                          th:text="${objectBuilder.getPromotion().getDescriptionUkr()}"></textarea>
+                            </div>
+                        </div>
+
+
                         <br>
                         <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"
                                th:checked="${objectBuilder.getPromotion().getActive() == true}"><span
@@ -257,15 +340,43 @@
                     <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                         <div id="card-container">
                             <div class="card" id="card1" style="padding: 20px; margin-top: 20px;">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <h6>Название</h6>
+                                <div>
+                                    <div style="display:block;" class="ruContent nameContent">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6>Название</h6>
+                                            </div>
+                                            <div class="col-6" style="text-align: right">
+                                            </div>
+                                        </div>
+                                        <input class="form-control col-md-6" type="text" id="nameLayout1"
+                                               placeholder="Введите название" th:value="${layouts.get(0).getName()}">
                                     </div>
-                                    <div class="col-6" style="text-align: right">
+                                    <div style="display:none;" class="euContent nameContent">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6>Название</h6>
+                                            </div>
+                                            <div class="col-6" style="text-align: right">
+                                            </div>
+                                        </div>
+                                        <input class="form-control col-md-6" type="text" id="nameLayoutEu1"
+                                               placeholder="Введите название" th:value="${layouts.get(0).getNameEng()}">
+                                    </div>
+                                    <div style="display:none;" class="ukrContent nameContent">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6>Название</h6>
+                                            </div>
+                                            <div class="col-6" style="text-align: right">
+                                            </div>
+                                        </div>
+                                        <input class="form-control col-md-6" type="text" id="nameLayoutUkr1"
+                                               placeholder="Введите название" th:value="${layouts.get(0).getNameUkr()}">
                                     </div>
                                 </div>
-                                <input class="form-control col-md-6" type="text" id="nameLayout1"
-                                       th:value="${layouts.get(0).getName()}" placeholder="Введите имя">
+
+
                                 <br>
                                 <div class="row">
                                     <div class="col-2">
@@ -276,22 +387,26 @@
                                     <div class="col-2">
                                         <h6>Комнат</h6>
                                         <input class="form-control" type="number" id="roomsLayout1"
-                                               th:value="${layouts.get(0).getRoomQuantity()}" placeholder="Введите кол-во комнат">
+                                               th:value="${layouts.get(0).getRoomQuantity()}"
+                                               placeholder="Введите кол-во комнат">
                                     </div>
                                     <div class="col-2">
                                         <h6>S общая (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaTotalLayout1"
-                                               th:value="${layouts.get(0).getAreaTotal()}" placeholder="Введите общую площадь">
+                                               th:value="${layouts.get(0).getAreaTotal()}"
+                                               placeholder="Введите общую площадь">
                                     </div>
                                     <div class="col-2">
                                         <h6>S жилая (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaLivingLayout1"
-                                               th:value="${layouts.get(0).getAreaLiving()}" placeholder="Введите жилую площадь">
+                                               th:value="${layouts.get(0).getAreaLiving()}"
+                                               placeholder="Введите жилую площадь">
                                     </div>
                                     <div class="col-2">
                                         <h6>S кухни (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaKitchenLayout1"
-                                               th:value="${layouts.get(0).getAreaKitchen()}" placeholder="Введите площадь кухни">
+                                               th:value="${layouts.get(0).getAreaKitchen()}"
+                                               placeholder="Введите площадь кухни">
                                     </div>
                                     <div class="col-2">
                                     </div>
@@ -299,13 +414,31 @@
                                 <br>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" value="" id="statusLayout1"
-                                           th:checked="${layouts.get(0).getActive() == true}" >
+                                           th:checked="${layouts.get(0).getActive() == true}">
                                     <span class="checkmark">Показать сайт</span>
                                 </div>
                                 <br>
-                                <h6>Описание</h6>
-                                <input class="form-control" type="text" id="descriptionLayout1"
-                                       th:value="${layouts.get(0).getDescription()}" placeholder="Введите описание">
+                                <div>
+                                    <div style="display:block;" class="ruContent nameContent">
+                                        <h6>Описание</h6>
+                                        <input class="form-control" type="text" id="descriptionLayout1"
+                                               placeholder="Введите описание"
+                                               th:value="${layouts.get(0).getDescription()}">
+                                    </div>
+                                    <div style="display:none;" class="euContent nameContent">
+                                        <h6>Описание</h6>
+                                        <input class="form-control" type="text" id="descriptionLayoutEu1"
+                                               placeholder="Введите описание"
+                                               th:value="${layouts.get(0).getDescriptionEng()}">
+                                    </div>
+                                    <div style="display:none;" class="ukrContent nameContent">
+                                        <h6>Описание</h6>
+                                        <input class="form-control" type="text" id="descriptionLayoutUkr1"
+                                               placeholder="Введите описание"
+                                               th:value="${layouts.get(0).getDescriptionUkr()}">
+                                    </div>
+
+                                </div>
                                 <br>
                                 <div class="row" style="text-align: center">
                                     <div class="col-4">
@@ -365,9 +498,13 @@
     </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
     <script th:inline="javascript">
+        let langOld = "ru";
+
         function changeInput(lang) {
-            $(".nameContent").css("display","none")
+            $(".nameContent").css("display", "none")
             $("." + lang + "Content").css("display", "block");
+            langOld = lang.toString();
+            console.log(langOld)
         }
 
         const previewTemplate = `<div class="dz-preview dz-file-preview">
@@ -440,12 +577,21 @@
         function sendForm() {
             let formData = new FormData();
             formData.append("nameObject", $("#nameObject").val());
+            formData.append("nameObjectEng", $("#nameObjectEu").val());
+            formData.append("nameObjectUkr", $("#nameObjectUkr").val());
+
             formData.append("region", $("#region").val());
             formData.append("street", $("#street").val());
+            formData.append("streetUkr", $("#streetUkr").val());
+            formData.append("streetEng", $("#streetEu").val());
+
             formData.append("district", $('[name="district"]').val());
             formData.append("city", $('[name="city"]').val());
             formData.append("topozone", $('[name="topozone"]').val());
             formData.append("promotionName", $("#promotionName").val());
+            formData.append("promotionNameEng", $("#promotionNameEu").val());
+            formData.append("promotionNameUkr", $("#promotionNameUkr").val());
+
             formData.append("houseNumber", $('[name="houseNumber"]').val());
             formData.append("section", $('[name="section"]').val());
             formData.append("floorQuantity", $('[name="floorQuantity"]').val());
@@ -459,7 +605,13 @@
             if ($("#prices").prop('files')[0] != null)
                 formData.append("prices", $("#prices").prop('files')[0]);
             formData.append("description", $('[name="descriptionObject"]').val());
+            formData.append("descriptionUkr", $('[name="descriptionObjectUkr"]').val());
+            formData.append("descriptionEng", $('[name="descriptionObjectEu"]').val());
+
             formData.append("descriptionPromotion", $('[name="descriptionPromotion"]').val());
+            formData.append("descriptionPromotionEng", $('[name="descriptionPromotionEu"]').val());
+            formData.append("descriptionPromotionUkr", $('[name="descriptionPromotionUkr"]').val());
+
             formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
             console.log("1" + $('[name="descriptionPromotion"]').val());
             console.log("2" + $('[name="descriptionObject"]').val())
@@ -471,13 +623,17 @@
                 console.log(element);
                 let layoutData = {
                     nameLayout: $("#nameLayout" + element).val(),
+                    nameLayoutEng: $("#nameLayoutEu" + element).val(),
+                    nameLayoutUkr: $("#nameLayoutUkr" + element).val(),
                     priceLayout: $("#priceLayout" + element).val(),
                     roomQuantityLayout: $("#roomsLayout" + element).val(),
                     areaTotalLayout: $("#areaTotalLayout" + element).val(),
                     areaLivingLayout: $("#areaLivingLayout" + element).val(),
                     areaKitchenLayout: $("#areaKitchenLayout" + element).val(),
                     statusLayout: $("#statusLayout" + element).prop('checked'),
-                    descriptionLayout: $("#descriptionLayout" + element).val()
+                    descriptionLayout: $("#descriptionLayout" + element).val(),
+                    descriptionLayoutEng: $("#descriptionLayoutEng" + element).val(),
+                    descriptionLayoutUkr: $("#descriptionLayoutUkr" + element).val()
                 }
                 let inputImage1 = $("#inputImage" + element).prop('files');
                 if (inputImage1.length > 0) {
@@ -583,83 +739,205 @@
             newCard.style.padding = '20px';
             newCard.style.marginTop = '20px';
             newCard.id = 'card' + imgMaxId;
-            layoutArray.push(imgMaxId)
-            newCard.innerHTML = `<div class="row">
-                <div class="col-6">
-                    <h6>Название</h6>
-                </div>
-                <div class="col-6" style="text-align: right">
-                    <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
-                             width="24"
-                             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                             stroke-linecap="round" stroke-linejoin="round" >
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M4 7l16 0"></path>
-                            <path d="M10 11l0 6"></path>
-                            <path d="M14 11l0 6"></path>
-                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <input class="form-control" type="text" class="col-6" id="nameLayout` + imgMaxId + `" placeholder="Введите название">
-                <br>
-                    <div class="row">
-                        <div class="col-2">
-                            <h6>Цена от (м.кв)</h6>
-                            <input class="form-control" type="number" id="priceLayout` + imgMaxId + `" placeholder="Введите цену">
+            layoutArray.push(imgMaxId);
+            let text = '';
+            if (langOld == 'ru') {
+                text += ' <div style="display:block;" class="ruContent nameContent">\n';
+            } else {
+                text += ' <div style="display:none;" class="ruContent nameContent">\n';
+            }
+            text += ` <div class="row">
+               <div class="col-6">
+                <h6>Название</h6>
+           </div>
+                 <div class="col-6" style="text-align: right">
+                            <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                     width="24"
+                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M4 7l16 0"></path>
+                                    <path d="M10 11l0 6"></path>
+                                    <path d="M14 11l0 6"></path>
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                </svg>
+                            </button>
                         </div>
-                        <div class="col-2">
-                            <h6>Комнат</h6>
-                            <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `" placeholder="Введите кол-во комнат">
+                                               </div>
+                                            <input class="form-control col-md-6" type="text" id="nameLayout` + imgMaxId + `"
+                                                    placeholder="Введите название">
+                                        </div>`;
+            newCard.innerHTML += text
+            text = '';
+            if (langOld == 'eu') {
+                text += ' <div style="display:block;" class="euContent nameContent">';
+
+            } else {
+                text += '<div style="display:none;" class="euContent nameContent">';
+            }
+            text += ` <div class="row">
+               <div class="col-6">
+                <h6>Название</h6>
+           </div>
+                 <div class="col-6" style="text-align: right">
+                            <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                     width="24"
+                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M4 7l16 0"></path>
+                                    <path d="M10 11l0 6"></path>
+                                    <path d="M14 11l0 6"></path>
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                </svg>
+                            </button>
                         </div>
-                        <div class="col-2">
-                            <h6>S общая (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `" placeholder="Введите общую площадь">
+                                               </div>
+                                            <input class="form-control col-md-6" type="text" id="nameLayoutEu` + imgMaxId + `"
+                                                    placeholder="Введите название">
+                                        </div>`;
+            newCard.innerHTML += text;
+            text = '';
+            if (langOld == 'ukr') {
+                text += ' <div style="display:block;" class="ukrContent nameContent">';
+
+            } else {
+                text += '<div style="display:none;" class="ukrContent nameContent">';
+            }
+            text += ` <div class="row">
+               <div class="col-6">
+                <h6>Название</h6>
+           </div>
+
+                 <div class="col-6" style="text-align: right">
+                            <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                     width="24"
+                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M4 7l16 0"></path>
+                                    <path d="M10 11l0 6"></path>
+                                    <path d="M14 11l0 6"></path>
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                </svg>
+                            </button>
                         </div>
-                        <div class="col-2">
-                            <h6>S жилая (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `" placeholder="Введите жилую площадь">
-                        </div>
-                        <div class="col-2">
-                            <h6>S кухни (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `" placeholder="Введите площадь кухни">
-                        </div>
-                        <div class="col-2">
-                        </div>
-                    </div>
-                    <br>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="" id="statusLayout` + imgMaxId + `">
-                                <span class="checkmark">Показать сайт</span>
-                        </div>
+                                               </div>
+                                            <input class="form-control col-md-6" type="text" id="nameLayoutUkr` + imgMaxId + `"
+                                                    placeholder="Введите название">
+                                        </div>`;
+            newCard.innerHTML += text;
+            text = '';
+
+            newCard.innerHTML += `
                         <br>
-                            <h6>Описание</h6>
-                            <input class="form-control" type="text" id="descriptionLayout` + imgMaxId + `" placeholder="Введите описание">
+                            <div class="row">
+                                <div class="col-2">
+                                    <h6>Цена от (м.кв)</h6>
+                                    <input class="form-control" type="number" id="priceLayout` + imgMaxId + `"
+                                           placeholder="Введите цену">
+                                </div>
+                                <div class="col-2">
+                                    <h6>Комнат</h6>
+                                    <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `"
+                                           placeholder="Введите кол-во комнат">
+                                </div>
+                                <div class="col-2">
+                                    <h6>S общая (м.кв.)*</h6>
+                                    <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `"
+                                           placeholder="Введите общую площадь">
+                                </div>
+                                <div class="col-2">
+                                    <h6>S жилая (м.кв.)*</h6>
+                                    <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `"
+                                           placeholder="Введите жилую площадь">
+                                </div>
+                                <div class="col-2">
+                                    <h6>S кухни (м.кв.)*</h6>
+                                    <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `"
+                                           placeholder="Введите площадь кухни">
+                                </div>
+                                <div class="col-2">
+                                </div>
+                            </div>
+                            <br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" value=""
+                                           id="statusLayout` + imgMaxId + `">
+                                        <span class="checkmark">Показать сайт</span>
+                                </div>
                                 <br>
-                                    <div class="row" style="text-align: center">
-                                        <div class="col-4">
-                                            <img id="previewImage` + (imgMaxId) + `" style="justify-content: center">
-                                                <input  type="file" class="form-control" id="inputImage` + (imgMaxId) + `"
-                                                       onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
-                                                       style="margin-top: 5px">
-                                        </div>
-                                        <div class="col-4">
-                                            <img id="previewImage` + (imgMaxId + 1) + `" style="justify-content: center">
-                                                <input type="file" class="form-control" id="inputImage` + (imgMaxId + 1) + `"
-                                                       onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
-                                                       style="margin-top: 5px">
-                                        </div>
-                                        <div class="col-4">
-                                            <img id="previewImage` + (imgMaxId + 2) + `">
-                                                <input type="file" class="form-control" id="inputImage` + (imgMaxId + 2) + `"
-                                                       onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 2) + `')"
-                                                       style="margin-top: 5px">
-                                        </div>
-                                    </div>  `
+                                    <h6>Описание</h6>`
+
+
+            if (langOld == 'ru') {
+                text += ' <div style="display:block;" class="ruContent nameContent">\n';
+            } else {
+                text += ' <div style="display:none;" class="ruContent nameContent">\n';
+            }
+            text += `<input class="form-control" type="text" id="descriptionLayout` + imgMaxId + `"
+                                           placeholder="Введите описание"></div>`
+            newCard.innerHTML += text
+
+            text = '';
+            if (langOld == 'ukr') {
+                text += ' <div style="display:block;" class="ukrContent nameContent">';
+
+            } else {
+                text += '<div style="display:none;" class="ukrContent nameContent">';
+            }
+            text += `<input class="form-control" type="text" id="descriptionLayoutUkr` + imgMaxId + `"
+                                           placeholder="Введите описание"></div>`
+            newCard.innerHTML += text
+
+            text = '';
+            if (langOld == 'eu') {
+                text += ' <div style="display:block;" class="euContent nameContent">';
+
+            } else {
+                text += '<div style="display:none;" class="euContent nameContent">';
+            }
+            text += `<input class="form-control" type="text" id="descriptionLayoutEu` + imgMaxId + `"
+                                           placeholder="Введите описание"></div>`
+            newCard.innerHTML += text
+
+            text = '';
+            newCard.innerHTML += `
+                                        <br>
+                                            <div class="row" style="text-align: center">
+                                                <div class="col-4">
+                                                    <img id="previewImage` + (imgMaxId) + `"
+                                                         style="justify-content: center">
+                                                        <input type="file" class="form-control"
+                                                               id="inputImage` + (imgMaxId) + `"
+                                                               onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
+                                                               style="margin-top: 5px">
+                                                </div>
+                                                <div class="col-4">
+                                                    <img id="previewImage` + (imgMaxId + 1) + `"
+                                                         style="justify-content: center">
+                                                        <input type="file" class="form-control"
+                                                               id="inputImage` + (imgMaxId + 1) + `"
+                                                               onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
+                                                               style="margin-top: 5px">
+                                                </div>
+                                                <div class="col-4">
+                                                    <img id="previewImage` + (imgMaxId + 2) + `">
+                                                        <input type="file" class="form-control"
+                                                               id="inputImage` + (imgMaxId + 2) + `"
+                                                               onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 2) + `')"
+                                                               style="margin-top: 5px">
+                                                </div>
+                                            </div>
+                                            `
             cardContainer.appendChild(newCard);
+
             console.log("Добавление Layout");
 
             imgMaxId = imgMaxId + 3;
@@ -813,27 +1091,80 @@
                         newCard.style.marginTop = '20px';
                         newCard.id = 'card' + imgMaxId;
                         layoutArray.push(imgMaxId)
-                        let textHtml = `<div class="row">
-                <div class="col-6">
-                    <h6>Название</h6>
-                </div>
-                <div class="col-6" style="text-align: right">
-                    <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
-                             width="24"
-                             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                             stroke-linecap="round" stroke-linejoin="round" >
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M4 7l16 0"></path>
-                            <path d="M10 11l0 6"></path>
-                            <path d="M14 11l0 6"></path>
-                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <input class="form-control" type="text" class="col-6" id="nameLayout` + imgMaxId + `" value="` + layouts[i].name + `">
+                        let textHtml = `
+
+            <div>
+                    <div style="display:block;" class="ruContent nameContent">
+                        <div class="row">
+                            <div class="col-6">
+                                <h6>Название</h6>
+                            </div>
+                            <div class="col-6" style="text-align: right">
+                                <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                         width="24"
+                                         height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                         stroke-linecap="round" stroke-linejoin="round" >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 7l16 0"></path>
+                                        <path d="M10 11l0 6"></path>
+                                        <path d="M14 11l0 6"></path>
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <input class="form-control" type="text" class="col-6" id="nameLayout` + imgMaxId + `" value="` + layouts[i].name + `">
+                    </div>
+                    <div style="display:none;" class="euContent nameContent">
+                        <div class="row">
+                            <div class="col-6">
+                                <h6>Название</h6>
+                            </div>
+                            <div class="col-6" style="text-align: right">
+                                <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                         width="24"
+                                         height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                         stroke-linecap="round" stroke-linejoin="round" >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 7l16 0"></path>
+                                        <path d="M10 11l0 6"></path>
+                                        <path d="M14 11l0 6"></path>
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <input class="form-control" type="text" class="col-6" id="nameLayoutEu` + imgMaxId + `" value="` + layouts[i].nameEng + `">
+                    </div>
+                    <div style="display:none;" class="ukrContent nameContent">
+                        <div class="row">
+                            <div class="col-6">
+                                <h6>Название</h6>
+                            </div>
+                            <div class="col-6" style="text-align: right">
+                                <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                         width="24"
+                                         height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                         stroke-linecap="round" stroke-linejoin="round" >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 7l16 0"></path>
+                                        <path d="M10 11l0 6"></path>
+                                        <path d="M14 11l0 6"></path>
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <input class="form-control" type="text" class="col-6" id="nameLayoutUkr` + imgMaxId + `" value="` + layouts[i].nameUkr + `">
+                    </div>
+          </div>
+
                 <br>
                     <div class="row">
                         <div class="col-2">

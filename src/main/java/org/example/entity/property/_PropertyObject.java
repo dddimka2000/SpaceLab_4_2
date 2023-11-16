@@ -33,7 +33,7 @@ public class _PropertyObject {
     private Integer roomQuantity;
 
     private String apartmentNumber;
-    private String ownerName;
+    private String ownerName, ownerNameEng, ownerNameUkr;
     private String ownerPhone;
 
     @DateTimeFormat(pattern="yyyy/MM/dd")
@@ -44,14 +44,13 @@ public class _PropertyObject {
 
     private PropertyBuildStatus buildStatus;
 
-//    @DateTimeFormat(pattern="yyyy/MM/dd")
-//    private LocalDate buildFinishDate;
 
+    private Integer buildFinishDate;
     private Integer areaTotal, areaLiving, areaKitchen;
     private String roomMeters;
     private Double heightCeiling;
 
-    private String wallMaterial;
+    private String wallMaterial,wallMaterialEng, wallMaterialUkr;
 
     private PropertyOrigin propertyOrigin;   // состояние квартиры/интерьера: от строителей / от инвесторов
 

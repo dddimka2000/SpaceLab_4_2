@@ -76,12 +76,12 @@
             <div>
                 <br>
                 <div class="d-flex justify-content-between">
-                    <h4 class="fw-bold">Объекты от инвесторов</h4>
+                    <h4 class="fw-bold">Вторичная недвижимость</h4>
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Объекты от инвесторов</li>
+                            <li class="breadcrumb-item active" aria-current="page">Вторичная недвижимость</li>
                         </ol>
                     </nav>
                 </div>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="col-md-1"></div>
                     <div class="col-md-2">
-                        <a th:href="@{/investor_objects/create}">
+                        <a th:href="@{/secondary_objects/create}">
                             <button class="btn btn-submit">Добавить объект</button>
                         </a>
                     </div>
@@ -312,8 +312,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Вы точно хотите удалить объект от
-                                инвесторов?</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Вы точно хотите удалить объект вторичной недвижимости?</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             </button>
                         </div>
@@ -391,7 +390,7 @@
 
         $(document).on("click", "#okBtn", function () {
             let contextPath =/*[[@{/}]]*/ '';
-            let url = contextPath + "investor_objects/delete/" + elementDelete;
+            let url = contextPath + "secondary_objects/delete/" + elementDelete;
             console.log(url)
             $.ajax({
                 url: url,
@@ -418,7 +417,8 @@
         function getPageWithFilter(page) {
             let filterElements = $('.for-filter');
             let contextPath = /*[[@{/}]]*/ '';
-            let url = contextPath.toString() + "investor_objects/filter";
+            let url = contextPath.toString() + "secondary_objects/filter";
+
             let rooms;
             let selectMultipartDistrict = [];
             let selectMultipartZone = [];
@@ -569,7 +569,7 @@
                             cell14.innerHTML = `
                                         <div class="btn-group" role="group" aria-label="Basic example">
 
-                       <a href="` + contextPath + `investor_objects/card/` + object.id + `">
+                       <a href="` + contextPath + `secondary_objects/card/` + object.id + `">
                                                 <button class="btn btn-default btn-sm float-right"
                                                         title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
                                             </a>

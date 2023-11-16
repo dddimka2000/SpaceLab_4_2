@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.example.entity.property.type.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PropertyInvestorObjectDTO {
+public class PropertySecondaryObjectDTO {
     public Integer id;
     public Boolean status; //
     @NotNull(message = "Заполните код объекта")

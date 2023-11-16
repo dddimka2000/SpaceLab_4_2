@@ -510,8 +510,8 @@
             formData.append("descriptionUkr", $('[name="descriptionObjectUkr"]').val());
             formData.append("descriptionEng", $('[name="descriptionObjectEu"]').val());
             formData.append("descriptionPromotion", $('[name="descriptionPromotion"]').val());
-            formData.append("descriptionPromotion", $('[name="descriptionPromotionEu"]').val());
-            formData.append("descriptionPromotion", $('[name="descriptionPromotionUkr"]').val());
+            formData.append("descriptionPromotionEng", $('[name="descriptionPromotionEu"]').val());
+            formData.append("descriptionPromotionUkr", $('[name="descriptionPromotionUkr"]').val());
 
             formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
             let index = 0;
@@ -723,19 +723,6 @@
                                         </div>`;
             newCard.innerHTML += text;
             text = '';
-            //     newCard.innerHTML += ' <div style="display:none;" class="ukrContent nameContent">\n' +
-            //         ' <div class="row">\n' +
-            //         ' <div class="col-6">\n' +
-            //         ' <h6>Название</h6>\n' +
-            //         ' </div>\n' +
-            //         ' <div class="col-6" style="text-align: right">\n' +
-            //         ' </div>\n' +
-            //         ' </div>\n' +
-            //         ' <input class="form-control col-md-6" type="text" id="nameLayout1Ukr"\n' +
-            //         ' placeholder="Введите название">\n' +
-            //         ' </div>'
-            // }
-
 
             newCard.innerHTML += `
                         <br>

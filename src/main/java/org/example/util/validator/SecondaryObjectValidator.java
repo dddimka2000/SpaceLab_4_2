@@ -2,13 +2,11 @@ package org.example.util.validator;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
-import org.example.dto.ObjectBuilderDto;
 import org.example.dto.ObjectBuilderDtoEdit;
-import org.example.dto.PropertyInvestorObjectDTO;
+import org.example.dto.PropertySecondaryObjectDTO;
 import org.example.service.BranchServiceImpl;
-import org.example.service.ObjectBuilderService;
-import org.example.service.PropertyInvestorObjectService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.service.PropertySecondaryObjectService;
+import org.example.service.PropertySecondaryObjectService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -16,11 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @Log4j2
-public class ObjectInvestorValidator implements Validator {
+public class SecondaryObjectValidator implements Validator {
     private final long maxFileSize = 5 * 1024 * 1024; // Максимальный размер файла (5 МБ)
     private final List<String> supportedImageFormats = Arrays.asList("image/jpeg", "image/png", "image/jpg", "image/gif");
     private static final List<String> supportedFormatsFiles = Arrays.asList("application/pdf",
@@ -30,24 +27,24 @@ public class ObjectInvestorValidator implements Validator {
 
 
     private final
-    PropertyInvestorObjectService propertyInvestorObjectService;
+    PropertySecondaryObjectService propertySecondaryObjectService;
 
-    public ObjectInvestorValidator(PropertyInvestorObjectService propertyInvestorObjectService, BranchServiceImpl branchService) {
-        this.propertyInvestorObjectService = propertyInvestorObjectService;
+    public SecondaryObjectValidator(PropertySecondaryObjectService propertySecondaryObjectService, BranchServiceImpl branchService) {
+        this.propertySecondaryObjectService = propertySecondaryObjectService;
         this.branchService = branchService;
     }
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return PropertyInvestorObjectDTO.class.isAssignableFrom(clazz) || ObjectBuilderDtoEdit.class.isAssignableFrom(clazz);
+        return PropertySecondaryObjectDTO.class.isAssignableFrom(clazz) || ObjectBuilderDtoEdit.class.isAssignableFrom(clazz);
     }
     private final
     BranchServiceImpl branchService;
 
     @Override
     public void validate(Object target, Errors errors) {
-        PropertyInvestorObjectDTO entity = (PropertyInvestorObjectDTO) target;
-        if(propertyInvestorObjectService.findByCode(entity.getObjectCode()).isPresent()){
+        PropertySecondaryObjectDTO entity = (PropertySecondaryObjectDTO) target;
+        if(propertySecondaryObjectService.findByCode(entity.getObjectCode()).isPresent()){
             errors.rejectValue("objectCode", "", "Объект с таким кодом уже существует");
         }
         try {
@@ -82,8 +79,8 @@ public class ObjectInvestorValidator implements Validator {
     }
 
     public void validateEdit(Object target, Errors errors, String code) {
-        PropertyInvestorObjectDTO entity = (PropertyInvestorObjectDTO) target;
-        if(!entity.getObjectCode().equals(code)&& propertyInvestorObjectService.findByCode(entity.getObjectCode()).isPresent()){
+        PropertySecondaryObjectDTO entity = (PropertySecondaryObjectDTO) target;
+        if(!entity.getObjectCode().equals(code)&& propertySecondaryObjectService.findByCode(entity.getObjectCode()).isPresent()){
             errors.rejectValue("objectCode", "", "Объект с таким кодом уже существует");
         }
         try {
@@ -113,4 +110,3 @@ public class ObjectInvestorValidator implements Validator {
         }
     }
 }
-
