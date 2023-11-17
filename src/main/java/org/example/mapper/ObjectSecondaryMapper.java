@@ -16,11 +16,12 @@ public interface ObjectSecondaryMapper {
     @Mappings({
             @Mapping(target = "pictures", source = "pictures", ignore = true),
             @Mapping(target = "realtor", source = "employeeCode", ignore = true),
-            @Mapping(target = "files", source = "files", qualifiedByName = "map")
+            @Mapping(target = "files", source = "files", qualifiedByName = "map2"),
+            @Mapping(target = "buildStatus", source="buildStatus", ignore=true)
     })
     PropertySecondaryObject toEntity(PropertySecondaryObjectDTO entity);
 
-    @Named("map")
+    @Named("map2")
     default List<String> map(List<MultipartFile> source) {
         List<String> result = new ArrayList<>();
         if (source != null && !source.isEmpty()) {
@@ -35,7 +36,8 @@ public interface ObjectSecondaryMapper {
     @Mappings({
             @Mapping(target = "pictures", source = "pictures", ignore = true),
             @Mapping(target = "realtor", source = "employeeCode", ignore = true),
-            @Mapping(target = "files", source = "files", qualifiedByName = "map")
+            @Mapping(target = "files", source = "files", qualifiedByName = "map2"),
+            @Mapping(target = "buildStatus", source="buildStatus", ignore=true)
     })
     void toOldEntity(@MappingTarget PropertySecondaryObject propertySecondaryObject, PropertySecondaryObjectDTO entity);
 

@@ -67,10 +67,32 @@ public class PropertySecondaryObjectDTO {
     public OwnershipType ownershipType;//
     @Size(max = 450, message = "Заметки могут иметь до 450 символов.")
     public String notes;
-    @NotNull(message = "Заполните срок сдачи")
-    public PropertyBuildStatus buildStatus;//
+
+    public String buildStatus;//
     //    @NotNull(message = "Заполните дату окончания строительства")
 //    public LocalDate buildFinishDate;
+
+
+    @NotNull(message = "Заполните тип недвижимости")
+    private PropertySecondaryType propertyType;    // отдельная/коммунальная
+    @NotNull(message = "Заполните тип планировки")
+    private LayoutType layoutType;                 // раздельная / ??
+    @NotNull(message = "Заполните тип состояния квартиры")
+    private HouseProjectType houseProjectType;     // спецпроект
+    @NotNull(message = "Заполните тип лестницы")
+    private LadderType ladderType;
+    @NotNull(message = "Заполните тип полов")
+    private FloorType floorType;
+    @NotNull(message = "Заполните тип окон")
+    private WindowType windowType;
+    @NotNull(message = "Заполните тип столярки")
+    private CarpentryType carpentryType;
+    @NotNull(message = "Заполните тип двери")
+    private FrontDoorType frontDoorType;
+
+
+
+
     @NotNull(message = "Заполните площадь")
     @Min(value = 1, message = "Введите корректную площадь")
     @Max(value = 100001, message = "Введите корректную площадь")
@@ -82,7 +104,7 @@ public class PropertySecondaryObjectDTO {
     @NotNull(message = "Заполните тип балкона")
     public BalconyType balconyType;//
     @NotNull(message = "Заполните тип вида из окна")
-    public WindowViewType windowViewType;//
+    public WindowViewType viewType;//
     @NotNull(message = "Заполните тип плиты")
     public KitchenStoveType kitchenStoveType;//
     @NotNull(message = "Заполните тип отопления")

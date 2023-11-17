@@ -83,5 +83,6 @@ public class _PropertyObject {
     private BuilderObject builderObject;
 
     @ManyToOne
+    @JoinColumn(name = "realtor_id", referencedColumnName = "id")
     private Realtor realtor;
 }
