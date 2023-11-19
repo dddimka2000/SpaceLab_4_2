@@ -28,11 +28,9 @@ import java.util.List;
 public class ExcelComponent {
 
     private final AddressExelRepository addressRepository;
-
     public ExcelComponent(AddressExelRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
-
     @PostConstruct
     public void processScheduledTask() {
         try {
@@ -46,7 +44,6 @@ public class ExcelComponent {
             log.error("Файл ексель для улиц не был найден, используются старые данные");
         }
     }
-
     @Transactional
     public void processExcelFile(byte[] file) throws IOException {
         if (addressRepository.count()<100) {

@@ -109,7 +109,7 @@
 
         function sendLanguage(el) {
             var selectedLanguage = el.getAttribute('data-language');
-            document.cookie = "selectedLanguage=" + selectedLanguage;
+            document.cookie = "selectedLanguage=" + selectedLanguage+"; path=/";
             changeLanguage(selectedLanguage);
         };
 
@@ -122,27 +122,18 @@
                 let cookie = cookiesArray[i].split("=");
                 cookies[cookie[0]] = cookie[1];
             }
-            var selectedLanguage = cookies["selectedLanguage"];
+            selectedLanguage = cookies["selectedLanguage"];
+            console.log(selectedLanguage)
             if (selectedLanguage == undefined) {
-                document.cookie = "selectedLanguage=ru";
-                let allCookies = document.cookie;
-                let cookiesArray = allCookies.split("; ");
-                let cookies = {};
-                for (let i = 0; i < cookiesArray.length; i++) {
-                    let cookie = cookiesArray[i].split("=");
-                    cookies[cookie[0]] = cookie[1];
-                }
-                selectedLanguage = cookies["selectedLanguage"]
+                document.cookie = "selectedLanguage=ru; path=/";
+                selectedLanguage = "ru";
             }
-            let s = $('[data-language="' + selectedLanguage + '"]')
-            s.click();
         });
         let path = /*[[@{/}]]*/ '';
 
-
-
+        let selectedLanguage;
         document.getElementById('languageSelector').addEventListener('change', function () {
-            let selectedLanguage = this.value;
+            selectedLanguage = this.value;
             changeLanguage(selectedLanguage);
         });
     </script>

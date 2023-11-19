@@ -546,7 +546,7 @@
                     </div>
                     <h6>Рекламный заголовок</h6>
                     <div style="display:block;" class="ruContent nameContent">
-                        <<input type="text" name="advertisingName" id="promotionName" class="form-control"
+                        <input type="text" name="advertisingName" id="promotionName" class="form-control"
                                 placeholder="Укажите рекламный заголовок" th:value="${element.advertisementHeadline}">
                     </div>
                     <div style="display:none;" class="euContent nameContent">
@@ -740,7 +740,13 @@
             formData.append("descriptionUk", $('[name="descriptionObject"]').val());
 
             formData.append("advertisementHeadline", $('[name="advertisingName"]').val());
+            formData.append("advertisementHeadlineEn", $('[name="advertisingNameEu"]').val());
+            formData.append("advertisementHeadlineUk", $('[name="advertisingNameUkr"]').val());
+
             formData.append("advertisementText", $('[name="advertisingText"]').val());
+            formData.append("advertisementTextEn", $('[name="advertisingTextEu"]').val());
+            formData.append("advertisementTextUk", $('[name="advertisingTextUkr"]').val());
+
             formData.append("advertisementEnabled", $('[name="statusPromotion"]').prop("checked"));
 
 
