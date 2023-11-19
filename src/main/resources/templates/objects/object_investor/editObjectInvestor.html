@@ -71,6 +71,24 @@
             </div>
             <hr style="margin-top: -5px">
             <br>
+            <ul class="nav nav-pills mb-3" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" type="button" aria-selected="true" data-toggle="tab" role="tab"
+                            data-bs-toggle="pill" onclick="changeInput('ru')">Ру
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                            data-bs-toggle="pill" onclick="changeInput('eu')">Eng
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                            data-bs-toggle="pill" onclick="changeInput('ukr')">Укр
+                    </button>
+                </li>
+            </ul>
+            <br>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
@@ -121,9 +139,21 @@
                                 <option value="3">Three</option>
                             </select></div>
                         <div class="col-2">
-                            <h6>Улица</h6>
-                            <input class="form-control" type="text" name="street" id="street"
-                                   placeholder="Введите улицу" th:value="${element.getAddress().getStreet()}">
+                            <div style="display:block;" class="ruContent nameContent">
+                                <h6>Улица</h6>
+                                <input class="form-control" type="text" name="street" id="street"
+                                       placeholder="Введите улицу" th:value="${element.getAddress().getStreet()}">
+                            </div>
+                            <div style="display:none;" class="euContent nameContent">
+                                <h6>Улица</h6>
+                                <input class="form-control" type="text" name="streetEu" id="streetEu"
+                                       placeholder="Введите улицу" th:value="${element.getAddress().getStreetEng()}">
+                            </div>
+                            <div style="display:none;" class="ukrContent nameContent">
+                                <h6>Вулиця</h6>
+                                <input class="form-control" type="text" name="streetUkr" id="streetUkr"
+                                       placeholder="Введите улицу" th:value="${element.getAddress().getStreetUkr()}">
+                            </div>
                         </div>
                         <div class="col-2">
                             <h6>Топозона</h6>
@@ -161,9 +191,21 @@
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            <h6>ФИО владельца </h6>
-                            <input class="form-control" type="text" name="owner" placeholder="Введите ФИО владельца"
-                                   th:value="${element.getOwnerName()}">
+                            <div style="display:block;" class="ruContent nameContent">
+                                <h6 data-translate="owner_name">ФИО владельца </h6>
+                                <input class="form-control" type="text" name="owner"
+                                       placeholder="Введите ФИО владельца" th:value="${element.getOwnerName()}">
+                            </div>
+                            <div style="display:none;" class="euContent nameContent">
+                                <h6 data-translate="owner_name">ФИО владельца </h6>
+                                <input class="form-control" type="text" name="ownerEu"
+                                       placeholder="Введите ФИО владельца" th:value="${element.getOwnerNameEng()}">
+                            </div>
+                            <div style="display:none;" class="ukrContent nameContent">
+                                <h6 data-translate="owner_name">ФИО владельца </h6>
+                                <input class="form-control" type="text" name="ownerUkr"
+                                       placeholder="Введите ФИО владельца" th:value="${element.getOwnerNameUkr()}">
+                            </div>
                         </div>
                         <div class="col-3">
                             <h6>Телефон</h6>
@@ -296,10 +338,10 @@
                                 ></option>
                             </select>
                         </div>
-                        <!--                        <div class="col-2">-->
-                        <!--                            <h6>Год срока сдачи дома</h6>-->
-                        <!--                            <input type="number" class="form-control" placeholder="Введите год срока сдачи дома">-->
-                        <!--                        </div>-->
+                        <div class="col-2">
+                            <h6>Год срока сдачи дома</h6>
+                            <input type="number" class="form-control" placeholder="Введите год срока сдачи дома" id="yearBuilding" th:value="${element.getBuildFinishDate}">
+                        </div>
                     </div>
                     <br>
                     <div class="row">
@@ -336,8 +378,18 @@
                     <div class="row">
                         <div class="col-3">
                             <h6>Материал стен</h6>
-                            <input class="form-control" type="text" id="wall_material"
-                                   placeholder="Введите материал стен" th:value="${element.getWallMaterial()}">
+                            <div style="display:block;" class="ruContent nameContent">
+                                <input class="form-control" type="text" id="wall_material"
+                                       placeholder="Введите материал стен" th:value="${element.getWallMaterial()}">
+                            </div>
+                            <div style="display:none;" class="euContent nameContent">
+                                <input class="form-control" type="text" id="wall_materialEn"
+                                       placeholder="Введите материал стен" th:value="${element.getWallMaterialEng()}">
+                            </div>
+                            <div style="display:none;" class="ukrContent nameContent">
+                                <input class="form-control" type="text" id="wall_materialUkr"
+                                       placeholder="Введите материал стен" th:value="${element.getWallMaterialUkr()}">
+                            </div>
                         </div>
                         <div class="col-3">
                             <h6>Состояние квартиры</h6>
@@ -476,23 +528,56 @@
                         </div>
                     </div>
                     <br>
-                    <br>
                     <h6>Описание</h6>
-                    <textarea class="form-control" style="width: 100%; height: 300px"
-                              name="descriptionObject" placeholder="Введите описание"
-                              th:text="${element.descriptionRu}"></textarea>
-                    <br>
+                    <div style="display:block;" class="ruContent nameContent">
+                        <textarea class="form-control" style="width: 100%; height: 300px"
+                                  name="descriptionObject" placeholder="Введите описание"
+                                  th:text="${element.description}"></textarea>
+                    </div>
+                    <div style="display:none;" class="euContent nameContent">
+                        <textarea class="form-control" style="width: 100%; height: 300px"
+                                  name="descriptionObjectEu" placeholder="Введите описание"
+                                  th:text="${element.descriptionEn}"></textarea>
+                    </div>
+                    <div style="display:none;" class="ukrContent nameContent">
+                         <textarea class="form-control" style="width: 100%; height: 300px"
+                                   name="descriptionObjectUkr" placeholder="Введите описание"
+                                   th:text="${element.descriptionUk}"></textarea>
+                    </div>
                     <h6>Рекламный заголовок</h6>
-                    <input type="text" name="advertisingName" id="promotionName" class="form-control"
-                           placeholder="Укажите рекламный заголовок" th:value="${element.advertisementHeadlineRu}">
+                    <div style="display:block;" class="ruContent nameContent">
+                        <<input type="text" name="advertisingName" id="promotionName" class="form-control"
+                                placeholder="Укажите рекламный заголовок" th:value="${element.advertisementHeadline}">
+                    </div>
+                    <div style="display:none;" class="euContent nameContent">
+                        <input type="text" name="advertisingNameEu" id="promotionNameEu" class="form-control"
+                               placeholder="Укажите рекламный заголовок" th:value="${element.advertisementHeadlineEn}">
+                    </div>
+                    <div style="display:none;" class="ukrContent nameContent">
+                        <input type="text" name="advertisingNameUkr" id="promotionNameUkr" class="form-control"
+                               placeholder="Укажите рекламный заголовок" th:value="${element.advertisementHeadlineUk}">
+                    </div>
                     <br>
                     <h6>Рекламный текст</h6>
-                    <textarea style="width: 100%; height: 300px" name="advertisingText"
-                              class="form-control" placeholder="Введите рекламный текст"
-                              th:text="${element.advertisementTextRu}"></textarea>
+                    <div style="display:block;" class="ruContent nameContent">
+                       <textarea style="width: 100%; height: 300px" name="advertisingText"
+                                 class="form-control" placeholder="Введите рекламный текст"
+                                 th:text="${element.advertisementText}"></textarea>
+                    </div>
+                    <div style="display:none;" class="euContent nameContent">
+                        <textarea style="width: 100%; height: 300px" name="advertisingTextEu"
+                                  class="form-control" placeholder="Введите рекламный текст"
+                                  th:text="${element.advertisementTextEn}"></textarea>
+                    </div>
+                    <div style="display:none;" class="ukrContent nameContent">
+                        <textarea style="width: 100%; height: 300px" name="advertisingTextUkr"
+                                  class="form-control" placeholder="Введите рекламный текст"
+                                  th:text="${element.advertisementTextUk}"></textarea>
+                    </div>
                     <br>
                     <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"><span
                         class="checkmark" th:checked="${element.advertisementEnabled}">Рекламировать</span>
+
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-profile-tab">
 
@@ -537,6 +622,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
 
     <script th:inline="javascript">
+        let langOld = "ru";
+
+        function changeInput(lang) {
+            $(".nameContent").css("display", "none")
+            $("." + lang + "Content").css("display", "block");
+            langOld = lang.toString();
+            console.log(langOld)
+        }
+
         function checkNumber() {
             let checkNumber = $("#telephone").val()
             var regExp = /^\+380(31|32|33|34|35|36|38|39|41|43|44|45|46|20|89|94|92|91|67|68|96|97|98|70|90|91|67|68|96|97|98|70|87|89|50|66|95|99)\d{7}$/;
@@ -553,6 +647,8 @@
             var address = {
                 region: $("#region").val(),
                 street: $("#street").val(),
+                streetEng: $("#streetEu").val(),
+                streetUkr: $("#streetUkr").val(),
                 district: $('[name="district"]').val(),
                 city: $('[name="city"]').val(),
                 zone: $('[name="topozone"]').val(),
@@ -565,9 +661,11 @@
                 }
             }
 
-
+            formData.append("buildFinishDate", $("#yearBuilding").val());
             formData.append("apartmentNumber", $('[name="apartmentNumber"]').val());
             formData.append("ownerName", $('[name="owner"]').val());
+            formData.append("ownerNameEng", $('[name="ownerEu"]').val());
+            formData.append("ownerNameUkr", $('[name="ownerUkr"]').val());
             formData.append("ownerPhone", $('[name="telephone"]').val());
             console.log($('[name="boughtDate"]').val())
             formData.append("boughtDate", $('[name="boughtDate"]').val());
@@ -611,6 +709,9 @@
 
             formData.append("heightCeiling", $("#myNumberInput").val());
             formData.append("wallMaterial", $("#wall_material").val());
+            formData.append("wallMaterialEng", $("#wall_materialEn").val());
+            formData.append("wallMaterialUkr", $("#wall_materialUkr").val());
+
             formData.append("propertyOrigin", $("#state").val());
             formData.append("kitchenType", $("#kitchen").val());
             formData.append("buildStatus", $("#buildStatus").val());
@@ -634,10 +735,12 @@
             formData.append("open", $('[name="objectOpen"]').prop("checked"));
             formData.append("intermediary", $('[name="fromIntermediary"]').prop("checked"));
 
-            formData.append("descriptionRu", $('[name="descriptionObject"]').val());
+            formData.append("description", $('[name="descriptionObject"]').val());
+            formData.append("descriptionEn", $('[name="descriptionObject"]').val());
+            formData.append("descriptionUk", $('[name="descriptionObject"]').val());
 
-            formData.append("advertisementHeadlineRu", $('[name="advertisingName"]').val());
-            formData.append("advertisementTextRu", $('[name="advertisingText"]').val());
+            formData.append("advertisementHeadline", $('[name="advertisingName"]').val());
+            formData.append("advertisementText", $('[name="advertisingText"]').val());
             formData.append("advertisementEnabled", $('[name="statusPromotion"]').prop("checked"));
 
 
@@ -655,7 +758,7 @@
             console.log(formData.get("pictures[]"))
 
             let contextPath =/*[[@{/}]]*/'';
-            let url = contextPath.toString() + "investor_objects/edit/"+idEntity;
+            let url = contextPath.toString() + "investor_objects/edit/" + idEntity;
             $.ajax({
                 url: url,
                 method: "POST",
@@ -711,7 +814,7 @@
                         lineBreak2.id = "lineBreak2" + numFile;
                         let numListener = numFile;
                         deleteButton.addEventListener("click", function () {
-                            deleteFile(fileLink.id, deleteButton.id, lineBreak.id, lineBreak2.id, numListener,fileMap);
+                            deleteFile(fileLink.id, deleteButton.id, lineBreak.id, lineBreak2.id, numListener, fileMap);
                         });
                         fileList.appendChild(lineBreak);
                         fileList.appendChild(lineBreak2);
@@ -1045,8 +1148,7 @@
             });
 
 
-
-            fetch(contextPath+"investor_objects/files/"+idEntity)
+            fetch(contextPath + "investor_objects/files/" + idEntity)
                 .then(response => response.json())  // Преобразование ответа в JSON
                 .then(data => {
                     console.log("Received data from server:", data);
@@ -1071,8 +1173,17 @@
                 var link = document.createElement("a");
                 link.href = "data:application/octet-stream;base64," + base64Data;
                 link.download = filesElement[index];
-                link.textContent = fileName;
-                link.id="oldFile"+index;
+                let indexOfDot = fileName.indexOf('.');
+                let resultString;
+                if (indexOfDot !== -1) {
+                     resultString = fileName.substring(indexOfDot + 1);
+                    // Или используйте slice:
+                    // let resultString = inputString.slice(indexOfDot + 1);
+
+                    console.log(resultString);
+                }
+                link.textContent = "Скачать "+resultString;
+                link.id = "oldFile" + index;
                 fileList.appendChild(link);
 
                 let deleteButton = document.createElement("button");
@@ -1096,9 +1207,8 @@
                 numFile++;
             });
         }
-        oldFileMap=new Map();
 
-
+        oldFileMap = new Map();
 
 
     </script>

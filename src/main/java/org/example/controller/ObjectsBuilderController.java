@@ -79,7 +79,7 @@ public class ObjectsBuilderController {
     @ResponseBody
     public Page<BuilderObject> showPageObjectBuilder(@ModelAttribute ObjectBuilderDtoSearch objectBuilderDto
             , @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
-        log.info(objectBuilderDto);
+//        log.info(objectBuilderDto);
         Pageable pageable = PageRequest.of(numberPage, pageSize);
         Page<BuilderObject> pageElements = objectBuilderService.findBuilderObjectsByCriteria(
                 objectBuilderDto.getName(),
@@ -119,7 +119,7 @@ public class ObjectsBuilderController {
         } else {
             panelCount = "Показано " + (pageSize * numberPage + 1) + "-" + (list.size() + (pageSize * numberPage)) + " из " + count;
         }
-        log.info(panelCount);
+//        log.info(panelCount);
         model.addAttribute("panelCount", panelCount);
         return modelAndView;
     }
@@ -165,8 +165,9 @@ public class ObjectsBuilderController {
         builderObject.setAddress(propertyObjectAddress);
 
         builderObject.setName(objectBuilderDto.getNameObject());
-        builderObject.setNameEng(objectBuilderDto.getNameObjectEng());
-        builderObject.setNameUkr(objectBuilderDto.getNameObjectUkr());
+        builderObject.setNameEnglish(objectBuilderDto.getNameObjectEng());
+        builderObject.setNameUkraine(objectBuilderDto.getNameObjectUkr());
+
 
 
 
@@ -184,7 +185,11 @@ public class ObjectsBuilderController {
 
         BuilderObjectPromotion builderObjectPromotion = new BuilderObjectPromotion();
         builderObjectPromotion.setName(objectBuilderDto.getPromotionName());
+        builderObjectPromotion.setNameEng(objectBuilderDto.getPromotionNameEng());
+        builderObjectPromotion.setNameUkr(objectBuilderDto.getPromotionNameUkr());
         builderObjectPromotion.setDescription(objectBuilderDto.getDescriptionPromotion());
+        builderObjectPromotion.setDescriptionEng(objectBuilderDto.getDescriptionPromotionEng());
+        builderObjectPromotion.setDescriptionUkr(objectBuilderDto.getDescriptionPromotionUkr());
         Boolean statusPromotion = Boolean.parseBoolean(objectBuilderDto.getStatusPromotion());
         builderObjectPromotion.setActive(statusPromotion);
         builderObject.setPromotion(builderObjectPromotion);
@@ -210,6 +215,9 @@ public class ObjectsBuilderController {
         for (LayoutDTO dto : objectBuilderDto.getLayoutDTOList()) {
             Layout layout = new Layout();
             layout.setName(dto.getNameLayout());
+            layout.setNameEng(dto.getNameLayoutEng());
+            layout.setNameUkr(dto.getNameLayoutUkr());
+
             layout.setPrice(dto.getPriceLayout());
             layout.setRoomQuantity(dto.getRoomQuantityLayout());
             layout.setAreaKitchen(dto.getAreaKitchenLayout());
@@ -217,6 +225,8 @@ public class ObjectsBuilderController {
             layout.setAreaTotal(dto.getAreaTotalLayout());
             layout.setActive(dto.getStatusLayout());
             layout.setDescription(dto.getDescriptionLayout());
+            layout.setDescriptionEng(dto.getDescriptionLayoutEng());
+            layout.setDescriptionUkr(dto.getDescriptionLayoutUkr());
 
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + dto.getImg1Layout().getOriginalFilename();
@@ -315,7 +325,7 @@ public class ObjectsBuilderController {
         model.addAttribute("base64ImagesSize", base64ImagesListSize);
         List<Layout> layouts = layoutService.findByBuilderObject(objectBuilder.get());
         model.addAttribute("layouts", layouts);
-        log.info("size" + layouts.size());
+//        log.info("size" + layouts.size());
         List<String> img1 = new ArrayList<>();
         List<String> img2 = new ArrayList<>();
         List<String> img3 = new ArrayList<>();
@@ -344,13 +354,14 @@ public class ObjectsBuilderController {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Transactional
     @PostMapping("/edit/{id}")
     public ResponseEntity EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDtoEdit objectBuilderDtoEdit, BindingResult bindingResult, @PathVariable Integer id)
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException
             , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        log.info(objectBuilderDtoEdit.getLayoutDTOList());
-        log.info(objectBuilderDtoEdit.getOldFiles());
-        log.info(objectBuilderDtoEdit.getOldFiles().size());
+        log.info(objectBuilderDtoEdit);
+//        log.info(objectBuilderDtoEdit.getOldFiles());
+//        log.info(objectBuilderDtoEdit.getOldFiles().size());
 
         objectBuilderValidator.validateEdit(objectBuilderDtoEdit, bindingResult, id);
         try {
@@ -374,13 +385,24 @@ public class ObjectsBuilderController {
         propertyObjectAddress.setRegion(objectBuilderDtoEdit.getRegion());
         propertyObjectAddress.setSection(objectBuilderDtoEdit.getSection());
         propertyObjectAddress.setStreet(objectBuilderDtoEdit.getStreet());
+        propertyObjectAddress.setStreetUkr(objectBuilderDtoEdit.getStreetUkr());
+        propertyObjectAddress.setStreetEng(objectBuilderDtoEdit.getStreetEng());
+
+
         propertyObjectAddress.setZone(objectBuilderDtoEdit.getTopozone());
         builderObject.setAddress(propertyObjectAddress);
 
         builderObject.setName(objectBuilderDtoEdit.getNameObject());
+        builderObject.setNameEnglish(objectBuilderDtoEdit.getNameObjectEng());
+        builderObject.setNameUkraine(objectBuilderDtoEdit.getNameObjectUkr());
+
+
         builderObject.setFloorQuantity(objectBuilderDtoEdit.getFloorQuantity());
         builderObject.setPhone(objectBuilderDtoEdit.getTelephone());
         builderObject.setDescription_builder(objectBuilderDtoEdit.getDescription());
+        builderObject.setDescription_builderEng(objectBuilderDtoEdit.getDescriptionEng());
+        builderObject.setDescription_builderUkr(objectBuilderDtoEdit.getDescriptionUkr());
+
         builderObject.setNameCompany(objectBuilderDtoEdit.getNameCompany());
 
         builderObject.setBuildStatus(PropertyBuildStatus.valueOf(objectBuilderDtoEdit.getBuildStatus()));
@@ -388,7 +410,12 @@ public class ObjectsBuilderController {
 
         BuilderObjectPromotion builderObjectPromotion = new BuilderObjectPromotion();
         builderObjectPromotion.setName(objectBuilderDtoEdit.getPromotionName());
+        builderObjectPromotion.setNameEng(objectBuilderDtoEdit.getPromotionNameEng());
+        builderObjectPromotion.setNameUkr(objectBuilderDtoEdit.getPromotionNameUkr());
         builderObjectPromotion.setDescription(objectBuilderDtoEdit.getDescriptionPromotion());
+        builderObjectPromotion.setDescriptionEng(objectBuilderDtoEdit.getDescriptionPromotionEng());
+        builderObjectPromotion.setDescriptionUkr(objectBuilderDtoEdit.getDescriptionPromotionUkr());
+
         Boolean statusPromotion = Boolean.parseBoolean(objectBuilderDtoEdit.getStatusPromotion());
         builderObjectPromotion.setActive(statusPromotion);
         builderObject.setPromotion(builderObjectPromotion);
@@ -424,6 +451,9 @@ public class ObjectsBuilderController {
         for (LayoutDTOEdit dto : objectBuilderDtoEdit.getLayoutDTOList()) {
             Layout layout = new Layout();
             layout.setName(dto.getNameLayout());
+            layout.setNameEng(dto.getNameLayoutEng());
+            layout.setNameUkr(dto.getNameLayoutUkr());
+
             layout.setPrice(dto.getPriceLayout());
             layout.setRoomQuantity(dto.getRoomQuantityLayout());
             layout.setAreaKitchen(dto.getAreaKitchenLayout());
@@ -431,6 +461,8 @@ public class ObjectsBuilderController {
             layout.setAreaTotal(dto.getAreaTotalLayout());
             layout.setActive(dto.getStatusLayout());
             layout.setDescription(dto.getDescriptionLayout());
+            layout.setDescriptionUkr(dto.getDescriptionLayoutUkr());
+            layout.setDescriptionEng(dto.getDescriptionLayoutEng());
 
             if (dto.getImg1Layout() != null && !dto.getImg1Layout().isEmpty()) {
                 uuidFile = UUID.randomUUID().toString();

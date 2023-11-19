@@ -36,6 +36,39 @@ public class GlobalAttributes {
         return Optional.empty();
     }
 
+    @ModelAttribute("CarpentryType")
+    public CarpentryType[] getCarpentryType() {
+        return CarpentryType.values();
+    }
+    @ModelAttribute("ladderType")
+    public LadderType[] getLadderType() {
+        return LadderType.values();
+    }
+    @ModelAttribute("FrontDoorType")
+    public FrontDoorType[] getFrontDoorType() {
+        return FrontDoorType.values();
+    }
+    @ModelAttribute("FloorType")
+    public FloorType[] getFloorType() {
+        return FloorType.values();
+    }
+    @ModelAttribute("WindowType")
+    public WindowType[] getWindowType() {
+        return WindowType.values();
+    }
+    @ModelAttribute("houseProjectType")
+    public HouseProjectType[] getHouseProjectType() {
+        return HouseProjectType.values();
+    }
+    @ModelAttribute("layoutType")
+    public LayoutType[] getLayoutType() {
+        return LayoutType.values();
+    }
+    @ModelAttribute("propertySecondaryType")
+    public PropertySecondaryType[] getPropertySecondaryType() {
+        return PropertySecondaryType.values();
+    }
+
     @ModelAttribute("propertyBuildStatus")
     public PropertyBuildStatus[] getPropertyBuildStatus() {
         return PropertyBuildStatus.values();

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/x-icon"
+          th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js"
+            type="text/javascript"></script>
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
+    <script th:src="@{/js/config.js}"></script>
+    <script th:src="@{/vendor/js/template-customizer.js}"></script>
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
+    <script th:src="@{/vendor/libs/select2/select2.js}"></script>
+
+    <!--    <script th:src="@{/css/modal.css}"></script>-->
+
+    <style>
+        @media print {
+            @page {
+                size: landscape; /* или portrait для книжной ориентации */
+            }
+
+            body * {
+                visibility: hidden;
+            }
+
+            #printElements * {
+                visibility: visible;
+            }
+
+            #printElements {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+            #printElements .btn-group * {
+                visibility: hidden;
+                display: none;
+            }
+
+            #printElements .form-check-input * {
+                visibility: hidden;
+                display: none;
+            }
+        }
+    </style>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+
+        <div class="content-wrapper">
+            <div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <h4 class="fw-bold">Вторичная недвижимость</h4>
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
+                         class="d-flex align-items-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Вторичная недвижимость</li>
+                        </ol>
+                    </nav>
+                </div>
+                <hr style="margin-top: -5px">
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-1">
+                        <button class="btn btn-submit" id="printButton" onclick="printButton()">Распечатать</button>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <a th:href="@{/secondary_objects/create}">
+                            <button class="btn btn-submit">Добавить объект</button>
+                        </a>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-4">
+                                <h6>Район</h6>
+                                <select id="select2Multiple24" class="select2 form-select for-filter" multiple>
+                                    <script th:inline="javascript">
+                                        let pathLink = /*[[@{/}]]*/ '';
+                                        let selectElement = document.getElementById("select2Multiple24");
+                                        $.ajax({
+                                            url: pathLink + "getAllDistricts",
+                                            method: "GET",
+                                            dataType: 'json',
+                                            success: function (districts) {
+                                                for (let i = 0; i < districts.length; i++) {
+                                                    let option = document.createElement("option");
+                                                    option.value = districts[i];
+                                                    option.text = districts[i];
+                                                    selectElement.add(option);
+                                                }
+                                            },
+                                            error: function (e) {
+                                                console.log(e)
+                                            }
+                                        });
+                                    </script>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <h6>Количество комнат</h6>
+                                <input type="radio" class="form-check-input for-filter" name="flexRadioDefault"
+                                       value="1">1
+                                <input type="radio" class="form-check-input for-filter" name="flexRadioDefault"
+                                       value="2">2
+                                <input type="radio" class="form-check-input for-filter" name="flexRadioDefault"
+                                       value="3">3
+                                <input type="radio" class="form-check-input for-filter" name="flexRadioDefault"
+                                       value="4">4
+                            </div>
+                            <div class="col-5">
+                                <div class="row">
+                                    <div class="col">
+                                        <h6>Этаж:</h6>
+                                        <div style="display: flex">
+                                            <input class="form-control for-filter"
+                                                   oninput="this.value = this.value.replace(/\D/g, '')">
+                                            <div class="mt-2">—</div>
+                                            <input class="form-control for-filter"
+                                                   oninput="this.value = this.value.replace(/\D/g, '')">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <h6>Цена ($):</h6>
+                                        <div style="display: flex">
+                                            <input class="form-control for-filter"
+                                                   oninput="this.value = this.value.replace(/\D/g, '')">
+                                            <div class="mt-2">—</div>
+                                            <input class="form-control for-filter"
+                                                   oninput="this.value = this.value.replace(/\D/g, '')">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-4">
+                                <h6>Топозона</h6>
+                                <select class="select2 form-select for-filter" multiple id="select2MultipleTopozone">
+                                    <option th:each="entity : ${selectTopozone}"
+                                            th:value="${entity}"
+                                            th:text="${entity}"></option>
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <h6>ЖК</h6>
+                                <select class="select2 form-select for-filter" multiple
+                                        id="select2MultipleResidentialComplexId">
+                                </select>
+                            </div>
+                            <div class="col-5">
+                                <div class="row">
+                                    <div class="col">
+                                        <h6>Этажность:</h6>
+                                        <div style="display: flex">
+                                            <input class="form-control for-filter"
+                                                   oninput="this.value = this.value.replace(/\D/g, '')">
+                                            <div class="mt-2">—</div>
+                                            <input class="form-control for-filter"
+                                                   oninput="this.value = this.value.replace(/\D/g, '')">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <h6>Площадь(кв. м):</h6>
+                                        <div style="display: flex">
+                                            <input class="form-control for-filter"
+                                                   oninput="this.value = this.value.replace(/\D/g, '')">
+                                            <div class="mt-2">—</div>
+                                            <input class="form-control for-filter"
+                                                   oninput="this.value = this.value.replace(/\D/g, '')">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-4">
+                                <h6>Улица</h6>
+                                <input class="form-control for-filter" type="text" name="street" id="street"
+                                       placeholder="Введите улицу">
+                            </div>
+                            <div class="col-4">
+                                <h6>Дата последнего контакта</h6>
+                                <select id="day" name="day" class="form-select select2 for-filter">
+                                    <option selected value="" disabled></option>
+                                    <option value="1">1 день</option>
+                                    <script>
+                                        for (let i = 2; i <= 31; i++) {
+                                            document.write('<option value="' + i + '">' + i + " дней" + '</option>');
+                                        }
+                                    </script>
+                                </select>
+                            </div>
+                            <div class="col-4" style="display: flex;align-items: end;justify-content: end">
+                                <button class="btn btn-submit" id="clean-filter">Очистить фильтр</button>
+                                <button class="btn btn-submit" id="search-btn">Поиск</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <table class="invoice-list-table table border-top dataTable no-footer dtr-column"
+                               id="branchTable">
+                            <thead>
+                            <tr style="text-align: center">
+                                <th>Дата контакта</th>
+                                <th>Код</th>
+                                <th>Район</th>
+                                <th>Топозона</th>
+                                <th>Улица</th>
+                                <th>Комнат</th>
+                                <th>Этаж</th>
+                                <th>Этажность</th>
+                                <th>Площадь</th>
+                                <th>Реклама</th>
+                                <th>Статус</th>
+                                <th>Фото</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Дата контакта</td>
+                                <td>Код</td>
+                                <td>Район</td>
+                                <td>Топозона</td>
+                                <td>Улица</td>
+                                <td>Комнат</td>
+                                <td>Этаж</td>
+                                <td>Этажность</td>
+                                <td>Площадь</td>
+                                <td>Реклама</td>
+                                <td>Статус</td>
+                                <td>Фото</td>
+                                <td><input class="form-check-input" type="checkbox"></td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a th:href="@{/}">
+                                            <button class="btn btn-default btn-sm float-right" title="Редактировать"><i
+                                                    class="fa fa-pencil-alt"></i></button>
+                                        </a>
+                                        <button class="btn btn-default btn-sm float-right for-delete"><i
+                                                class="fa fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <div class="row" id="pagination_container">
+                            <div class="col-sm-6" id="rowPanelCount">
+                            </div>
+                            <div class="col-sm-6">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-end" id="paginationItems">
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <p>Колличество строк:</p>
+                            <select class="form-select form-control select2" id="pageSize">
+                                <option value="2">2</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="deleteModal" class="modal animate__animated animate__flipInX"
+                 tabindex="-1" aria-labelledby="flipInXAnimationModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Вы точно хотите удалить объект вторичной недвижимости?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelBtn">
+                                    Отмена
+                                </button>
+                                <button type="button" class="btn btn-primary" id="okBtn">Да</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script th:src="@{/js/pagination.js}"></script>
+    <script th:inline="javascript">
+        $("#day").select2();
+        $("#pageSize").select2();
+        function printButton() {
+            var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
+
+            if (selectedCheckboxes.length === 0) {
+                showNotification("Выберите хотя бы один чекбокс для печати.", "", false);
+                return;
+            }
+
+            var printDocument = document.createElement('div');
+            printDocument.id = "printElements"
+            var printTable = document.createElement('table');
+            printTable.className = "invoice-list-table table border-top dataTable no-footer dtr-column";
+            printTable.id = "branchTable";
+
+            var tableHead = document.createElement('thead');
+            tableHead.innerHTML = '<tr style="text-align: center"><th>Дата контакта</th><th>Код</th><th>Район</th><th>Топозона</th><th>Улица</th><th>Комнат</th><th>Этаж</th><th>Этажность</th><th>Площадь</th><th>Реклама</th><th>Статус</th><th>Фото</th><th></th><th></th></tr>';
+            printTable.appendChild(tableHead);
+
+            var tableBody = document.createElement('tbody');
+            tableBody.style.textAlign = "center";
+
+            selectedCheckboxes.forEach(function (checkbox) {
+                var rowId = checkbox.getAttribute('data-id');
+                var originalRow = document.querySelector('tr[data-id="' + rowId + '"]');
+
+                // Клонируйте и добавьте клон в таблицу
+                var clonedRow = originalRow.cloneNode(true);
+                tableBody.appendChild(clonedRow);
+            });
+
+            printTable.appendChild(tableBody);
+            printDocument.appendChild(printTable);
+
+            // Отправьте документ для печати
+            document.body.appendChild(printDocument);
+            window.print();
+            document.body.removeChild(printDocument);
+
+
+        }
+
+        $(function () {
+            $("#select2Multiple24").select2();
+            $("#select2MultipleTopozone").select2();
+            select2MultipleResidential();
+            getPageWithFilter(0);
+        });
+
+        function openModal(elem) {
+            console.log(elem);
+            elementDelete = elem;
+            $("#deleteModal").modal("show");
+        }
+
+        $(document).on("click", "#okBtn", function () {
+            let contextPath =/*[[@{/}]]*/ '';
+            let url = contextPath + "secondary_objects/delete/" + elementDelete;
+            console.log(url)
+            $.ajax({
+                url: url,
+                method: "DELETE",
+                success: function (response) {
+                    $("#elementTable" + elementDelete).empty();
+                    $("#cancelBtn").click();
+                    console.log(response);
+                    showNotification("Warn! ", response, false);
+                    getPageWithFilter(0);
+                },
+                error: function (context) {
+                    console.log("ERROR " + context);
+                }
+            })
+        });
+        let page = 0;
+        let elementTr = 0;
+        $("#pageSize").on("change", function () {
+            getPageWithFilter(0);
+        });
+
+
+        function getPageWithFilter(page) {
+            let filterElements = $('.for-filter');
+            let contextPath = /*[[@{/}]]*/ '';
+            let url = contextPath.toString() + "secondary_objects/filter";
+
+            let rooms;
+            let selectMultipartDistrict = [];
+            let selectMultipartZone = [];
+            let selectMultipartRC = [];
+            Array.from(filterElements).forEach(function (element) {
+                var el = $(element);
+                if (el.is(':radio')) {
+                    console.log(el.prop('checked'));
+                    if (el.prop('checked')) {
+                        console.log(el.val());
+                        rooms = el.val();
+                    }
+                } else {
+                    console.log(element.value);
+                }
+            });
+            let el1 = $(filterElements[0]);
+            el1.find('option:selected').each(function () {
+                selectMultipartDistrict.push($(this).val());
+            })
+            el1 = $(filterElements[9]);
+            el1.find('option:selected').each(function () {
+                selectMultipartZone.push($(this).val());
+            })
+            el1 = $(filterElements[10]);
+            el1.find('option:selected').each(function () {
+                selectMultipartRC.push($(this).val());
+            })
+            console.log(selectMultipartDistrict);
+            console.log(selectMultipartZone);
+            console.log(selectMultipartRC);
+            var currentDate = new Date();
+            var numberOfDays = parseInt($(filterElements[16]).val(), 10);
+            let formattedDate = "";
+            if (!isNaN(numberOfDays)) {
+                var newDate = new Date(currentDate);
+                newDate.setDate(currentDate.getDate() - numberOfDays);
+                formattedDate = newDate.toISOString().split('T')[0];
+
+                console.log(formattedDate);
+            } else {
+                console.log("Invalid number of days");
+            }
+            let pageSize = $("#pageSize").val();
+            if (!pageSize) {
+                pageSize = 10;
+            }
+            $.ajax({
+                    method: "GET",
+                    url: url,
+                    data: {
+                        pageSize: pageSize,
+                        page: page,
+                        district: selectMultipartDistrict,
+                        numberRooms: rooms,
+                        minFloor: $(filterElements[5]).val(),
+                        maxFloor: $(filterElements[6]).val(),
+                        minPrice: $(filterElements[7]).val(),
+                        maxPrice: $(filterElements[8]).val(),
+                        topozone: selectMultipartZone,
+                        residentialComplexId: selectMultipartRC,
+                        minNumberFloors: $(filterElements[11]).val(),
+                        maxNumberFloors: $(filterElements[12]).val(),
+                        minArea: $(filterElements[13]).val(),
+                        maxArea: $(filterElements[14]).val(),
+                        street: $(filterElements[15]).val(),
+                        lastContactDate: formattedDate
+                    },
+                    dataType: 'json',
+                    success: function (builderObjects) {
+                        console.log(builderObjects)
+                        var table = document.getElementById("branchTable");
+                        var tbody = table.querySelector("tbody");
+                        $('#branchTable tbody').empty().css('text-align', 'center');
+                        for (var object of builderObjects.content) {
+                            var newRow = tbody.insertRow();
+                            newRow.setAttribute('data-id', elementTr);
+                            var cell1 = newRow.insertCell(0);
+                            var today = new Date();
+                            var otherDate = new Date(object.lastContactDate)
+                            console.log(object.lastContactDate)
+                            console.log(otherDate)
+                            var timeDifference = today - otherDate;
+                            var daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+                            console.log(daysDifference)
+                            if (daysDifference > 3 && daysDifference <= 7) {
+                                cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: deepskyblue"></i>`;
+                            }
+                            if (daysDifference > 7 && daysDifference <= 18) {
+                                cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: darkorange"></i>`;
+                            }
+                            if (daysDifference > 18) {
+                                cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: darkred"></i>`;
+                            } else {
+                                cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: forestgreen"></i>`;
+                            }
+
+                            var cell2 = newRow.insertCell(1);
+                            cell2.innerHTML = object.objectCode;
+
+                            var cell3 = newRow.insertCell(2);
+                            cell3.innerHTML = object.address.district;
+
+                            var cell4 = newRow.insertCell(3);
+                            cell4.innerHTML = object.address.zone;
+
+                            var cell5 = newRow.insertCell(4);
+                            cell5.innerHTML = object.address.street;
+
+
+                            var cell6 = newRow.insertCell(5);
+                            cell6.innerHTML = object.roomQuantity;
+
+                            var cell7 = newRow.insertCell(6);
+                            cell7.innerHTML = object.floor;
+
+                            var cell8 = newRow.insertCell(7);
+                            cell8.innerHTML = object.floorQuantity;
+
+                            var cell9 = newRow.insertCell(8);
+                            cell9.innerHTML = object.areaTotal;
+
+                            var cell10 = newRow.insertCell(9);
+                            if (object.advertisementEnabled) {
+                                cell10.innerHTML = '<div class="alert alert-success">Да</div>';
+                            } else {
+                                cell10.innerHTML = '<div class="alert alert-danger">Нет</div>';
+                            }
+
+                            var cell11 = newRow.insertCell(10);
+                            if (object.buildStatus == "FINISHED") {
+                                cell11.innerHTML = '<div class="alert alert-success">Закончена</div>';
+                            } else if (object.buildStatus == "IN_PROGRESS") {
+                                cell11.innerHTML = '<div class="alert alert-info">В процессе</div>';
+                            } else {
+                                cell11.innerHTML = '<div  class="alert alert-danger">Еще не начата</div>';
+                            }
+
+
+                            var cell12 = newRow.insertCell(11);
+                            cell12.innerHTML = '<alert class="alert alert-success">Да</alert>';
+
+                            var cell13 = newRow.insertCell(12);
+                            cell13.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint"
+                                   value="` + object.id + `" data-id="` + elementTr + `">`;
+
+                            var cell14 = newRow.insertCell(13);
+                            cell14.innerHTML = `
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+
+                       <a href="` + contextPath + `secondary_objects/card/` + object.id + `">
+                                                <button class="btn btn-default btn-sm float-right"
+                                                        title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
+                                            </a>
+                         <button class="btn btn-default btn-sm float-right for-delete"
+                                                    onclick="openModal(` + object.id + `)"><i class="fa fa-trash"></i></button>
+                        </div>`;
+                            elementTr++;
+                        }
+                        $('#paginationItems').empty();
+                        if (builderObjects.totalPages > 1) {
+                            updatePagination(page, builderObjects.totalPages, 'paginationItems')
+                        }
+                        $('#rowPanelCount').empty();
+                        updateLabelPagination(page, 'rowPanelCount', builderObjects.totalElements, builderObjects.numberOfElements, builderObjects.size);
+                    }
+                }
+            )
+
+        }
+        ;
+
+        $('#clean-filter').click(function () {
+            let filterElements = $('.for-filter');
+            filterElements.each(function () {
+                $(this).val("");
+            });
+            $(".select2-container").find(".select2-selection__choice").remove();
+            // $(".select2").find(".select2-selection__rendered").remove();
+            let radioFilters = $('[name="flexRadioDefault"]');
+            radioFilters.prop("checked", false);
+        });
+
+        $('#search-btn').click(function () {
+            getPageWithFilter(0)
+        });
+
+        function select2MultipleResidential() {
+            let contextPath = /*[[@{/}]]*/ '';
+
+            $('#select2MultipleResidentialComplexId').select2({
+                ajax: {
+                    url: contextPath + 'builder_objects/for/select',
+                    dataType: 'json',
+                    delay: 1500,
+                    data: function (params) {
+                        var number = params.page > 0 ? params.page - 1 : 0;
+                        return {
+                            query: params.term || '',
+                            page: number,
+                            size: 10
+                        };
+                    },
+                    processResults: function (data, params) {
+                        var results = data.content.map(function (item) {
+                            return {id: item.id, text: item.name};
+                        });
+                        var hasMore = data.totalPages > data.number;
+                        return {
+                            results: results,
+                            pagination: {
+                                more: hasMore
+                            }
+                        };
+                    },
+                    cache: true
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

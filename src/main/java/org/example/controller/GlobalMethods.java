@@ -4,8 +4,10 @@ package org.example.controller;
 import org.example.repository.CityRepository;
 import org.example.repository.DistrictRepository;
 import org.example.repository.StreetRepository;
+import org.example.service.ExelService;
 import org.example.service.ObjectBuilderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,12 +27,15 @@ public class GlobalMethods {
     
     public final
     ObjectBuilderService objectBuilderService;
+    public final
+    ExelService exelService;
 
-    public GlobalMethods(CityRepository cityRepository, DistrictRepository districtRepository, StreetRepository streetRepository, ObjectBuilderService objectBuilderService) {
+    public GlobalMethods(CityRepository cityRepository, DistrictRepository districtRepository, StreetRepository streetRepository, ObjectBuilderService objectBuilderService, ExelService exelService) {
         this.cityRepository = cityRepository;
         this.districtRepository = districtRepository;
         this.streetRepository = streetRepository;
         this.objectBuilderService = objectBuilderService;
+        this.exelService = exelService;
     }
 
     @GetMapping("/getCity/{name}")
@@ -59,5 +64,12 @@ public class GlobalMethods {
         List<String> list = streetRepository.findByDistrictNameDistrict(name).stream().map(s->s.getName()).collect(Collectors.toList());
         return list;
     }
-
+    @GetMapping("/checkStreet/{name}")
+    public ResponseEntity checkStreet(@PathVariable String name) {
+        Boolean checkStreetExist = exelService.checkStreetExist(name);
+        if(checkStreetExist){
+            return ResponseEntity.ok().body("Улица найдена.");
+        }
+        return ResponseEntity.badRequest().body("Введенная вами улица не была найдена.");
+    }
 }

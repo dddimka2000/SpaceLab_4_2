@@ -52,7 +52,7 @@ public class ObjectInvestorValidator implements Validator {
         }
         try {
             branchService.getById(entity.getBranchCode());
-        }catch (EntityNotFoundException e){
+        }catch (EntityNotFoundException | NullPointerException e){
             errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
         }
         if (entity.getFiles() != null && entity.getFiles().size() > 0) {

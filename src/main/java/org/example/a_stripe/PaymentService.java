@@ -10,7 +10,7 @@ public class PaymentService {
     public PaymentIntent createPaymentIntent() {
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                 .setCurrency("usd")
-                .setAmount(1000L) // Сумма в центах (например, 1000 центов = $10.00)
+                .setAmount(1000L)
                 .build();
 
         try {

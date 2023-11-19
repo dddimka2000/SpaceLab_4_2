@@ -19,7 +19,7 @@ public class BuilderObject {
     private Integer id;
     @Embedded
     private PropertyObjectAddress address;
-    private String name, nameEng, nameUkr;
+    private String name, nameEnglish, nameUkraine;
     private Integer floorQuantity;
     private String phone;
     private String description_builder, description_builderEng, description_builderUkr;
@@ -36,7 +36,7 @@ public class BuilderObject {
     })
     private BuilderObjectPromotion promotion;
 
-    @OneToMany(mappedBy = "builderObject",fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "builderObject",fetch = FetchType.EAGER)
     private List<Layout> layouts;
 
     @OneToMany(mappedBy = "builderObject", cascade = CascadeType.DETACH)

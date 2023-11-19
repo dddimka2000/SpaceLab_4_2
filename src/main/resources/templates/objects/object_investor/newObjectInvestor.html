@@ -62,8 +62,10 @@
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                        <li class="breadcrumb-item"><a th:href="@{/investor_objects}" data-translate="investor_objects">Объекты от инвесторов</a></li>
-                        <li class="breadcrumb-item active" aria-current="page" data-translate="create_investor_object" th:href="@{/investor_objects/create}">
+                        <li class="breadcrumb-item"><a th:href="@{/investor_objects}" data-translate="investor_objects">Объекты
+                            от инвесторов</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="create_investor_object"
+                            th:href="@{/investor_objects/create}">
                             Создание объекта от инвестора
                         </li>
                     </ol>
@@ -71,23 +73,45 @@
             </div>
             <hr style="margin-top: -5px">
             <br>
+
+            <ul class="nav nav-pills mb-3" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" type="button" aria-selected="true" data-toggle="tab" role="tab"
+                            data-bs-toggle="pill" onclick="changeInput('ru')">Ру
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                            data-bs-toggle="pill" onclick="changeInput('eu')">Eng
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                            data-bs-toggle="pill" onclick="changeInput('ukr')">Укр
+                    </button>
+                </li>
+            </ul>
+            <br>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-home"
-                            type="button" role="tab" aria-controls="pills-home" aria-selected="true" data-translate="address_section">Адрессная часть
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true"
+                            data-translate="address_section">Адрессная часть
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-profile"
-                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false" data-translate="main_section">Основное
+                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false"
+                            data-translate="main_section">Основное
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-contact"
-                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false" data-translate="gallery">Галерея
+                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false"
+                            data-translate="gallery">Галерея
                     </button>
                 </li>
             </ul>
@@ -96,7 +120,7 @@
                     <div class="row">
 
                         <div class="col-3">
-                            <h6  data-translate="region_district">Обл.район</h6>
+                            <h6 data-translate="region_district">Обл.район</h6>
                             <select class="select2 form-select form-select" data-allow-clear="true" name="region"
                                     id="region">
                                 <option selected></option>
@@ -120,9 +144,21 @@
                                 <option value="3">Three</option>
                             </select></div>
                         <div class="col-2">
-                            <h6 data-translate="street">Улица</h6>
-                            <input class="form-control" type="text" name="street" id="street"
-                                   placeholder="Введите улицу">
+                            <div style="display:block;" class="ruContent nameContent">
+                                <h6>Улица</h6>
+                                <input class="form-control" type="text" name="street" id="street"
+                                       placeholder="Введите улицу">
+                            </div>
+                            <div style="display:none;" class="euContent nameContent">
+                                <h6>Улица</h6>
+                                <input class="form-control" type="text" name="streetEu" id="streetEu"
+                                       placeholder="Введите улицу">
+                            </div>
+                            <div style="display:none;" class="ukrContent nameContent">
+                                <h6>Вулиця</h6>
+                                <input class="form-control" type="text" name="streetUkr" id="streetUkr"
+                                       placeholder="Введите улицу">
+                            </div>
                         </div>
                         <div class="col-2">
                             <h6 data-translate="topozone">Топозона</h6>
@@ -159,8 +195,22 @@
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            <h6 data-translate="owner_name">ФИО владельца </h6>
-                            <input class="form-control" type="text" name="owner" placeholder="Введите ФИО владельца">
+                            <div style="display:block;" class="ruContent nameContent">
+                                <h6 data-translate="owner_name">ФИО владельца </h6>
+                                <input class="form-control" type="text" name="owner"
+                                       placeholder="Введите ФИО владельца">
+                            </div>
+                            <div style="display:none;" class="euContent nameContent">
+                                <h6 data-translate="owner_name">ФИО владельца </h6>
+                                <input class="form-control" type="text" name="ownerEu"
+                                       placeholder="Введите ФИО владельца">
+                            </div>
+                            <div style="display:none;" class="ukrContent nameContent">
+                                <h6 data-translate="owner_name">ФИО владельца </h6>
+                                <input class="form-control" type="text" name="ownerUkr"
+                                       placeholder="Введите ФИО владельца">
+                            </div>
+
                         </div>
                         <div class="col-3">
                             <h6 data-translate="phone" a>Телефон</h6>
@@ -179,7 +229,7 @@
                                 <option selected></option>
                                 <option th:each="status : ${ownershipType}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status}"></option>
                             </select>
                         </div>
                     </div>
@@ -207,14 +257,15 @@
                                 <option selected></option>
                                 <option th:each="status : ${publicationStatus}"
                                         th:value="${status}"
-                                        th:text="${status.status}"></option>
+                                        th:text="${status}"></option>
                             </select>
 
 
                         </div>
                         <div class="col-2">
                             <h6>Код объекта</h6>
-                            <input class="form-control" type="text" id="codeObject" placeholder="100-101-102" name="codeObject">
+                            <input class="form-control" type="text" id="codeObject" placeholder="100-101-102"
+                                   name="codeObject">
                         </div>
                         <div class="col-5">
                             <div class="row">
@@ -230,7 +281,8 @@
                             </div>
                             <div class="row" style="display:flex; align-items: center">
                                 <div class="col-3" style="text-align: right">
-                                    <input class="form-control" type="number" id="codeBranch" placeholder="Код филиала" name="codeBranch">
+                                    <input class="form-control" type="number" id="codeBranch" placeholder="Код филиала"
+                                           name="codeBranch">
                                 </div>
                                 <div class="col-1">
                                     <span><h6>—</h6></span>
@@ -284,26 +336,27 @@
                                         th:text="${status.status}"></option>
                             </select>
                         </div>
-<!--                        <div class="col-2">-->
-<!--                            <h6>Год срока сдачи дома</h6>-->
-<!--                            <input type="number" class="form-control" placeholder="Введите год срока сдачи дома">-->
-<!--                        </div>-->
+                        <div class="col-2">
+                            <h6>Год срока сдачи дома</h6>
+                            <input type="number" class="form-control" placeholder="Введите год срока сдачи дома" id="yearBuilding" >
+                        </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-2">
                             <h6>S общая (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaTotal"
-                                   placeholder="Введите общую площадь" >
+                                   placeholder="Введите общую площадь">
                         </div>
                         <div class="col-2">
                             <h6>S жилая (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaLiving" placeholder="Введите жилую площадь">
+                            <input class="form-control" type="number" id="areaLiving"
+                                   placeholder="Введите жилую площадь">
                         </div>
                         <div class="col-2">
                             <h6>S кухни (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaKitchen"
-                                   placeholder="Введите площадь кухни" >
+                                   placeholder="Введите площадь кухни">
                         </div>
                         <div class="col-2">
                             <h6>Метраж комнат</h6>
@@ -323,8 +376,19 @@
                     <div class="row">
                         <div class="col-3">
                             <h6>Материал стен</h6>
-                            <input class="form-control" type="text" id="wall_material"
-                                   placeholder="Введите материал стен">
+
+                            <div style="display:block;" class="ruContent nameContent">
+                                <input class="form-control" type="text" id="wall_material"
+                                       placeholder="Введите материал стен">
+                            </div>
+                            <div style="display:none;" class="euContent nameContent">
+                                <input class="form-control" type="text" id="wall_materialEn"
+                                       placeholder="Введите материал стен">
+                            </div>
+                            <div style="display:none;" class="ukrContent nameContent">
+                                <input class="form-control" type="text" id="wall_materialUkr"
+                                       placeholder="Введите материал стен">
+                            </div>
                         </div>
                         <div class="col-3">
                             <h6>Состояние квартиры</h6>
@@ -378,7 +442,7 @@
                     <div class="row">
                         <div class="col-3">
                             <h6>Кухонная плита</h6>
-                            <select  class="select2 form-select form-select" name="kitchenStoveType" id="kitchenStove">
+                            <select class="select2 form-select form-select" name="kitchenStoveType" id="kitchenStove">
                                 <option selected></option>
                                 <option th:each="status : ${kitchenStoveType}"
                                         th:value="${status}"
@@ -451,16 +515,48 @@
                     <br>
                     <br>
                     <h6>Описание</h6>
-                    <textarea class="form-control" style="width: 100%; height: 300px"
-                              name="descriptionObject" placeholder="Введите описание"></textarea>
+                    <div style="display:block;" class="ruContent nameContent">
+                        <textarea class="form-control" style="width: 100%; height: 300px"
+                                  name="descriptionObject" placeholder="Введите описание"></textarea>
+                    </div>
+                    <div style="display:none;" class="euContent nameContent">
+                        <textarea class="form-control" style="width: 100%; height: 300px"
+                                  name="descriptionObjectEu" placeholder="Введите описание"></textarea>
+                    </div>
+                    <div style="display:none;" class="ukrContent nameContent">
+                         <textarea class="form-control" style="width: 100%; height: 300px"
+                                   name="descriptionObjectUkr" placeholder="Введите описание"></textarea>
+                    </div>
                     <br>
                     <h6>Рекламный заголовок</h6>
-                    <input type="text" name="advertisingName" id="promotionName" class="form-control"
-                           placeholder="Укажите рекламный заголовок">
+
+                    <div style="display:block;" class="ruContent nameContent">
+                        <input type="text" name="advertisingName" id="promotionName" class="form-control"
+                               placeholder="Укажите рекламный заголовок">
+                    </div>
+                    <div style="display:none;" class="euContent nameContent">
+                        <input type="text" name="advertisingNameEu" id="promotionNameEu" class="form-control"
+                               placeholder="Укажите рекламный заголовок">
+                    </div>
+                    <div style="display:none;" class="ukrContent nameContent">
+                        <input type="text" name="advertisingNameUkr" id="promotionNameUkr" class="form-control"
+                               placeholder="Укажите рекламный заголовок">
+                    </div>
                     <br>
                     <h6>Рекламный текст</h6>
-                    <textarea style="width: 100%; height: 300px" name="advertisingText"
-                              class="form-control" placeholder="Введите рекламный текст"></textarea>
+
+                    <div style="display:block;" class="ruContent nameContent">
+                       <textarea style="width: 100%; height: 300px" name="advertisingText"
+                                 class="form-control" placeholder="Введите рекламный текст"></textarea>
+                    </div>
+                    <div style="display:none;" class="euContent nameContent">
+                        <textarea style="width: 100%; height: 300px" name="advertisingTextEu"
+                                  class="form-control" placeholder="Введите рекламный текст"></textarea>
+                    </div>
+                    <div style="display:none;" class="ukrContent nameContent">
+                        <textarea style="width: 100%; height: 300px" name="advertisingTextUkr"
+                                  class="form-control" placeholder="Введите рекламный текст"></textarea>
+                    </div>
                     <br>
                     <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"><span
                         class="checkmark">Рекламировать</span>
@@ -509,28 +605,40 @@
 
     <script th:inline="javascript">
         function checkNumber() {
-            let checkNumber=$("#telephone").val()
+            let checkNumber = $("#telephone").val()
             var regExp = /^\+380(31|32|33|34|35|36|38|39|41|43|44|45|46|20|89|94|92|91|67|68|96|97|98|70|90|91|67|68|96|97|98|70|87|89|50|66|95|99)\d{7}$/;
             console.log(checkNumber)
-            if(regExp.test(checkNumber)) {
-                showNotification("Номер корректный","",true)
-            }else {
-                showNotification("Такого номера не существует","",false)
+            if (regExp.test(checkNumber)) {
+                showNotification("Номер корректный", "", true)
+            } else {
+                showNotification("Такого номера не существует", "", false)
             }
         }
 
+        let langOld = "ru";
+
+        function changeInput(lang) {
+            $(".nameContent").css("display", "none")
+            $("." + lang + "Content").css("display", "block");
+            langOld = lang.toString();
+            console.log(langOld)
+        }
 
 
         function sendForm() {
             let formData = new FormData();
             var address = {
                 region: $("#region").val(),
+
                 street: $("#street").val(),
+                streetEng: $("#streetEu").val(),
+                streetUkr: $("#streetUkr").val(),
+
                 district: $('[name="district"]').val(),
                 city: $('[name="city"]').val(),
                 zone: $('[name="topozone"]').val(),
                 section: $('[name="section"]').val(),
-                houseNumber:  $('[name="houseNumber"]').val()
+                houseNumber: $('[name="houseNumber"]').val()
             };
             for (var key in address) {
                 if (address.hasOwnProperty(key)) {
@@ -540,7 +648,13 @@
 
 
             formData.append("apartmentNumber", $('[name="apartmentNumber"]').val());
+            formData.append("buildFinishDate", $("#yearBuilding").val());
+
+
             formData.append("ownerName", $('[name="owner"]').val());
+            formData.append("ownerNameEng", $('[name="ownerEu"]').val());
+            formData.append("ownerNameUkr", $('[name="ownerUkr"]').val());
+
             formData.append("ownerPhone", $('[name="telephone"]').val());
             console.log($('[name="boughtDate"]').val())
             formData.append("boughtDate", $('[name="boughtDate"]').val());
@@ -575,6 +689,10 @@
 
             formData.append("heightCeiling", $("#myNumberInput").val());
             formData.append("wallMaterial", $("#wall_material").val());
+            formData.append("wallMaterialEng", $("#wall_materialEn").val());
+            formData.append("wallMaterialUkr", $("#wall_materialUkr").val());
+
+
             formData.append("propertyOrigin", $("#state").val());
             formData.append("kitchenType", $("#kitchen").val());
             formData.append("buildStatus", $("#buildStatus").val());
@@ -599,9 +717,18 @@
             formData.append("intermediary", $('[name="fromIntermediary"]').prop("checked"));
 
             formData.append("description", $('[name="descriptionObject"]').val());
+            formData.append("descriptionEn", $('[name="descriptionObjectEu"]').val());
+            formData.append("descriptionUk", $('[name="descriptionObjectUkr"]').val());
+
 
             formData.append("advertisementHeadline", $('[name="advertisingName"]').val());
+            formData.append("advertisementHeadlineEn", $('[name="advertisingNameEu"]').val());
+            formData.append("advertisementHeadlineUk", $('[name="advertisingNameUkr"]').val());
+
             formData.append("advertisementText", $('[name="advertisingText"]').val());
+            formData.append("advertisementTextEn", $('[name="advertisingTextEu"]').val());
+            formData.append("advertisementTextUk", $('[name="advertisingTextUkr"]').val());
+
             formData.append("advertisementEnabled", $('[name="statusPromotion"]').prop("checked"));
 
 
@@ -698,18 +825,20 @@
             $("#" + e4).remove();
             fileMap.delete(num);
         }
+
         var inputElement = document.getElementById("codeObject");
-        inputElement.addEventListener("input", function() {
+        inputElement.addEventListener("input", function () {
             var inputValue = inputElement.value;
             var numericValue = inputValue.replace(/[^0-9-]/g, '');
             inputElement.value = numericValue;
         });
         var inputElement2 = document.getElementById("footageOfRooms");
-        inputElement2.addEventListener("input", function() {
+        inputElement2.addEventListener("input", function () {
             var inputValue = inputElement2.value;
             var numericValue = inputValue.replace(/[^0-9+]/g, '');
             inputElement2.value = numericValue;
         });
+
         function branchSelect3() {
             let contextPath = /*[[@{/}]]*/ '';
             $('#branchSelect3').select2({

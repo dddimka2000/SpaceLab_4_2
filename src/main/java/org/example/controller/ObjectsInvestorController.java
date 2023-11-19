@@ -84,7 +84,10 @@ public class ObjectsInvestorController {
         propertyInvestorObjectService.deleteById(id);
         return ResponseEntity.ok().body(" Объект от строителя с id " + id + " успешно удален");
     }
-
+    @ModelAttribute
+    public void activeMenuItem(Model model) {
+        model.addAttribute("investorObjectsActive", true);
+    }
     @PostMapping("/create")
     @ResponseBody
     public ResponseEntity newObjectsInvestorControllerPost(@Valid @ModelAttribute PropertyInvestorObjectDTO propertyInvestorObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
@@ -94,7 +97,7 @@ public class ObjectsInvestorController {
         Realtor realtor = new Realtor();
         try {
             realtor = realtorService.getById(propertyInvestorObjectDTO.getEmployeeCode());
-        } catch (EntityNotFoundException ex) {
+        } catch (EntityNotFoundException | NullPointerException ex ) {
             bindingResult.rejectValue("employeeCode", "", "Кода данного сотрудника не существует");
         }
         objectInvestorValidator.validate(propertyInvestorObjectDTO, bindingResult);

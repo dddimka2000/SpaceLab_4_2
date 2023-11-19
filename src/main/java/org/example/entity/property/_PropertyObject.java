@@ -47,11 +47,13 @@ public class _PropertyObject {
 //    @DateTimeFormat(pattern="yyyy/MM/dd")
 //    private LocalDate buildFinishDate;
 
+    private Integer buildFinishDate;
     private Integer areaTotal, areaLiving, areaKitchen;
     private String roomMeters;
     private Double heightCeiling;
 
-    private String wallMaterial ,wallMaterialEng, wallMaterialUkr;
+    private String wallMaterial,wallMaterialEng, wallMaterialUkr;
+
     private PropertyOrigin propertyOrigin;   // состояние квартиры/интерьера: от строителей / от инвесторов
 
     private Boolean bargain, exclusive, urgent, free, open, intermediary;
@@ -83,5 +85,6 @@ public class _PropertyObject {
     private BuilderObject builderObject;
 
     @ManyToOne
+    @JoinColumn(name = "realtor_id", referencedColumnName = "id")
     private Realtor realtor;
 }

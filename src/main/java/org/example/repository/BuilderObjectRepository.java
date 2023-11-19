@@ -21,6 +21,8 @@ public interface BuilderObjectRepository extends JpaRepository<BuilderObject, In
 
     Page<BuilderObject> findAll(Specification<BuilderObject> spec, Pageable pageable);
     Optional<BuilderObject> findByName(String name);
+    Optional<BuilderObject> findByNameEnglish(String name);
+    Optional<BuilderObject> findByNameUkraine(String name);
 
 
     void deleteById(Integer integer);

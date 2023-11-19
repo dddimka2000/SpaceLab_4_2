@@ -216,7 +216,7 @@
                             </div>
                             <div class="col-4">
                                 <h6>Дата последнего контакта</h6>
-                                <select id="day" name="day" class="form-select for-filter select2">
+                                <select id="day" name="day" class="form-select select2 for-filter">
                                     <option selected value="" disabled></option>
                                     <option value="1">1 день</option>
                                     <script>
@@ -597,7 +597,7 @@
                 $(this).val("");
             });
             $(".select2-container").find(".select2-selection__choice").remove();
-
+            // $(".select2").find(".select2-selection__rendered").remove();
             let radioFilters = $('[name="flexRadioDefault"]');
             radioFilters.prop("checked", false);
         });

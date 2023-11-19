@@ -52,20 +52,25 @@ public class PropertyInvestorObjectDTO {
     @NotNull(message = "Заполните поле номер квартиры")
     @Pattern(regexp = "^[а-яА-Яa-zA-Z0-9\\s]+$", message = "Номер квартиры должен содержать только буквы a-z A-Z, цифры 0-9.")
     public String apartmentNumber;//
-    @NotNull(message = "Заполните поле имя владельца")
+    @NotNull(message = "(Ру)Заполните поле имя владельца")
     public String ownerName;//
-    @Size(min = 10, max = 15, message ="Номер должен быть от 11 до 15 символов.")
+    @NotNull(message = "(Англ)Заполните поле имя владельца")
+    public String ownerNameEng;//
+    @NotNull(message = "(Укр)Заполните поле имя владельца")
+    public String ownerNameUkr;//
+    public Integer buildFinishDate;
+    @Size(min = 10, max = 15, message = "Номер должен быть от 11 до 15 символов.")
     @Pattern(regexp = "\\+?[0-9]+", message = "Номер телефона должен начинаться с '+' и содержать только цифры.")
     public String ownerPhone;//
     @NotNull(message = "Заполните дату покупки")
     public LocalDate boughtDate;
     @NotNull(message = "Заполните тип собственности")
     public OwnershipType ownershipType;//
-    @Size( max = 450, message = "Заметки могут иметь до 450 символов.")
+    @Size(max = 450, message = "Заметки могут иметь до 450 символов.")
     public String notes;
     @NotNull(message = "Заполните срок сдачи")
     public PropertyBuildStatus buildStatus;//
-//    @NotNull(message = "Заполните дату окончания строительства")
+    //    @NotNull(message = "Заполните дату окончания строительства")
 //    public LocalDate buildFinishDate;
     @NotNull(message = "Заполните площадь")
     @Min(value = 1, message = "Введите корректную площадь")
@@ -89,8 +94,12 @@ public class PropertyInvestorObjectDTO {
     @Min(value = 0, message = "Введите корректную высоту потолка")
     @Max(value = 100001, message = "Введите корректную высоту потолка")
     public Double heightCeiling;//
-    @Size(min = 1, max = 31, message = "Тип стен должен быть от 2 до 30 символов.")
+    @Size(min = 1, max = 31, message = "(Ру)Тип стен должен быть от 2 до 30 символов.")
     public String wallMaterial;//
+    @Size(min = 1, max = 31, message = "(Англ)Тип стен должен быть от 2 до 30 символов.")
+    public String wallMaterialEng;//
+    @Size(min = 1, max = 31, message = "(Укр)Тип стен должен быть от 2 до 30 символов.")
+    public String wallMaterialUkr;//
     @NotNull(message = "Заполните состояние квартиры")
     public PropertyOrigin propertyOrigin;//
     public Boolean bargain;
@@ -108,19 +117,31 @@ public class PropertyInvestorObjectDTO {
     public String informationSource;//
     @Size(min = 1, max = 1000, message = "Описание должно быть от 2 до 1000 символов.")
     public String description;
-    @Size(min = 1, max = 31, message = "Рекламный заголовок должен быть от 2 до 30 символов.")
+    @Size(min = 1, max = 1000, message = "Описание должно быть от 2 до 1000 символов.")
+    public String descriptionEn;
+    @Size(min = 1, max = 1000, message = "Описание должно быть от 2 до 1000 символов.")
+    public String descriptionUk;
+    @Size(min = 1, max = 31, message = "(Ру)Рекламный заголовок должен быть от 2 до 30 символов.")
     public String advertisementHeadline;
-    @Size(min = 1, max = 1000, message = "Рекламный текст должен быть от 2 до 1000 символов.")
+    @Size(min = 1, max = 31, message = "(Укр)Рекламный заголовок должен быть от 2 до 30 символов.")
+    public String advertisementHeadlineUk;
+    @Size(min = 1, max = 31, message = "(Англ)Рекламный заголовок должен быть от 2 до 30 символов.")
+    public String advertisementHeadlineEn;
+    @Size(min = 1, max = 1000, message = "(Ру)Рекламный текст должен быть от 2 до 1000 символов.")
     public String advertisementText;
+    @Size(min = 1, max = 1000, message = "(Укр)Рекламный текст должен быть от 2 до 1000 символов.")
+    public String advertisementTextUk;
+    @Size(min = 1, max = 1000, message = "(Англ)Рекламный текст должен быть от 2 до 1000 символов.")
+    public String advertisementTextEn;
     public Boolean advertisementEnabled;
     @Size(max = 1000, message = "Комментарий должен быть до 1000 символов.")
     public String administrationComment;//
-    public List<String> filesName= new ArrayList<>();
-    public List<String> picturesName= new ArrayList<>();
-    public List<MultipartFile> files= new ArrayList<>();
-    public List<MultipartFile> pictures= new ArrayList<>();
-    public List<String> oldFiles= new ArrayList<>();
-    public List<String> oldPictures= new ArrayList<>();
+    public List<String> filesName = new ArrayList<>();
+    public List<String> picturesName = new ArrayList<>();
+    public List<MultipartFile> files = new ArrayList<>();
+    public List<MultipartFile> pictures = new ArrayList<>();
+    public List<String> oldFiles = new ArrayList<>();
+    public List<String> oldPictures = new ArrayList<>();
     @NotNull(message = "Заполните статус публикации")
     public PublicationStatus publicationStatus;
 }

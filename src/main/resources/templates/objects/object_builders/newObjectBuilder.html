@@ -123,7 +123,7 @@
                         <div class="col-2">
                             <div style="display:block;" class="ruContent nameContent">
                                 <h6>Название</h6>
-                                <input type="text" class="form-control" name="nameObject" id="nameObjectRu"
+                                <input type="text" class="form-control" name="nameObject" id="nameObject"
                                        placeholder="Введите название объекта">
                             </div>
                             <div style="display:none;" class="euContent nameContent">
@@ -349,7 +349,7 @@
                                     <div class="col-6" style="text-align: right">
                                     </div>
                                 </div>
-                                <input class="form-control col-md-6" type="text" id="nameLayout1Eu"
+                                <input class="form-control col-md-6" type="text" id="nameLayoutEu1"
                                        placeholder="Введите название">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
@@ -360,7 +360,7 @@
                                     <div class="col-6" style="text-align: right">
                                     </div>
                                 </div>
-                                <input class="form-control col-md-6" type="text" id="nameLayout1Ukr"
+                                <input class="form-control col-md-6" type="text" id="nameLayoutUkr1"
                                        placeholder="Введите название">
                             </div>
 
@@ -408,12 +408,12 @@
                             </div>
                             <div style="display:none;" class="euContent nameContent">
                                 <h6>Описание</h6>
-                                <input class="form-control" type="text" id="descriptionLayout1Eu"
+                                <input class="form-control" type="text" id="descriptionLayoutEu1"
                                        placeholder="Введите описание">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <h6>Описание</h6>
-                                <input class="form-control" type="text" id="descriptionLayout1Ukr"
+                                <input class="form-control" type="text" id="descriptionLayoutUkr1"
                                        placeholder="Введите описание">
                             </div>
 
@@ -479,7 +479,7 @@
         function sendForm() {
             let formData = new FormData();
             formData.append("nameObject", $("#nameObject").val());
-            formData.append("nameObjectEng", $("#nameObjectEn").val());
+            formData.append("nameObjectEng", $("#nameObjectEu").val());
             formData.append("nameObjectUkr", $("#nameObjectUkr").val());
 
             formData.append("region", $("#region").val());
@@ -491,6 +491,9 @@
             formData.append("city", $('[name="city"]').val());
             formData.append("topozone", $('[name="topozone"]').val());
             formData.append("promotionName", $("#promotionName").val());
+            formData.append("promotionNameEng", $("#promotionNameEu").val());
+            formData.append("promotionNameUkr", $("#promotionNameUkr").val());
+
             formData.append("houseNumber", $('[name="houseNumber"]').val());
             formData.append("section", $('[name="section"]').val());
             formData.append("floorQuantity", $('[name="floorQuantity"]').val());
@@ -507,6 +510,9 @@
             formData.append("descriptionUkr", $('[name="descriptionObjectUkr"]').val());
             formData.append("descriptionEng", $('[name="descriptionObjectEu"]').val());
             formData.append("descriptionPromotion", $('[name="descriptionPromotion"]').val());
+            formData.append("descriptionPromotionEng", $('[name="descriptionPromotionEu"]').val());
+            formData.append("descriptionPromotionUkr", $('[name="descriptionPromotionUkr"]').val());
+
             formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
             let index = 0;
             let checkErrors = true;
@@ -515,13 +521,18 @@
                 console.log(element);
                 let layoutData = {
                     nameLayout: $("#nameLayout" + element).val(),
+                    nameLayoutEng: $("#nameLayoutEu" + element).val(),
+                    nameLayoutUkr: $("#nameLayoutUkr" + element).val(),
                     priceLayout: $("#priceLayout" + element).val(),
                     roomQuantityLayout: $("#roomsLayout" + element).val(),
                     areaTotalLayout: $("#areaTotalLayout" + element).val(),
                     areaLivingLayout: $("#areaLivingLayout" + element).val(),
                     areaKitchenLayout: $("#areaKitchenLayout" + element).val(),
                     statusLayout: $("#statusLayout" + element).prop('checked'),
-                    descriptionLayout: $("#descriptionLayout" + element).val()
+                    descriptionLayout: $("#descriptionLayout" + element).val(),
+                    descriptionLayoutEng: $("#descriptionLayoutEng" + element).val(),
+                    descriptionLayoutUkr: $("#descriptionLayoutUkr" + element).val()
+
                 }
                 let inputImage1 = $("#inputImage" + element).prop('files');
                 if (inputImage1.length > 0) {
@@ -675,7 +686,7 @@
                             </button>
                         </div>
                                                </div>
-                                            <input class="form-control col-md-6" type="text" id="nameLayout` + imgMaxId + `Eu"
+                                            <input class="form-control col-md-6" type="text" id="nameLayoutEu` + imgMaxId + `"
                                                     placeholder="Введите название">
                                         </div>`;
             newCard.innerHTML += text;
@@ -707,24 +718,11 @@
                             </button>
                         </div>
                                                </div>
-                                            <input class="form-control col-md-6" type="text" id="nameLayout` + imgMaxId + `Ukr"
+                                            <input class="form-control col-md-6" type="text" id="nameLayoutUkr` + imgMaxId + `"
                                                     placeholder="Введите название">
                                         </div>`;
             newCard.innerHTML += text;
             text = '';
-            //     newCard.innerHTML += ' <div style="display:none;" class="ukrContent nameContent">\n' +
-            //         ' <div class="row">\n' +
-            //         ' <div class="col-6">\n' +
-            //         ' <h6>Название</h6>\n' +
-            //         ' </div>\n' +
-            //         ' <div class="col-6" style="text-align: right">\n' +
-            //         ' </div>\n' +
-            //         ' </div>\n' +
-            //         ' <input class="form-control col-md-6" type="text" id="nameLayout1Ukr"\n' +
-            //         ' placeholder="Введите название">\n' +
-            //         ' </div>'
-            // }
-
 
             newCard.innerHTML += `
                         <br>
