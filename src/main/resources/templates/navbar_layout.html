@@ -98,6 +98,10 @@
                                     elements.forEach(function (element) {
                                         element.innerText = value;
                                     })
+                                    var elements = document.querySelectorAll('[data-translate-placeholder="' + key + '"]');
+                                    elements.forEach(function (element) {
+                                        element.placeholder  = value;
+                                    })
                                 }
                             }
                         }
@@ -128,6 +132,7 @@
                 document.cookie = "selectedLanguage=ru; path=/";
                 selectedLanguage = "ru";
             }
+            changeLanguage(selectedLanguage);
         });
         let path = /*[[@{/}]]*/ '';
 
@@ -136,5 +141,22 @@
             selectedLanguage = this.value;
             changeLanguage(selectedLanguage);
         });
+        function refreshAllTranslate(){
+            let allCookies = document.cookie;
+            let cookiesArray = allCookies.split("; ");
+            let cookies = {};
+            for (let i = 0; i < cookiesArray.length; i++) {
+                let cookie = cookiesArray[i].split("=");
+                cookies[cookie[0]] = cookie[1];
+            }
+            let selectedLanguage = cookies["selectedLanguage"];
+            console.log(selectedLanguage)
+            if (selectedLanguage == undefined) {
+                document.cookie = "selectedLanguage=ru; path=/";
+                selectedLanguage = "ru";
+            }
+            changeLanguage(selectedLanguage);
+        }
+
     </script>
 </nav>

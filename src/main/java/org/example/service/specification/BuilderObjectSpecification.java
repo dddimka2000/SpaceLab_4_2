@@ -46,7 +46,7 @@ public class BuilderObjectSpecification implements Specification<BuilderObject> 
             predicates.add(criteriaBuilder.like(root.get("address").get("street"), "%"+street+"%"));
         }
         if (floorQuantity != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("floorQuantity"), floorQuantity));
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("roomQuantity"), floorQuantity));
         }
 
         if (minPrice != null) {

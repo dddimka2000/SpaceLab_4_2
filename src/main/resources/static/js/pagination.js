@@ -128,18 +128,22 @@ function createEllipsisItem() {
 }
 
 function updateLabelPagination(currentPage, container, totalElements, lastPageElements, sizePage) {
-    let label = `Показано ` + currentPage * sizePage + `-` + (currentPage + 1) * sizePage + ` из ` + totalElements;
+    let label = '<span data-translate="shown">Показано</span> ' + (currentPage * sizePage + 1) + '-' + Math.min((currentPage + 1) * sizePage, totalElements) + ` <span data-translate="of"> из </span> ` + totalElements;
+
     if (currentPage * sizePage == 0 && totalElements > 0) {
-        label = `Показано ` + 1 + `-` + (currentPage + 1) * sizePage + ` из ` + totalElements;
+        label = `<span data-translate="shown">Показано</span> ` + 1 + `-` + Math.min((currentPage + 1) * sizePage, totalElements) + ` <span data-translate="of">из</span> ` + totalElements;
     }
-    if ((currentPage+1) * sizePage > totalElements) {
-        label = `Показано ` + currentPage * sizePage + `-` +  (currentPage * sizePage+lastPageElements) + ` из ` + totalElements;
+
+    if ((currentPage + 1) * sizePage > totalElements) {
+        label = `<span data-translate="shown">Показано</span> ` + (currentPage * sizePage + 1) + `-` + (currentPage * sizePage + lastPageElements) + ` <span data-translate="of"> из </span>` + totalElements;
     }
-    if (currentPage * sizePage == 0 && totalElements > 0 && (currentPage+1) * sizePage > totalElements) {
-        label = `Показано ` + 1 + `-` +  (currentPage * sizePage+lastPageElements) + ` из ` + totalElements;
+
+    if (currentPage * sizePage == 0 && totalElements > 0 && (currentPage + 1) * sizePage > totalElements) {
+        label = `<span data-translate="shown">Показано</span> ` + 1 + `-` + (currentPage * sizePage + lastPageElements) + ` <span data-translate="of">из</span> ` + totalElements;
     }
     var p = document.createElement('p');
     p.innerHTML = label;
     var changeLabel = document.getElementById(container);
-    changeLabel.appendChild(p)
+    changeLabel.innerHTML = '';
+    changeLabel.appendChild(p);
 }

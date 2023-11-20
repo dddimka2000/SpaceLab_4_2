@@ -83,12 +83,12 @@
             <div>
                 <br>
                 <div class="d-flex justify-content-between">
-                    <h4 class="fw-bold">Объекты от строителей</h4>
+                    <h4 class="fw-bold" data-translate="breadcrumb.builder_objects">Объекты от строителей</h4>
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Объекты от строителей</li>
+                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
+                            <li class="breadcrumb-item active" aria-current="page" data-translate="breadcrumb.builder_objects">Объекты от строителей</li>
                         </ol>
                     </nav>
                 </div>
@@ -96,12 +96,12 @@
                 <div class="row">
                     <div class="col-md-8"></div>
                     <div class="col-md-1">
-                        <button class="btn btn-submit" id="printButton">Распечатать</button>
+                        <button class="btn btn-submit" id="printButton" data-translate="print">Распечатать</button>
                     </div>
                     <div class="col-md-1"></div>
                     <div class="col-md-2">
                         <a th:href="@{/builder_objects/create}">
-                            <button class="btn btn-submit">Добавить объект</button>
+                            <button class="btn btn-submit" data-translate="builder_object_add">Добавить объект</button>
                         </a>
                     </div>
                 </div>
@@ -109,19 +109,19 @@
 
                 <div class="card">
                     <div class="card-header" style="text-align: right">
-                        <button class="btn btn-submit" id="clean-filter">Очистить</button>
+                        <button class="btn btn-submit" id="clean-filter" data-translate="clear">Очистить</button>
                     </div>
                     <div class="card-body">
                         <table class="invoice-list-table table border-top"
                                id="branchTable">
                             <thead>
                             <tr style="text-align: center">
-                                <th>Название</th>
-                                <th>Район</th>
-                                <th>Топозона</th>
-                                <th>Улица</th>
-                                <th>Этажность</th>
-                                <th>Цена от</th>
+                                <th data-translate="title">Название</th>
+                                <th data-translate="district">Район</th>
+                                <th data-translate="topzone">Топозона</th>
+                                <th data-translate="street">Улица</th>
+                                <th data-translate="number_of_floors">Этажность</th>
+                                <th data-translate="price_from">Цена от</th>
                                 <th></th>
                             </tr>
                             <tr>
@@ -330,6 +330,7 @@
                     }
                     $('#rowPanelCount').empty();
                     updateLabelPagination(page, 'rowPanelCount', builderObjects.totalElements, builderObjects.numberOfElements, builderObjects.size);
+                    refreshAllTranslate()
                 },
             });
         }

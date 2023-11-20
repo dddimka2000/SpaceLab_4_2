@@ -61,9 +61,13 @@
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                            <li class="breadcrumb-item"><a th:href="@{/builder_objects}">Объекты от строителей</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Редакция объекта строителя</li>
+                            <li class="breadcrumb-item" data-translate="breadcrumb.home"><a th:href="@{/}">Главная</a>
+                            </li>
+                            <li class="breadcrumb-item" data-translate="breadcrumb.builder_objects"><a
+                                    th:href="@{/builder_objects}">Объекты от строителей</a></li>
+                            <li class="breadcrumb-item active" aria-current="page" data-translate="edit_builder_object">
+                                Редакция объекта строителя
+                            </li>
                         </ol>
                     </nav>
                 </div>
@@ -91,19 +95,22 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-home"
-                                type="button" role="tab" aria-controls="pills-home" aria-selected="true">Основное
+                                type="button" role="tab" aria-controls="pills-home" aria-selected="true"
+                                data-translate="main">Основное
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-profile"
-                                type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Галерея
+                                type="button" role="tab" aria-controls="pills-profile" aria-selected="false"
+                                data-translate="gallery">Галерея
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-contact"
-                                type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Планировки
+                                type="button" role="tab" aria-controls="pills-contact" aria-selected="false"
+                                data-translate="layout">Планировки
                         </button>
                     </li>
                 </ul>
@@ -113,34 +120,45 @@
                         <div class="row">
                             <div class="col-2">
                                 <div style="display:block;" class="ruContent nameContent">
-                                    <h6>Название</h6>
+                                    <h6 data-translate="title">Название</h6>
                                     <input type="text" class="form-control" name="nameObject" id="nameObject"
-                                           placeholder="Введите название объекта" th:value="${objectBuilder.getName()}">
+                                          data-translate-placeholder="enter_description" placeholder="Введите название объекта" th:value="${objectBuilder.getName()}">
                                 </div>
                                 <div style="display:none;" class="euContent nameContent">
-                                    <h6>Название</h6>
+                                    <h6 data-translate="title">Название</h6>
                                     <input type="text" class="form-control" name="nameObjectEu" id="nameObjectEu"
-                                           placeholder="Input name" th:value="${objectBuilder.getNameEnglish()}">
+                                           data-translate-placeholder="enter_description"  placeholder="Input name" th:value="${objectBuilder.getNameEnglish()}">
                                 </div>
                                 <div style="display:none;" class="ukrContent nameContent">
-                                    <h6>Название</h6>
+                                    <h6 data-translate="title">Название</h6>
                                     <input type="text" class="form-control" name="nameObjectUkr" id="nameObjectUkr"
                                            placeholder="Введіть назву об'єкта"
-                                           th:value="${objectBuilder.getNameUkraine()}">
+                                           data-translate-placeholder="enter_description" th:value="${objectBuilder.getNameUkraine()}">
                                 </div>
                             </div>
                             <div class="col-3">
-                                <h6>Обл.район</h6>
+                                <h6 data-translate="region_district">Обл.район</h6>
                                 <select class="select2 form-select form-select" name="region" id="region">
                                     <option selected></option>
-                                    <option th:each="entity : ${selectRegion}"
-                                            th:value="${entity}"
-                                            th:text="${entity}"
-                                            th:selected="${objectBuilder.getAddress().getRegion() == entity}"></option>
+                                    <script th:inline="javascript">
+                                        var selectRegionOptions = /*[[${selectRegion}]]*/ [];
+                                        var selectRegion = /*[[${objectBuilder.getAddress().getRegion()}]]*/ '';
+
+                                        for (var i = 0; i < selectRegionOptions.length; i++) {
+                                            var entity = selectRegionOptions[i];
+                                            var isSelected = (entity === selectRegion);
+                                            document.write('<option value="' + entity + '" data-translate="' + entity.replace(' ', '_') + '"' + (isSelected ? ' selected' : '') + '>' + entity + '</option>');
+                                        }
+                                        refreshAllTranslate()
+                                    </script>
+
+                                </select>
+
+
                                 </select>
                             </div>
                             <div class="col-3">
-                                <h6>Нас.пункт</h6>
+                                <h6 data-translate="city">Нас.пункт</h6>
                                 <select class="select2 form-select form-select" name="city">
                                     <option selected></option>
                                     <option th:each="entity : ${selectRegion}"
@@ -150,7 +168,7 @@
                                 </select>
                             </div>
                             <div class="col-3">
-                                <h6>Район</h6>
+                                <h6 data-translate="district">Район</h6>
                                 <select class="select2 form-select form-select" name="district">
                                     <option selected value=""></option>
                                 </select></div>
@@ -159,61 +177,65 @@
                         <br>
                         <div class="row">
                             <div class="col-2">
-                                <h6>Топозона</h6>
+                                <h6 data-translate="topzone">Топозона</h6>
                                 <select class="select2 form-select form-select" name="topozone">
                                     <option value="" selected></option>
-                                    <option th:each="entity : ${selectTopozone}"
-                                            th:value="${entity}"
-                                            th:text="${entity}"
-                                            th:selected="${objectBuilder.getAddress().getZone() == entity}"></option>
+                                    <script th:inline="javascript">
+                                        var selectRegionOptions = /*[[${selectTopozone}]]*/ [];
+                                        var selectRegion = /*[[${objectBuilder.getAddress().getZone()}]]*/ '';
+
+                                        for (var i = 0; i < selectRegionOptions.length; i++) {
+                                            var entity = selectRegionOptions[i];
+                                            var isSelected = (entity === selectRegion);
+                                            document.write('<option value="' + entity + '" data-translate="' + entity.replace(' ', '_') + '"' + (isSelected ? ' selected' : '') + '>' + entity + '</option>');
+                                        }
+                                        refreshAllTranslate()
+                                    </script>
                                 </select>
                             </div>
                             <div class="col-2">
                                 <div style="display:block;" class="ruContent nameContent">
-                                    <h6>Улица</h6>
+                                    <h6 data-translate="street">Улица</h6>
                                     <input class="form-control" type="text" name="street" id="street"
                                            placeholder="Введите улицу"
                                            th:value="${objectBuilder.getAddress().getStreet()}">
                                 </div>
                                 <div style="display:none;" class="euContent nameContent">
-                                    <h6>Улица</h6>
+                                    <h6 data-translate="street">Улица</h6>
                                     <input class="form-control" type="text" name="streetEu" id="streetEu"
                                            placeholder="Введите улицу"
                                            th:value="${objectBuilder.getAddress().getStreetEng()}">
                                 </div>
                                 <div style="display:none;" class="ukrContent nameContent">
-                                    <h6>Вулиця</h6>
+                                    <h6 data-translate="street">Вулиця</h6>
                                     <input class="form-control" type="text" name="streetUkr" id="streetUkr"
-                                           placeholder="Введите улицу" th:value="${objectBuilder.getAddress().getStreetUkr()}">
+                                           placeholder="Введите улицу"
+                                           th:value="${objectBuilder.getAddress().getStreetUkr()}">
                                 </div>
                             </div>
                             <div class="col-8"></div>
                         </div>
                         <br>
-                        <div class="tab-content">
-
-
-                        </div>
                         <div class="row">
                             <div class="col-2">
-                                <h6>Номер дома</h6>
+                                <h6 data-translate="house_number">Номер дома</h6>
                                 <input class="form-control" type="number" name="houseNumber"
                                        th:value="${objectBuilder.getAddress().getHouseNumber()}"
-                                       placeholder="Введите номер дома">
+                                       data-translate-placeholder="enter_house_number" placeholder="Введите номер дома">
                             </div>
                             <div class="col-2">
-                                <h6>Секция/Корпус</h6>
+                                <h6 data-translate="section_building">Секция/Корпус</h6>
                                 <input class="form-control" type="number" name="section"
                                        th:value="${objectBuilder.getAddress().getSection()}"
-                                       placeholder="Введите секцию/корпус">
+                                      data-translate-placeholder="enter_section_building" placeholder="Введите секцию/корпус">
                             </div>
                             <div class="col-2">
-                                <h6>Этажность</h6>
+                                <h6 data-translate="number_of_floors">Этажность</h6>
                                 <input class="form-control" type="number" name="floorQuantity"
-                                       th:value="${objectBuilder.getFloorQuantity()}" placeholder="Введите этажность">
+                                      data-translate-placeholder="enter_floor_count" th:value="${objectBuilder.getFloorQuantity()}" placeholder="Введите этажность">
                             </div>
                             <div class="col-3">
-                                <h6>Строительная компания</h6>
+                                <h6 data-translate="construction_company">Строительная компания</h6>
                                 <select class="select2 form-select form-select" name="nameCompany">
                                     <option th:selected="${objectBuilder.getNameCompany() == ''}" value=""></option>
                                     <option th:selected="${objectBuilder.getNameCompany() == '1'}" value="1">One
@@ -225,72 +247,71 @@
                                 </select>
                             </div>
                             <div class="col-3">
-                                <h6>Срок сдачи</h6>
+                                <h6 data-translate="completion_date">Срок сдачи</h6>
                                 <select id="buildStatus" class="select2 form-select form-select" name="buildStatus">
                                     <option></option>
                                     <option th:each="status : ${propertyBuildStatus}"
                                             th:value="${status}"
-                                            th:text="${status.status}"
+                                            th:text="${status}"
+                                            th:data-translate="${status}"
                                             th:selected="${status==objectBuilder.getBuildStatus()}"></option>
                                 </select>
                             </div>
                         </div>
                         <br>
-                        <h6>Телефон</h6>
+                        <h6 data-translate="">Телефон</h6>
                         <input type="tel" name="telephone" id="telephone" class="form-control"
-                               th:value="${objectBuilder.getPhone()}" placeholder="Введите номер телефона">
+                               th:value="${objectBuilder.getPhone()}"  placeholder="+380*********">
                         <br>
-                        <br>
-                        <br>
-                        <h6>Шахматка</h6>
+                        <h6 data-translate="checkerboard">Шахматка</h6>
                         <input type="file" class="form-control" name="chessboard" id="chessboard">
                         <br>
-                        <h6>Условия рассрочки</h6>
+                        <h6 data-translate="installment_conditions">Условия рассрочки</h6>
                         <input type="file" class="form-control" name="installmentTerms" id="installmentTerms">
                         <br>
-                        <h6>Файл с ценами</h6>
+                        <h6 data-translate="price_file">Файл с ценами</h6>
                         <input type="file" class="form-control" name="prices" id="prices">
                         <br>
                         <div>
                             <div style="display:block;" class="ruContent nameContent">
-                                <h3>Описание</h3>
+                                <h3 data-translate="description">Описание</h3>
                                 <textarea class="form-control" style="width: 100%; height: 300px"
                                           name="descriptionObject"
                                           placeholder="Введите описание"
-                                          th:text="${objectBuilder.getDescription_builder()}"></textarea>
+                                          data-translate-placeholder="enter_description"   th:text="${objectBuilder.getDescription_builder()}"></textarea>
                             </div>
                             <div style="display:none;" class="euContent nameContent">
-                                <h3>Описание</h3>
+                                <h3 data-translate="description">Описание</h3>
                                 <textarea class="form-control" style="width: 100%; height: 300px"
                                           name="descriptionObjectEu"
                                           placeholder="Введите описание"
-                                          th:text="${objectBuilder.getDescription_builderEng()}"></textarea>
+                                          data-translate-placeholder="enter_description"   th:text="${objectBuilder.getDescription_builderEng()}"></textarea>
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
-                                <h3>Описание</h3>
+                                <h3 data-translate="description">Описание</h3>
                                 <textarea class="form-control" style="width: 100%; height: 300px"
                                           name="descriptionObjectUkr"
                                           placeholder="Введите описание"
-                                          th:text="${objectBuilder.getDescription_builderUkr()}"></textarea>
+                                          data-translate-placeholder="enter_description"  th:text="${objectBuilder.getDescription_builderUkr()}"></textarea>
                             </div>
                         </div>
                         <br>
                         <div>
                             <div style="display:block;" class="ruContent nameContent">
-                                <h1>Акция</h1>
-                                <input type="text" name="promotionName" id="promotionName" class="form-control"
+                                <h1 data-translate="promotions">Акция</h1>
+                                <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionName" id="promotionName" class="form-control"
                                        placeholder="Введите название акции"
                                        th:value="${objectBuilder.getPromotion().getName()}">
                             </div>
                             <div style="display:none;" class="euContent nameContent">
-                                <h1>Акция</h1>
-                                <input type="text" name="promotionNameEu" id="promotionNameEu" class="form-control"
+                                <h1 data-translate="promotions">Акция</h1>
+                                <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionNameEu" id="promotionNameEu" class="form-control"
                                        placeholder="Введите название акции"
                                        th:value="${objectBuilder.getPromotion().getNameEng()}">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
-                                <h1>Акция</h1>
-                                <input type="text" name="promotionNameUkr" id="promotionNameUkr" class="form-control"
+                                <h1 data-translate="promotions">Акция</h1>
+                                <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionNameUkr" id="promotionNameUkr" class="form-control"
                                        placeholder="Введите название акции"
                                        th:value="${objectBuilder.getPromotion().getNameUkr()}">
                             </div>
@@ -298,22 +319,22 @@
                         <br>
                         <div>
                             <div style="display:block;" class="ruContent nameContent">
-                                <h3>Описание</h3>
+                                <h3 data-translate="description">Описание</h3>
                                 <textarea style="width: 100%; height: 300px" name="descriptionPromotion"
                                           class="form-control" placeholder="Введите описание акции"
-                                          th:text="${objectBuilder.getPromotion().getDescription()}"></textarea>
+                                          data-translate-placeholder="enter_description" th:text="${objectBuilder.getPromotion().getDescription()}"></textarea>
                             </div>
                             <div style="display:none;" class="euContent nameContent">
-                                <h3>Описание</h3>
+                                <h3 data-translate="description">Описание</h3>
                                 <textarea style="width: 100%; height: 300px" name="descriptionPromotionEu"
                                           class="form-control" placeholder="Введите описание акции"
-                                          th:text="${objectBuilder.getPromotion().getDescriptionEng()}"></textarea>
+                                          data-translate-placeholder="enter_description"  th:text="${objectBuilder.getPromotion().getDescriptionEng()}"></textarea>
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
-                                <h3>Описание</h3>
+                                <h3 data-translate="description">Описание</h3>
                                 <textarea style="width: 100%; height: 300px" name="descriptionPromotionUkr"
                                           class="form-control" placeholder="Введите описание акции"
-                                          th:text="${objectBuilder.getPromotion().getDescriptionUkr()}"></textarea>
+                                          data-translate-placeholder="enter_description"  th:text="${objectBuilder.getPromotion().getDescriptionUkr()}"></textarea>
                             </div>
                         </div>
 
@@ -321,7 +342,7 @@
                         <br>
                         <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"
                                th:checked="${objectBuilder.getPromotion().getActive() == true}"><span
-                            class="checkmark">Включить акцию</span>
+                            class="checkmark" data-translate="include_promotion">Включить акцию</span>
                     </div>
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                         <div class="row">
@@ -344,35 +365,38 @@
                                     <div style="display:block;" class="ruContent nameContent">
                                         <div class="row">
                                             <div class="col-6">
-                                                <h6>Название</h6>
+                                                <h6 data-translate="title">Название</h6>
                                             </div>
                                             <div class="col-6" style="text-align: right">
                                             </div>
                                         </div>
                                         <input class="form-control col-md-6" type="text" id="nameLayout1"
-                                               placeholder="Введите название" th:value="${layouts.get(0).getName()}">
+                                               data-translate-placeholder="title" placeholder="Введите название"
+                                               th:value="${layouts.get(0).getName()}">
                                     </div>
                                     <div style="display:none;" class="euContent nameContent">
                                         <div class="row">
                                             <div class="col-6">
-                                                <h6>Название</h6>
+                                                <h6 data-translate="title">Название</h6>
                                             </div>
                                             <div class="col-6" style="text-align: right">
                                             </div>
                                         </div>
                                         <input class="form-control col-md-6" type="text" id="nameLayoutEu1"
-                                               placeholder="Введите название" th:value="${layouts.get(0).getNameEng()}">
+                                               data-translate-placeholder="title" placeholder="Введите название"
+                                               th:value="${layouts.get(0).getNameEng()}">
                                     </div>
                                     <div style="display:none;" class="ukrContent nameContent">
                                         <div class="row">
                                             <div class="col-6">
-                                                <h6>Название</h6>
+                                                <h6 data-translate="title">Название</h6>
                                             </div>
                                             <div class="col-6" style="text-align: right">
                                             </div>
                                         </div>
                                         <input class="form-control col-md-6" type="text" id="nameLayoutUkr1"
-                                               placeholder="Введите название" th:value="${layouts.get(0).getNameUkr()}">
+                                               data-translate-placeholder="title" placeholder="Введите название"
+                                               th:value="${layouts.get(0).getNameUkr()}">
                                     </div>
                                 </div>
 
@@ -380,32 +404,36 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-2">
-                                        <h6>Цена от (м.кв)</h6>
+                                        <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
                                         <input class="form-control" type="number" id="priceLayout1"
                                                th:value="${layouts.get(0).getPrice()}" placeholder="Введите цену">
                                     </div>
                                     <div class="col-2">
-                                        <h6>Комнат</h6>
+                                        <h6 data-translate="rooms">Комнат</h6>
                                         <input class="form-control" type="number" id="roomsLayout1"
                                                th:value="${layouts.get(0).getRoomQuantity()}"
+                                               data-translate-placeholder="enter_rooms"
                                                placeholder="Введите кол-во комнат">
                                     </div>
                                     <div class="col-2">
-                                        <h6>S общая (м.кв.)*</h6>
+                                        <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaTotalLayout1"
                                                th:value="${layouts.get(0).getAreaTotal()}"
+                                               data-translate-placeholder="enter_total_area"
                                                placeholder="Введите общую площадь">
                                     </div>
                                     <div class="col-2">
-                                        <h6>S жилая (м.кв.)*</h6>
+                                        <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaLivingLayout1"
                                                th:value="${layouts.get(0).getAreaLiving()}"
+                                               data-translate-placeholder="enter_living_area"
                                                placeholder="Введите жилую площадь">
                                     </div>
                                     <div class="col-2">
-                                        <h6>S кухни (м.кв.)*</h6>
+                                        <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaKitchenLayout1"
                                                th:value="${layouts.get(0).getAreaKitchen()}"
+                                               data-translate-placeholder="enter_kitchen_area"
                                                placeholder="Введите площадь кухни">
                                     </div>
                                     <div class="col-2">
@@ -415,26 +443,29 @@
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" value="" id="statusLayout1"
                                            th:checked="${layouts.get(0).getActive() == true}">
-                                    <span class="checkmark">Показать сайт</span>
+                                    <span class="checkmark" data-translate="show_website">Показать сайт</span>
                                 </div>
                                 <br>
                                 <div>
                                     <div style="display:block;" class="ruContent nameContent">
-                                        <h6>Описание</h6>
+                                        <h6 data-translate="description">Описание</h6>
                                         <input class="form-control" type="text" id="descriptionLayout1"
                                                placeholder="Введите описание"
+                                               data-translate-placeholder="enter_description"
                                                th:value="${layouts.get(0).getDescription()}">
                                     </div>
                                     <div style="display:none;" class="euContent nameContent">
-                                        <h6>Описание</h6>
+                                        <h6 data-translate="description">Описание</h6>
                                         <input class="form-control" type="text" id="descriptionLayoutEu1"
                                                placeholder="Введите описание"
+                                               data-translate-placeholder="enter_description"
                                                th:value="${layouts.get(0).getDescriptionEng()}">
                                     </div>
                                     <div style="display:none;" class="ukrContent nameContent">
-                                        <h6>Описание</h6>
+                                        <h6 data-translate="description">Описание</h6>
                                         <input class="form-control" type="text" id="descriptionLayoutUkr1"
                                                placeholder="Введите описание"
+                                               data-translate-placeholder="enter_description"
                                                th:value="${layouts.get(0).getDescriptionUkr()}">
                                     </div>
 
@@ -632,9 +663,12 @@
                     areaKitchenLayout: $("#areaKitchenLayout" + element).val(),
                     statusLayout: $("#statusLayout" + element).prop('checked'),
                     descriptionLayout: $("#descriptionLayout" + element).val(),
-                    descriptionLayoutEng: $("#descriptionLayoutEng" + element).val(),
+                    descriptionLayoutEng: $("#descriptionLayoutEu" + element).val(),
                     descriptionLayoutUkr: $("#descriptionLayoutUkr" + element).val()
                 }
+                console.log(element);
+                console.log($("#descriptionLayoutUkr" + element).val());
+
                 let inputImage1 = $("#inputImage" + element).prop('files');
                 if (inputImage1.length > 0) {
                     layoutData.img1Layout = inputImage1[0];
@@ -748,7 +782,7 @@
             }
             text += ` <div class="row">
                <div class="col-6">
-                <h6>Название</h6>
+                <h6 data-translate="title">Название</h6>
            </div>
                  <div class="col-6" style="text-align: right">
                             <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
@@ -767,7 +801,7 @@
                         </div>
                                                </div>
                                             <input class="form-control col-md-6" type="text" id="nameLayout` + imgMaxId + `"
-                                                    placeholder="Введите название">
+                                                    placeholder="Введите название" data-translate-placeholder="enter_title">
                                         </div>`;
             newCard.innerHTML += text
             text = '';
@@ -779,7 +813,7 @@
             }
             text += ` <div class="row">
                <div class="col-6">
-                <h6>Название</h6>
+                <h6 data-translate="title">Название</h6>
            </div>
                  <div class="col-6" style="text-align: right">
                             <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
@@ -798,7 +832,7 @@
                         </div>
                                                </div>
                                             <input class="form-control col-md-6" type="text" id="nameLayoutEu` + imgMaxId + `"
-                                                    placeholder="Введите название">
+                                                    placeholder="Введите название" data-translate-placeholder="enter_title">
                                         </div>`;
             newCard.innerHTML += text;
             text = '';
@@ -810,7 +844,7 @@
             }
             text += ` <div class="row">
                <div class="col-6">
-                <h6>Название</h6>
+                <h6 data-translate="title">Название</h6>
            </div>
 
                  <div class="col-6" style="text-align: right">
@@ -830,7 +864,7 @@
                         </div>
                                                </div>
                                             <input class="form-control col-md-6" type="text" id="nameLayoutUkr` + imgMaxId + `"
-                                                    placeholder="Введите название">
+                                                    placeholder="Введите название" data-translate-placeholder="enter_title">
                                         </div>`;
             newCard.innerHTML += text;
             text = '';
@@ -839,29 +873,29 @@
                         <br>
                             <div class="row">
                                 <div class="col-2">
-                                    <h6>Цена от (м.кв)</h6>
+                                    <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
                                     <input class="form-control" type="number" id="priceLayout` + imgMaxId + `"
-                                           placeholder="Введите цену">
+                                           placeholder="Введите цену" data-translate-placeholder="enter_price">
                                 </div>
                                 <div class="col-2">
-                                    <h6>Комнат</h6>
+                                    <h6 data-translate="rooms">Комнат</h6>
                                     <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `"
-                                           placeholder="Введите кол-во комнат">
+                                           placeholder="Введите кол-во комнат" data-translate-placeholder="enter_rooms">
                                 </div>
                                 <div class="col-2">
-                                    <h6>S общая (м.кв.)*</h6>
+                                    <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `"
-                                           placeholder="Введите общую площадь">
+                                           placeholder="Введите общую площадь" data-translate-placeholder="enter_total_area">
                                 </div>
                                 <div class="col-2">
-                                    <h6>S жилая (м.кв.)*</h6>
+                                    <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `"
-                                           placeholder="Введите жилую площадь">
+                                           placeholder="Введите жилую площадь" data-translate-placeholder="enter_living_area">
                                 </div>
                                 <div class="col-2">
-                                    <h6>S кухни (м.кв.)*</h6>
+                                    <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `"
-                                           placeholder="Введите площадь кухни">
+                                           placeholder="Введите площадь кухни" data-translate-placeholder="enter_kitchen_area">
                                 </div>
                                 <div class="col-2">
                                 </div>
@@ -870,10 +904,10 @@
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" value=""
                                            id="statusLayout` + imgMaxId + `">
-                                        <span class="checkmark">Показать сайт</span>
+                                        <span class="checkmark" data-translate="show_website">Показать сайт</span>
                                 </div>
                                 <br>
-                                    <h6>Описание</h6>`
+                                    <h6 data-translate="description" data-translate="description">Описание</h6>`
 
 
             if (langOld == 'ru') {
@@ -881,8 +915,8 @@
             } else {
                 text += ' <div style="display:none;" class="ruContent nameContent">\n';
             }
-            text += `<input class="form-control" type="text" id="descriptionLayout` + imgMaxId + `"
-                                           placeholder="Введите описание"></div>`
+            text += `<input class="form-control" type="text" id="descriptionLayout`+imgMaxId+`"
+                                           placeholder="Введите описание" data-translate-placeholder="enter_description"></div>`
             newCard.innerHTML += text
 
             text = '';
@@ -892,8 +926,8 @@
             } else {
                 text += '<div style="display:none;" class="ukrContent nameContent">';
             }
-            text += `<input class="form-control" type="text" id="descriptionLayoutUkr` + imgMaxId + `"
-                                           placeholder="Введите описание"></div>`
+            text += `<input class="form-control" type="text" id="descriptionLayoutUkr`+imgMaxId +`"
+                                           placeholder="Введите описание" data-translate-placeholder="enter_description"></div>`
             newCard.innerHTML += text
 
             text = '';
@@ -904,7 +938,7 @@
                 text += '<div style="display:none;" class="euContent nameContent">';
             }
             text += `<input class="form-control" type="text" id="descriptionLayoutEu` + imgMaxId + `"
-                                           placeholder="Введите описание"></div>`
+                                           placeholder="Введите описание" data-translate-placeholder="enter_description"></div>`
             newCard.innerHTML += text
 
             text = '';
@@ -941,6 +975,21 @@
             console.log("Добавление Layout");
 
             imgMaxId = imgMaxId + 3;
+            let allCookies = document.cookie;
+            let cookiesArray = allCookies.split("; ");
+            let cookies = {};
+            for (let i = 0; i < cookiesArray.length; i++) {
+                let cookie = cookiesArray[i].split("=");
+                cookies[cookie[0]] = cookie[1];
+            }
+            let selectedLanguage = cookies["selectedLanguage"];
+            console.log(selectedLanguage)
+            if (selectedLanguage == undefined) {
+                document.cookie = "selectedLanguage=ru; path=/";
+                selectedLanguage = "ru";
+            }
+            changeLanguage(selectedLanguage);
+
         }
 
         function deleteLayout(imgId) {
@@ -950,7 +999,7 @@
             });
             $(textCard).remove();
             showNotification("Warning!", "Планировка удалена", false)
-            console.log("Удаление Layout");
+
             var myDropzone = Dropzone.forElement("#my-dropzone");
 
 // Получите массив всех файлов, загруженных с Dropzone
@@ -992,7 +1041,7 @@
                         let selectionItem = '<option value=""></option> ';
                         if (data.length > 0) {
                             data.forEach(function (category) {
-                                selectionItem += '<option value="' + category + '"';
+                                selectionItem += '<option data-translate="'+category.replace(" ","_")+'" value="' + category + '"';
                                 if (category === checkObjectCity) {
                                     console.log("Успех")
                                     selectionItem += ' selected '
@@ -1025,7 +1074,7 @@
                         let selectionItem = '<option value=""></option> ';
                         if (data.length > 0) {
                             data.forEach(function (category) {
-                                selectionItem += '<option value="' + category + '"';
+                                selectionItem += '<option data-translate="'+category.replace(" ","_")+'" value="' + category + '"';
                                 console.log(category)
                                 if (category === checkObjectDistrict) {
                                     selectionItem += ' selected '
@@ -1097,7 +1146,7 @@
                     <div style="display:block;" class="ruContent nameContent">
                         <div class="row">
                             <div class="col-6">
-                                <h6>Название</h6>
+                                <h6  data-translate="title">Название</h6>
                             </div>
                             <div class="col-6" style="text-align: right">
                                 <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
@@ -1115,12 +1164,12 @@
                                 </button>
                             </div>
                         </div>
-                        <input class="form-control" type="text" class="col-6" id="nameLayout` + imgMaxId + `" value="` + layouts[i].name + `">
+                        <input data-translate-placeholder="enter_title" class="form-control" type="text" class="col-6" id="nameLayout` + imgMaxId + `" value="` + layouts[i].name + `">
                     </div>
                     <div style="display:none;" class="euContent nameContent">
                         <div class="row">
                             <div class="col-6">
-                                <h6>Название</h6>
+                                <h6  data-translate="title">Название</h6>
                             </div>
                             <div class="col-6" style="text-align: right">
                                 <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
@@ -1138,12 +1187,12 @@
                                 </button>
                             </div>
                         </div>
-                        <input class="form-control" type="text" class="col-6" id="nameLayoutEu` + imgMaxId + `" value="` + layouts[i].nameEng + `">
+                        <input data-translate-placeholder="enter_title" class="form-control" type="text" class="col-6" id="nameLayoutEu` + imgMaxId + `" value="` + layouts[i].nameEng + `">
                     </div>
                     <div style="display:none;" class="ukrContent nameContent">
                         <div class="row">
                             <div class="col-6">
-                                <h6>Название</h6>
+                                <h6  data-translate="title">Название</h6>
                             </div>
                             <div class="col-6" style="text-align: right">
                                 <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
@@ -1161,31 +1210,31 @@
                                 </button>
                             </div>
                         </div>
-                        <input class="form-control" type="text" class="col-6" id="nameLayoutUkr` + imgMaxId + `" value="` + layouts[i].nameUkr + `">
+                        <input data-translate-placeholder="enter_title" class="form-control" type="text" class="col-6" id="nameLayoutUkr` + imgMaxId + `" value="` + layouts[i].nameUkr + `">
                     </div>
           </div>
 
                 <br>
                     <div class="row">
                         <div class="col-2">
-                            <h6>Цена от (м.кв)</h6>
-                            <input class="form-control" type="number" id="priceLayout` + imgMaxId + `" value="` + layouts[i].price + `">
+                            <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
+                            <input data-translate-placeholder="enter_price" class="form-control" type="number" id="priceLayout` + imgMaxId + `" value="` + layouts[i].price + `">
                         </div>
                         <div class="col-2">
-                            <h6>Комнат</h6>
-                            <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `" value="` + layouts[i].roomQuantity + `">
+                            <h6 data-translate="rooms">Комнат</h6>
+                            <input data-translate-placeholder="enter_rooms" class="form-control" type="number" id="roomsLayout` + imgMaxId + `" value="` + layouts[i].roomQuantity + `">
                         </div>
                         <div class="col-2">
-                            <h6>S общая (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `" value="` + layouts[i].areaTotal + `">
+                            <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
+                            <input data-translate-placeholder="enter_total_area" class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `" value="` + layouts[i].areaTotal + `">
                         </div>
                         <div class="col-2">
-                            <h6>S жилая (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `" value="` + layouts[i].areaLiving + `">
+                            <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
+                            <input data-translate-placeholder="enter_living_area" class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `" value="` + layouts[i].areaLiving + `">
                         </div>
                         <div class="col-2">
-                            <h6>S кухни (м.кв.)*</h6>
-                            <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `" value="` + layouts[i].areaKitchen + `">
+                            <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
+                            <input data-translate-placeholder="enter_kitchen_area" class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `" value="` + layouts[i].areaKitchen + `">
                         </div>
                         <div class="col-2">
                         </div>
@@ -1196,12 +1245,25 @@
                         if (layouts[i].active = true) {
                             textHtml += `checked`
                         }
-                        textHtml += ` > <span class="checkmark">Показать сайт</span>
+                        textHtml += ` > <span class="checkmark" data-translate="show_website">Показать сайт</span>
                         </div>
                         <br>
-                            <h6>Описание</h6>
-                            <input class="form-control" type="text" id="descriptionLayout` + imgMaxId + `" value="` + layouts[i].description + `">
-                                <br>
+                               <div style="display:block;" class="ruContent nameContent">
+                                <h6 data-translate="description">Описание</h6>
+                                <input class="form-control" type="text" id="descriptionLayout` + imgMaxId + `"
+                                       data-translate-placeholder="enter_description" placeholder="Введите описание" value="` + layouts[i].description + `" data-aos="true" a>
+                            </div>
+                            <div style="display:none;" class="euContent nameContent">
+                                <h6 data-translate="description">Описание</h6>
+                                <input class="form-control" type="text" id="descriptionLayoutEu` + imgMaxId + `"
+                                       data-translate-placeholder="enter_description"  placeholder="Введите описание" value="` + layouts[i].descriptionEng + `">
+                            </div>
+                            <div style="display:none;" class="ukrContent nameContent">
+                                <h6 data-translate="description">Описание</h6>
+                                <input class="form-control" type="text" id="descriptionLayoutUkr` + imgMaxId + `"
+                                       data-translate-placeholder="enter_description" placeholder="Введите описание" value="` + layouts[i].descriptionUkr + `">
+                            </div>
+                                 <br>
                                     <div class="row" style="text-align: center">
                                         <div class="col-4">
                                             <img id="previewImage` + (imgMaxId) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img1Thymeleaf[i] + `" class="d-block w-px-300 h-px-300 rounded">
@@ -1227,6 +1289,20 @@
                         console.log("Добавление Layout");
 
                         imgMaxId = imgMaxId + 3;
+                        let allCookies = document.cookie;
+                        let cookiesArray = allCookies.split("; ");
+                        let cookies = {};
+                        for (let i = 0; i < cookiesArray.length; i++) {
+                            let cookie = cookiesArray[i].split("=");
+                            cookies[cookie[0]] = cookie[1];
+                        }
+                        let selectedLanguage = cookies["selectedLanguage"];
+                        console.log(selectedLanguage)
+                        if (selectedLanguage == undefined) {
+                            document.cookie = "selectedLanguage=ru; path=/";
+                            selectedLanguage = "ru";
+                        }
+                        changeLanguage(selectedLanguage);
                     }
                 }
             }
@@ -1262,11 +1338,12 @@
                             let selectionItem = '<option value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option value="' + category + '">' + category + '</option>';
+                                    selectionItem += '<option data-aos="tr" value="' + category + '" data-translate="'+category.replace(' ','_')+'">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
                         }
+                        refreshAllTranslate()
                     },
                     error: function (error) {
                         console.log("Error:", error);
@@ -1306,7 +1383,7 @@
                             let selectionItem = '<option value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option value="' + category + '">' + category + '</option>';
+                                    selectionItem += '<option value="' + category + '" data-translate="'+category+'">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
@@ -1314,6 +1391,7 @@
                             container2.empty();
                             container2.prop('disabled', true);
                         }
+                        refreshAllTranslate()
                     },
                     error: function (error) {
                         console.log("Error:", error);

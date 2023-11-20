@@ -5,7 +5,7 @@
                                   <img width="auto" height="40"
                                        th:src="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
               </span>
-            <span class="app-brand-text demo menu-text fw-bold"> Админка</span>
+            <span class="app-brand-text demo menu-text fw-bold" data-translate="administrationTitle"> Админка</span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -21,91 +21,91 @@
         <li th:class="'menu-item ' + ${builderObjectsActive != null ? 'active' : ''}">
             <a th:href="@{/builder_objects}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-building-community"></i>
-                <div data-i18n="Builder Objects">Объекты от строителей</div>
+                <div data-i18n="Builder Objects" data-translate="builder_objects_from_builders">Объекты от строителей</div>
             </a>
         </li>
         <li th:class="'menu-item ' + ${investorObjectsActive != null ? 'active' : ''}">
             <a th:href="@{/investor_objects}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-businessplan"></i>
-                <div data-i18n="Investor Objects">Объекты от инвесторов</div>
+                <div data-i18n="Investor Objects" data-translate="builder_objects_from_investors">Объекты от инвесторов</div>
             </a>
         </li>
         <li th:class="'menu-item ' + ${secondaryPropertyActive != null  ? 'active' : ''}">
             <a th:href="@{/secondary_objects}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-building-warehouse"></i>
-                <div data-i18n="Secondary Property">Вторичная недвижимость</div>
+                <div data-i18n="Secondary Property"  data-translate="secondary_real_estate">Вторичная недвижимость</div>
             </a>
         </li>
         <li th:class="'menu-item ' + ${housePropertyActive != null  ? 'active' : ''}">
             <a th:href="@{/houses}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-building-cottage"></i>
-                <div data-i18n="Houses & Plots">Дома и участки</div>
+                <div data-i18n="Houses & Plots"  data-translate="houses_and_plots">Дома и участки</div>
             </a>
         </li>
         <li th:class="'menu-item ' + ${commercialPropertyActive != null  ? 'active' : ''}">
             <a th:href="@{/commercial}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-file-dollar"></i>
-                <div data-i18n="Commercial Property">Коммерческая</div>
+                <div data-i18n="Commercial Property" data-translate="commercial">Коммерческая</div>
             </a>
         </li>
         <li th:class="'menu-item ' + ${buyersActive != null  ? 'active' : ''}">
             <a th:href="@{/buyers}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-users"></i>
-                <div data-i18n="Buyers">Покупатели</div>
+                <div data-i18n="Buyers"  data-translate="buyers">Покупатели</div>
             </a>
         </li>
         <li th:class="'menu-item ' + ${branchesActive != null  ? 'active' : ''}">
             <a th:href="@{/branches}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-git-branch"></i>
-                <div data-i18n="Branches">Филиалы</div>
+                <div data-i18n="Branches"  data-translate="branches">Филиалы</div>
             </a>
         </li>
         <li th:class="'menu-item ' + ${realtorsActive != null  ? 'active' : ''}">
             <a th:href="@{/realtors}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-currency-real"></i>
-                <div data-i18n="Realtors">Риелторы</div>
+                <div data-i18n="Realtors" data-translate="realtors">Риелторы</div>
             </a>
         </li>
         <li th:class="'menu-item ' + ${usersActive != null  || pagesActive != null  || bannersActive != null  || applicationsActive != null  || questionsActive != null  || changesActive != null  ? 'active open' : ''}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-toggle-left"></i>
-                <div data-i18n="Website Management">Управление сайтом</div>
+                <div data-i18n="Website Management" data-translate="website_management">Управление сайтом</div>
             </a>
             <ul class="menu-sub">
                 <li th:class="'menu-item ' + ${applicationsActive != null  ? 'active' : ''}">
                     <a th:href="@{/applications}" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-flag-3-filled"></i>
-                        <div data-i18n="Applications">Заявки</div>
+                        <div data-i18n="Applications" data-translate="requests">Заявки</div>
                     </a>
                 </li>
                 <li th:class="'menu-item ' + ${bannersActive != null  ? 'active' : ''}">
                     <a th:href="@{/banners}" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-flag-3-filled"></i>
-                        <div data-i18n="Banners">Баннеры</div>
+                        <div data-i18n="Banners" data-translate="banners">Баннеры</div>
                     </a>
                 </li>
                 <li th:class="'menu-item ' + ${pagesActive != null  ? 'active' : ''}">
                     <a th:href="@{/pages}" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-page-break"></i>
-                        <div data-i18n="Pages">Страницы</div>
+                        <div data-i18n="Pages" data-translate="pages">Страницы</div>
                     </a>
                 </li>
                 <li th:class="'menu-item ' + ${changesActive != null  ? 'active' : ''}">
                     <a th:href="@{/proposals_for_changes}" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-edit"></i>
-                        <div data-i18n="Changes">Предложения</div>
+                        <div data-i18n="Changes" data-translate="offers">Предложения</div>
                     </a>
                 </li>
                 <li th:class="'menu-item ' + ${usersActive != null  ? 'active' : ''}">
                     <a th:href="@{/users}" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-user-filled"></i>
-                        <div data-i18n="Users">Пользователи</div>
+                        <div data-i18n="Users" data-translate="users">Пользователи</div>
                     </a>
                 </li>
                 <li th:class="'menu-item ' + ${questionsActive != null  ? 'active' : ''}">
                     <a th:href="@{/questions}" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-help-hexagon"></i>
-                        <div data-i18n="Questions">Вопросы</div>
+                        <div data-i18n="Questions" data-translate="questions">Вопросы</div>
                     </a>
                 </li>
             </ul>

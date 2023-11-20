@@ -46,9 +46,9 @@
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                            <li class="breadcrumb-item"><a th:href="@{/builder_objects}">Объекты от строителей</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Карточка объекта строителя</li>
+                            <li class="breadcrumb-item" data-translate="breadcrumb.home"><a th:href="@{/}">Главная</a></li>
+                            <li class="breadcrumb-item"data-translate="breadcrumb.builder_objects"><a th:href="@{/builder_objects}">Объекты от строителей</a></li>
+                            <li class="breadcrumb-item active" aria-current="page" data-translate="breadcrumb.builder_object_card">Карточка объекта строителя</li>
                         </ol>
                     </nav>
                 </div>
@@ -58,13 +58,13 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-5">
-                                <h3>Просмотр новостроя</h3>
+                                <h3 data-translate="view_new_building">Просмотр новостроя</h3>
                             </div>
                             <div class="col-5">
                             </div>
                             <div class="col-2" style="text-align: right;">
                                 <a th:href="@{/builder_objects/edit/{id}(id=${id})}">
-                                    <button class="btn btn-submit">Редактировать</button>
+                                    <button class="btn btn-submit" data-translate="edit">Редактировать</button>
                                 </a>
                             </div>
                         </div>
@@ -79,42 +79,42 @@
                                         class="d-block w-px-400 h-px-300 rounded"></a>
                             </div>
                             <div class="col-6" style="text-align: right">
-                                <a th:href="@{downloadFileCheckerboard/{id}(id=${id})}">Просмотреть шахматку</a><br>
-                                <a th:href="@{downloadFilePrices/{id}(id=${id})}">Просмотреть условия рассрочки</a><br>
-                                <a th:href="@{downloadFileInstallmentTerms/{id}(id=${id})}">Просмотреть цены</a><br>
+                                <a th:href="@{downloadFileCheckerboard/{id}(id=${id})}" data-translate="view_chessboard">Просмотреть шахматку</a><br>
+                                <a th:href="@{downloadFilePrices/{id}(id=${id})}" data-translate="view_installment_conditions">Просмотреть условия рассрочки</a><br>
+                                <a th:href="@{downloadFileInstallmentTerms/{id}(id=${id})}" data-translate="view_prices">Просмотреть цены</a><br>
                             </div>
                         </div>
                         <br><br>
                         <table class="table table-bordered">
                             <tr>
-                                <td style="font-weight: bold">Район</td>
+                                <td style="font-weight: bold"  data-translate="district">Район</td>
                                 <td th:text="${element.getAddress().getDistrict()}"> Район</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Топозона</td>
-                                <td th:text="${element.getAddress().getZone()}"> Топозона</td>
+                                <td style="font-weight: bold" data-translate="topzone">Топозона</td>
+                                <td th:text="${element.getAddress().getZone()}" > Топозона</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Улица</td>
-                                <td th:text="${element.getAddress().getStreet()}"> Улица</td>
+                                <td style="font-weight: bold" data-translate="street">Улица</td>
+                                <td th:text="${element.getAddress().getStreet()}" > Улица</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Цена от</td>
+                                <td style="font-weight: bold" data-translate="price_from">Цена от</td>
                                 <td th:text="${minPrice}">Цена от</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Этажность</td>
-                                <td th:text="${element.getFloorQuantity()}">Этажность</td>
+                                <td style="font-weight: bold" data-translate="number_of_floors">Этажность</td>
+                                <td th:text="${element.getFloorQuantity()}" >Этажность</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Акции</td>
+                                <td style="font-weight: bold" data-translate="promotions">Акции</td>
                                 <td th:text="${element.getPromotion().getName()}">Акции</td>
                             </tr>
                         </table>
                         <br>
-                        <h3>Описание</h3>
+                        <h3 data-translate="description">Описание</h3>
                         <textarea class="form-control" style="width: 100%; height: 300px"
-                                  th:text="${element.getDescription_builder()}"></textarea>
+                                  th:text="${element.getDescription_builder()}" data-translate="description"></textarea>
                     </div>
                 </div>
             </div>
