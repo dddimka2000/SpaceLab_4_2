@@ -76,12 +76,12 @@
             <div>
                 <br>
                 <div class="d-flex justify-content-between">
-                    <h4 class="fw-bold">Вторичная недвижимость</h4>
+                    <h4 class="fw-bold" data-translate="secondary_real_estate">Вторичная недвижимость</h4>
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Вторичная недвижимость</li>
+                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a>
+                            <li class="breadcrumb-item active" aria-current="page" data-translate="secondary_real_estate">Вторичная недвижимость</li>
                         </ol>
                     </nav>
                 </div>
@@ -89,12 +89,14 @@
                 <div class="row">
                     <div class="col-md-8"></div>
                     <div class="col-md-1">
-                        <button class="btn btn-submit" id="printButton" onclick="printButton()">Распечатать</button>
+                        <button class="btn btn-submit" id="printButton" data-translate="print" onclick="printButton()">
+                            Распечатать
+                        </button>
                     </div>
                     <div class="col-md-1"></div>
                     <div class="col-md-2">
-                        <a th:href="@{/secondary_objects/create}">
-                            <button class="btn btn-submit">Добавить объект</button>
+                        <a th:href="@{/investor_objects/create}">
+                            <button class="btn btn-submit" data-translate="builder_object_add">Добавить объект</button>
                         </a>
                     </div>
                 </div>
@@ -103,7 +105,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-4">
-                                <h6>Район</h6>
+                                <h6 data-translate="district">Район</h6>
                                 <select id="select2Multiple24" class="select2 form-select for-filter" multiple>
                                     <script th:inline="javascript">
                                         let pathLink = /*[[@{/}]]*/ '';
@@ -117,6 +119,7 @@
                                                     let option = document.createElement("option");
                                                     option.value = districts[i];
                                                     option.text = districts[i];
+                                                    option.setAttribute("data-translate", districts[i].replace(" ", "_"));
                                                     selectElement.add(option);
                                                 }
                                             },
@@ -128,7 +131,7 @@
                                 </select>
                             </div>
                             <div class="col-3">
-                                <h6>Количество комнат</h6>
+                                <h6 data-translate="property.numberOfRooms">Количество комнат</h6>
                                 <input type="radio" class="form-check-input for-filter" name="flexRadioDefault"
                                        value="1">1
                                 <input type="radio" class="form-check-input for-filter" name="flexRadioDefault"
@@ -141,7 +144,9 @@
                             <div class="col-5">
                                 <div class="row">
                                     <div class="col">
-                                        <h6>Этаж:</h6>
+                                        <div style="display: flex">
+                                            <h6 data-translate="floor"></h6><span>:</span>
+                                        </div>
                                         <div style="display: flex">
                                             <input class="form-control for-filter"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
@@ -151,7 +156,9 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <h6>Цена ($):</h6>
+                                        <div style="display: flex">
+                                            <h6 data-translate="price">Цена</h6><span> ($):</span>
+                                        </div>
                                         <div style="display: flex">
                                             <input class="form-control for-filter"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
@@ -167,7 +174,7 @@
                         <br>
                         <div class="row">
                             <div class="col-4">
-                                <h6>Топозона</h6>
+                                <h6 data-translate="topzone">Топозона</h6>
                                 <select class="select2 form-select for-filter" multiple id="select2MultipleTopozone">
                                     <option th:each="entity : ${selectTopozone}"
                                             th:value="${entity}"
@@ -175,7 +182,7 @@
                                 </select>
                             </div>
                             <div class="col-3">
-                                <h6>ЖК</h6>
+                                <h6 data-translate="RC">ЖК</h6>
                                 <select class="select2 form-select for-filter" multiple
                                         id="select2MultipleResidentialComplexId">
                                 </select>
@@ -183,7 +190,9 @@
                             <div class="col-5">
                                 <div class="row">
                                     <div class="col">
-                                        <h6>Этажность:</h6>
+                                        <div style="display: flex">
+                                            <h6 data-translate="number_of_floors">Этажность</h6><span>:</span>
+                                        </div>
                                         <div style="display: flex">
                                             <input class="form-control for-filter"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
@@ -193,7 +202,7 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <h6>Площадь(кв. м):</h6>
+                                        <h6 data-translate="S_area_sqm">Площадь(кв. м):</h6>
                                         <div style="display: flex">
                                             <input class="form-control for-filter"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
@@ -210,25 +219,25 @@
                         <br>
                         <div class="row">
                             <div class="col-4">
-                                <h6>Улица</h6>
+                                <h6 data-translate="street">Улица</h6>
                                 <input class="form-control for-filter" type="text" name="street" id="street"
-                                       placeholder="Введите улицу">
+                                       placeholder="Введите улицу" data-translate-placeholder="enter_street">
                             </div>
                             <div class="col-4">
-                                <h6>Дата последнего контакта</h6>
+                                <h6 data-translate="contact_date">Дата последнего контакта</h6>
                                 <select id="day" name="day" class="form-select select2 for-filter">
                                     <option selected value="" disabled></option>
-                                    <option value="1">1 день</option>
+                                    <option value="1" data-translate="one_day">1 день</option>
                                     <script>
                                         for (let i = 2; i <= 31; i++) {
-                                            document.write('<option value="' + i + '">' + i + " дней" + '</option>');
+                                            document.write('<option value="' + i + '" data-translate="'+i+'multiple_days">' + i + ' дней' + '</option>');
                                         }
                                     </script>
                                 </select>
                             </div>
                             <div class="col-4" style="display: flex;align-items: end;justify-content: end">
-                                <button class="btn btn-submit" id="clean-filter">Очистить фильтр</button>
-                                <button class="btn btn-submit" id="search-btn">Поиск</button>
+                                <button class="btn btn-submit" id="clean-filter" data-translate="clear_filter">Очистить фильтр</button>
+                                <button class="btn btn-submit" id="search-btn" data-translate="search">Поиск</button>
                             </div>
 
                         </div>
@@ -239,18 +248,18 @@
                                id="branchTable">
                             <thead>
                             <tr style="text-align: center">
-                                <th>Дата контакта</th>
-                                <th>Код</th>
-                                <th>Район</th>
-                                <th>Топозона</th>
-                                <th>Улица</th>
-                                <th>Комнат</th>
-                                <th>Этаж</th>
-                                <th>Этажность</th>
-                                <th>Площадь</th>
-                                <th>Реклама</th>
-                                <th>Статус</th>
-                                <th>Фото</th>
+                                <th data-translate="contact_date">Дата контакта</th>
+                                <th data-translate="code">Код</th>
+                                <th data-translate="district">Район</th>
+                                <th data-translate="topzone">Топозона</th>
+                                <th data-translate="street">Улица</th>
+                                <th data-translate="rooms">Комнат</th>
+                                <th data-translate="floor">Этаж</th>
+                                <th data-translate="number_of_floors">Этажность</th>
+                                <th data-translate="S_area_sqm">Площадь</th>
+                                <th data-translate="advertisement">Реклама</th>
+                                <th data-translate="status">Статус</th>
+                                <th data-translate="photo">Фото</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -296,7 +305,7 @@
                             </div>
                         </div>
                         <div class="col-2">
-                            <p>Колличество строк:</p>
+                            <p data-translate="number_of_rows">Колличество строк:</p>
                             <select class="form-select form-control select2" id="pageSize">
                                 <option value="2">2</option>
                                 <option value="5">5</option>
@@ -312,7 +321,8 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Вы точно хотите удалить объект вторичной недвижимости?</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Вы точно хотите удалить объект от
+                                инвесторов?</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             </button>
                         </div>
@@ -332,7 +342,7 @@
     </div>
     <script th:src="@{/js/pagination.js}"></script>
     <script th:inline="javascript">
-        $("#day").select2();
+        // $("#day").select2();
         $("#pageSize").select2();
         function printButton() {
             var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
@@ -543,23 +553,23 @@
 
                             var cell10 = newRow.insertCell(9);
                             if (object.advertisementEnabled) {
-                                cell10.innerHTML = '<div class="alert alert-success">Да</div>';
+                                cell10.innerHTML = '<div class="alert alert-success" data-translate="yes">Да</div>';
                             } else {
-                                cell10.innerHTML = '<div class="alert alert-danger">Нет</div>';
+                                cell10.innerHTML = '<div class="alert alert-danger" data-translate="no">Нет</div>';
                             }
 
                             var cell11 = newRow.insertCell(10);
                             if (object.buildStatus == "FINISHED") {
-                                cell11.innerHTML = '<div class="alert alert-success">Закончена</div>';
+                                cell11.innerHTML = '<div class="alert alert-success" data-translate="FINISHED">Закончена</div>';
                             } else if (object.buildStatus == "IN_PROGRESS") {
-                                cell11.innerHTML = '<div class="alert alert-info">В процессе</div>';
+                                cell11.innerHTML = '<div class="alert alert-info" data-translate="IN_PROGRESS">В процессе</div>';
                             } else {
-                                cell11.innerHTML = '<div  class="alert alert-danger">Еще не начата</div>';
+                                cell11.innerHTML = '<div  class="alert alert-danger" data-translate="NOT_STARTED">Еще не начата</div>';
                             }
 
 
                             var cell12 = newRow.insertCell(11);
-                            cell12.innerHTML = '<alert class="alert alert-success">Да</alert>';
+                            cell12.innerHTML = '<alert class="alert alert-success" data-translate="yes">Да</alert>';
 
                             var cell13 = newRow.insertCell(12);
                             cell13.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint"
@@ -569,7 +579,7 @@
                             cell14.innerHTML = `
                                         <div class="btn-group" role="group" aria-label="Basic example">
 
-                       <a href="` + contextPath + `secondary_objects/card/` + object.id + `">
+                       <a href="` + contextPath + `investor_objects/card/` + object.id + `">
                                                 <button class="btn btn-default btn-sm float-right"
                                                         title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
                                             </a>
@@ -584,6 +594,7 @@
                         }
                         $('#rowPanelCount').empty();
                         updateLabelPagination(page, 'rowPanelCount', builderObjects.totalElements, builderObjects.numberOfElements, builderObjects.size);
+                        refreshAllTranslate()
                     }
                 }
             )
