@@ -137,7 +137,6 @@ function validString(minLength, maxLength, inputString) {
 function validatePhoneNumber(input) {
     const phoneNumberRegex = /^\+380\d{9}$/;
     var regExp = /^\+380(31|32|33|34|35|36|38|39|41|43|44|45|46|20|89|94|92|91|67|68|96|97|98|70|90|91|67|68|96|97|98|70|87|89|50|66|95|99|93)\d{7}$/;
-    console.log(input.val().replace(/\s/g, ''))
     var result = phoneNumberRegex.test(input.val().replace(/\s/g, '')) && regExp.test(input.val().replace(/\s/g, ''));
     if(!result) {
         showToast("Телефон повинен бути в форматі +380_________", "danger")

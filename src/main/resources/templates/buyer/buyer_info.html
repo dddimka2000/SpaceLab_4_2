@@ -34,11 +34,11 @@
                 success: function (buyer) {
                     var districts = ''
                     for (var i = 0; i < buyer.application.districts.length; i++) {
-                        districts+= buyer.application.districts[i].nameDistrict+',  '
+                        districts+= buyer.application.districts[i]+',  '
                     }
                     var topzones = ''
                     for (var i = 0; i < buyer.application.topzones.length; i++) {
-                        topzones+= buyer.application.topzones[i].name+',  '
+                        topzones+= buyer.application.topzones[i]+',  '
                     }
                     var content = document.getElementById("main-content")
                     content.innerHTML = `

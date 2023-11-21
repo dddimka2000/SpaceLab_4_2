@@ -26,7 +26,7 @@ public class CommercialInfoDto {
     private String ownerPhone;
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate boughtDate;
-    @NotNull(message = "{error.field.empty}")
+//    @NotNull(message = "{error.field.empty}")
     private OwnershipType ownership;
     @Size(min = 1, max = 999, message = "{error.field.size}")
     @NotNull(message = "{error.field.empty}")
@@ -54,7 +54,7 @@ public class CommercialInfoDto {
     @NotNull(message = "{error.field.empty}")
     private String landmark;
     @Min(value = 1, message = "{error.field.min-value}")
-    @Max(value = 10000000, message ="{error.field.max-value}")
+    @Max(value = 214748364, message ="{error.field.max-value}")
     @NotNull(message = "{error.field.empty}")
     private Integer price;
     @NotNull(message = "{error.field.empty}")

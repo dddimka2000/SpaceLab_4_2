@@ -26,11 +26,13 @@ public interface CommercialInfoMapper {
     default void updateEntityFromDto(CommercialInfoDto commercialInfoDto, PropertyCommercialObject commercialObject, MinioService minioService, RealtorServiceImpl realtorService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         updateEntityFromDto(commercialInfoDto, commercialObject);
         if(commercialObject.getFiles() == null)commercialObject.setFiles(new ArrayList<>());
+        if(commercialInfoDto.getFiles() != null)
         for (MultipartFile file : commercialInfoDto.getFiles()) {
             commercialObject.getFiles().add(minioService.putImage(file));
         }
 
         if(commercialObject.getPictures() == null)commercialObject.setPictures(new ArrayList<>());
+        if(commercialInfoDto.getPictures() != null)
         for (MultipartFile picture : commercialInfoDto.getPictures()) {
             commercialObject.getPictures().add(minioService.putImage(picture));
         }

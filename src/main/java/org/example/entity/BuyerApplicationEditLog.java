@@ -15,7 +15,7 @@ public class BuyerApplicationEditLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-    @Column(length = 1000)
+    @Column(length = 5000)
     private String description;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")

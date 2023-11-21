@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @Entity
 public class PropertyCommercialObject extends _PropertyObject{
-
+    private PublicationStatus publicationStatus;
     private String cadastralNumber;
     private String plotDescription;
 

@@ -18,7 +18,7 @@
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Дома и участки</li>
+                    <li class="breadcrumb-item active" aria-current="page">Комерческая</li>
                 </ol>
             </nav>
         </div>
@@ -158,9 +158,188 @@
             $('#lastContactDate').select2({
                 minimumResultsForSearch: -1,
             })
-            // getPageWithFilter(0)
+            getPageWithFilter(0)
         });
+        function printElements() {
+            var bodyRows = []
+            var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
+            if (selectedCheckboxes.length === 0) {
+                showToast("Виберіть хоча б один чекбокс для друку.", "danger");
+                return;
+            }
+            var ajaxPromises = [];
+            var headerRow
+            if (document.getElementById('printWithAddress').checked) {
+                selectedCheckboxes.forEach(function (checkbox) {
+                    var promise = new Promise(function (resolve, reject) {
+                        $.ajax({
+                            type: "Get",
+                            url: '[[@{/commercial/getById/}]]' + checkbox.value,
+                            success: function (house) {
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floor + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + house.realtorName + `</td><td style="border: 1px solid black;">` + house.administrationComment + `</td>`)
+                                resolve();
+                            },
+                            error: function () {
+                                reject();
+                            }
+                        });
+                    });
+                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Район</th><th style="border: 1px solid black;">Топозона</th><th style="border: 1px solid black;">Улиця</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th><th style="border: 1px solid black;">Примітка</th></tr>';
+                    ajaxPromises.push(promise);
+                });
+            }else {
+                selectedCheckboxes.forEach(function (checkbox) {
+                    var promise = new Promise(function (resolve, reject) {
+                        $.ajax({
+                            type: "Get",
+                            url: '[[@{/commercial/getById/}]]' + checkbox.value,
+                            success: function (house) {
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floor + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + house.realtorName + `</td><td style="border: 1px solid black;">` + house.administrationComment + `</td>`)
+                                resolve();
+                            },
+                            error: function () {
+                                reject();
+                            }
+                        });
+                    });
+                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th><th style="border: 1px solid black;">Примітка</th></tr>';
+                    ajaxPromises.push(promise);
+                })
+            }
 
+            Promise.all(ajaxPromises)
+                .then(function () {
+                    printTable(headerRow, bodyRows);
+                })
+                .catch(function (error) {
+                    console.error("Error fetching data:", error);
+                });
+
+        }
+
+        function getPageWithFilter(page) {
+            this.page = page
+            let formData = new FormData();
+            formData.append('page', page)
+            formData.append('district', $('#district').val())
+            if ($('.roomNumbers:checked').val()) formData.append('numberRooms', $('.roomNumbers:checked').val())
+            else formData.append('numberRooms', 0)
+            formData.append('minFloor', $('#floorMin').val())
+            formData.append('maxFloor', $('#floorMax').val())
+            formData.append('minPrice', $('#priceMin').val())
+            formData.append('maxPrice', $('#priceMax').val())
+            formData.append('topozone', $('#topzone').val())
+            formData.append('plotAreaMin', $('#plotAreaMin').val())
+            formData.append('plotAreaMax', $('#plotAreaMax').val())
+            formData.append('minArea', $('#houseAreaMin').val())
+            formData.append('maxArea', $('#houseAreaMax').val())
+            formData.append('street', $('#street').val())
+            var lastVisitDate = new Date()
+            if ($('#lastContactDate').val()) formData.append('lastContactDate', lastVisitDate.toISOString().split('T')[0])
+            $.ajax({
+                type: "Post",
+                url: '[[@{/commercial/get/all}]]',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (houses) {
+                    var table = document.getElementById("houseTable");
+                    var tbody = table.querySelector("tbody");
+                    $('#houseTable tbody').empty();
+
+                    for (var house of houses.content) {
+                        var newRow = tbody.insertRow();
+                        var cell0 = newRow.insertCell(0);
+                        cell0.appendChild(createStatusIcon(house.lastContactDate))
+                        cell0.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
+                        var cell1 = newRow.insertCell(1);
+                        cell1.innerHTML = house.objectCode;
+                        cell1.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
+                        var cell2 = newRow.insertCell(2);
+                        if (house.address) cell2.innerHTML = house.address.district;
+                        cell2.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
+                        var cell3 = newRow.insertCell(3);
+                        if (house.address) cell3.innerHTML = house.address.zone;
+                        cell3.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
+                        var cell4 = newRow.insertCell(4);
+                        if (house.address) cell4.innerHTML = house.address.street;
+                        cell4.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
+                        var cell5 = newRow.insertCell(5);
+                        cell5.innerHTML = house.roomQuantity;
+                        cell5.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
+                        var cell6 = newRow.insertCell(6);
+                        cell6.innerHTML = house.floor;
+                        cell6.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
+                        var cell7 = newRow.insertCell(7);
+                        cell7.innerHTML = house.floorQuantity;
+                        cell7.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
+                        var cell8 = newRow.insertCell(8);
+                        cell8.innerHTML = house.areaTotal;
+                        cell8.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
+                        var cell9 = newRow.insertCell(9);
+                        cell9.innerHTML = house.price;
+                        cell9.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
+                        var cell10 = newRow.insertCell(10);
+                        cell10.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1">Да</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'
+                        cell10.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
+
+                        var cell11 = newRow.insertCell(11);
+                        cell11.innerHTML = house.status ? '<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'
+                        cell11.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
+
+                        var cell12 = newRow.insertCell(12);
+                        cell12.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1">Есть</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'
+                        cell12.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
+
+                        var cell13 = newRow.insertCell(13);
+                        cell13.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint" value="` + house.id + `">`
+
+                        var cell14 = newRow.insertCell(14);
+                        cell14.innerHTML = `
+                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>
+                        <a class='btn btn-default btn-sm float-right' href='[[@{/commercial/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
+                    }
+                    $('#pagination_container').empty();
+                    if (houses.totalPages > 1) updatePagination(page, houses.totalPages, 'pagination_container')
+                },
+            });
+        }
+
+        function deleteElement(button, houseId) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var table = document.getElementById("houseTable");
+                var row = button.parentElement.parentElement;
+                table.deleteRow(row.rowIndex);
+
+                $.ajax({
+                    type: "delete",
+                    url: '[[@{/commercial/delete/}]]' + houseId,
+                    success: function (response) {
+                        getPageWithFilter(page)
+                        showToast(response, "success")
+                    },
+                });
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
 
         function clearFilter() {
             var elements = document.querySelectorAll('input, select, textarea');
@@ -175,6 +354,7 @@
             $('#lastContactDate').select2({
                 minimumResultsForSearch: -1,
             })
+            getPageWithFilter(0)
         }
     </script>
 <!--    <script>-->
@@ -270,101 +450,6 @@
 <!--                minimumResultsForSearch: -1,-->
 <!--            })-->
 <!--        });-->
-
-<!--        function getPageWithFilter(page) {-->
-<!--            this.page = page-->
-<!--            let formData = new FormData();-->
-<!--            formData.append('page', page)-->
-<!--            formData.append('district', $('#district').val())-->
-<!--            if ($('.roomNumbers:checked').val()) formData.append('numberRooms', $('.roomNumbers:checked').val())-->
-<!--            else formData.append('numberRooms', 0)-->
-<!--            formData.append('minFloor', $('#floorMin').val())-->
-<!--            formData.append('maxFloor', $('#floorMax').val())-->
-<!--            formData.append('minPrice', $('#priceMin').val())-->
-<!--            formData.append('maxPrice', $('#priceMax').val())-->
-<!--            formData.append('topozone', $('#topzone').val())-->
-<!--            formData.append('plotAreaMin', $('#plotAreaMin').val())-->
-<!--            formData.append('plotAreaMax', $('#plotAreaMax').val())-->
-<!--            formData.append('minArea', $('#houseAreaMin').val())-->
-<!--            formData.append('maxArea', $('#houseAreaMax').val())-->
-<!--            formData.append('street', $('#street').val())-->
-<!--            var lastVisitDate = new Date()-->
-<!--            if ($('#lastContactDate').val()) formData.append('lastContactDate', lastVisitDate.toISOString().split('T')[0])-->
-<!--            $.ajax({-->
-<!--                type: "Post",-->
-<!--                url: '[[@{/houses/get/all}]]',-->
-<!--                data: formData,-->
-<!--                contentType: false,-->
-<!--                processData: false,-->
-<!--                success: function (houses) {-->
-<!--                    var table = document.getElementById("houseTable");-->
-<!--                    var tbody = table.querySelector("tbody");-->
-<!--                    $('#houseTable tbody').empty();-->
-
-<!--                    for (var house of houses.content) {-->
-<!--                        var newRow = tbody.insertRow();-->
-<!--                        var cell0 = newRow.insertCell(0);-->
-<!--                        cell0.appendChild(createStatusIcon(house.lastContactDate))-->
-<!--                        cell0.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
-
-<!--                        var cell1 = newRow.insertCell(1);-->
-<!--                        cell1.innerHTML = house.objectCode;-->
-<!--                        cell1.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
-
-<!--                        var cell2 = newRow.insertCell(2);-->
-<!--                        if (house.address) cell2.innerHTML = house.address.district;-->
-<!--                        cell2.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
-
-<!--                        var cell3 = newRow.insertCell(3);-->
-<!--                        if (house.address) cell3.innerHTML = house.address.zone;-->
-<!--                        cell3.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
-
-<!--                        var cell4 = newRow.insertCell(4);-->
-<!--                        if (house.address) cell4.innerHTML = house.address.street;-->
-<!--                        cell4.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
-
-<!--                        var cell5 = newRow.insertCell(5);-->
-<!--                        cell5.innerHTML = house.roomQuantity;-->
-<!--                        cell5.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
-
-<!--                        var cell6 = newRow.insertCell(6);-->
-<!--                        cell6.innerHTML = house.floorQuantity;-->
-<!--                        cell6.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
-
-<!--                        var cell7 = newRow.insertCell(7);-->
-<!--                        cell7.innerHTML = house.areaTotal;-->
-<!--                        cell7.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
-
-<!--                        var cell8 = newRow.insertCell(8);-->
-<!--                        cell8.innerHTML = house.price;-->
-<!--                        cell8.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');-->
-
-<!--                        var cell9 = newRow.insertCell(9);-->
-<!--                        cell9.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1">Да</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'-->
-<!--                        cell9.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')-->
-
-<!--                        var cell10 = newRow.insertCell(10);-->
-<!--                        cell10.innerHTML = house.status ? '<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'-->
-<!--                        cell10.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')-->
-
-<!--                        var cell11 = newRow.insertCell(11);-->
-<!--                        cell11.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1">Есть</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'-->
-<!--                        cell11.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')-->
-
-<!--                        var cell12 = newRow.insertCell(12);-->
-<!--                        cell12.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint" value="` + house.id + `">`-->
-
-<!--                        var cell13 = newRow.insertCell(13);-->
-<!--                        cell13.innerHTML = `-->
-<!--                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>-->
-<!--                        <a class='btn btn-default btn-sm float-right' href='[[@{/houses/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;-->
-<!--                    }-->
-<!--                    $('#pagination_container').empty();-->
-<!--                    if (houses.totalPages > 1) updatePagination(page, houses.totalPages, 'pagination_container')-->
-<!--                },-->
-<!--            });-->
-<!--        }-->
-
 <!--        function clearFilter() {-->
 <!--            var elements = document.querySelectorAll('input, select, textarea');-->
 <!--            elements.forEach(function (element) {-->

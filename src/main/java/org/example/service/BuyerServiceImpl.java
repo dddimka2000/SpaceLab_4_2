@@ -8,13 +8,14 @@ import org.example.entity.Buyer;
 import org.example.entity.BuyerApplication;
 import org.example.entity.BuyerApplicationEditLog;
 import org.example.entity.BuyerNote;
+import org.example.entity.property._PropertyObject;
 import org.example.mapper.BuyerMapper;
 import org.example.repository.BuyerApplicationEditLogRepository;
 import org.example.repository.BuyerApplicationRepository;
 import org.example.repository.BuyerNoteRepository;
 import org.example.repository.BuyerRepository;
+import org.example.service.specification.BuyerForObjectSpecification;
 import org.example.service.specification.BuyerSpecification;
-import org.example.service.specification.UserSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,9 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +41,7 @@ public class BuyerServiceImpl {
     private final BuyerMapper buyerMapper;
     private final MinioService minioService;
     private final BuyerApplicationEditLogRepository buyerApplicationEditLogRepository;
+    private final CommercialServiceImpl commercialService;
     public Integer addPersonalData(BuyerPersonalDataDto buyerDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         Buyer buyer;
         if(buyerDto.getId()== null){
@@ -87,5 +91,17 @@ public class BuyerServiceImpl {
 
     public void deleteById(Integer id) {
         buyerRepository.deleteById(id);
+    }
+
+    public List<Buyer> filterForObject(Integer id, String type) {
+        List<BuyerApplication> applications = new ArrayList<>();
+        switch (type){
+            case "COMMERCIAL":
+                applications = buyerApplicationRepository.findAll(new BuyerForObjectSpecification(commercialService.getById(id)));
+                break;
+        }
+        return applications.stream()
+                .map(BuyerApplication::getBuyer)
+                .collect(Collectors.toList());
     }
 }

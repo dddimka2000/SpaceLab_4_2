@@ -17,6 +17,7 @@ public class ObjectForFilterDto {
     private Integer maxPrice;
     private List<String> topozone;
     private List<Integer> builderObject;
+    private Integer realtorId;
     private Integer plotAreaMin;
     private Integer plotAreaMax;
     private Integer minArea;

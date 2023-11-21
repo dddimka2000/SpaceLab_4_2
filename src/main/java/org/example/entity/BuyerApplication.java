@@ -37,7 +37,9 @@ public class BuyerApplication {
     private Integer plotAreaMin, plotAreaMax;
     private Integer houseAreaMin, houseAreaMax;
     @ToString.Exclude
+    @ElementCollection
     private List<String> districts;
+    @ElementCollection
     private List<String> topzones;
     private String comment;
     @OneToOne

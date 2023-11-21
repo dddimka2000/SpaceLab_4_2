@@ -4,14 +4,12 @@ import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.BuyerPersonalDataDto;
 import org.example.entity.*;
-import org.example.mapper.BuyerMapper;
-import org.example.service.BuyerServiceImpl;
-import org.example.service.MinioService;
+import org.example.entity.property.type.TypeObjectForUrl;
+import org.example.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -19,6 +17,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,6 +25,9 @@ import java.util.List;
 public class BuyerController {
     private final BuyerServiceImpl buyerService;
     private final MinioService minioService;
+    private final HousesServiceImpl housesService;
+    private final PropertyInvestorObjectService propertyInvestorObjectService;
+    private final CommercialServiceImpl commercialService;
     @GetMapping
     public ModelAndView index(){
         return new ModelAndView("buyer/buyer_table");
@@ -45,6 +47,7 @@ public class BuyerController {
     @GetMapping("/getById/{id}")
     @ResponseBody
     public Buyer getById(@PathVariable("id")Integer id){
+        Buyer buyer = buyerService.getById(id);
         return buyerService.getById(id);
     }
     @PostMapping("/add")
@@ -89,5 +92,25 @@ public class BuyerController {
     public ResponseEntity<String> deleteById(@PathVariable Integer id){
         buyerService.deleteById(id);
         return ResponseEntity.ok().body("Покупця видалено успішно");
+    }
+    @GetMapping("/{typeObjectForUrl}/{id}")
+    public ModelAndView filterObject(@PathVariable TypeObjectForUrl typeObjectForUrl, @PathVariable Integer id){
+        switch (typeObjectForUrl){
+            case HOUSE -> {
+                return new ModelAndView("buyer/buyer_table", "filterObject", housesService.getById(id));
+            }
+            case INVESTOR -> {
+                return new ModelAndView("buyer/buyer_table", "filterObject", propertyInvestorObjectService.findById(id));
+            }
+            case COMMERCIAL -> {
+                return new ModelAndView("buyer/buyer_table", "filterObject", commercialService.getById(id));
+            }
+        }
+        return new ModelAndView("buyer/buyer_table");
+    }
+    @GetMapping("/filter/forObject")
+    @ResponseBody
+    public List<Buyer> filterForObject(@RequestParam Integer id, @RequestParam String type){
+        return buyerService.filterForObject(id, type);
     }
 }
