@@ -19,7 +19,7 @@ public class Realtor {
 
     private String password;
     @Transient private String confirmPassword;
-
+    @Column(unique = true)
     private Integer code;
 
     private String name;

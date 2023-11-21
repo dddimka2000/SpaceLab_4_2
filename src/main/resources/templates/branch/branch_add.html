@@ -43,7 +43,7 @@
                         </div>
                         <div class="col-6">
                             <label>Телефон</label>
-                            <input type="text" placeholder="+380696969696" class="form-control" th:field="*{telephone}" th:style="${#fields.hasErrors('telephone') ? 'border-color: #ff0000' : ''}">
+                            <input type="text" placeholder="+380696969696" class="form-control phone" th:field="*{telephone}" th:style="${#fields.hasErrors('telephone') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></div>
                         </div>
@@ -71,7 +71,7 @@
                         </div>
                         <div class="col-6">
                             <label>Прикрепить фото</label>
-                            <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png" name="imgPath" onchange="validateAndUpload('', ['.jpg', '.jpeg', '.png'])" th:style="${#fields.hasErrors('imgPath') ? 'border-color: #ff0000' : ''}">
+                            <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png" name="imgPath" id="imgPath" onchange="validateAndUpload('', ['.jpg', '.jpeg', '.png'])" th:style="${#fields.hasErrors('imgPath') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('imgPath')}" th:errors="*{imgPath}"></div>
                         </div>
@@ -80,13 +80,52 @@
                 <div class="card-footer">
                     <div class="d-flex justify-content-end">
                         <a th:href="@{/branches}" class="btn btn-default">Отменить</a>
-                        <button type="submit" class="btn btn-success">Сохранить</button>
+                        <button type="button" onclick="sendForm()" class="btn btn-success">Сохранить</button>
                     </div>
                 </div>
             </form>
         </div>
-
     </div>
+    <script th:inline="javascript">
+        var branch = [[${branchDto}]]
+    </script>
+    <script>
+        function sendForm() {
+            cleanInputs()
+            var code = $("#code")
+            if (!validateNumber(1, 99999, code)) return
+            var telephone = $("#telephone")
+            if(!validatePhoneNumber(telephone))return
+            var name = $("#name")
+            if(!validString("1", "100", name))return;
+            var email = $("#email")
+            if(!validateEmail(email))return;
+            var address = $("#address")
+            if(!validString("1", "300", address))return;
+            var imgPath = $("#imgPath")
+            if (!getLastDigitFromPath() && !validateOneFile(imgPath.get(0).files[0], ['.jpg', '.jpeg', '.png'])) {
+                $('#imgPath').css('border-color', '#ff0000')
+                return;
+            }
+            if(code.val() != branch.code){
+                var ajaxRequest = $.ajax({
+                    type: "GET",
+                    url: '[[@{/branches/countCode/}]]'+code.val()
+                });
+
+                ajaxRequest.done(function (count) {
+                    if (count > 0) {
+                        showToast("Такий код належить іншому філіалу", "danger")
+                        code.css("border", "1px solid #ff0000")
+                        return
+                    } else {
+                        $('#realtorAdd').submit();
+                    }
+                });
+            }
+            else $('#realtorAdd').submit();
+        }
+    </script>
 </section>
 
 </body>

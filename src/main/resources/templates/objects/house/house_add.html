@@ -767,13 +767,13 @@
             return new Promise(function (resolve, reject) {
                 $.ajax({
                     type: 'GET',
-                    url: '[[@{/realtors/getById/}]]' + codeStaff.val(),
+                    url: '[[@{/realtors/getByCode/}]]' + codeStaff.val(),
                     success: function (realtor) {
-                        if (realtor === '') {
+                        if (realtor == '') {
                             showToast("Користувача за таким кодом не знайдено", "danger")
                             codeStaff.css("border", "1px solid #ff0000");
                             reject(false);
-                        } else if (realtor.branch.id.toString() !== codeBranch.val().toString()) {
+                        } else if (realtor.branch.code.toString() !== codeBranch.val().toString()) {
                             showToast("Ріелтор не належить вказаному філіалу", "danger")
                             codeBranch.css("border", "1px solid #ff0000");
                             reject(false);

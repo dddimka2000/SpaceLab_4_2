@@ -63,7 +63,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
                         <li class="breadcrumb-item"><a th:href="@{/secondary_objects}"
-                                                       data-translate="secondary_real_estate" data-translate="edit_secondary_real_estate">Вторичная недвижимость</a></li>
+                                                       data-translate="edit_secondary_real_estate">Вторичная недвижимость</a></li>
                         <li class="breadcrumb-item active" aria-current="page"
                             th:href="@{/secondary_objects/create}" data-translate-placeholder="create_secondary_real_estate">
                             Создание вторичной недвижимости
@@ -239,7 +239,7 @@
                     <input class="form-control" type="text" id="notes" placeholder="Введите заметки">
                     <br>
                     <h6>Прикрепить файлы</h6>
-                    <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()">
+                    <input type="file" class="form-control" accept=".pdf, .xlsx" name="fileInput" id="fileInput" onchange="showFile()">
                     <br>
                     <div id="fileList">
 

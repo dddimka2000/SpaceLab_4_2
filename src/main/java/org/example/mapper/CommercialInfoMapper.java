@@ -3,6 +3,7 @@ package org.example.mapper;
 import io.minio.errors.*;
 import org.example.dto.CommercialInfoDto;
 import org.example.entity.property.PropertyCommercialObject;
+import org.example.entity.property.type.PropertyOrigin;
 import org.example.service.MinioService;
 import org.example.service.RealtorServiceImpl;
 import org.mapstruct.Mapper;
@@ -25,6 +26,7 @@ public interface CommercialInfoMapper {
     void updateEntityFromDto(CommercialInfoDto commercialInfoDto, @MappingTarget PropertyCommercialObject commercialObject);
     default void updateEntityFromDto(CommercialInfoDto commercialInfoDto, PropertyCommercialObject commercialObject, MinioService minioService, RealtorServiceImpl realtorService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         updateEntityFromDto(commercialInfoDto, commercialObject);
+        commercialObject.setPropertyOrigin(PropertyOrigin.COMMERCIAL);
         if(commercialObject.getFiles() == null)commercialObject.setFiles(new ArrayList<>());
         if(commercialInfoDto.getFiles() != null)
         for (MultipartFile file : commercialInfoDto.getFiles()) {

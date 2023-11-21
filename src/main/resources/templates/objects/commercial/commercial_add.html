@@ -1013,8 +1013,29 @@
             for (var i = 0; i < filesElement.length; i++) {
                 formData.append("files", filesElement[i]);
             }
-            return true
-        }
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    type: 'GET',
+                    url: '[[@{/realtors/getByCode/}]]' + staffCode.val(),
+                    success: function (realtor) {
+                        if (realtor == '') {
+                            showToast("Користувача за таким кодом не знайдено", "danger")
+                            codeStaff.css("border", "1px solid #ff0000");
+                            reject(false);
+                        } else if (realtor.branch.code.toString() !== branchCode.val().toString()) {
+                            showToast("Ріелтор не належить вказаному філіалу", "danger")
+                            codeBranch.css("border", "1px solid #ff0000");
+                            reject(false);
+                        } else {
+                            resolve(true);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Помилка відправки файлів на сервер:', error);
+                        reject(false);
+                    }
+                });
+            });        }
         function addressSelect2(house) {
             if (house) {
                 $("#district").removeAttr("disabled");

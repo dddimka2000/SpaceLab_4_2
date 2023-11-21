@@ -66,7 +66,7 @@
                             </div>
                             <div class="col-7" style="text-align: right;">
                                 <div class="btn-group">
-                                    <button class="btn btn-submit">Поиск покупателя</button>
+                                    <a href="#" onclick="checkModalWindow()" class="btn btn-submit">Поиск покупателя</a>
                                     <a th:href="@{/investor_objects/edit/{id}(id=${id})}">
                                         <button class="btn btn-submit" data-translate="edit">Редактировать</button>
                                     </a>
@@ -161,6 +161,47 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel2">Покупатели</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function checkModalWindow() {
+                $.ajax({
+                    url: '[[@{/buyers/filter/forObject}]]',
+                    data: {
+                        id: getLastDigitFromPath(),
+                        type: 'INVESTOR'
+                    },
+                    success: function (buyers) {
+                        $('#smallModal').modal('show');
+                        var modalBody = $('#modal-body')
+                        modalBody.html('')
+                        if (buyers) {
+                            buyers.forEach(function (buyer) {
+                                modalBody.html(modalBody.html() + `
+                    <a href='[[@{/buyers/}]]`+buyer.id+`'>
+                        `+buyer.surname+` `+buyer.name+` `+buyer.middleName+`
+                    </a><br/>
+                            `);
+                            });
+                        }
+                    }
+                })
+            }
+        </script>
     </main>
 </div>
 </body>

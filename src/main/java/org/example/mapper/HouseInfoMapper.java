@@ -4,6 +4,7 @@ import io.minio.errors.*;
 import org.example.dto.HouseAddressDto;
 import org.example.dto.HouseInfoDto;
 import org.example.entity.property.PropertyHouseObject;
+import org.example.entity.property.type.PropertyOrigin;
 import org.example.service.MinioService;
 import org.example.service.RealtorServiceImpl;
 import org.mapstruct.Mapper;
@@ -27,6 +28,7 @@ public interface HouseInfoMapper {
     void updateEntityFromDto(HouseInfoDto houseInfoDto, @MappingTarget PropertyHouseObject propertyHouseObject);
     default void updateEntityFromDto(HouseInfoDto houseInfoDto, PropertyHouseObject propertyHouseObject, MinioService minioService, RealtorServiceImpl realtorService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         updateEntityFromDto(houseInfoDto, propertyHouseObject);
+        propertyHouseObject.setPropertyOrigin(PropertyOrigin.HOUSE);
         if(propertyHouseObject.getFiles() == null) propertyHouseObject.setFiles(new ArrayList<>());
         if(houseInfoDto.getFiles() != null)
         for (MultipartFile file : houseInfoDto.getFiles()) {

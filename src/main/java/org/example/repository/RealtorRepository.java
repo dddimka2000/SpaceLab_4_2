@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface RealtorRepository extends JpaRepository<Realtor, Integer>, JpaSpecificationExecutor {
     Realtor findByCode(Integer code);
+    int countByCode(int code);
 }

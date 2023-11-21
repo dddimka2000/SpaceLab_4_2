@@ -59,4 +59,7 @@ public class BranchServiceImpl {
     public void save(Branch branch){
         branchRepository.save(branch);
     }
+    public int countByCode(int code){
+        return branchRepository.countByCode(code);
+    }
 }

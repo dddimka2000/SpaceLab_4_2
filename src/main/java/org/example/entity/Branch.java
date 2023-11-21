@@ -13,7 +13,7 @@ public class Branch {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-
+    @Column(unique = true)
     private Integer code;
     private String name;
     private String address;

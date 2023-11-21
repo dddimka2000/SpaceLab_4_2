@@ -49,7 +49,10 @@ public class RealtorController {
         ModelAndView modelAndView = new ModelAndView("realtors/realtors_table");
         return modelAndView;
     }
-
+    @GetMapping("/countCode/{code}")
+    public ResponseEntity<Integer> getCountByCode(@PathVariable Integer code){
+        return ResponseEntity.ok().body(realtorService.countByCode(code));
+    }
     @GetMapping("/{id}")
     public ModelAndView infoPage(@PathVariable("id")int id) {
         ModelAndView modelAndView = new ModelAndView("realtors/realtor_info");
@@ -157,6 +160,15 @@ public class RealtorController {
     public Realtor getById(@PathVariable Integer id){
         try{
             return realtorService.getById(id);
+        }catch (EntityNotFoundException e) {
+            return null;
+        }
+    }
+    @GetMapping("/getByCode/{code}")
+    @ResponseBody
+    public Realtor getByCode(@PathVariable Integer code){
+        try{
+            return realtorService.getByCode(code);
         }catch (EntityNotFoundException e) {
             return null;
         }

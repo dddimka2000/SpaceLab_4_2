@@ -8,4 +8,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 public interface BranchRepository extends JpaRepository<Branch, Integer>, JpaSpecificationExecutor {
+    int countByCode(int code);
 }

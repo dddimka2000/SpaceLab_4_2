@@ -8,6 +8,7 @@ import org.example.entity.Buyer;
 import org.example.entity.BuyerApplication;
 import org.example.entity.BuyerApplicationEditLog;
 import org.example.entity.BuyerNote;
+import org.example.entity.property.PropertyCommercialObject;
 import org.example.entity.property._PropertyObject;
 import org.example.mapper.BuyerMapper;
 import org.example.repository.BuyerApplicationEditLogRepository;
@@ -42,6 +43,9 @@ public class BuyerServiceImpl {
     private final MinioService minioService;
     private final BuyerApplicationEditLogRepository buyerApplicationEditLogRepository;
     private final CommercialServiceImpl commercialService;
+    private final HousesServiceImpl housesService;
+    private final PropertyInvestorObjectService propertyInvestorObjectService;
+    private final PropertySecondaryObjectService propertySecondaryObjectService;
     public Integer addPersonalData(BuyerPersonalDataDto buyerDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         Buyer buyer;
         if(buyerDto.getId()== null){
@@ -99,6 +103,14 @@ public class BuyerServiceImpl {
             case "COMMERCIAL":
                 applications = buyerApplicationRepository.findAll(new BuyerForObjectSpecification(commercialService.getById(id)));
                 break;
+            case "HOUSE":
+                applications = buyerApplicationRepository.findAll(new BuyerForObjectSpecification(housesService.getById(id)));
+                break;
+            case "INVESTOR":
+                applications = buyerApplicationRepository.findAll(new BuyerForObjectSpecification(propertyInvestorObjectService.findById(id).get()));
+                break;
+            case "SECONDARY":
+                applications = buyerApplicationRepository.findAll(new BuyerForObjectSpecification(propertySecondaryObjectService.findById(id).get()));
         }
         return applications.stream()
                 .map(BuyerApplication::getBuyer)

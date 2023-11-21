@@ -27,7 +27,46 @@
         <div id="main-content">
         </div>
     </div>
+    <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2">Покупатели</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
+        function checkModalWindow() {
+            $.ajax({
+                url: '[[@{/buyers/filter/forObject}]]',
+                data: {
+                    id: getLastDigitFromPath(),
+                    type: 'HOUSE'
+                },
+                success: function (buyers) {
+                    $('#smallModal').modal('show');
+                    var modalBody = $('#modal-body')
+                    modalBody.html('')
+                    if (buyers) {
+                        buyers.forEach(function (buyer) {
+                            modalBody.html(modalBody.html() + `
+                    <a href='[[@{/buyers/}]]`+buyer.id+`'>
+                        `+buyer.surname+` `+buyer.name+` `+buyer.middleName+`
+                    </a><br/>
+                            `);
+                        });
+                    }
+                }
+            })
+        }
         $(document).ready(function () {
             var url
             var houseId = getLastDigitFromPath(window.location.pathname)
@@ -52,7 +91,7 @@
                     <div class="card-header">
                         <h3>Редактировать
                         <a href="[[@{/houses/edit/}]]` + houseId + `" class="float-end btn btn-primary">Редактировать</a>
-                        <a href="[[@{/houses/edit/}]]` + houseId + `" class="float-end btn btn-primary" style="margin-right: 5px">Поиск покупателя</a>
+                        <a href="#" onclick="checkModalWindow()" class="float-end btn btn-primary" style="margin-right: 5px">Поиск покупателя</a>
                         </h3>
                     </div>
                     <div class="card-body">

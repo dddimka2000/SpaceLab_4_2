@@ -5,6 +5,7 @@ import org.example.dto.ObjectForFilterDto;
 import org.example.entity.BuyerApplication;
 import org.example.entity.property.PropertyHouseObject;
 import org.example.entity.property._PropertyObject;
+import org.example.entity.property.type.PropertyOrigin;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class BuyerForObjectSpecification  implements Specification<BuyerApplicat
     Integer residentialComplexId;
     Integer realtorId;
     Integer area;
+    PropertyOrigin propertyOrigin;
 
     public BuyerForObjectSpecification(_PropertyObject object) {
         district = object.getAddress().getDistrict();
@@ -29,13 +31,17 @@ public class BuyerForObjectSpecification  implements Specification<BuyerApplicat
         floor = object.getFloor();
         price = object.getPrice();
         realtorId = object.getRealtor().getId();
-        residentialComplexId = object.getBuilderObject().getId();
+        residentialComplexId = object.getBuilderObject() == null?null:object.getBuilderObject().getId();
         area = object.getAreaTotal();
+        propertyOrigin = object.getPropertyOrigin();
     }
 
     @Override
     public Predicate toPredicate(Root<BuyerApplication> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
+        if(propertyOrigin != null){
+            predicates.add(criteriaBuilder.equal(root.get("origin"), propertyOrigin));
+        }
         if(district != null){
             Join<BuyerApplication, String> districts = root.join("districts");
             predicates.add(criteriaBuilder.equal(districts, district));

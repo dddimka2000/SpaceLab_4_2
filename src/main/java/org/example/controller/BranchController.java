@@ -83,4 +83,8 @@ public class BranchController {
         Page<Branch> searchResults = branchServiceImpl.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
         return searchResults;
     }
+    @GetMapping("/countCode/{code}")
+    public ResponseEntity<Integer> getCountByCode(@PathVariable Integer code){
+        return ResponseEntity.ok().body(branchServiceImpl.countByCode(code));
+    }
 }

@@ -87,19 +87,22 @@
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="pills-for-uk" data-bs-toggle="pill"
                                                     data-bs-target="#pills-uk"
-                                                    type="button" role="tab" aria-controls="pills-home" aria-selected="true">UK
+                                                    type="button" role="tab" aria-controls="pills-home"
+                                                    aria-selected="true">UK
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="pills-for-ru" data-bs-toggle="pill"
                                                     data-bs-target="#pills-ru"
-                                                    type="button" role="tab" aria-controls="pills-profile" aria-selected="false">RU
+                                                    type="button" role="tab" aria-controls="pills-profile"
+                                                    aria-selected="false">RU
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="pills-for-en" data-bs-toggle="pill"
                                                     data-bs-target="#pills-en"
-                                                    type="button" role="tab" aria-controls="pills-contact" aria-selected="false">EN
+                                                    type="button" role="tab" aria-controls="pills-contact"
+                                                    aria-selected="false">EN
                                             </button>
                                         </li>
                                     </ul>
@@ -120,7 +123,8 @@
                                                    placeholder="Сергеевич"
                                                    aria-describedby="defaultFormControlHelp"/>
                                         </div>
-                                        <div class="tab-pane fade show" id="pills-ru" role="tabpanel" aria-labelledby="pills-for-ru">
+                                        <div class="tab-pane fade show" id="pills-ru" role="tabpanel"
+                                             aria-labelledby="pills-for-ru">
                                             <label class="form-label">Фамилия</label>
                                             <input type="text" class="form-control" th:field="*{surname}"
                                                    placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
@@ -135,7 +139,8 @@
                                                    placeholder="Сергеевич"
                                                    aria-describedby="defaultFormControlHelp"/>
                                         </div>
-                                        <div class="tab-pane fade show" id="pills-en" role="tabpanel" aria-labelledby="pills-for-en">
+                                        <div class="tab-pane fade show" id="pills-en" role="tabpanel"
+                                             aria-labelledby="pills-for-en">
                                             <label class="form-label">Фамилия</label>
                                             <input type="text" class="form-control" th:field="*{surnameEN}"
                                                    placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
@@ -149,64 +154,64 @@
                                             <input type="text" class="form-control" th:field="*{middleNameEN}"
                                                    placeholder="Сергеевич"
                                                    aria-describedby="defaultFormControlHelp"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row mb-3">
-                                <h3>Телефоны</h3>
-                            </div>
-                            <div id="phones">
-                                <div class="row mb-3" th:each="contact: ${realtorDto.getContacts()}">
-                                    <div class="col-5">
-                                        <input type="text" class="form-control"
-                                               th:value="${contact.getId()}" hidden>
-                                        <input type="text" class="form-control"
-                                               th:value="${contact.getPhone()}"
-                                               aria-describedby="defaultFormControlHelp"/>
+                                <div class="row mb-3">
+                                    <h3>Телефоны</h3>
+                                </div>
+                                <div id="phones">
+                                    <div class="row mb-3" th:each="contact: ${realtorDto.getContacts()}">
+                                        <div class="col-5">
+                                            <input type="text" class="form-control"
+                                                   th:value="${contact.getId()}" hidden>
+                                            <input type="text" class="form-control"
+                                                   th:value="${contact.getPhone()}"
+                                                   aria-describedby="defaultFormControlHelp"/>
+                                        </div>
+                                        <div class="col-5">
+                                            <select class="form-control">
+                                                <option th:each="type: ${contactTypes}" th:value="${type}"
+                                                        th:text="${type}" th:selected="${type == contact.type}">Viber
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-1">
+                                            <button type="button" class="btn btn-default btn-sm"
+                                                    th:onclick="@{deletePhone(this,'{id}')(id=${contact.id})}">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
                                     </div>
+
+                                </div>
+
+                                <div class="row mb-3">
                                     <div class="col-5">
-                                        <select class="form-control">
-                                            <option th:each="type: ${contactTypes}" th:value="${type}"
-                                                    th:text="${type}" th:selected="${type == contact.type}">Viber
-                                            </option>
-                                        </select>
                                     </div>
-                                    <div class="col-1">
-                                        <button type="button" class="btn btn-default btn-sm"
-                                                th:onclick="@{deletePhone(this,'{id}')(id=${contact.id})}">
-                                            <i class="fa fa-trash"></i>
+                                    <div class="col-5 d-flex justify-content-end" id="addPhone">
+                                        <button type="button" onclick="addBlockForPhone()" class="btn btn-info">Добавить
                                         </button>
                                     </div>
+                                    <div class="col-1">
+                                    </div>
                                 </div>
-
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-5">
+                                <div class="row mb-3">
+                                    <h3>Сменить пароль</h3>
                                 </div>
-                                <div class="col-5 d-flex justify-content-end" id="addPhone">
-                                    <button type="button" onclick="addBlockForPhone()" class="btn btn-info">Добавить
-                                    </button>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label">Новый пароль</label>
+                                        <input type="password" class="form-control"
+                                               th:field="*{password}"
+                                               aria-describedby="defaultFormControlHelp"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label">Повтор пароля</label>
+                                        <input type="password" class="form-control" id="password2"
+                                               aria-describedby="defaultFormControlHelp"/>
+                                    </div>
                                 </div>
-                                <div class="col-1">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <h3>Сменить пароль</h3>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-6">
-                                    <label class="form-label">Новый пароль</label>
-                                    <input type="password" class="form-control"
-                                           th:field="*{password}"
-                                           aria-describedby="defaultFormControlHelp"/>
-                                </div>
-                                <div class="col-6">
-                                    <label class="form-label">Повтор пароля</label>
-                                    <input type="password" class="form-control" id="password2"
-                                           aria-describedby="defaultFormControlHelp"/>
-                                </div>
-                            </div>
                         </form>
                     </div>
 
@@ -269,9 +274,9 @@
 
     <script>
         const urlForAddFeedBack = '[[@{/realtors/feedback/save}]]'
+        const urlForValidCode = '[[@{/realtors/countCode/}]]'
+        var originalCode
         $(document).ready(function () {
-            console.log(!getLastDigitFromPath())
-
             var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
 
             flatpickrDateTimes.forEach(function (element) {
@@ -444,11 +449,13 @@
 
         function sendForm() {
             cleanInputs()
-            if (!getLastDigitFromPath() && !validateOneFile($('.fileInput').file, ['.jpg', '.jpeg', '.png'])){
+            if (!getLastDigitFromPath() && !validateOneFile($('.fileInput').get(0).files[0], ['.jpg', '.jpeg', '.png'])) {
                 $('.fileInput').css('border-color', '#ff0000')
                 return;
             }
-            if (!validateNumber(3, 99999, $("#code"))) return
+            if (!validateNumber(1, 99999, $("#code"))) return
+
+            if (!validSelect2($("#branchSelect2"))) return
             if (!validString(3, 50, $("#surname"))) return
             if (!validSelect2($("#branch"))) return
             if (!validString(3, 50, $("#name"))) return
@@ -528,7 +535,23 @@
                     },
                 });
             }
-            $('#realtorAdd').submit();
+            if($("#code").val() != realtor.code){
+                var ajaxRequest = $.ajax({
+                    type: "GET",
+                    url: urlForValidCode + $("#code").val()
+                });
+
+                ajaxRequest.done(function (count) {
+                    if (count > 0) {
+                        showToast("Такий код належить іншому ріелтору", "danger")
+                        $("#code").css("border", "1px solid #ff0000")
+                        return
+                    } else {
+                        $('#realtorAdd').submit();
+                    }
+                });
+            }
+            else $('#realtorAdd').submit();
         }
 
 
@@ -542,7 +565,7 @@
             newPhoneBlock.innerHTML = `
             <div class="col-5">
                 <input type="text" class="form-control" hidden/>
-                <input type="text" placeholder="+380989898989" class="form-control" aria-describedby="defaultFormControlHelp" name="phone" />
+                <input type="text" placeholder="+380989898989" class="form-control phone" aria-describedby="defaultFormControlHelp" name="phone" />
             </div>
             <div class="col-5">
                 <select class="form-control" name="type">
@@ -562,6 +585,7 @@
                     phoneContainer.removeChild(newPhoneBlock)
                 });
             });
+
         };
     </script>
 </section>

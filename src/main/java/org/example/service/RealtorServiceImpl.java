@@ -70,7 +70,9 @@ public class RealtorServiceImpl {
     public Page<Realtor> forSelect(String name, Pageable pageable) {
         return realtorRepository.findAll(Specification.where(BranchSpecification.nameContains(name)), pageable);
     }
-
+    public int countByCode(int code){
+        return realtorRepository.countByCode(code);
+    }
     public Realtor getByCode(Integer staffCode) {
         return realtorRepository.findByCode(staffCode);
     }
