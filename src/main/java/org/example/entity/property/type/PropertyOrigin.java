@@ -7,6 +7,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum PropertyOrigin {
     BUILDER("От строителей"),
-    INVESTOR("От инвесторов");
+    INVESTOR("От инвесторов"),
+    SECONDARY("Вторичная"),
+    HOUSE("Дома и участки"),
+    COMMERCIAL("Коммерческая");
+
     private final String status;
 }

@@ -6,12 +6,6 @@
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Content page</title>
-    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
-    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
-    <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
-    <script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
-    <script th:src="@{/vendor/libs/cleavejs/cleave-phone.js}"></script>
-    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
 </head>
 <body>
 <section layout:fragment="content">
@@ -24,7 +18,7 @@
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                        <li class="breadcrumb-item"><a th:href="@{/houses}">Дома и участки</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/commercial}">Комерческая</a></li>
                         <li class="breadcrumb-item active" aria-current="page">
                             Новый объект
                         </li>
@@ -119,7 +113,7 @@
                         </div>
                         <div class="col-3">
                             Телефон
-                            <input type="tel" id="ownerPhone" class="form-control"
+                            <input type="tel" id="ownerPhone" class="form-control phone"
                                    placeholder="Введите номер телефона">
                         </div>
                         <div class="col-3">
@@ -526,43 +520,158 @@
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
     <script>
         $(document).ready(function () {
-            forSelect2(undefined, undefined, "#zone", "/enum/topzone")
-            forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
-            forSelect2WithSearch(undefined, undefined, "#builderObject", "/builder_objects/for/select")
-            forSelect2(undefined, undefined, "#publicationStatus", "/enum/publicationStatus")
-            forSelect2(undefined, undefined, "#buildStatus", "/enum/buildStatus")
-            forSelect2(undefined, undefined, "#houseType", "/enum/propertyType")
-            forSelect2(undefined, undefined, "#plotPurposeType", "/enum/plotPurposeType")
-            forSelect2(undefined, undefined, "#stateInterior", "/enum/stateHouse")
-            forSelect2(undefined, undefined, "#propertyStructureState", "/enum/propertyStructureState")
-            forSelect2(undefined, undefined, "#bathroomType", "/enum/bathroom")
-            forSelect2(undefined, undefined, "#windowViewType", "/enum/windowViewType")
+            if(getLastDigitFromPath()) {
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/commercial/getById/}]]' + getLastDigitFromPath(),
+                    success: function (commercial) {
+                        $("#houseNumber").val(commercial.address.houseNumber)
+                        $("#section").val(commercial.address.section)
+                        $("#apartmentNumber").val(commercial.apartmentNumber)
+                        $("#street").val(commercial.address.street)
+                        $("#streetEng").val(commercial.address.streetEng)
+                        $("#streetUkr").val(commercial.address.streetUkr)
+                        $("#ownerName").val(commercial.ownerName)
+                        $("#ownerPhone").val(commercial.ownerPhone)
+                        $("#boughtDate").val(commercial.boughtDate.replaceAll('-', '/'))
+                        $("#notes").val(commercial.notes)
+                        $("#cadastralNumber").val(commercial.cadastralNumber)
+                        $("#plotDescription").val(commercial.plotDescription)
+                        $("#administrationComment").val(commercial.administrationComment)
 
-            forSelect2(undefined, undefined, "#gasType", "/enum/gas")
-            forSelect2(undefined, undefined, "#waterType", "/enum/water")
-            forSelect2(undefined, undefined, "#sewageType", "/enum/sewerage")
-            forSelect2(undefined, undefined, "#heatingType", "/enum/heating")
+                        $("#objectCode").val(commercial.objectCode)
+                        if(commercial.realtor!==null){
+                            $("#branchCode").val(commercial.realtor.branch.code)
+                            $("#staffCode").val(commercial.realtor.code)
+                        }
+                        $("#landmark").val(commercial.landmark)
+                        $("#dateDeliveryHouse").val(commercial.dateDeliveryHouse.replaceAll('-', '/'))
+
+                        $("#price").val(commercial.price)
+                        $("#plotAreaTotal").val(commercial.plotAreaTotal)
+                        $("#plotAreaFree").val(commercial.plotAreaFree)
+                        $("#houseQuantity").val(commercial.houseQuantity)
+                        $("#floor").val(commercial.floor)
+                        $("#floorQuantity").val(commercial.floorQuantity)
+                        $("#roomQuantity").val(commercial.roomQuantity)
+                        $("#bedroomQuantity").val(commercial.bedroomQuantity)
+                        $("#roomMeters").val(commercial.roomMeters)
+                        $("#areaTotal").val(commercial.areaTotal)
+                        $("#heightCeiling").val(commercial.heightCeiling)
+                        $("#areaUseful").val(commercial.areaUseful)
+                        $("#areaLiving").val(commercial.areaLiving)
+                        $("#areaKitchen").val(commercial.areaKitchen)
+
+                        $("#lastContactDate").val(commercial.lastContactDate.replaceAll('-', '/'));
+                        $("#vnpExpirationDate").val(commercial.vnpExpirationDate.replaceAll('-', '/'))
+                        $("#environment").prop('checked', commercial.environment)
+                        $("#parking").prop('checked', commercial.parking)
+                        $("#fund").prop('checked', commercial.fund)
+                        $("#facade").prop('checked', commercial.facade)
+                        $("#railway").prop('checked', commercial.railway)
+                        $("#vnp").prop('checked', commercial.vnp)
+                        $("#informationSource").val(commercial.informationSource)
+                        $('#bargain').prop('checked', commercial.bargain);
+                        $('#exclusive').prop('checked', commercial.exclusive);
+                        $('#urgent').prop('checked', commercial.urgent);
+                        $('#free').prop('checked', commercial.free);
+                        $('#open').prop('checked', commercial.open);
+                        $('#intermediary').prop('checked', commercial.intermediary);
+                        $('#advertisementEnabled').prop('checked', commercial.advertisementEnabled);
+
+                        $("#descriptionUk").val(commercial.descriptionUk)
+                        $("#advertisementHeadlineUk").val(commercial.advertisementHeadlineUk)
+                        $("#advertisementTextUk").val(commercial.advertisementTextUk)
+                        $("#description").val(commercial.description)
+                        $("#advertisementHeadline").val(commercial.advertisementHeadline)
+                        $("#advertisementText").val(commercial.advertisementText)
+                        $("#descriptionEn").val(commercial.descriptionEn)
+                        $("#advertisementHeadlineEn").val(commercial.advertisementHeadlineEn)
+                        $("#advertisementTextEn").val(commercial.advertisementTextEn)
+                        $("#advertisementEnabled").val(commercial.advertisementEnabled)
 
 
-            forSelect2(undefined, undefined, "#airConditioningType", "/enum/airConditioning")
-            forSelect2(undefined, undefined, "#ventilationType", "/enum/ventilation")
-            forSelect2(undefined, undefined, "#ladderType", "/enum/ladder")
-            forSelect2(undefined, undefined, "#electricityType", "/enum/electricity")
+                        forSelect2(commercial.address.zone, commercial.address.zone, "#zone", "/enum/topzone")
+                        forSelect2(commercial.ownershipType, commercial.ownershipType, "#ownership", "/enum/ownership")
+                        forSelect2WithSearch(commercial.builderObject.id, commercial.builderObject.name, "#builderObject", "/builder_objects/for/select")
+                        forSelect2(commercial.publicationStatus, commercial.publicationStatus, "#publicationStatus", "/enum/publicationStatus")
+                        forSelect2(commercial.buildStatus, commercial.buildStatus, "#buildStatus", "/enum/buildStatus")
+                        forSelect2(commercial.houseType, commercial.houseType, "#houseType", "/enum/propertyType")
+                        forSelect2(commercial.plotPurposeType, commercial.plotPurposeType, "#plotPurposeType", "/enum/plotPurposeType")
+                        forSelect2(commercial.stateInterior, commercial.stateInterior, "#stateInterior", "/enum/stateHouse")
+                        forSelect2(commercial.propertyStructureState, commercial.propertyStructureState, "#propertyStructureState", "/enum/propertyStructureState")
+                        forSelect2(commercial.bathroomType, commercial.bathroomType, "#bathroomType", "/enum/bathroom")
+                        forSelect2(commercial.windowViewType, commercial.windowViewType, "#windowViewType", "/enum/windowViewType")
+
+                        forSelect2(commercial.gasType, commercial.gasType, "#gasType", "/enum/gas")
+                        forSelect2(commercial.waterType, commercial.waterType, "#waterType", "/enum/water")
+                        forSelect2(commercial.sewageType, commercial.sewageType, "#sewageType", "/enum/sewerage")
+                        forSelect2(commercial.heatingType, commercial.heatingType, "#heatingType", "/enum/heating")
 
 
-            forSelect2(undefined, undefined, "#floorType", "/enum/floor")
-            forSelect2(undefined, undefined, "#windowType", "/enum/window")
-            forSelect2(undefined, undefined, "#carpentryType", "/enum/carpentryType")
-            forSelect2(undefined, undefined, "#frontDoorType", "/enum/frontDoorType")
+                        forSelect2(commercial.airConditioningType, commercial.airConditioningType, "#airConditioningType", "/enum/airConditioning")
+                        forSelect2(commercial.ventilationType, commercial.ventilationType, "#ventilationType", "/enum/ventilation")
+                        forSelect2(commercial.ladderType, commercial.ladderType, "#ladderType", "/enum/ladder")
+                        forSelect2(commercial.electricityType, commercial.electricityType, "#electricityType", "/enum/electricity")
 
 
+                        forSelect2(commercial.floorType, commercial.floorType, "#floorType", "/enum/floor")
+                        forSelect2(commercial.windowType, commercial.windowType, "#windowType", "/enum/window")
+                        forSelect2(commercial.carpentryType, commercial.carpentryType, "#carpentryType", "/enum/carpentryType")
+                        forSelect2(commercial.frontDoorType, commercial.frontDoorType, "#frontDoorType", "/enum/frontDoorType")
+                        addressSelect2(commercial)
+
+                        for (let file of commercial.files) {
+                            var blockForFile = $("#block-for-file");
+                            var row = $("<div class='row'></div>");
+                            var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>"+removeBeforeFirstDot(file)+"</a></div>");
+                            col1.find('a').on("click", function () {
+                                downloadFileFrom(file);
+                            });
+                            var col2 = $("<div class='col'><a href='#' class='text-decoration-none for-delete'>х удалить</a></div>");
+                            col2.find('a').on("click", function () {
+                                deleteFile(this, file);
+                            });
+                            row.append(col1);
+                            row.append(col2);
+                            blockForFile.append(row);
+                        }
+                    }
+                })
+            }else {
+                forSelect2(undefined, undefined, "#zone", "/enum/topzone")
+                forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
+                forSelect2WithSearch(undefined, undefined, "#builderObject", "/builder_objects/for/select")
+                forSelect2(undefined, undefined, "#publicationStatus", "/enum/publicationStatus")
+                forSelect2(undefined, undefined, "#buildStatus", "/enum/buildStatus")
+                forSelect2(undefined, undefined, "#houseType", "/enum/propertyType")
+                forSelect2(undefined, undefined, "#plotPurposeType", "/enum/plotPurposeType")
+                forSelect2(undefined, undefined, "#stateInterior", "/enum/stateHouse")
+                forSelect2(undefined, undefined, "#propertyStructureState", "/enum/propertyStructureState")
+                forSelect2(undefined, undefined, "#bathroomType", "/enum/bathroom")
+                forSelect2(undefined, undefined, "#windowViewType", "/enum/windowViewType")
+
+                forSelect2(undefined, undefined, "#gasType", "/enum/gas")
+                forSelect2(undefined, undefined, "#waterType", "/enum/water")
+                forSelect2(undefined, undefined, "#sewageType", "/enum/sewerage")
+                forSelect2(undefined, undefined, "#heatingType", "/enum/heating")
 
 
+                forSelect2(undefined, undefined, "#airConditioningType", "/enum/airConditioning")
+                forSelect2(undefined, undefined, "#ventilationType", "/enum/ventilation")
+                forSelect2(undefined, undefined, "#ladderType", "/enum/ladder")
+                forSelect2(undefined, undefined, "#electricityType", "/enum/electricity")
+
+
+                forSelect2(undefined, undefined, "#floorType", "/enum/floor")
+                forSelect2(undefined, undefined, "#windowType", "/enum/window")
+                forSelect2(undefined, undefined, "#carpentryType", "/enum/carpentryType")
+                forSelect2(undefined, undefined, "#frontDoorType", "/enum/frontDoorType")
+                addressSelect2()
+            }
             $('#landOwnershipPresent').select2({
                 minimumResultsForSearch: -1,
             })
-
-
             addressSelect2()
             new Cleave("#cadastralNumber", {
                 blocks: [3, 3, 3],
@@ -576,12 +685,6 @@
                 blocks: [2, 2, 2, 2],
                 numericOnly: true
             })
-            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
-            flatpickrDateTimes.forEach(function (element) {
-                element.flatpickr({
-                    dateFormat: "Y/m/d"
-                });
-            });
         });
         function sendForm() {
             var formData = new FormData();
@@ -602,6 +705,66 @@
         }
     </script>
     <script>
+        function deleteFile(button, url) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var rowElement = button.closest('.row');
+                if (rowElement) {
+                    rowElement.remove();
+                }
+                $.ajax({
+                    type: "Delete",
+                    url: '[[@{/commercial/deleteFile}]]',
+                    data: {
+                        id: getLastDigitFromPath(window.location.pathname),
+                        url: url,
+                    },
+                    success: function (response) {
+                        showToast(response, "success")
+                    },
+                });
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+        function downloadFileFrom(url) {
+            $.ajax({
+                type: "GET",
+                url: "[[@{/users/download}]]",
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    url: url
+                },
+                success: function (data) {
+                    var blob = new Blob([data], {type: 'application/octet-stream'});
+                    var filename = "file.pdf";
+
+                    if (window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveOrOpenBlob(blob, filename);
+                    } else {
+                        var link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
+                    }
+                },
+                error: function () {
+                    console.log("Помилка завантаження файлу");
+                }
+            });
+        }
+
+
+        function checkPhone(button){
+            if (validatePhoneNumber($('#ownerPhone')))showToast("Телефон коректний", "success")
+        }
         function validAllInputs(formData){
             cleanInputs()
             var streetUkr = $("#streetUkr");
@@ -645,7 +808,7 @@
             var publicationStatus = $("#publicationStatus");
             if (!validSelect2(publicationStatus)) return false
             var objectCode = $("#objectCode");
-            if (!validString("10", "10", objectCode)) return false
+            if (!validString("8", "8", objectCode)) return false
             var branchCode = $("#branchCode");
             if (!validateNumber(1, 1000000, branchCode)) return false
             var staffCode = $("#staffCode");
@@ -678,7 +841,7 @@
             var areaUseful = $("#areaUseful");
             if (!validateNumber(1, 1000000, areaUseful)) return false
             var roomMeters = $("#roomMeters");
-            if (!validString("11", "11", roomMeters)) return false
+            if (!validString("8", "8", roomMeters)) return false
             var heightCeiling = $("#heightCeiling");
             if (!validateNumber(1, 10, heightCeiling)) return false
             var plotAreaTotal = $("#plotAreaTotal");
@@ -752,11 +915,16 @@
             if (!validString("1", "300", advertisementHeadlineEn)) return false
             var advertisementTextEn = $("#advertisementTextEn");
             if (!validString("1", "990", advertisementTextEn)) return false
-
             var pictures = myDropzone.getAcceptedFiles();
-            if (getLastDigitFromPath(window.location.pathname)  &&  allUploadedFiles.length < 0) {
+            pictures.forEach(function (file) {
+                formData.append('pictures', file)
+            })
+            if (!getLastDigitFromPath(window.location.pathname)  &&  pictures.length <= 0) {
                 showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
                 return false
+            }
+            if(getLastDigitFromPath()){
+                formData.append("id", getLastDigitFromPath());
             }
             formData.append("streetUkr", streetUkr.val());
             formData.append("street", street.val());
@@ -771,7 +939,7 @@
             formData.append("ownerName", ownerName.val());
             formData.append("ownerPhone", ownerPhone.val());
             formData.append("boughtDate", boughtDate.val());
-            formData.append("ownershipType", ownership.val());
+            formData.append("OwnershipType", ownership.val());
             formData.append("notes", notes.val());
             formData.append("cadastralNumber", cadastralNumber.val());
             formData.append("plotDescription", plotDescription.val());
@@ -804,11 +972,11 @@
             formData.append("propertyStructureState", propertyStructureState.val());
             formData.append("bathroomType", bathroomType.val());
             formData.append("windowViewType", windowViewType.val());
-            formData.append("environment", environment.val());
-            formData.append("parking", parking.val());
-            formData.append("fund", fund.val());
-            formData.append("facade", facade.val());
-            formData.append("railway", railway.val());
+            formData.append("environment", environment.is(':checked'));
+            formData.append("parking", parking.is(':checked'));
+            formData.append("fund", fund.is(':checked'));
+            formData.append("facade", facade.is(':checked'));
+            formData.append("railway", railway.is(':checked'));
             formData.append("gasType", gasType.val());
             formData.append("waterType", waterType.val());
             formData.append("sewageType", sewageType.val());
@@ -822,12 +990,12 @@
             formData.append("carpentryType", carpentryType.val());
             formData.append("frontDoorType", frontDoorType.val());
             formData.append("lastContactDate", lastContactDate.val());
-            formData.append("bargain", bargain.val());
-            formData.append("exclusive", exclusive.val());
-            formData.append("urgent", urgent.val());
-            formData.append("free", free.val());
-            formData.append("open", open.val());
-            formData.append("intermediary", intermediary.val());
+            formData.append("bargain", bargain.is(':checked'));
+            formData.append("exclusive", exclusive.is(':checked'));
+            formData.append("urgent", urgent.is(':checked'));
+            formData.append("free", free.is(':checked'));
+            formData.append("open", open.is(':checked'));
+            formData.append("intermediary", intermediary.is(':checked'));
             formData.append("advertisementEnabled", advertisementEnabled.val());
             formData.append("descriptionUk", descriptionUk.val());
             formData.append("advertisementHeadlineUk", advertisementHeadlineUk.val());
@@ -878,6 +1046,10 @@
                 var element = e.params.data.text
                 $("#city").empty();
                 $("#city").removeAttr("disabled");
+
+                $("#district").empty();
+                $("#district").prop("disabled", true);
+
                 $("#city").select2({
                     minimumResultsForSearch: -1,
                     placeholder: "Елемент",
@@ -976,7 +1148,7 @@
             } else {
                 if (file.description) {
                     $.ajax({
-                        url: "[[@{/houses/deletePicture/}]]" + getLastDigitFromPath(window.location.pathname),
+                        url: "[[@{/commercial/deletePicture/}]]" + getLastDigitFromPath(window.location.pathname),
                         method: "Delete",
                         data: {
                             url: file.description,
@@ -1006,7 +1178,7 @@
         });
         if (getLastDigitFromPath(window.location.pathname)) {
             $.ajax({
-                url: "[[@{/houses/getPicture/}]]" + getLastDigitFromPath(window.location.pathname),
+                url: "[[@{/commercial/getPicture/}]]" + getLastDigitFromPath(window.location.pathname),
                 method: "GET",
                 success: function (files) {
                     files.forEach(function (file) {

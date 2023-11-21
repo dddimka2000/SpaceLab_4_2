@@ -103,3 +103,18 @@ function removeBeforeFirstDot(input) {
         return input;
     }
 }
+$(document).ready(function () {
+    $(".phone").each(function(index, element) {
+        new Cleave("#" + element.id, {
+            blocks: [13],
+            numericOnly: true,
+            prefix: "+380"
+        })
+    });
+    var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
+    flatpickrDateTimes.forEach(function (element) {
+        element.flatpickr({
+            dateFormat: "Y/m/d"
+        });
+    });
+})

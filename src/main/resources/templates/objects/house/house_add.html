@@ -6,12 +6,6 @@
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Content page</title>
-    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
-    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
-    <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
-    <script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
-    <script th:src="@{/vendor/libs/cleavejs/cleave-phone.js}"></script>
-    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
 </head>
 <body>
 <section layout:fragment="content">
@@ -730,7 +724,7 @@
             if (!validString("1", "5000", advertisementTextUk)) return false
             if (!validString("1", "5000", advertisementTextRu)) return false
             if (!validString("1", "5000", advertisementTextEn)) return false
-            if (getLastDigitFromPath(window.location.pathname)  &&  allUploadedFiles.length < 0) {
+            if (!getLastDigitFromPath(window.location.pathname)  &&  allUploadedFiles.length <= 0) {
                 showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
                 return false
             }
@@ -918,7 +912,8 @@
                         }
                     }
                 })
-            } else {
+            }
+            else {
                 forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
                 forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
                 forSelect2(undefined, undefined, "#publicationStatus", "/enum/publicationStatus")
@@ -998,6 +993,9 @@
                 var element = e.params.data.text
                 $("#city").empty();
                 $("#city").removeAttr("disabled");
+
+                $("#district").empty();
+                $("#district").prop("disabled", true);
                 $("#city").select2({
                     minimumResultsForSearch: -1,
                     placeholder: "Елемент",
