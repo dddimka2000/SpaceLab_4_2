@@ -139,8 +139,7 @@
                         cell0.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
 
                         var cell1 = newRow.insertCell(1);
-                        if(buyer.branch)cell1.innerHTML = buyer.branch.id;
-                        else cell1.innerHTML = 'не вибрано'
+                        cell1.innerHTML = buyer.realtor.branch.name
                         cell1.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
 
                         var cell2 = newRow.insertCell(2);

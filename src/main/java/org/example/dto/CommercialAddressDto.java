@@ -37,8 +37,4 @@ public class CommercialAddressDto {
     @Min(value = 1, message = "Введите корректную секцию дома")
     @Max(value = 100000001, message = "Введите корректную секцию дома")
     private Integer section;
-    @Min(value = 1, message = "{error.field.min-value}")
-    @Max(value = 1000000, message ="{error.field.max-value}")
-    @NotNull(message = "{error.field.empty}")
-    private Integer apartmentNumber;
 }

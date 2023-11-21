@@ -26,8 +26,8 @@ public class CommercialInfoDto {
     private String ownerPhone;
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate boughtDate;
-//    @NotNull(message = "{error.field.empty}")
-    private OwnershipType ownership;
+    @NotNull(message = "{error.field.empty}")
+    private OwnershipType ownershipType;
     @Size(min = 1, max = 999, message = "{error.field.size}")
     @NotNull(message = "{error.field.empty}")
     private String notes;
@@ -96,4 +96,8 @@ public class CommercialInfoDto {
 
     private List<MultipartFile> files;
     private List<MultipartFile> pictures;
+    @Min(value = 1, message = "{error.field.min-value}")
+    @Max(value = 1000000, message ="{error.field.max-value}")
+    @NotNull(message = "{error.field.empty}")
+    private Integer apartmentNumber;
 }

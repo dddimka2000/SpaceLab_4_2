@@ -100,7 +100,7 @@
                         </div>
                         <div class="col-3">
                             Телефон
-                            <input type="tel" id="telephone" class="form-control"
+                            <input type="tel" id="telephone" class="form-control phone"
                                    placeholder="Введите номер телефона">
                         </div>
                         <div class="col-3">
@@ -764,47 +764,41 @@
             formData.append("carpentryType", carpentryType.val());
             formData.append("frontDoorType", frontDoorType.val());
 
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    type: 'GET',
-                    url: '[[@{/realtors/getByCode/}]]' + codeStaff.val(),
-                    success: function (realtor) {
-                        if (realtor == '') {
-                            showToast("Користувача за таким кодом не знайдено", "danger")
-                            codeStaff.css("border", "1px solid #ff0000");
-                            reject(false);
-                        } else if (realtor.branch.code.toString() !== codeBranch.val().toString()) {
-                            showToast("Ріелтор не належить вказаному філіалу", "danger")
-                            codeBranch.css("border", "1px solid #ff0000");
-                            reject(false);
-                        } else {
-                            resolve(true);
-                        }
-                    },
-                    error: function (error) {
-                        console.error('Помилка відправки файлів на сервер:', error);
-                        reject(false);
-                    }
-                });
-            });
+            return true
         }
         function sendForm() {
             let formData = new FormData();
             if (!validAllInput(formData)) return
+            var branchCode = $("#codeBranch");
+            var staffCode = $("#codeStaff");
 
             $.ajax({
-                type: 'POST',
-                url: '[[@{/houses/add/info}]]',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    showToast(response, "success")
-                },
-                error: function (error) {
-                    console.error('Помилка відправки файлів на сервер:', error);
+                type: 'GET',
+                url: '[[@{/realtors/getByCode/}]]' + staffCode.val(),
+                success: function (realtor) {
+                    if (realtor == '') {
+                        showToast("Користувача за таким кодом не знайдено", "danger")
+                        staffCode.css("border", "1px solid #ff0000");
+                    } else if (realtor.branch.code.toString() !== branchCode.val().toString()) {
+                        showToast("Ріелтор не належить вказаному філіалу", "danger")
+                        branchCode.css("border", "1px solid #ff0000");
+                    } else {
+                        $.ajax({
+                            type: 'POST',
+                            url: '[[@{/houses/add/info}]]',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                showToast(response, "success")
+                            },
+                            error: function (error) {
+                                console.error('Помилка відправки файлів на сервер:', error);
+                            }
+                        });
+                    }
                 }
-            });
+            })
         }
         $(document).ready(function () {
             $('#landOwnershipPresent').select2({
@@ -937,14 +931,6 @@
 
                 addressSelect2()
             }
-
-            $('.onlyNumber').on('input', function () {
-                $(this).val(function (_, value) {
-                    return value.replace(/[^\d.]+/g, '').replace(/^(\d*\.\d*)\..*$/, '$1');
-                });
-            });
-
-
             new Cleave("#cadastralNumber", {
                 blocks: [3, 3, 3],
                 numericOnly: true

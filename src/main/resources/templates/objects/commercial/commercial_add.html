@@ -592,6 +592,7 @@
 
 
                         forSelect2(commercial.address.zone, commercial.address.zone, "#zone", "/enum/topzone")
+                        forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
                         forSelect2(commercial.ownershipType, commercial.ownershipType, "#ownership", "/enum/ownership")
                         forSelect2WithSearch(commercial.builderObject.id, commercial.builderObject.name, "#builderObject", "/builder_objects/for/select")
                         forSelect2(commercial.publicationStatus, commercial.publicationStatus, "#publicationStatus", "/enum/publicationStatus")
@@ -688,20 +689,44 @@
         });
         function sendForm() {
             var formData = new FormData();
-            if(!validAllInputs(formData))return false
+            if(!validAllInputs(formData))return
+            var branchCode = $("#branchCode");
+            var staffCode = $("#staffCode");
+
             $.ajax({
-                type: 'POST',
-                url: '[[@{/commercial/add}]]',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    showToast(response, "success")
+                type: 'GET',
+                url: '[[@{/realtors/getByCode/}]]' + staffCode.val(),
+                success: function (realtor) {
+                    if (realtor == '') {
+                        showToast("Користувача за таким кодом не знайдено", "danger")
+                        staffCode.css("border", "1px solid #ff0000");
+                    } else if (realtor.branch.code.toString() !== branchCode.val().toString()) {
+                        showToast("Ріелтор не належить вказаному філіалу", "danger")
+                        branchCode.css("border", "1px solid #ff0000");
+                    } else {
+                        $.ajax({
+                            type: 'POST',
+                            url: '[[@{/commercial/add}]]',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                showToast(response, "success")
+                            },
+                            error: function (error) {
+                                console.error('Помилка відправки файлів на сервер:', error);
+                            }
+                        });
+                    }
                 },
                 error: function (error) {
                     console.error('Помилка відправки файлів на сервер:', error);
+                    reject(false);
                 }
             });
+
+
+
         }
     </script>
     <script>
@@ -760,9 +785,8 @@
                 }
             });
         }
-
-
         function checkPhone(button){
+            cleanInputs()
             if (validatePhoneNumber($('#ownerPhone')))showToast("Телефон коректний", "success")
         }
         function validAllInputs(formData){
@@ -939,7 +963,7 @@
             formData.append("ownerName", ownerName.val());
             formData.append("ownerPhone", ownerPhone.val());
             formData.append("boughtDate", boughtDate.val());
-            formData.append("OwnershipType", ownership.val());
+            formData.append("ownershipType", ownership.val());
             formData.append("notes", notes.val());
             formData.append("cadastralNumber", cadastralNumber.val());
             formData.append("plotDescription", plotDescription.val());
@@ -1013,29 +1037,8 @@
             for (var i = 0; i < filesElement.length; i++) {
                 formData.append("files", filesElement[i]);
             }
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    type: 'GET',
-                    url: '[[@{/realtors/getByCode/}]]' + staffCode.val(),
-                    success: function (realtor) {
-                        if (realtor == '') {
-                            showToast("Користувача за таким кодом не знайдено", "danger")
-                            codeStaff.css("border", "1px solid #ff0000");
-                            reject(false);
-                        } else if (realtor.branch.code.toString() !== branchCode.val().toString()) {
-                            showToast("Ріелтор не належить вказаному філіалу", "danger")
-                            codeBranch.css("border", "1px solid #ff0000");
-                            reject(false);
-                        } else {
-                            resolve(true);
-                        }
-                    },
-                    error: function (error) {
-                        console.error('Помилка відправки файлів на сервер:', error);
-                        reject(false);
-                    }
-                });
-            });        }
+            return true
+        }
         function addressSelect2(house) {
             if (house) {
                 $("#district").removeAttr("disabled");
@@ -1224,572 +1227,6 @@
             myDropzone.options.maxFiles = newMaxFiles;
         }
     </script>
-
-
-    <!--    <script>-->
-    <!--        function checkPhone(button){-->
-    <!--            if (validatePhoneNumber($('#telephone')))showToast("Телефон коректний", "success")-->
-    <!--        }-->
-    <!--        function deleteFile(button, url) {-->
-    <!--            $('#confirmationModal').modal('show');-->
-
-    <!--            $('.confirm-delete').on('click', function () {-->
-    <!--                var rowElement = button.closest('.row');-->
-    <!--                if (rowElement) {-->
-    <!--                    rowElement.remove();-->
-    <!--                }-->
-    <!--                $.ajax({-->
-    <!--                    type: "Delete",-->
-    <!--                    url: '[[@{/houses/deleteFile}]]',-->
-    <!--                    data: {-->
-    <!--                        id: getLastDigitFromPath(window.location.pathname),-->
-    <!--                        url: url,-->
-    <!--                    },-->
-    <!--                    success: function (response) {-->
-    <!--                        showToast(response, "success")-->
-    <!--                    },-->
-    <!--                });-->
-    <!--                $('#confirmationModal').modal('hide');-->
-    <!--                $('.confirm-delete').off('click');-->
-    <!--            });-->
-    <!--            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {-->
-    <!--                $('#confirmationModal').modal('hide');-->
-    <!--                $('.confirm-delete').off('click');-->
-    <!--            });-->
-    <!--        }-->
-    <!--        function downloadFileFrom(url) {-->
-    <!--            $.ajax({-->
-    <!--                type: "GET",-->
-    <!--                url: "[[@{/users/download}]]",-->
-    <!--                xhrFields: {-->
-    <!--                    responseType: 'blob'-->
-    <!--                },-->
-    <!--                data: {-->
-    <!--                    url: url-->
-    <!--                },-->
-    <!--                success: function (data) {-->
-    <!--                    var blob = new Blob([data], {type: 'application/octet-stream'});-->
-    <!--                    var filename = "file.pdf";-->
-
-    <!--                    if (window.navigator.msSaveOrOpenBlob) {-->
-    <!--                        window.navigator.msSaveOrOpenBlob(blob, filename);-->
-    <!--                    } else {-->
-    <!--                        var link = document.createElement('a');-->
-    <!--                        link.href = window.URL.createObjectURL(blob);-->
-    <!--                        link.download = filename;-->
-    <!--                        link.click();-->
-    <!--                    }-->
-    <!--                },-->
-    <!--                error: function () {-->
-    <!--                    console.log("Помилка завантаження файлу");-->
-    <!--                }-->
-    <!--            });-->
-    <!--        }-->
-    <!--        function validAllInput(formData) {-->
-    <!--            cleanInputs()-->
-    <!--            var houseNumber = $("#houseNumber")-->
-    <!--            var region = $("#region")-->
-    <!--            var city = $("#city")-->
-    <!--            var district = $("#district")-->
-    <!--            var street = $("#street")-->
-    <!--            var streetUkr = $("#streetUkr")-->
-    <!--            var streetEng = $("#streetEng")-->
-    <!--            var zone = $("#topzone")-->
-    <!--            var ownerName = $("#owner")-->
-    <!--            var ownerPhone = $("#telephone")-->
-    <!--            var boughtDate = $("#dateOfPurchase")-->
-    <!--            var ownershipType = $("#ownership")-->
-    <!--            var notes = $("#note")-->
-    <!--            var cadastralNumber = $("#cadastralNumber")-->
-    <!--            var plotDescription = $("#ideaPlot")-->
-    <!--            var files = $("#housesFiles")-->
-    <!--            var administrationComment = $("#administrationComment")-->
-    <!--            if (getLastDigitFromPath(window.location.pathname))-->
-    <!--                formData.append("id", getLastDigitFromPath(window.location.pathname));-->
-    <!--            formData.append("houseNumber", houseNumber.val());-->
-    <!--            formData.append("region", region.val());-->
-    <!--            formData.append("city", city.val());-->
-    <!--            formData.append("district", district.val());-->
-    <!--            formData.append("street", street.val());-->
-    <!--            formData.append("streetEng", streetEng.val());-->
-    <!--            formData.append("streetUkr", streetUkr.val());-->
-    <!--            formData.append("zone", zone.val());-->
-    <!--            formData.append("ownerName", ownerName.val());-->
-    <!--            formData.append("ownerPhone", ownerPhone.val());-->
-    <!--            formData.append("boughtDate", boughtDate.val());-->
-    <!--            formData.append("ownershipType", ownershipType.val());-->
-    <!--            formData.append("notes", notes.val());-->
-    <!--            formData.append("cadastralNumber", cadastralNumber.val());-->
-    <!--            formData.append("plotDescription", plotDescription.val());-->
-    <!--            var filesElement = files[0].files;-->
-    <!--            for (var i = 0; i < filesElement.length; i++) {-->
-    <!--                formData.append("files", filesElement[i]);-->
-    <!--            }-->
-    <!--            formData.append("administrationComment", administrationComment.val());-->
-    <!--            var codeObject = $("#codeObject");-->
-    <!--            var codeBranch = $("#codeBranch");-->
-    <!--            var codeStaff = $("#codeStaff");-->
-    <!--            var landmark = $("#landmark");-->
-    <!--            var price = $("#price");-->
-    <!--            var propertyHouseType = $("#propertyType");-->
-    <!--            var plotAreaTotal = $("#plotAreaTotal");-->
-    <!--            var plotAreaFree = $("#plotAreaFree");-->
-    <!--            var landOwnershipPresent = $("#landOwnershipPresent");-->
-    <!--            var plotPurposeType = $("#plotPurposeType");-->
-    <!--            var houseQuantity = $("#houseQuantity");-->
-    <!--            var floorQuantity = $("#floorQuantity");-->
-    <!--            var roomQuantity = $("#roomQuantity");-->
-    <!--            var bedroomQuantity = $("#bedroomQuantity");-->
-    <!--            var roomMeters = $("#myNumberInput");-->
-    <!--            var areaTotal = $("#areaTotal");-->
-    <!--            var areaLiving = $("#areaLiving");-->
-    <!--            var areaKitchen = $("#areaKitchen");-->
-    <!--            var lastContactDate = $("#lastContactDate");-->
-    <!--            var vnp = $("#vnp");-->
-    <!--            var vnpExpirationDate = $("#vnpExpirationDate");-->
-    <!--            var informationSource = $("#informationSource");-->
-    <!--            var bargain = $("#bargain");-->
-    <!--            var exclusive = $("#exclusive");-->
-    <!--            var urgent = $("#urgent");-->
-    <!--            var free = $("#free");-->
-    <!--            var open = $("#open");-->
-    <!--            var intermediary = $("#intermediary");-->
-    <!--            var descriptionUk = $("#descriptionUk");-->
-    <!--            var advertisementHeadlineUk = $("#advertisementHeadlineUk");-->
-    <!--            var advertisementTextUk = $("#advertisementTextUk");-->
-    <!--            var descriptionRu = $("#descriptionRu");-->
-    <!--            var advertisementHeadlineRu = $("#advertisementHeadlineRu");-->
-    <!--            var advertisementTextRu = $("#advertisementTextRu");-->
-    <!--            var descriptionEn = $("#descriptionEn");-->
-    <!--            var advertisementHeadlineEn = $("#advertisementHeadlineEn");-->
-    <!--            var advertisementTextEn = $("#advertisementTextEn");-->
-    <!--            var advertisementEnabled = $("#advertisementEnabled");-->
-    <!--            var allUploadedFiles = myDropzone.getAcceptedFiles();-->
-    <!--            allUploadedFiles.forEach(function (file) {-->
-    <!--                formData.append('pictures', file)-->
-    <!--            })-->
-    <!--            formData.append("objectCode", codeObject.val());-->
-    <!--            formData.append("branchCode", codeBranch.val());-->
-    <!--            formData.append("codeStaff", codeStaff.val());-->
-    <!--            formData.append("landmark", landmark.val());-->
-    <!--            formData.append("price", price.val());-->
-    <!--            formData.append("houseType", propertyHouseType.val());-->
-    <!--            formData.append("plotAreaTotal", plotAreaTotal.val());-->
-    <!--            formData.append("plotAreaFree", plotAreaFree.val());-->
-    <!--            formData.append("landOwnershipPresent", landOwnershipPresent.val());-->
-    <!--            formData.append("plotPurposeType", plotPurposeType.val());-->
-    <!--            formData.append("houseQuantity", houseQuantity.val());-->
-    <!--            formData.append("floorQuantity", floorQuantity.val());-->
-    <!--            formData.append("roomQuantity", roomQuantity.val());-->
-    <!--            formData.append("bedroomQuantity", bedroomQuantity.val());-->
-    <!--            formData.append("roomMeters", roomMeters.val());-->
-    <!--            formData.append("areaTotal", areaTotal.val());-->
-    <!--            formData.append("areaLiving", areaLiving.val());-->
-    <!--            formData.append("areaKitchen", areaKitchen.val());-->
-    <!--            formData.append("lastContactDate", lastContactDate.val());-->
-    <!--            formData.append("vnp", vnp.is(':checked'));-->
-    <!--            formData.append("vnpExpirationDate", vnpExpirationDate.val());-->
-    <!--            formData.append("informationSource", informationSource.val());-->
-    <!--            formData.append("bargain", bargain.is(':checked'));-->
-    <!--            formData.append("exclusive", exclusive.is(':checked'));-->
-    <!--            formData.append("urgent", urgent.is(':checked'));-->
-    <!--            formData.append("free", free.is(':checked'));-->
-    <!--            formData.append("open", open.is(':checked'));-->
-    <!--            formData.append("intermediary", intermediary.is(':checked'));-->
-    <!--            formData.append("descriptionUk", descriptionUk.val());-->
-    <!--            formData.append("advertisementHeadlineUk", advertisementHeadlineUk.val());-->
-    <!--            formData.append("advertisementTextUk", advertisementTextUk.val());-->
-    <!--            formData.append("description", descriptionRu.val());-->
-    <!--            formData.append("advertisementHeadline", advertisementHeadlineRu.val());-->
-    <!--            formData.append("advertisementText", advertisementTextRu.val());-->
-    <!--            formData.append("descriptionEn", descriptionEn.val());-->
-    <!--            formData.append("advertisementHeadlineEn", advertisementHeadlineEn.val());-->
-    <!--            formData.append("advertisementTextEn", advertisementTextEn.val());-->
-    <!--            formData.append("advertisementEnabled", advertisementEnabled.is(':checked'));-->
-
-    <!--            var wallMaterial = $("#wall_material");-->
-    <!--            var wallMaterialUkr = $("#wall_materialUkr");-->
-    <!--            var wallMaterialEng = $("#wall_materialEng");-->
-    <!--            var stateInterior = $("#stateInterior");-->
-    <!--            var stateHouse = $("#stateHouse");-->
-    <!--            var kitchenType = $("#kitchenType");-->
-    <!--            var bathroomType = $("#bathroomType");-->
-    <!--            var gasType = $("#gasType");-->
-    <!--            var waterType = $("#waterType");-->
-    <!--            var sewageType = $("#sewageType");-->
-    <!--            var heatingType = $("#heatingType");-->
-    <!--            var ladderType = $("#ladderType");-->
-    <!--            var roofType = $("#roofType");-->
-    <!--            var floorType = $("#floorType");-->
-    <!--            var windowType = $("#windowType");-->
-    <!--            var carpentryType = $("#carpentryType");-->
-    <!--            var frontDoorType = $("#frontDoorType");-->
-
-    <!--            if (!validateNumber(0, 9999, houseNumber)) return false-->
-    <!--            if (!validSelect2(region)) return false-->
-    <!--            if (!validSelect2(city)) return false-->
-    <!--            if (!validSelect2(district)) return false-->
-    <!--            if (!validString("5","300",street)) return false-->
-    <!--            if (!validString("5","300",streetUkr)) return false-->
-    <!--            if (!validString("5","300",streetEng)) return false-->
-    <!--            if (!validSelect2(zone)) return false-->
-    <!--            if (!validString("5", "70", ownerName)) return false-->
-    <!--            if (!validatePhoneNumber(ownerPhone)) return false-->
-    <!--            if (!validateDate(boughtDate)) return false-->
-    <!--            if (!validSelect2(ownershipType)) return false-->
-    <!--            if (!validString("3", "1000", notes)) return false-->
-    <!--            if (cadastralNumber.val().length !== 11) {-->
-    <!--                cadastralNumber.css("border", "1px solid #ff0000");-->
-    <!--                showToast("Кадастровий номер не коректний", "danger")-->
-    <!--                return false-->
-    <!--            }-->
-    <!--            if (!validString("3", "1000", plotDescription)) return false-->
-    <!--            if (!getLastDigitFromPath(window.location.pathname)  &&  !validateFile('housesFiles', [".pdf"])) return false-->
-    <!--            if (!validString("3", "1000", administrationComment)) return false-->
-    <!--            if (codeObject.val().replace(/\s/g, '').length !== 8) {-->
-    <!--                codeObject.css("border", "1px solid #ff0000")-->
-    <!--                showToast("Код об'єкта має містити 8 символів", "danger")-->
-    <!--                return false-->
-    <!--            }-->
-    <!--            if (!validateNumber(1, 1000000, codeBranch)) return false-->
-    <!--            if (!validString("0", "500", landmark)) return false-->
-    <!--            if (!validateNumber(20000, 999999, price)) return false-->
-    <!--            if (!validSelect2(propertyHouseType)) return false-->
-    <!--            if (!validateNumber(3, 10000, plotAreaTotal)) return false-->
-    <!--            if (!validateNumber(3, 10000, plotAreaFree)) return false-->
-    <!--            if (!validSelect2(landOwnershipPresent)) return false-->
-    <!--            if (!validSelect2(plotPurposeType)) return false-->
-    <!--            if (!validateNumber(1, 1000, houseQuantity)) return false-->
-    <!--            if (!validateNumber(1, 10000, floorQuantity)) return false-->
-    <!--            if (!validateNumber(1, 10000, roomQuantity)) return false-->
-    <!--            if (!validateNumber(1, 10000, bedroomQuantity)) return false-->
-    <!--            if (!validateNumber(1, 10, roomMeters)) return false-->
-    <!--            if (!validateNumber(3, 10000, areaTotal)) return false-->
-    <!--            if (!validateNumber(3, 10000, areaLiving)) return false-->
-    <!--            if (!validateNumber(3, 10000, areaKitchen)) return false-->
-    <!--            if (!validateDate(lastContactDate)) return false-->
-    <!--            if (!validateDate(vnpExpirationDate)) return false-->
-    <!--            if (!validString("1", "300", informationSource)) return false-->
-    <!--            if (!validString("1", "5000", descriptionUk)) return false-->
-    <!--            if (!validString("1", "5000", descriptionRu)) return false-->
-    <!--            if (!validString("1", "5000", descriptionEn)) return false-->
-    <!--            if (!validString("1", "500", advertisementHeadlineUk)) return false-->
-    <!--            if (!validString("1", "500", advertisementHeadlineRu)) return false-->
-    <!--            if (!validString("1", "500", advertisementHeadlineEn)) return false-->
-    <!--            if (!validString("1", "5000", advertisementTextUk)) return false-->
-    <!--            if (!validString("1", "5000", advertisementTextRu)) return false-->
-    <!--            if (!validString("1", "5000", advertisementTextEn)) return false-->
-    <!--            if (getLastDigitFromPath(window.location.pathname)  &&  allUploadedFiles.length < 0) {-->
-    <!--                showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")-->
-    <!--                return false-->
-    <!--            }-->
-    <!--            if (!validString("1", "100", wallMaterial)) return false-->
-    <!--            if (!validString("1", "100", wallMaterialUkr)) return false-->
-    <!--            if (!validString("1", "100", wallMaterialEng)) return false-->
-    <!--            if (!validSelect2(stateInterior)) return false-->
-    <!--            if (!validSelect2(stateHouse)) return false-->
-    <!--            if (!validSelect2(kitchenType)) return false-->
-    <!--            if (!validSelect2(bathroomType)) return false-->
-    <!--            if (!validSelect2(gasType)) return false-->
-    <!--            if (!validSelect2(waterType)) return false-->
-    <!--            if (!validSelect2(sewageType)) return false-->
-    <!--            if (!validSelect2(heatingType)) return false-->
-    <!--            if (!validSelect2(ladderType)) return false-->
-    <!--            if (!validSelect2(roofType)) return false-->
-    <!--            if (!validSelect2(floorType)) return false-->
-    <!--            if (!validSelect2(windowType)) return false-->
-    <!--            if (!validSelect2(carpentryType)) return false-->
-    <!--            if (!validSelect2(frontDoorType)) return false-->
-
-    <!--            formData.append("wallMaterial", wallMaterial.val());-->
-    <!--            formData.append("wallMaterialUkr", wallMaterialUkr.val());-->
-    <!--            formData.append("wallMaterialEng", wallMaterialEng.val());-->
-    <!--            formData.append("stateInterior", stateInterior.val());-->
-    <!--            formData.append("stateHouse", stateHouse.val());-->
-    <!--            formData.append("kitchenType", kitchenType.val());-->
-    <!--            formData.append("bathroomType", bathroomType.val());-->
-    <!--            formData.append("gasType", gasType.val());-->
-    <!--            formData.append("waterType", waterType.val());-->
-    <!--            formData.append("sewageType", sewageType.val());-->
-    <!--            formData.append("heatingType", heatingType.val());-->
-    <!--            formData.append("ladderType", ladderType.val());-->
-    <!--            formData.append("roofType", roofType.val());-->
-    <!--            formData.append("floorType", floorType.val());-->
-    <!--            formData.append("windowType", windowType.val());-->
-    <!--            formData.append("carpentryType", carpentryType.val());-->
-    <!--            formData.append("frontDoorType", frontDoorType.val());-->
-
-    <!--            return new Promise(function (resolve, reject) {-->
-    <!--                $.ajax({-->
-    <!--                    type: 'GET',-->
-    <!--                    url: '[[@{/realtors/getById/}]]' + codeStaff.val(),-->
-    <!--                    success: function (realtor) {-->
-    <!--                        if (realtor === '') {-->
-    <!--                            showToast("Користувача за таким кодом не знайдено", "danger")-->
-    <!--                            codeStaff.css("border", "1px solid #ff0000");-->
-    <!--                            reject(false);-->
-    <!--                        } else if (realtor.branch.id.toString() !== codeBranch.val().toString()) {-->
-    <!--                            showToast("Ріелтор не належить вказаному філіалу", "danger")-->
-    <!--                            codeBranch.css("border", "1px solid #ff0000");-->
-    <!--                            reject(false);-->
-    <!--                        } else {-->
-    <!--                            resolve(true);-->
-    <!--                        }-->
-    <!--                    },-->
-    <!--                    error: function (error) {-->
-    <!--                        console.error('Помилка відправки файлів на сервер:', error);-->
-    <!--                        reject(false);-->
-    <!--                    }-->
-    <!--                });-->
-    <!--            });-->
-    <!--        }-->
-    <!--        function sendForm() {-->
-    <!--            let formData = new FormData();-->
-    <!--            if (!validAllInput(formData)) return-->
-
-    <!--            $.ajax({-->
-    <!--                type: 'POST',-->
-    <!--                url: '[[@{/houses/add/info}]]',-->
-    <!--                data: formData,-->
-    <!--                contentType: false,-->
-    <!--                processData: false,-->
-    <!--                success: function (response) {-->
-    <!--                    showToast(response, "success")-->
-    <!--                },-->
-    <!--                error: function (error) {-->
-    <!--                    console.error('Помилка відправки файлів на сервер:', error);-->
-    <!--                }-->
-    <!--            });-->
-    <!--        }-->
-    <!--        $(document).ready(function () {-->
-    <!--            $('#landOwnershipPresent').select2({-->
-    <!--                minimumResultsForSearch: -1,-->
-    <!--            })-->
-    <!--            var houseId = getLastDigitFromPath(window.location.pathname)-->
-    <!--            if (houseId != null) {-->
-    <!--                $.ajax({-->
-    <!--                    type: "Get",-->
-    <!--                    url: '[[@{/houses/getById/}]]' + houseId,-->
-    <!--                    success: function (house) {-->
-    <!--                        $("#houseNumber").val(house.address.houseNumber)-->
-    <!--                        $("#street").val(house.address.street)-->
-    <!--                        $("#streetEng").val(house.address.streetEng)-->
-    <!--                        $("#streetUkr").val(house.address.streetUkr)-->
-    <!--                        $("#owner").val(house.ownerName)-->
-    <!--                        $("#telephone").val(house.ownerPhone)-->
-    <!--                        $("#dateOfPurchase").val(house.boughtDate.replaceAll('-', '/'))-->
-    <!--                        $("#note").val(house.notes)-->
-    <!--                        $("#cadastralNumber").val(house.cadastralNumber)-->
-    <!--                        $("#ideaPlot").val(house.plotDescription)-->
-    <!--                        $("#administrationComment").val(house.administrationComment)-->
-
-    <!--                        $("#codeObject").val(house.objectCode)-->
-    <!--                        $("#codeBranch").val(house.realtor.branch.id)-->
-    <!--                        $("#codeStaff").val(house.realtor.id)-->
-    <!--                        $("#landmark").val(house.landmark)-->
-    <!--                        $("#price").val(house.price)-->
-    <!--                        $("#plotAreaTotal").val(house.plotAreaTotal)-->
-    <!--                        $("#plotAreaFree").val(house.plotAreaFree)-->
-    <!--                        $("#houseQuantity").val(house.houseQuantity)-->
-    <!--                        $("#floorQuantity").val(house.floorQuantity)-->
-    <!--                        $("#roomQuantity").val(house.roomQuantity)-->
-    <!--                        $("#bedroomQuantity").val(house.bedroomQuantity)-->
-    <!--                        $("#myNumberInput").val(house.roomMeters)-->
-    <!--                        $("#areaTotal").val(house.areaTotal)-->
-    <!--                        $("#areaLiving").val(house.areaLiving)-->
-    <!--                        $("#areaKitchen").val(house.areaKitchen)-->
-
-    <!--                        $("#wall_material").val(house.wallMaterial)-->
-    <!--                        $("#wall_materialUkr").val(house.wallMaterialUkr)-->
-    <!--                        $("#wall_materialEng").val(house.wallMaterialEng)-->
-
-    <!--                        $("#lastContactDate").val(house.lastContactDate.replaceAll('-', '/'));-->
-    <!--                        $("#vnpExpirationDate").val(house.vnpExpirationDate.replaceAll('-', '/'))-->
-
-    <!--                        $("#vnp").prop('checked',house.vnp)-->
-    <!--                        $("#informationSource").val(house.informationSource)-->
-    <!--                        $('#bargain').prop('checked', house.bargain);-->
-    <!--                        $('#exclusive').prop('checked', house.exclusive);-->
-    <!--                        $('#urgent').prop('checked', house.urgent);-->
-    <!--                        $('#free').prop('checked', house.free);-->
-    <!--                        $('#open').prop('checked', house.open);-->
-    <!--                        $('#intermediary').prop('checked', house.intermediary);-->
-    <!--                        $('#advertisementEnabled').prop('checked', house.advertisementEnabled);-->
-
-    <!--                        $("#descriptionUk").val(house.descriptionUk)-->
-    <!--                        $("#advertisementHeadlineUk").val(house.advertisementHeadlineUk)-->
-    <!--                        $("#advertisementTextUk").val(house.advertisementTextUk)-->
-    <!--                        $("#descriptionRu").val(house.description)-->
-    <!--                        $("#advertisementHeadlineRu").val(house.advertisementHeadline)-->
-    <!--                        $("#advertisementTextRu").val(house.advertisementText)-->
-    <!--                        $("#descriptionEn").val(house.descriptionEn)-->
-    <!--                        $("#advertisementHeadlineEn").val(house.advertisementHeadlineEn)-->
-    <!--                        $("#advertisementTextEn").val(house.advertisementTextEn)-->
-    <!--                        $("#advertisementEnabled").val(house.advertisementEnabled)-->
-
-    <!--                        forSelect2(house.address.zone, house.address.zone, "#topzone", "/enum/topzone")-->
-    <!--                        forSelect2(house.ownershipType, house.ownershipType, "#ownership", "/enum/ownership")-->
-    <!--                        forSelect2(house.houseType, house.houseType, "#propertyType", "/enum/propertyType")-->
-    <!--                        forSelect2(house.plotPurposeType, house.plotPurposeType, "#plotPurposeType", "/enum/plotPurposeType")-->
-    <!--                        forSelect2(house.stateInterior, house.stateInterior, "#stateInterior", "/enum/stateHouse")-->
-    <!--                        forSelect2(house.stateHouse, house.stateHouse, "#stateHouse", "/enum/stateHouse")-->
-
-    <!--                        forSelect2(house.kitchenType, house.kitchenType, "#kitchenType", "/enum/kitchen")-->
-    <!--                        forSelect2(house.bathroomType, house.bathroomType, "#bathroomType", "/enum/bathroom")-->
-    <!--                        forSelect2(house.gasType, house.gasType, "#gasType", "/enum/gas")-->
-    <!--                        forSelect2(house.waterType, house.waterType, "#waterType", "/enum/water")-->
-    <!--                        forSelect2(house.sewageType, house.sewageType, "#sewageType", "/enum/sewerage")-->
-    <!--                        forSelect2(house.heatingType, house.heatingType, "#heatingType", "/enum/heating")-->
-    <!--                        forSelect2(house.ladderType, house.ladderType, "#ladderType", "/enum/ladder")-->
-    <!--                        forSelect2(house.roofType, house.roofType, "#roofType", "/enum/roof")-->
-    <!--                        forSelect2(house.floorType, house.floorType, "#floorType", "/enum/floor")-->
-    <!--                        forSelect2(house.windowType, house.windowType, "#windowType", "/enum/window")-->
-    <!--                        forSelect2(house.carpentryType, house.carpentryType, "#carpentryType", "/enum/carpentryType")-->
-    <!--                        forSelect2(house.frontDoorType, house.frontDoorType, "#frontDoorType", "/enum/frontDoorType")-->
-
-    <!--                        addressSelect2(house)-->
-
-    <!--                        for (let file of house.files) {-->
-    <!--                            var blockForFile = $("#block-for-file");-->
-    <!--                            var row = $("<div class='row'></div>");-->
-    <!--                            var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>"+removeBeforeFirstDot(file)+"</a></div>");-->
-    <!--                            col1.find('a').on("click", function () {-->
-    <!--                                downloadFileFrom(file);-->
-    <!--                            });-->
-    <!--                            var col2 = $("<div class='col'><a href='#' class='text-decoration-none for-delete'>х удалить</a></div>");-->
-    <!--                            col2.find('a').on("click", function () {-->
-    <!--                                deleteFile(this, file);-->
-    <!--                            });-->
-    <!--                            row.append(col1);-->
-    <!--                            row.append(col2);-->
-    <!--                            blockForFile.append(row);-->
-    <!--                        }-->
-    <!--                    }-->
-    <!--                })-->
-    <!--            } else {-->
-    <!--                forSelect2(undefined, undefined, "#topzone", "/enum/topzone")-->
-    <!--                forSelect2(undefined, undefined, "#ownership", "/enum/ownership")-->
-    <!--                forSelect2(undefined, undefined, "#propertyType", "/enum/propertyType")-->
-    <!--                forSelect2(undefined, undefined, "#plotPurposeType", "/enum/plotPurposeType")-->
-    <!--                forSelect2(undefined, undefined, "#stateInterior", "/enum/stateHouse")-->
-    <!--                forSelect2(undefined, undefined, "#stateHouse", "/enum/stateHouse")-->
-
-    <!--                forSelect2(undefined, undefined, "#kitchenType", "/enum/kitchen")-->
-    <!--                forSelect2(undefined, undefined, "#bathroomType", "/enum/bathroom")-->
-    <!--                forSelect2(undefined, undefined, "#gasType", "/enum/gas")-->
-    <!--                forSelect2(undefined, undefined, "#waterType", "/enum/water")-->
-    <!--                forSelect2(undefined, undefined, "#sewageType", "/enum/sewerage")-->
-    <!--                forSelect2(undefined, undefined, "#heatingType", "/enum/heating")-->
-    <!--                forSelect2(undefined, undefined, "#ladderType", "/enum/ladder")-->
-    <!--                forSelect2(undefined, undefined, "#roofType", "/enum/roof")-->
-    <!--                forSelect2(undefined, undefined, "#floorType", "/enum/floor")-->
-    <!--                forSelect2(undefined, undefined, "#windowType", "/enum/window")-->
-    <!--                forSelect2(undefined, undefined, "#carpentryType", "/enum/carpentryType")-->
-    <!--                forSelect2(undefined, undefined, "#frontDoorType", "/enum/frontDoorType")-->
-
-    <!--                addressSelect2()-->
-    <!--            }-->
-
-    <!--            $('.onlyNumber').on('input', function () {-->
-    <!--                $(this).val(function (_, value) {-->
-    <!--                    return value.replace(/[^\d.]+/g, '').replace(/^(\d*\.\d*)\..*$/, '$1');-->
-    <!--                });-->
-    <!--            });-->
-
-
-    <!--            new Cleave("#cadastralNumber", {-->
-    <!--                blocks: [3, 3, 3],-->
-    <!--                numericOnly: true-->
-    <!--            })-->
-    <!--            new Cleave("#codeObject", {-->
-    <!--                blocks: [2, 4, 2],-->
-    <!--                numericOnly: true-->
-    <!--            })-->
-
-    <!--            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");-->
-
-    <!--            flatpickrDateTimes.forEach(function (element) {-->
-    <!--                element.flatpickr({-->
-    <!--                    dateFormat: "Y/m/d"-->
-    <!--                });-->
-    <!--            });-->
-    <!--        })-->
-    <!--        function addressSelect2(house) {-->
-    <!--            if (house) {-->
-    <!--                $("#district").removeAttr("disabled");-->
-    <!--                $("#city").removeAttr("disabled");-->
-    <!--                forSelect2(house.address.region, house.address.region, "#region", "/enum/region")-->
-    <!--                forSelect2(house.address.district, house.address.district, "#district", "/getDistrict/" + house.address.city)-->
-    <!--                forSelect2(house.address.city, house.address.city, "#city", "/getCity/" + house.address.region)-->
-    <!--            } else {-->
-    <!--                $("#region").select2({-->
-    <!--                    minimumResultsForSearch: -1,-->
-    <!--                    placeholder: "Елемент",-->
-    <!--                    ajax: {-->
-    <!--                        url: '[[@{/enum/region}]]',-->
-    <!--                        dataType: 'json',-->
-    <!--                        processResults: function (data) {-->
-    <!--                            var index = 0;-->
-    <!--                            var results = data.map(function (data) {-->
-    <!--                                if (data.id) return {id: data.id, text: data.name};-->
-    <!--                                return {id: data, text: data};-->
-    <!--                            });-->
-    <!--                            return {-->
-    <!--                                results: results-->
-    <!--                            };-->
-    <!--                        },-->
-    <!--                    }-->
-    <!--                })-->
-    <!--            }-->
-    <!--            $('#region').on('select2:select', function (e) {-->
-    <!--                var element = e.params.data.text-->
-    <!--                $("#city").empty();-->
-    <!--                $("#city").removeAttr("disabled");-->
-    <!--                $("#city").select2({-->
-    <!--                    minimumResultsForSearch: -1,-->
-    <!--                    placeholder: "Елемент",-->
-    <!--                    ajax: {-->
-    <!--                        url: '[[@{/getCity/}]]' + element,-->
-    <!--                        dataType: 'json',-->
-    <!--                        processResults: function (data) {-->
-    <!--                            var index = 0;-->
-    <!--                            var results = data.map(function (data) {-->
-    <!--                                if (data.id) return {id: data.id, text: data.name};-->
-    <!--                                return {id: data, text: data};-->
-    <!--                            });-->
-    <!--                            return {-->
-    <!--                                results: results-->
-    <!--                            };-->
-    <!--                        },-->
-    <!--                    }-->
-    <!--                })-->
-    <!--            });-->
-    <!--            $('#city').on('select2:select', function (e) {-->
-    <!--                var element = e.params.data.text-->
-    <!--                $("#district").empty();-->
-    <!--                $("#district").removeAttr("disabled");-->
-    <!--                $("#district").select2({-->
-    <!--                    minimumResultsForSearch: -1,-->
-    <!--                    placeholder: "Елемент",-->
-    <!--                    ajax: {-->
-    <!--                        url: '[[@{/getDistrict/}]]' + element,-->
-    <!--                        dataType: 'json',-->
-    <!--                        processResults: function (data) {-->
-    <!--                            var index = 0;-->
-    <!--                            var results = data.map(function (data) {-->
-    <!--                                if (data.id) return {id: data.id, text: data.name};-->
-    <!--                                return {id: data, text: data};-->
-    <!--                            });-->
-    <!--                            return {-->
-    <!--                                results: results-->
-    <!--                            };-->
-    <!--                        },-->
-    <!--                    }-->
-    <!--                })-->
-    <!--            });-->
-    <!--        }-->
-
-    <!--        </script>-->
 </section>
 </body>
 </html>

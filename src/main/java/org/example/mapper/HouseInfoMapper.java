@@ -40,6 +40,6 @@ public interface HouseInfoMapper {
         for (MultipartFile file : houseInfoDto.getPictures()) {
             propertyHouseObject.getPictures().add(minioService.putImage(file));
         }
-        propertyHouseObject.setRealtor(realtorService.getById(houseInfoDto.getCodeStaff()));
+        propertyHouseObject.setRealtor(realtorService.getByCode(houseInfoDto.getCodeStaff()));
     }
 }

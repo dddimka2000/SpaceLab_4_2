@@ -64,7 +64,7 @@
                             <div class="row mb-3">
                                 <div class="col-6">
                                     <label class="form-label">Код</label>
-                                    <input placeholder="11" type="number" class="form-control" th:field="*{code}">
+                                    <input placeholder="11" type="number" class="form-control onlyNumber" th:field="*{code}">
                                     <br/>
                                     <label class="form-label">Филиалы</label>
                                     <select id="branchSelect2" style="margin-right: 12px; margin-left: 12px;"
@@ -443,6 +443,21 @@
                 }
             });
         }
+        function save(form){
+            $.ajax({
+                type: 'POST',
+                url: '[[@{/realtors/add}]]',
+                data: new FormData(form[0]),
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showToast(response, "success");
+                },
+                error: function (error) {
+                    console.error('Помилка відправки файлів на сервер:', error);
+                }
+            });
+        }
     </script>
     <script th:inline="javascript">
         var realtor = [[${realtorDto}]]
@@ -547,11 +562,11 @@
                         $("#code").css("border", "1px solid #ff0000")
                         return
                     } else {
-                        $('#realtorAdd').submit();
+                        save($('#realtorAdd'));
                     }
                 });
             }
-            else $('#realtorAdd').submit();
+            else save($('#realtorAdd'));
         }
 
 
@@ -585,7 +600,6 @@
                     phoneContainer.removeChild(newPhoneBlock)
                 });
             });
-
         };
     </script>
 </section>
