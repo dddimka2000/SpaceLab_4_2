@@ -63,6 +63,7 @@ public class PropertyInvestorObjectDTO {
     @Pattern(regexp = "\\+?[0-9]+", message = "Номер телефона должен начинаться с '+' и содержать только цифры.")
     public String ownerPhone;//
     @NotNull(message = "Заполните дату покупки")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     public LocalDate boughtDate;
     @NotNull(message = "Заполните тип собственности")
     public OwnershipType ownershipType;//
@@ -109,9 +110,11 @@ public class PropertyInvestorObjectDTO {
     public Boolean open;
     public Boolean intermediary;
     @NotNull(message = "Заполните дату последнего контакта")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     public LocalDate lastContactDate;//
     public Boolean vnp;//
     @NotNull(message = "Заполните дату ВНП")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     public LocalDate vnpExpirationDate;//
     @Size(min = 1, max = 31, message = "Информационный ресурс должен быть от 2 до 30 символов.")
     public String informationSource;//

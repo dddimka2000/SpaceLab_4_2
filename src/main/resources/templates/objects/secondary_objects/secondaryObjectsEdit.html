@@ -62,10 +62,10 @@
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                        <li class="breadcrumb-item"><a th:href="@{/secondary_objects}"
+                        <li class="breadcrumb-item" data-translate="secondary_real_estate"><a th:href="@{/secondary_objects}" data-translate="edit_secondary_real_estate"
                         >Вторичная недвижимость</a></li>
                         <li class="breadcrumb-item active" aria-current="page"
-                            th:href="@{/secondary_objects/create}">
+                            th:href="@{/secondary_objects/create}" data-translate="create_secondary_real_estate">
                             Создание вторичной недвижимости
                         </li>
                     </ol>
@@ -121,13 +121,21 @@
 
                         <div class="col-3">
                             <h6>Обл.район</h6>
-                            <select class="select2 form-select form-select" data-allow-clear="true" name="region"
-                                    id="region">
+
+                            <select class="select2 form-select form-select" name="region" id="region">
                                 <option selected></option>
-                                <option th:each="entity : ${selectRegion}"
-                                        th:value="${entity}"
-                                        th:text="${entity}"
-                                        th:selected="${element.getAddress().getRegion() == entity}"></option>
+                                <script th:inline="javascript">
+                                    var selectRegionOptions = /*[[${selectRegion}]]*/ [];
+                                    var selectRegion = /*[[${element.getAddress().getRegion()}]]*/ '';
+
+                                    for (var i = 0; i < selectRegionOptions.length; i++) {
+                                        var entity = selectRegionOptions[i];
+                                        var isSelected = (entity === selectRegion);
+                                        document.write('<option value="' + entity + '" data-translate="' + entity.replace(' ', '_') + '"' + (isSelected ? ' selected' : '') + '>' + entity + '</option>');
+                                    }
+                                    refreshAllTranslate()
+                                </script>
+
                             </select>
 
                         </div>
@@ -220,8 +228,8 @@
                         </div>
                         <div class="col-3">
                             <h6>Дата приобретения</h6>
-                            <input type="date" class="form-control" placeholder="yyyy/MM/dd"
-                                   aria-describedby="defaultFormControlHelp" id="boughtDate" name="boughtDate"
+                            <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
+                            aria-describedby="defaultFormControlHelp" id="boughtDate" name="boughtDate"
                                    value="" th:value="${element.getBoughtDate()}">
                         </div>
                         <div class="col-3">
@@ -547,7 +555,7 @@
                     <div class="row">
                         <div class="col-2">
                             <h6>Дата последнего контакта</h6>
-                            <input type="date" class="form-control" placeholder="yyyy/MM/dd"
+                            <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="dateLastContact" name="dateLastContact"
                                    th:value="${element.getLastContactDate()}">
                         </div>
@@ -558,7 +566,7 @@
                         </div>
                         <div class="col-2">
                             <h6>Дата внп до</h6>
-                            <input type="date" class="form-control" placeholder="yyyy/MM/dd"
+                            <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="dateVNP" name="dateVnp"
                                    th:value="${element.getVnpExpirationDate()}">
                         </div>
@@ -649,8 +657,8 @@
                                   th:text="${element.advertisementTextUk}"></textarea>
                     </div>
                     <br>
-                    <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"><span
-                        class="checkmark" th:checked="${element.advertisementEnabled}">Рекламировать</span>
+                    <input class="form-check-input" type="checkbox" value="true" name="statusPromotion" th:checked="${element.advertisementEnabled}"><span
+                        class="checkmark" >Рекламировать</span>
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-profile-tab">
 
@@ -693,7 +701,23 @@
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
+    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
 
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            // Находим все элементы с классом .flatpickr
+            var flatpickrElements = document.querySelectorAll(".flatpickr-datetime");
+
+// Применяем flatpickr к каждому элементу
+            flatpickrElements.forEach(function (element) {
+                flatpickr(element, {
+                    dateFormat: "Y/m/d"
+                });
+            });
+
+        });
+    </script>
     <script th:inline="javascript">
         function checkNumber() {
             let checkNumber = $("#telephone").val()

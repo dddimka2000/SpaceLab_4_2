@@ -43,13 +43,16 @@
             <div class="container-fluid">
                 <br>
                 <div class="d-flex justify-content-between">
-                    <h4 class="fw-bold" th:text="'Объект'+${element.getObjectCode()}"></h4>
+                    <div style="display: flex">
+                        <h4 class="fw-bold" data-translate="object">Объект </h4>&nbsp;
+                        <h4 class="fw-bold" th:text="${element.getObjectCode()}"></h4>
+                    </div>
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                            <li class="breadcrumb-item"><a th:href="@{/investor_objects}">Объекты от инвесторов</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Карточка объекта инвестора</li>
+                            <li class="breadcrumb-item"><a  data-translate="breadcrumb.home" th:href="@{/}">Главная</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/investor_objects}" data-translate="investor_objects">Объекты от инвесторов</a></li>
+                            <li class="breadcrumb-item active" aria-current="page" data-translate="investor_object_card">Карточка объекта инвестора</li>
                         </ol>
                     </nav>
                 </div>
@@ -59,13 +62,13 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-5">
-                                <h3>Просмотр объекта</h3>
+                                <h3 data-translate="view_object">Просмотр объекта</h3>
                             </div>
                             <div class="col-7" style="text-align: right;">
                                 <div class="btn-group">
                                     <button class="btn btn-submit">Поиск покупателя</button>
                                     <a th:href="@{/investor_objects/edit/{id}(id=${id})}">
-                                        <button class="btn btn-submit">Редактировать</button>
+                                        <button class="btn btn-submit" data-translate="edit">Редактировать</button>
                                     </a>
                                 </div>
                             </div>
@@ -84,74 +87,74 @@
                         <br><br>
                         <table class="table table-bordered">
                             <tr>
-                                <td style="font-weight: bold">Код объекта</td>
+                                <td style="font-weight: bold" data-translate="branch_code">Код объекта</td>
                                 <td th:text="${element.getObjectCode()}"> Район</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Риелтор</td>
+                                <td style="font-weight: bold" data-translate="realtor">Риелтор</td>
                                 <td th:text="${element.getRealtor().getName()} + ' '+${element.getRealtor().getSurname()}">
                                     Район
                                 </td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Район</td>
+                                <td style="font-weight: bold" data-translate="district">Район</td>
                                 <td th:text="${element.getAddress().getDistrict()}"> Район</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Топозона</td>
+                                <td style="font-weight: bold" data-translate="topozone">Топозона</td>
                                 <td th:text="${element.getAddress().getZone()}"> Топозона</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Улица</td>
+                                <td style="font-weight: bold" data-translate="street">Улица</td>
                                 <td th:text="${element.getAddress().getStreet()}"> Улица</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Цена</td>
+                                <td style="font-weight: bold" data-translate="price">Цена</td>
                                 <td th:text="${element.getPrice()}"></td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Этаж</td>
+                                <td style="font-weight: bold" data-translate="price">Этаж</td>
                                 <td th:text="${element.getFloor()}+'/'+${element.getFloorQuantity()}">Этажность</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Колличество комнат</td>
+                                <td style="font-weight: bold" data-translate="property.numberOfRooms">Колличество комнат</td>
                                 <td th:text="${element.getRoomQuantity()}"></td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Площадь</td>
+                                <td style="font-weight: bold" data-translate="S_area_sqm">Площадь</td>
                                 <td th:text="${element.getAreaTotal()}+'/'+${element.getAreaLiving()}+'/'+${element.getAreaKitchen()}"></td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Высота потолков</td>
+                                <td style="font-weight: bold" data-translate="ceiling_height(m)">Высота потолков</td>
                                 <td th:text="${element.getHeightCeiling()}+' м'"></td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Тип стен</td>
+                                <td style="font-weight: bold" data-translate="wall_material">Тип стен</td>
                                 <td th:text="${element.getWallMaterial()}"></td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">ЖК</td>
+                                <td style="font-weight: bold" data-translate="RC">ЖК</td>
                                 <td th:text="${element.getWallMaterial()}"></td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Вледлец</td>
+                                <td style="font-weight: bold" data-translate="owner">Вледлец</td>
                                 <td th:text="${element.getOwnerName()}"></td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Телефон</td>
+                                <td style="font-weight: bold" data-translate="phone">Телефон</td>
                                 <td th:text="${element.getOwnerPhone()}"></td>
                             </tr>
                         </table>
                         <br>
-                        <h3>Описание</h3>
+                        <h3 data-translate="description">Описание</h3>
                         <p style="width: 100%;"
                            th:text="${element.getDescription()}"></p>
                         <br>
-                        <h3>Рекламный заголовок</h3>
+                        <h3 data-translate="advertising_title">Рекламный заголовок</h3>
                         <p style="width: 100%; "
                            th:text="${element.getAdvertisementHeadline()}"></p>
                         <br>
-                        <h3>Рекламный текст</h3>
+                        <h3 data-translate="advertising_title">Рекламный текст</h3>
                         <p style="width: 100%;"
                            th:text="${element.getAdvertisementText()}"></p>
                     </div>

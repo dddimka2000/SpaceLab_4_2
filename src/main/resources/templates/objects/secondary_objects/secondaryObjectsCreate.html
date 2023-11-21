@@ -63,9 +63,9 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
                         <li class="breadcrumb-item"><a th:href="@{/secondary_objects}"
-                                                       data-translate="investor_objects">Вторичная недвижимость</a></li>
-                        <li class="breadcrumb-item active" aria-current="page" data-translate="create_investor_object"
-                            th:href="@{/secondary_objects/create}">
+                                                       data-translate="secondary_real_estate" data-translate="edit_secondary_real_estate">Вторичная недвижимость</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"
+                            th:href="@{/secondary_objects/create}" data-translate-placeholder="create_secondary_real_estate">
                             Создание вторичной недвижимости
                         </li>
                     </ol>
@@ -143,6 +143,7 @@
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
                             </select></div>
+
                         <div class="col-2">
                             <div style="display:block;" class="ruContent nameContent">
                                 <h6>Улица</h6>
@@ -219,7 +220,7 @@
                         </div>
                         <div class="col-3">
                             <h6 data-translate="acquisition_date">Дата приобретения</h6>
-                            <input type="date" class="form-control" placeholder="yyyy/MM/dd"
+                            <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="boughtDate" name="boughtDate"
                                    value="">
                         </div>
@@ -528,7 +529,7 @@
                     <div class="row">
                         <div class="col-2">
                             <h6>Дата последнего контакта</h6>
-                            <input type="date" class="form-control" placeholder="yyyy/MM/dd"
+                            <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="dateLastContact" name="dateLastContact"
                                    value="">
                         </div>
@@ -538,7 +539,7 @@
                         </div>
                         <div class="col-2">
                             <h6>Дата внп до</h6>
-                            <input type="date" class="form-control" placeholder="yyyy/MM/dd"
+                            <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="dateVNP" name="dateVnp"
                                    value="">
                         </div>
@@ -663,7 +664,23 @@
         </div>
     </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
+    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
 
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            // Находим все элементы с классом .flatpickr
+            var flatpickrElements = document.querySelectorAll(".flatpickr-datetime");
+
+// Применяем flatpickr к каждому элементу
+            flatpickrElements.forEach(function (element) {
+                flatpickr(element, {
+                    dateFormat: "Y/m/d"
+                });
+            });
+
+        });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
 
     <script th:inline="javascript">

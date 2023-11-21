@@ -180,7 +180,7 @@
                                 <h6 data-translate="topzone">Топозона</h6>
                                 <select class="select2 form-select for-filter" multiple id="select2MultipleTopozone">
                                     <option th:each="entity : ${selectTopozone}"
-                                            th:value="${entity}"
+                                            th:value="${entity}" th:data-translate="${entity}"
                                             th:text="${entity}"></option>
                                 </select>
                             </div>
