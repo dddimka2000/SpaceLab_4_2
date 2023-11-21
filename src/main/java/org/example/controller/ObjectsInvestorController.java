@@ -119,6 +119,7 @@ public class ObjectsInvestorController {
             namePictures.add(minioService.putImage(multipartFile));
         }
         propertyInvestorObject.setPictures(namePictures);
+        propertyInvestorObject.setBuilderObject(objectBuilderService.findById(propertyInvestorObjectDTO.getResidentialComplexId()).get());
         propertyInvestorObjectService.save(propertyInvestorObject);
         return ResponseEntity.ok().body("ok");
     }
@@ -268,8 +269,9 @@ public class ObjectsInvestorController {
 
 
 
-
         ObjectInvestorMapper.INSTANCE.toOldEntity(propertyInvestorObject, propertyInvestorObjectDTO);
+        propertyInvestorObject.setBuilderObject(objectBuilderService.findById(propertyInvestorObjectDTO.getResidentialComplexId()).get());
+
         propertyInvestorObject.setRealtor(realtor);
 
 
@@ -287,7 +289,6 @@ public class ObjectsInvestorController {
         }
         propertyInvestorObjectDTO.getOldPictures().addAll(namePictures);
         propertyInvestorObject.setPictures(propertyInvestorObjectDTO.getOldPictures());
-
 
 
 

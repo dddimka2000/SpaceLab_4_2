@@ -83,6 +83,12 @@
     <script type="text/javascript">
 
         function changeLanguage(language) {
+            let selectElements = document.querySelectorAll(".select2");
+            selectElements.forEach(function (element) {
+                $(element).select2();
+                var selectedOption =  $(element).find(':selected');
+                selectedOption.attr('data-translate', selectedOption.val());
+            });
             fetch('/ProminadaDD' + '/api/translations?language=' + language)
                 .then(response => response.json())
                 .then(newTranslations => {
@@ -100,7 +106,7 @@
                                     })
                                     var elements = document.querySelectorAll('[data-translate-placeholder="' + key + '"]');
                                     elements.forEach(function (element) {
-                                        element.placeholder  = value;
+                                        element.placeholder = value;
                                     })
                                 }
                             }
@@ -113,7 +119,7 @@
 
         function sendLanguage(el) {
             var selectedLanguage = el.getAttribute('data-language');
-            document.cookie = "selectedLanguage=" + selectedLanguage+"; path=/";
+            document.cookie = "selectedLanguage=" + selectedLanguage + "; path=/";
             changeLanguage(selectedLanguage);
         };
 
@@ -141,7 +147,8 @@
             selectedLanguage = this.value;
             changeLanguage(selectedLanguage);
         });
-        function refreshAllTranslate(){
+
+        function refreshAllTranslate() {
             let allCookies = document.cookie;
             let cookiesArray = allCookies.split("; ");
             let cookies = {};
@@ -156,6 +163,7 @@
                 selectedLanguage = "ru";
             }
             changeLanguage(selectedLanguage);
+
         }
 
     </script>

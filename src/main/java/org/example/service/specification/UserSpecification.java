@@ -2,8 +2,7 @@ package org.example.service.specification;
 
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Subquery;
+import org.example.entity.Branch;
 import org.example.entity.UserEntity;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -46,4 +45,22 @@ public class UserSpecification {
                 criteriaBuilder.like(criteriaBuilder.lower(root.get("email")), "%" + email.toLowerCase() + "%");
     }
 
+    public static class BranchSpecification {
+        public static Specification<Branch> codeContains(String codeText) {
+            if(codeText.isBlank() || codeText.isEmpty())return (root, query, criteriaBuilder) -> null;
+            return (root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("code").as(String.class)), "%" + codeText.toLowerCase() + "%");
+        }
+        public static Specification<Branch> nameContains(String name) {
+            if(name.isBlank() || name.isEmpty())return (root, query, criteriaBuilder) -> null;
+            return (root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.toLowerCase() + "%");
+        }
+
+        public static Specification<Branch> addressContains(String address) {
+            if(address.isBlank() || address.isEmpty())return (root, query, criteriaBuilder) -> null;
+            return (root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("address")), "%" + address.toLowerCase() + "%");
+        }
+    }
 }
