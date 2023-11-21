@@ -22,7 +22,7 @@ public class BuyerSpecification {
     public static Specification<Buyer> branchContains(String branch) {
         if (branch.isBlank()) return (root, query, criteriaBuilder) -> null;
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(
-                criteriaBuilder.lower(root.get("branch").get("id").as(String.class)),
+                criteriaBuilder.lower(root.get("realtor").get("branch").get("id").as(String.class)),
                 "%" + branch.toLowerCase() + "%"
         );
     }

@@ -26,7 +26,8 @@
         <hr style="margin-top: -5px">
 
         <div class="card">
-            <form method="post" th:action="@{/branches/create}" th:object="${branchDto}" enctype="multipart/form-data">
+            <form id="branchForm" method="post" th:action="@{/branches/create}" th:object="${branchDto}"
+                  enctype="multipart/form-data">
                 <div class="card-header">
                     <h2>Информация</h2>
                     <input th:field="*{id}" type="text" class="form-control" hidden>
@@ -36,14 +37,17 @@
                     <div class="row">
                         <div class="col-6">
                             <label>Код</label>
-                            <input type="number" placeholder="11" class="form-control" th:field="*{code}" th:style="${#fields.hasErrors('code') ? 'border-color: #ff0000' : ''}">
+                            <input type="number" placeholder="11" class="form-control" th:field="*{code}"
+                                   th:style="${#fields.hasErrors('code') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('code')}" th:errors="*{code}">
                             </div>
                         </div>
                         <div class="col-6">
                             <label>Телефон</label>
-                            <input type="text" placeholder="+380696969696" class="form-control phone" th:field="*{telephone}" th:style="${#fields.hasErrors('telephone') ? 'border-color: #ff0000' : ''}">
+                            <input type="text" placeholder="+380696969696" class="form-control phone"
+                                   th:field="*{telephone}"
+                                   th:style="${#fields.hasErrors('telephone') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></div>
                         </div>
@@ -51,13 +55,16 @@
                     <div class="row">
                         <div class="col-6">
                             <label>Название</label>
-                            <input type="text" placeholder="Філіал 1" class="form-control" th:field="*{name}" th:style="${#fields.hasErrors('name') ? 'border-color: #ff0000' : ''}">
+                            <input type="text" placeholder="Філіал 1" class="form-control" th:field="*{name}"
+                                   th:style="${#fields.hasErrors('name') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                         </div>
                         <div class="col-6">
                             <label>Email</label>
-                            <input type="text" placeholder="someemail@gmail.com" class="form-control" th:field="*{email}" th:style="${#fields.hasErrors('email') ? 'border-color: #ff0000' : ''}">
+                            <input type="text" placeholder="someemail@gmail.com" class="form-control"
+                                   th:field="*{email}"
+                                   th:style="${#fields.hasErrors('email') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                         </div>
@@ -65,13 +72,17 @@
                     <div class="row">
                         <div class="col-6">
                             <label>Адрес</label>
-                            <input type="text" placeholder="Бейкер-стрит 221B" class="form-control" th:field="*{address}" th:style="${#fields.hasErrors('address') ? 'border-color: #ff0000' : ''}">
+                            <input type="text" placeholder="Бейкер-стрит 221B" class="form-control"
+                                   th:field="*{address}"
+                                   th:style="${#fields.hasErrors('address') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
                         </div>
                         <div class="col-6">
                             <label>Прикрепить фото</label>
-                            <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png" name="imgPath" id="imgPath" onchange="validateAndUpload('', ['.jpg', '.jpeg', '.png'])" th:style="${#fields.hasErrors('imgPath') ? 'border-color: #ff0000' : ''}">
+                            <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png" name="imgPath"
+                                   id="imgPath" onchange="validateAndUpload('', ['.jpg', '.jpeg', '.png'])"
+                                   th:style="${#fields.hasErrors('imgPath') ? 'border-color: #ff0000' : ''}">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('imgPath')}" th:errors="*{imgPath}"></div>
                         </div>
@@ -90,27 +101,32 @@
         var branch = [[${branchDto}]]
     </script>
     <script>
+        $(document).ready(function () {
+              if(getLastDigitFromPath()){
+                  $("#telephone").val(branch.telephone)
+              }
+        })
         function sendForm() {
             cleanInputs()
             var code = $("#code")
             if (!validateNumber(1, 99999, code)) return
             var telephone = $("#telephone")
-            if(!validatePhoneNumber(telephone))return
+            if (!validatePhoneNumber(telephone)) return
             var name = $("#name")
-            if(!validString("1", "100", name))return;
+            if (!validString("1", "100", name)) return;
             var email = $("#email")
-            if(!validateEmail(email))return;
+            if (!validateEmail(email)) return;
             var address = $("#address")
-            if(!validString("1", "300", address))return;
+            if (!validString("1", "300", address)) return;
             var imgPath = $("#imgPath")
             if (!getLastDigitFromPath() && !validateOneFile(imgPath.get(0).files[0], ['.jpg', '.jpeg', '.png'])) {
                 $('#imgPath').css('border-color', '#ff0000')
                 return;
             }
-            if(code.val() != branch.code){
+            if (code.val() != branch.code) {
                 var ajaxRequest = $.ajax({
                     type: "GET",
-                    url: '[[@{/branches/countCode/}]]'+code.val()
+                    url: '[[@{/branches/countCode/}]]' + code.val()
                 });
 
                 ajaxRequest.done(function (count) {
@@ -119,12 +135,27 @@
                         code.css("border", "1px solid #ff0000")
                         return
                     } else {
-                        $('#realtorAdd').submit();
+                        save($('#branchForm'))
                     }
                 });
-            }
-            else $('#realtorAdd').submit();
+            } else save($('#branchForm'))
         }
+        function save(form){
+            $.ajax({
+                type: 'POST',
+                url: '[[@{/branches/create}]]',
+                data: new FormData(form[0]),
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showToast(response, "success");
+                },
+                error: function (error) {
+                    console.error('Помилка відправки файлів на сервер:', error);
+                }
+            });
+        }
+
     </script>
 </section>
 

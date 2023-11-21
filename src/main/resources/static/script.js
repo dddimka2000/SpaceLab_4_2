@@ -117,4 +117,9 @@ $(document).ready(function () {
             dateFormat: "Y/m/d"
         });
     });
+    $('.onlyNumber').on('input', function () {
+        $(this).val(function (_, value) {
+            return value.replace(/[^\d.]+/g, '').replace(/^(\d*\.\d*)\..*$/, '$1');
+        });
+    });
 })

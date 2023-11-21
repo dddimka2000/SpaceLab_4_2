@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -75,20 +76,13 @@ public class RealtorController {
         return modelAndView;
     }
     @PostMapping("/add")
-    public ModelAndView addPage(@ModelAttribute @Valid RealtorDto realtorDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        ModelAndView modelAndView = new ModelAndView("redirect:/realtors");
+    public ResponseEntity<String> addPage(@ModelAttribute @Valid RealtorDto realtorDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         if(bindingResult.hasErrors()){
-            log.info("error add");
-            modelAndView.addObject("contactTypes", ContactType.values());
-            modelAndView.addObject("realtorDto", realtorDto);
-            log.info(bindingResult.getFieldErrors());
-
-            modelAndView.setViewName("realtors/realtor_add");
-            return modelAndView;
+            FieldError fieldError = bindingResult.getFieldErrors().get(0);
+            return ResponseEntity.ok().body("ERROR(" + fieldError.getField() + "): " + fieldError.getDefaultMessage());
         }
-        log.info("realtorDto");
         realtorService.add(realtorDto);
-        return modelAndView;
+        return ResponseEntity.ok().body("Об'єкт успішно збережено");
     }
     @GetMapping("/delete/{id}")
     @ResponseBody
