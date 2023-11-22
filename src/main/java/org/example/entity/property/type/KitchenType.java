@@ -7,6 +7,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum KitchenType {
     STANDARD("Стандарт"),
-    Other("Другое");
+    OTHER("Другое");
     private final String status;
 }

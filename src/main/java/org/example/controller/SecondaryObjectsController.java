@@ -104,6 +104,8 @@ public class SecondaryObjectsController {
         for (MultipartFile multipartFile : propertySecondaryObjectDTO.getPictures()) {
             namePictures.add(minioService.putImage(multipartFile));
         }
+        propertySecondaryObject.setBuilderObject(objectBuilderService.findById(propertySecondaryObjectDTO.getResidentialComplexId()).get());
+
         propertySecondaryObject.setPictures(namePictures);
         propertySecondaryObjectService.save(propertySecondaryObject);
         return ResponseEntity.ok().body("ok");
@@ -270,8 +272,7 @@ public class SecondaryObjectsController {
         }
         propertySecondaryObjectDTO.getOldPictures().addAll(namePictures);
         propertySecondaryObject.setPictures(propertySecondaryObjectDTO.getOldPictures());
-
-
+        propertySecondaryObject.setBuilderObject(objectBuilderService.findById(propertySecondaryObjectDTO.getResidentialComplexId()).get());
         propertySecondaryObjectService.save(propertySecondaryObject);
 
         return ResponseEntity.ok().body("ok");

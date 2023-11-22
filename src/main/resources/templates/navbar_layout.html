@@ -83,12 +83,22 @@
     <script type="text/javascript">
 
         function changeLanguage(language) {
-            let selectElements = document.querySelectorAll(".select2");
-            selectElements.forEach(function (element) {
-                $(element).select2();
-                var selectedOption =  $(element).find(':selected');
-                selectedOption.attr('data-translate', selectedOption.val());
-            });
+            // let selectElements = document.querySelectorAll(".select2");
+            //     selectElements.forEach(function (element) {
+            //         $(element).select2();
+            //     });
+            // if (selectElements)
+            //     selectElements.forEach(function (element) {
+            //         $(element).select2();
+            //         var selectedOption = $(element).find(':selected');
+            //         selectedOption.attr('data-translate', selectedOption.val());
+            //     });
+            // var spans = document.getElementsByClassName("select2-selection__rendered");
+            // if (spans)
+            //     for (var i = 0; i < spans.length; i++) {
+            //         spans[i].setAttribute("data-translate", spans[i].val());
+            //     }
+
             fetch('/ProminadaDD' + '/api/translations?language=' + language)
                 .then(response => response.json())
                 .then(newTranslations => {

@@ -6,5 +6,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum FloorType {
-    SCREED
+    SCREED,TILE
 }

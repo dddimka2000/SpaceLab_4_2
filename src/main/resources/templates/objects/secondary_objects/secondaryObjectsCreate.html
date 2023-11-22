@@ -124,9 +124,14 @@
                             <select class="select2 form-select form-select" data-allow-clear="true" name="region"
                                     id="region">
                                 <option selected></option>
-                                <option th:each="entity : ${selectRegion}"
-                                        th:value="${entity}"
-                                        th:text="${entity}"></option>
+                                <script th:inline="javascript">
+                                    var selectRegionOptions = /*[[${selectRegion}]]*/ [];
+                                    for (var i = 0; i < selectRegionOptions.length; i++) {
+                                        var entity = selectRegionOptions[i];
+                                        document.write('<option value="' + entity + '" data-translate="' + entity.replace(' ', '_') + '" >' + entity + '</option>');
+                                    }
+                                    refreshAllTranslate()
+                                </script>
                             </select>
 
                         </div>
@@ -146,30 +151,29 @@
 
                         <div class="col-2">
                             <div style="display:block;" class="ruContent nameContent">
-                                <h6>Улица</h6>
+                                <h6 data-translate="street">Улица</h6>
                                 <input class="form-control" type="text" name="street" id="street"
-                                       placeholder="Введите улицу">
+                                       data-translate-placeholder="enter_street" placeholder="Введите улицу">
                             </div>
                             <div style="display:none;" class="euContent nameContent">
-                                <h6>Улица</h6>
+                                <h6 data-translate="street">Улица</h6>
                                 <input class="form-control" type="text" name="streetEu" id="streetEu"
-                                       placeholder="Введите улицу">
+                                       data-translate-placeholder="enter_street"   placeholder="Введите улицу">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
-                                <h6>Вулиця</h6>
+                                <h6 data-translate="street">Улица</h6>
                                 <input class="form-control" type="text" name="streetUkr" id="streetUkr"
-                                       placeholder="Введите улицу">
+                                       data-translate-placeholder="enter_street"  placeholder="Введите улицу">
                             </div>
                         </div>
                         <div class="col-2">
-                            <h6 data-translate="topozone">Топозона</h6>
+                            <h6 data-translate="topzone">Топозона</h6>
                             <select class="select2 form-select form-select" name="topozone">
-                                <option value="" selected></option>
+                                <option value="" selected disabled></option>
                                 <option th:each="entity : ${selectTopozone}"
-                                        th:value="${entity}"
+                                        th:value="${entity}" th:data-translate="${entity}"
                                         th:text="${entity}"></option>
                             </select>
-
                         </div>
                     </div>
                     <br>
@@ -177,20 +181,21 @@
                         <div class="col-2">
                             <h6 data-translate="house_number">Номер дома</h6>
                             <input class="form-control" type="number" name="houseNumber"
-                                   placeholder="Введите номер дома">
+                                   placeholder="10A">
                         </div>
                         <div class="col-2">
                             <h6 data-translate="section_building">Секция/Корпус</h6>
                             <input class="form-control" type="number" name="section"
-                                   placeholder="Введите секцию/корпус">
+                                   placeholder="5">
                         </div>
                         <div class="col-2">
                             <h6 data-translate="apartment_number">Номер квартиры</h6>
                             <input type="text" class="form-control" name="apartmentNumber" id="apartmentNumber"
-                                   placeholder="Введите номер квартиры">
+                                   placeholder="87">
                         </div>
                         <div class="col-3" style="display: flex;align-items: end">
-                            <button class="btn btn-info" onclick="checkNumber()">Проверить номер телефона</button>
+                            <button class="btn btn-info" onclick="checkNumber()" data-translate="check_phone_number">
+                                Проверить номер телефона</button>
                         </div>
                     </div>
                     <br>
@@ -199,24 +204,24 @@
                             <div style="display:block;" class="ruContent nameContent">
                                 <h6 data-translate="owner_name">ФИО владельца </h6>
                                 <input class="form-control" type="text" name="owner"
-                                       placeholder="Введите ФИО владельца">
+                                       data-translate-placeholder="enter_owner_name"    placeholder="Введите ФИО владельца">
                             </div>
                             <div style="display:none;" class="euContent nameContent">
                                 <h6 data-translate="owner_name">ФИО владельца </h6>
                                 <input class="form-control" type="text" name="ownerEu"
-                                       placeholder="Введите ФИО владельца">
+                                       data-translate-placeholder="enter_owner_name"    placeholder="Введите ФИО владельца">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <h6 data-translate="owner_name">ФИО владельца </h6>
                                 <input class="form-control" type="text" name="ownerUkr"
-                                       placeholder="Введите ФИО владельца">
+                                       data-translate-placeholder="enter_owner_name"    placeholder="Введите ФИО владельца">
                             </div>
 
                         </div>
                         <div class="col-3">
-                            <h6 data-translate="phone" a>Телефон</h6>
+                            <h6 data-translate="phone" >Телефон</h6>
                             <input type="tel" name="telephone" id="telephone" class="form-control"
-                                   placeholder="Введите номер телефона">
+                                data-translate-placeholder="enter_phone_number"   placeholder="Введите номер телефона">
                         </div>
                         <div class="col-3">
                             <h6 data-translate="acquisition_date">Дата приобретения</h6>
@@ -227,62 +232,62 @@
                         <div class="col-3">
                             <h6 data-translate="ownership_rights">Право собственности</h6>
                             <select class="select2 form-select form-select" name="ownership">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${ownershipType}"
-                                        th:value="${status}"
+                                        th:value="${status}"  th:data-translate="${status}"
                                         th:text="${status}"></option>
                             </select>
                         </div>
                     </div>
                     <br>
-                    <h6>Важные заметки</h6>
+                    <h6 data-translate="important_notes">Важные заметки</h6>
                     <input class="form-control" type="text" id="notes" placeholder="Введите заметки">
                     <br>
-                    <h6>Прикрепить файлы</h6>
+                    <h6 data-translate="attach_files">Прикрепить файлы</h6>
                     <input type="file" class="form-control" accept=".pdf, .xlsx" name="fileInput" id="fileInput" onchange="showFile()">
                     <br>
                     <div id="fileList">
 
                     </div>
                     <br>
-                    <h3>Комментарий администратора</h3>
+                    <h3 data-translate="admin_comment">Комментарий администратора</h3>
                     <textarea class="form-control" style="width: 100%; height: 300px"
-                              name="comment" placeholder="Введите комментарий"></textarea>
+                              data-translate-placeholder="enter_comment"     name="comment" placeholder="Введите комментарий"></textarea>
                     <br>
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div class="row">
                         <div class="col-2">
-                            <h6>Статус публикации</h6>
+                            <h6 data-translate="publication_status">Статус публикации</h6>
                             <select class="select2 form-select form-select" id="publicationStatus">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${publicationStatus}"
-                                        th:value="${status}"
+                                        th:value="${status}"  th:data-translate="${status}"
                                         th:text="${status}"></option>
                             </select>
 
 
                         </div>
                         <div class="col-2">
-                            <h6>Код объекта</h6>
+                            <h6 data-translate="object_code">Код объекта</h6>
                             <input class="form-control" type="text" id="codeObject" placeholder="100-101-102"
                                    name="codeObject">
                         </div>
                         <div class="col-5">
                             <div class="row">
                                 <div class="col-3" style="text-align: right">
-                                    <h6>Код филиала</h6>
+                                    <h6 data-translate="branch_code">Код филиала</h6>
                                 </div>
                                 <div class="col-1">
                                     <h6>—</h6>
                                 </div>
                                 <div class="col-4">
-                                    <h6> код сотрудника</h6>
+                                    <h6 data-translate="employee_code"> код сотрудника</h6>
                                 </div>
                             </div>
                             <div class="row" style="display:flex; align-items: center">
                                 <div class="col-3" style="text-align: right">
-                                    <input class="form-control" type="number" id="codeBranch" placeholder="Код филиала"
+                                    <input class="form-control" type="number" id="codeBranch" placeholder="5"
                                            name="codeBranch">
                                 </div>
                                 <div class="col-1">
@@ -290,7 +295,7 @@
                                 </div>
                                 <div class="col-3">
                                     <input class="form-control" type="number" id="codeStaff" name="codeStaff"
-                                           placeholder="Код сотрудника">
+                                           placeholder="5">
                                 </div>
                             </div>
                         </div>
@@ -298,229 +303,230 @@
                     <br>
                     <div class="row">
                         <div class="col-2">
-                            <h6>ЖК</h6>
+                            <h6 data-translate="RC">ЖК</h6>
                             <select id="branchSelect3" class="select2 form-select form-select"
                                     name="residentialComplex">
                             </select>
                         </div>
                         <div class="col-2">
-                            <h6>Ориентир</h6>
-                            <input class="form-control" type="text" id="reference_point" placeholder="Введите ориентир">
+                            <h6 data-translate="landmark">Ориентир</h6>
+                            <input data-translate-placeholder="enter_landmark" class="form-control" type="text" id="reference_point" placeholder="Введите ориентир">
                         </div>
                         <div class="col-2">
-                            <h6>Этажность</h6>
+                            <h6 data-translate="number_of_floors">Этажность</h6>
                             <input class="form-control" type="number" name="floorQuantity"
-                                   placeholder="Введите этажность">
+                                  placeholder="5">
                         </div>
                         <div class="col-2">
-                            <h6>Этаж</h6>
-                            <input class="form-control" type="number" name="floor" placeholder="Введите этаж">
+                            <h6 data-translate="floor">Этаж</h6>
+                            <input  class="form-control" type="number" name="floor" placeholder="5">
                         </div>
                         <div class="col-2">
-                            <h6>Комнат</h6>
-                            <input class="form-control" type="number" id="rooms" placeholder="Введите кол-во комнат">
+                            <h6 data-translate-placeholder="2" data-translate="rooms">Комнат</h6>
+                            <input class="form-control" type="number" id="rooms" placeholder="5">
                         </div>
                         <div class="col-2">
                         </div>
                     </div>
                     <br>
-                    <h6>Цена</h6>
-                    <input class="form-control" type="number" id="price" placeholder="Введите цену">
+                    <h6 data-translate="price">Цена</h6>
+                    <input data-translate-placeholder="20000" class="form-control" type="number" id="price" placeholder="20000">
                     <br>
                     <div class="row">
                         <div class="col-2">
-                            <h6>Тип недвижимости</h6>
+                            <h6 data-translate="property.type.real.estate">Тип недвижимости</h6>
                             <select id="propertySecondaryType" class="select2 form-select form-select">
-                                <option selected></option>
-                                <option th:each="status : ${propertySecondaryType}"
+                                <option selected disabled></option>
+                                <option th:each="status : ${propertySecondaryType}" th:data-translate="${status}"
                                         th:value="${status}"
                                         th:text="${status}"></option>
                             </select>
                         </div>
                         <div class="col-2">
-                            <h6>Год срока сдачи дома</h6>
-                            <input type="number" class="form-control" placeholder="Введите год срока сдачи дома"
+                            <h6 data-translate="house_completion_year">Год срока сдачи дома</h6>
+                            <input data-translate-placeholder="2025" type="number" class="form-control" placeholder="2025"
                                    id="yearBuilding">
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-2">
-                            <h6>S общая (м.кв.)*</h6>
+                            <h6 data-translate="S_total_area_sqm" data-translate-placeholder="S_total_area_sqm">S общая (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaTotal"
-                                   placeholder="Введите общую площадь">
+                                   placeholder="50">
                         </div>
                         <div class="col-2">
-                            <h6>S жилая (м.кв.)*</h6>
+                            <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaLiving"
-                                   placeholder="Введите жилую площадь">
+                                   placeholder="20">
                         </div>
                         <div class="col-2">
-                            <h6>S кухни (м.кв.)*</h6>
+                            <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaKitchen"
-                                   placeholder="Введите площадь кухни">
+                                   placeholder="20">
                         </div>
                         <div class="col-2">
-                            <h6>Планировка</h6>
+                            <h6 data-translate="layout">Планировка</h6>
                             <select id="layoutType" class="select2 form-select form-select">
-                                <option selected></option>
-                                <option th:each="status : ${layoutType}"
+                                <option selected disabled></option>
+                                <option th:each="status : ${layoutType}" th:data-translate="${status}"
                                         th:value="${status}"
                                         th:text="${status}"></option>
                             </select></div>
                         <div class="col-2">
-                            <h6>Метраж комнат</h6>
+                            <h6 data-translate="room_square">Метраж комнат</h6>
                             <input class="form-control" type="text" id="footageOfRooms"
                                    placeholder="10+10+10">
 
                         </div>
                         <div class="col-2">
-                            <h6>Высота потолка (м)</h6>
+                            <h6 data-translate="ceiling_height(m)">Высота потолка (м)</h6>
                             <input class="form-control" type="number" step="0.01" id="myNumberInput"
-                                   placeholder="Введите высоту потолка">
+                                   placeholder="4,2">
                         </div>
                     </div>
 
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            <h6>Состояние квартиры</h6>
+                            <h6 data-translate="apartment_condition">Состояние квартиры</h6>
                             <select id="propertyOrigin" class="select2 form-select form-select">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${propertyOrigin}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"
+                                        th:data-translate="${status}"></option>
                             </select>
                         </div>
                         <div class="col-3">
-                            <h6>Материал стен</h6>
+                            <h6 data-translate="wall_material">Материал стен</h6>
 
                             <div style="display:block;" class="ruContent nameContent">
                                 <input class="form-control" type="text" id="wall_material"
-                                       placeholder="Введите материал стен">
+                                       data-translate-placeholder="enter_wall_material"       placeholder="Введите материал стен">
                             </div>
                             <div style="display:none;" class="euContent nameContent">
                                 <input class="form-control" type="text" id="wall_materialEn"
-                                       placeholder="Введите материал стен">
+                                       data-translate-placeholder="enter_wall_material"     placeholder="Введите материал стен">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <input class="form-control" type="text" id="wall_materialUkr"
-                                       placeholder="Введите материал стен">
+                                       data-translate-placeholder="enter_wall_material"   placeholder="Введите материал стен">
                             </div>
                         </div>
                         <div class="col-3">
-                            <h6>Проект квартиры</h6>
+                            <h6 data-translate="apartment_design">Проект квартиры</h6>
                             <select id="houseProjectType" class="select2 form-select form-select">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${houseProjectType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            <h6>Кухня</h6>
+                            <h6 data-translate="kitchen">Кухня</h6>
                             <select id="kitchen" class="select2 form-select form-select">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${kitchenType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select></div>
                         <div class="col-3">
-                            <h6>Санузел</h6>
+                            <h6 data-translate="bathroom">Санузел</h6>
                             <select id="bathroom" class="select2 form-select form-select">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${bathroomType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
                         <div class="col-2">
-                            <h6>Балкон/лоджия</h6>
+                            <h6 data-translate="balcony_loggia">Балкон/лоджия</h6>
                             <select id="balcony" class="select2 form-select form-select" name="balconyType">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${balconyType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
                         <div class="col-2">
-                            <h6>Вид из окон</h6>
+                            <h6 data-translate="window_view">Вид из окон</h6>
                             <select id="viewWindow" class="select2 form-select form-select">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${windowViewType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            <h6>Кухонная плита</h6>
+                            <h6 data-translate="stove_type">Кухонная плита</h6>
                             <select class="select2 form-select form-select" name="kitchenStoveType" id="kitchenStove">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${kitchenStoveType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select></div>
                         <div class="col-3">
-                            <h6>Отопление
+                            <h6 data-translate="heating">Отопление
                             </h6>
                             <select id="heating" class="select2 form-select form-select">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${heatingType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
                         <div class="col-3">
-                            <h6>Лестница</h6>
+                            <h6 data-translate="stairs">Лестница</h6>
                             <select id="ladderType" class="select2 form-select form-select">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${ladderType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            <h6>Пол</h6>
+                            <h6 data-translate="floorDoor">Пол</h6>
                             <select class="select2 form-select form-select" name="kitchenStoveType" id="floorType">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${FloorType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select></div>
                         <div class="col-3">
-                            <h6>Тип окон</h6>
+                            <h6 data-translate="window.type">Тип окон</h6>
                             <select id="windowType" class="select2 form-select form-select">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${WindowType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
                         <div class="col-3">
-                            <h6>Столярка</h6>
+                            <h6 data-translate="carpentry">Столярка</h6>
                             <select id="carpentryType" class="select2 form-select form-select">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${CarpentryType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
                         <div class="col-3">
-                            <h6>Входная дверь</h6>
+                            <h6 data-translate="front.door">Входная дверь</h6>
                             <select id="frontDoorType" class="select2 form-select form-select">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <option th:each="status : ${FrontDoorType}"
                                         th:value="${status}"
-                                        th:text="${status}"></option>
+                                        th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
                         <br>
@@ -528,102 +534,102 @@
                     <br>
                     <div class="row">
                         <div class="col-2">
-                            <h6>Дата последнего контакта</h6>
+                            <h6 data-translate="last_contact_date">Дата последнего контакта</h6>
                             <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="dateLastContact" name="dateLastContact"
                                    value="">
                         </div>
                         <div class="col-1" style="display: flex; align-items: end">
                             <input class="form-check-input" type="checkbox" value="true" name="statusVNP">
-                            <span class="checkmark"> ВНП</span>
+                            <span class="checkmark" data-translate="VNP"> ВНП</span>
                         </div>
                         <div class="col-2">
-                            <h6>Дата внп до</h6>
+                            <h6 data-translate="VNP_until_date">Дата внп до</h6>
                             <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="dateVNP" name="dateVnp"
                                    value="">
                         </div>
                         <div class="col-2">
-                            <h6>Источник информации</h6>
+                            <h6 data-translate="information_source">Источник информации</h6>
                             <input type="text" class="form-control" id="sourceInformation"
-                                   placeholder="Введите источник информации">
+                                 data-translate-placeholder="enter_information_source"  placeholder="Введите источник информации">
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" value="true" name="tor">
-                            <span class="checkmark">Торг</span>
+                            <span class="checkmark" data-translate="negotiable">Торг</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" value="true" name="exclusive">
-                            <span class="checkmark">Ексклюзив</span>
+                            <span class="checkmark" data-translate="exclusive">Ексклюзив</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" value="true" name="urgently">
-                            <span class="checkmark">Срочно</span>
+                            <span class="checkmark" data-translate="urgent">Срочно</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" value="true" name="free">
-                            <span class="checkmark">Свободная</span>
+                            <span class="checkmark" data-translate="free">Свободная</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" value="true" name="objectOpen">
-                            <span class="checkmark">Объект открыт</span>
+                            <span class="checkmark" data-translate="object_open">Объект открыт</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" value="true" name="fromIntermediary">
-                            <span class="checkmark">От посредника</span>
+                            <span class="checkmark" data-translate="FROM_INTERMEDIARY">От посредника</span>
                         </div>
                     </div>
                     <br>
                     <br>
-                    <h6>Описание</h6>
+                    <h6 data-translate="description">Описание</h6>
                     <div style="display:block;" class="ruContent nameContent">
                         <textarea class="form-control" style="width: 100%; height: 300px"
-                                  name="descriptionObject" placeholder="Введите описание"></textarea>
+                                  data-translate-placeholder="enter_description"    name="descriptionObject" placeholder="Введите описание"></textarea>
                     </div>
                     <div style="display:none;" class="euContent nameContent">
                         <textarea class="form-control" style="width: 100%; height: 300px"
-                                  name="descriptionObjectEu" placeholder="Введите описание"></textarea>
+                                  data-translate-placeholder="enter_description"     name="descriptionObjectEu" placeholder="Введите описание"></textarea>
                     </div>
                     <div style="display:none;" class="ukrContent nameContent">
                          <textarea class="form-control" style="width: 100%; height: 300px"
-                                   name="descriptionObjectUkr" placeholder="Введите описание"></textarea>
+                                   data-translate-placeholder="enter_description"      name="descriptionObjectUkr" placeholder="Введите описание"></textarea>
                     </div>
                     <br>
-                    <h6>Рекламный заголовок</h6>
+                    <h6 data-translate="advertising_title">Рекламный заголовок</h6>
 
                     <div style="display:block;" class="ruContent nameContent">
                         <input type="text" name="advertisingName" id="promotionName" class="form-control"
-                               placeholder="Укажите рекламный заголовок">
+                               data-translate-placeholder="enter_ad_title"     placeholder="Укажите рекламный заголовок">
                     </div>
                     <div style="display:none;" class="euContent nameContent">
                         <input type="text" name="advertisingNameEu" id="promotionNameEu" class="form-control"
-                               placeholder="Укажите рекламный заголовок">
+                               data-translate-placeholder="enter_ad_title"     placeholder="Укажите рекламный заголовок">
                     </div>
                     <div style="display:none;" class="ukrContent nameContent">
                         <input type="text" name="advertisingNameUkr" id="promotionNameUkr" class="form-control"
-                               placeholder="Укажите рекламный заголовок">
+                               data-translate-placeholder="enter_ad_title"     placeholder="Укажите рекламный заголовок">
                     </div>
                     <br>
-                    <h6>Рекламный текст</h6>
+                    <h6 data-translate="advertising_text">Рекламный текст</h6>
 
                     <div style="display:block;" class="ruContent nameContent">
                        <textarea style="width: 100%; height: 300px" name="advertisingText"
-                                 class="form-control" placeholder="Введите рекламный текст"></textarea>
+                                 data-translate-placeholder="enter_ad_text"      class="form-control" placeholder="Введите рекламный текст"></textarea>
                     </div>
                     <div style="display:none;" class="euContent nameContent">
                         <textarea style="width: 100%; height: 300px" name="advertisingTextEu"
-                                  class="form-control" placeholder="Введите рекламный текст"></textarea>
+                                  data-translate-placeholder="enter_ad_text"    class="form-control" placeholder="Введите рекламный текст"></textarea>
                     </div>
                     <div style="display:none;" class="ukrContent nameContent">
                         <textarea style="width: 100%; height: 300px" name="advertisingTextUkr"
-                                  class="form-control" placeholder="Введите рекламный текст"></textarea>
+                                  data-translate-placeholder="enter_ad_text"    class="form-control" placeholder="Введите рекламный текст"></textarea>
                     </div>
                     <br>
                     <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"><span
-                        class="checkmark">Рекламировать</span>
+                        class="checkmark"  data-translate="advertise">Рекламировать</span>
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-profile-tab">
 
@@ -643,9 +649,8 @@
 
             </div>
             <div style="text-align: right; margin: 20px">
-                <button class="btn btn-submit">Отмена</button>
                 <span>
-                <button class="btn btn-success" hx-trigger="click" onclick="sendForm()">
+                <button class="btn btn-success" hx-trigger="click" onclick="sendForm()" data-translate="save">
                 Сохранить </button>
             </span>
             </div>
