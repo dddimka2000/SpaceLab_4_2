@@ -1,6 +1,8 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
@@ -17,4 +19,12 @@ public class PageEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+
+    private String nameUkr;
+
+    private String nameEng;
+    @Column(columnDefinition = "TEXT")
+    private String contentUkr;
+    @Column(columnDefinition = "TEXT")
+    private String contentEng;
 }

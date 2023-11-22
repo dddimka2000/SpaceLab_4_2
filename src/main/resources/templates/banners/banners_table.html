@@ -14,11 +14,11 @@
 <section layout:fragment="content">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="d-flex justify-content-between">
-            <h4 class="fw-bold">Баннеры</h4>
+            <h4 class="fw-bold" data-translate="banners">Баннеры</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Баннеры</li>
+                    <li class="breadcrumb-item"><a href="#" data-translate="breadcrumb.home">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" data-translate="banners">Баннеры</li>
                 </ol>
             </nav>
         </div>
@@ -32,16 +32,16 @@
                 <table class="table table-bordered table-hover table-striped linkedRow" id="adminsTable">
                     <thead>
                     <tr>
-                        <th>Название</th>
-                        <th>Статус</th>
+                        <th data-translate="title">Название</th>
+                        <th data-translate="status">Статус</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="banner:${banners}" th:if="${banners.size()>0}">
-                        <td th:text="${banner.getName()}">Баннер раздела от строителей</td>
-                        <td th:if="${banner.getStatus() == true}">Активен</td>
-                        <td th:if="${banner.getStatus() == false}">Отключен</td>
+                        <td th:text="${banner.getNameBanners()}">Баннер раздела от строителей</td>
+                        <td th:if="${banner.getStatus() == true}" data-translate="ACTIVE">Активен</td>
+                        <td th:if="${banner.getStatus() == false}" data-translate="DISABLED">Отключен</td>
                         <td>
                             <div class="d-flex">
                                 <a th:href="@{/banners/{id}(id=${banner.getId()})}">

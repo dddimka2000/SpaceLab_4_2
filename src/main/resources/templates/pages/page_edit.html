@@ -4,13 +4,29 @@
         lang="en"
         class="light-style layout-navbar-fixed layout-menu-fixed"
         layout:decorate="~{layout.html}"
->
+        xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <title>Content page</title>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         .white-text {
             color: white !important; /* Используйте !important, чтобы сделать стиль более приоритетным */
+        }
+    </style>
+    <style>
+        .notification {
+            position: fixed;
+            top: 90px;
+            right: 40px; /* Расстояние справа */
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .notification.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -20,12 +36,12 @@
 <section layout:fragment="content">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="d-flex justify-content-between">
-            <h4 class="fw-bold">Название страницы</h4>
+            <h4 class="fw-bold" data-translate="PAGE.TITLE">Название страницы</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
-                    <li class="breadcrumb-item"><a href="#">Страницы</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Название страницы</li>
+                    <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
+                    <li class="breadcrumb-item"><a href="#" data-translate="pages">Страницы</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" data-translate="PAGE.TITLE">Название страницы</li>
                 </ol>
             </nav>
         </div>
@@ -33,30 +49,57 @@
 
         <div class="card">
             <div class="card-header">
-                <h2>Информация</h2>
+                <h2 data-translate="INFORMATION">Информация</h2>
                 <hr>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <label>Название</label>
+                        <label data-translate="title">Название</label><span>(Ру)</span>
                         <input type="text" class="form-control" name="" id="namePage" th:value="${page.getName()}">
                     </div>
                 </div>
 
                 <div class="row">
-                    <label>Контент</label>
+                    <label data-translate="CONTENT">Контент</label>
                     <div class="col-6">
                         <div id="editor" th:utext="${page.getContent()}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 100px">
+                    <div class="col-6">
+                        <label data-translate="title">Название</label> <span>(Eng)</span>
+                        <input type="text" class="form-control" name="" id="namePageEng" th:value="${page.getNameEng()}">
+                    </div>
+                </div>
 
+                <div class="row">
+                    <label data-translate="CONTENT">Контент</label>
+                    <div class="col-6">
+                        <div id="editor2" th:utext="${page.getContentEng()}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 100px">
+                    <div class="col-6">
+                        <label data-translate="title">Название</label><span>(Укр)</span>
+                        <input type="text" class="form-control" name="" id="namePageUkr" th:value="${page.getNameUkr()}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label data-translate="CONTENT">Контент</label>
+                    <div class="col-6">
+                        <div id="editor3" th:utext="${page.getContentUkr()}">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-default">Отменить</button>
-                    <button class="btn btn-success" onclick="save()">Сохранить</button>
+                    <button class="btn btn-default" data-translate="cancel">Отменить</button>
+                    <button class="btn btn-success" onclick="save()" data-translate="save">Сохранить</button>
                 </div>
             </div>
         </div>
@@ -65,20 +108,28 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
     <script>
-
         var quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+        var quill = new Quill('#editor2', {
+            theme: 'snow'
+        });
+        var quill = new Quill('#editor3', {
             theme: 'snow'
         });
     </script>
 
     <script th:inline="javascript">
         function save() {
-            let editor = $(".ql-editor")
-            console.log(editor.html())
+            console.log($("#editor2").find(".ql-editor").html())
             let name=$("#namePage")
             let formData = new FormData();
             formData.append("name", name.val());
-            formData.append("content",editor.html());
+            formData.append("nameUkr", $("#namePageUkr").val());
+            formData.append("nameEng",$("#namePageEng").val());
+            formData.append("content",$("#editor").find(".ql-editor").html());
+            formData.append("contentEng",$("#editor2").find(".ql-editor").html());
+            formData.append("contentUkr",$("#editor3").find(".ql-editor").html());
             let contextPath =/*[[@{/}]]*/'';
             let idThymeleaf =/*[[${id}]]*/'';
             let url = contextPath.toString() + "pages/edit/" + idThymeleaf;
@@ -104,7 +155,18 @@
             })
         }
     </script>
-
+    <div class="alert alert-warning notification  d-flex align-items-center hidden" role="alert"
+         id="notification">
+        <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.94118 10.7474V20.7444C5.94118 21.0758 5.81103 21.3936 5.57937 21.628C5.3477 21.8623 5.0335 21.994 4.70588 21.994H2.23529C1.90767 21.994 1.59347 21.8623 1.36181 21.628C1.13015 21.3936 1 21.0758 1 20.7444V11.997C1 11.6656 1.13015 11.3477 1.36181 11.1134C1.59347 10.879 1.90767 10.7474 2.23529 10.7474H5.94118ZM5.94118 10.7474C7.25166 10.7474 8.50847 10.2207 9.43512 9.28334C10.3618 8.34594 10.8824 7.07456 10.8824 5.74887V4.49925C10.8824 3.83641 11.1426 3.20071 11.606 2.73201C12.0693 2.26331 12.6977 2 13.3529 2C14.0082 2 14.6366 2.26331 15.0999 2.73201C15.5632 3.20071 15.8235 3.83641 15.8235 4.49925V10.7474H19.5294C20.1847 10.7474 20.8131 11.0107 21.2764 11.4794C21.7397 11.9481 22 12.5838 22 13.2466L20.7647 19.4947C20.5871 20.2613 20.25 20.9196 19.8045 21.3704C19.3589 21.8211 18.8288 22.04 18.2941 21.994H9.64706C8.6642 21.994 7.72159 21.599 7.0266 20.896C6.33162 20.1929 5.94118 19.2394 5.94118 18.2451"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/>
+        </svg>
+        <strong id="text_notification"></strong>
+        <div>
+            <span id="notification-message"></span>
+        </div>
+    </div>
 </section>
 
 </body>
