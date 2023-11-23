@@ -6,6 +6,7 @@
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Content page</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 <section layout:fragment="content">
@@ -78,10 +79,14 @@
                     <br>
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-info mt-4" style="width: auto; margin-right: 5px">Проверить адрес</button>
+                            <button class="btn btn-info mt-4" style="width: auto; margin-right: 5px"
+                                    onclick="checkAddress(this)">Проверить адрес
+                            </button>
                         </div>
                         <div class="col">
-                            <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto">Проверить номер телефона</button>
+                            <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto">Проверить
+                                номер телефона
+                            </button>
                         </div>
                         <div class="col">
                             Улица(UK)
@@ -468,10 +473,43 @@
         </div>
     </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
-    <script>
-        function checkPhone(button){
-            if (validatePhoneNumber($('#telephone')))showToast("Телефон коректний", "success")
+    <script th:inline="javascript">
+        let contextPathURL =/*[[@{/}]]*/'';
+
+        function checkAddress() {
+            let streetUkr = $("#streetUkr").val();
+            console.log(streetUkr);
+            let url = contextPathURL + 'checkStreet';
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: {
+                    name: streetUkr
+                },
+                success: function (response, textStatus, xhr) {
+                    if (xhr.status === 200) {
+                        showToast(response, "success");
+                    } else if (xhr.status === 400) {
+                        showToast(response, "danger");
+                    } else {
+                        console.log("Необработанный статус ответа:", xhr.status);
+                    }
+                },
+                error: function (xhr, textStatus, error) {
+                    if (xhr.status === 400) {
+                        showToast(xhr.responseText, "danger");
+                    }
+                    console.log(error);
+                }
+            })
         }
+    </script>
+    <script>
+
+        function checkPhone(button) {
+            if (validatePhoneNumber($('#telephone'))) showToast("Телефон коректний", "success")
+        }
+
         function deleteFile(button, url) {
             $('#confirmationModal').modal('show');
 
@@ -499,6 +537,7 @@
                 $('.confirm-delete').off('click');
             });
         }
+
         function downloadFileFrom(url) {
             $.ajax({
                 type: "GET",
@@ -527,6 +566,7 @@
                 }
             });
         }
+
         function validAllInput(formData) {
             cleanInputs()
             var houseNumber = $("#houseNumber")
@@ -673,9 +713,9 @@
             if (!validSelect2(region)) return false
             if (!validSelect2(city)) return false
             if (!validSelect2(district)) return false
-            if (!validString("5","300",street)) return false
-            if (!validString("5","300",streetUkr)) return false
-            if (!validString("5","300",streetEng)) return false
+            if (!validString("5", "300", street)) return false
+            if (!validString("5", "300", streetUkr)) return false
+            if (!validString("5", "300", streetEng)) return false
             if (!validSelect2(zone)) return false
             if (!validString("5", "70", ownerName)) return false
             if (!validatePhoneNumber(ownerPhone)) return false
@@ -688,7 +728,7 @@
                 return false
             }
             if (!validString("3", "1000", plotDescription)) return false
-            if (!getLastDigitFromPath(window.location.pathname)  &&  !validateFile('housesFiles', [".pdf"])) return false
+            if (!getLastDigitFromPath(window.location.pathname) && !validateFile('housesFiles', [".pdf"])) return false
             if (!validString("3", "1000", administrationComment)) return false
             if (!validSelect2(publicationStatus)) return false
             if (codeObject.val().replace(/\s/g, '').length !== 8) {
@@ -724,7 +764,7 @@
             if (!validString("1", "5000", advertisementTextUk)) return false
             if (!validString("1", "5000", advertisementTextRu)) return false
             if (!validString("1", "5000", advertisementTextEn)) return false
-            if (!getLastDigitFromPath(window.location.pathname)  &&  allUploadedFiles.length <= 0) {
+            if (!getLastDigitFromPath(window.location.pathname) && allUploadedFiles.length <= 0) {
                 showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
                 return false
             }
@@ -766,6 +806,7 @@
 
             return true
         }
+
         function sendForm() {
             let formData = new FormData();
             if (!validAllInput(formData)) return
@@ -800,6 +841,7 @@
                 }
             })
         }
+
         $(document).ready(function () {
             $('#landOwnershipPresent').select2({
                 minimumResultsForSearch: -1,
@@ -845,7 +887,7 @@
                         $("#lastContactDate").val(house.lastContactDate.replaceAll('-', '/'));
                         $("#vnpExpirationDate").val(house.vnpExpirationDate.replaceAll('-', '/'))
 
-                        $("#vnp").prop('checked',house.vnp)
+                        $("#vnp").prop('checked', house.vnp)
                         $("#informationSource").val(house.informationSource)
                         $('#bargain').prop('checked', house.bargain);
                         $('#exclusive').prop('checked', house.exclusive);
@@ -892,7 +934,7 @@
                         for (let file of house.files) {
                             var blockForFile = $("#block-for-file");
                             var row = $("<div class='row'></div>");
-                            var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>"+removeBeforeFirstDot(file)+"</a></div>");
+                            var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>" + removeBeforeFirstDot(file) + "</a></div>");
                             col1.find('a').on("click", function () {
                                 downloadFileFrom(file);
                             });
@@ -906,8 +948,7 @@
                         }
                     }
                 })
-            }
-            else {
+            } else {
                 forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
                 forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
                 forSelect2(undefined, undefined, "#publicationStatus", "/enum/publicationStatus")
@@ -948,6 +989,7 @@
                 });
             });
         })
+
         function addressSelect2(house) {
             if (house) {
                 $("#district").removeAttr("disabled");
@@ -1025,6 +1067,7 @@
                 })
             });
         }
+
         const previewTemplate = `<div class="dz-preview dz-file-preview">
 <div class="dz-details">
   <div class="dz-thumbnail">
@@ -1077,7 +1120,7 @@
             if (uploadedFiles.has(file.name)) {
                 uploadedFiles.delete(file.name);
             } else {
-                if(file.description){
+                if (file.description) {
                     $.ajax({
                         url: "[[@{/houses/deletePicture/}]]" + getLastDigitFromPath(window.location.pathname),
                         method: "Delete",
@@ -1113,7 +1156,11 @@
                 method: "GET",
                 success: function (files) {
                     files.forEach(function (file) {
-                        var mockFile = {name: removeBeforeFirstDot(file.originUrl), size: file.size, description: file.originUrl};
+                        var mockFile = {
+                            name: removeBeforeFirstDot(file.originUrl),
+                            size: file.size,
+                            description: file.originUrl
+                        };
                         myDropzone.emit("addedfile", mockFile);
                         myDropzone.emit("thumbnail", mockFile, file.url);
                         myDropzone.emit("complete", mockFile);
@@ -1124,6 +1171,7 @@
                 }
             });
         }
+
         function updateDropzoneMaxFiles() {
             const newMaxFiles = (15 - oldImagesArray.length);
             myDropzone.options.maxFiles = newMaxFiles;

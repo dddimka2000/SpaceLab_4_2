@@ -97,7 +97,7 @@
                             <input type="text" class="form-control onlyNumber" id="apartmentNumber" placeholder="34">
                         </div>
                         <div class="col-6 d-flex justify-content-start">
-                            <button class="btn btn-info mt-4" style="width: auto; margin-right: 5px">Проверить адрес
+                            <button class="btn btn-info mt-4" style="width: auto; margin-right: 5px" onclick="checkAddress()">Проверить адрес
                             </button>
                             <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto">Проверить
                                 номер телефона
@@ -518,6 +518,37 @@
         </div>
     </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
+    <script th:inline="javascript">
+        let contextPathURL =/*[[@{/}]]*/'';
+
+        function checkAddress() {
+            let streetUkr = $("#streetUkr").val();
+            console.log(streetUkr);
+            let url = contextPathURL + 'checkStreet';
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: {
+                    name: streetUkr
+                },
+                success: function (response, textStatus, xhr) {
+                    if (xhr.status === 200) {
+                        showToast(response, "success", 3000);
+                    } else if (xhr.status === 400) {
+                        showToast(response, "danger", 10000);
+                    } else {
+                        console.log("Необработанный статус ответа:", xhr.status);
+                    }
+                },
+                error: function (xhr, textStatus, error) {
+                    if (xhr.status === 400) {
+                        showToast(xhr.responseText, "danger", 3000);
+                    }
+                    console.log(error);
+                }
+            })
+        }
+    </script>
     <script>
         $(document).ready(function () {
             if(getLastDigitFromPath()) {

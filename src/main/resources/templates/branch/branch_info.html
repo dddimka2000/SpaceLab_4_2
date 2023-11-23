@@ -14,12 +14,12 @@
 <section layout:fragment="content">
   <div class="container-xxl flex-grow-1 container-p-y">
     <div class="d-flex justify-content-between">
-      <h4 class="fw-bold">Филиал</h4>
+      <h4 class="fw-bold" data-translate="branch">Филиал</h4>
       <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-          <li class="breadcrumb-item"><a th:href="@{/branches}">Филиалы</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Филиал</li>
+          <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/branches}" data-translate="branches">Филиалы</a></li>
+          <li class="breadcrumb-item active" aria-current="page" data-translate="branch">Филиал</li>
         </ol>
       </nav>
     </div>
@@ -28,7 +28,7 @@
     <div class="card">
       <div class="card-header">
         <div class="d-flex justify-content-end">
-          <a class="btn btn-info" th:href="@{/branches/edit/{id}(id=${branch.id})}">Редактировать</a>
+          <a class="btn btn-info" th:href="@{/branches/edit/{id}(id=${branch.id})}" data-translate="edit">Редактировать</a>
         </div>
         <hr>
       </div>
@@ -36,24 +36,24 @@
         <table class="table table-bordered table-striped table-view">
           <thead>
           <tr>
-            <th colspan="2"><h4>Информация</h4></th>
+            <th colspan="2"><h4 data-translate="INFORMATION">Информация</h4></th>
           </tr>
           </thead>
           <tbody>
           <tr>
-            <td><b>Код</b></td>
+            <td><b data-translate="code">Код</b></td>
             <td th:text="${branch.code}"></td>
           </tr>
           <tr>
-            <td><b>Название</b></td>
+            <td><b data-translate="title">Название</b></td>
             <td th:text="${branch.name}"></td>
           </tr>
           <tr>
-            <td><b>Адрес</b></td>
+            <td><b data-translate="address">Адрес</b></td>
             <td th:text="${branch.address}"></td>
           </tr>
           <tr>
-            <td><b>Телефон</b></td>
+            <td><b data-translate="phone">Телефон</b></td>
             <td th:text="${branch.telephone}"></td>
           </tr>
           <tr>

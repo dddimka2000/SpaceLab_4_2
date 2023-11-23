@@ -118,6 +118,10 @@
                                     elements.forEach(function (element) {
                                         element.placeholder = value;
                                     })
+                                    var elements = document.querySelectorAll('[data-translate-value="' + key + '"]');
+                                    elements.forEach(function (element) {
+                                        element.value = value;
+                                    })
                                 }
                             }
                         }

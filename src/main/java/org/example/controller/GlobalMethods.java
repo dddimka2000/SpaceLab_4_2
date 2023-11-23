@@ -64,12 +64,14 @@ public class GlobalMethods {
         List<String> list = streetRepository.findByDistrictNameDistrict(name).stream().map(s->s.getName()).collect(Collectors.toList());
         return list;
     }
-    @GetMapping("/checkStreet/{name}")
-    public ResponseEntity checkStreet(@PathVariable String name) {
+    @GetMapping("/checkStreet")
+    public ResponseEntity checkStreet( String name) {
         Boolean checkStreetExist = exelService.checkStreetExist(name);
         if(checkStreetExist){
-            return ResponseEntity.ok().body("Улица найдена.");
+            return ResponseEntity.ok().body("Улица(укр) найдена.");
         }
-        return ResponseEntity.badRequest().body("Введенная вами улица не была найдена.");
+        return ResponseEntity
+                .badRequest()
+                .body("Указанная вами улица (украинское название) не была обнаружена. Пожалуйста, удостоверьтесь, что вы правильно ввели название улицы. Возможно, добавление приставки 'вул.' перед названием улицы поможет. Например, 'вул. Горького'.");
     }
 }

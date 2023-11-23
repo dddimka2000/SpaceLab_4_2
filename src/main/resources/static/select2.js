@@ -2,7 +2,7 @@ var contextPath = "/ProminadaDD"
 
 function branchSelect2(id, text) {
     $('#branchSelect2').select2({
-        placeholder: "Філіал",
+        // placeholder: "Філіал",
         ajax: {
             url: contextPath + '/branches/for/select',
             dataType: 'json',
@@ -37,7 +37,6 @@ function branchSelect2(id, text) {
 }
 function realtorSelect2(id, text) {
     $('#realtorSelect2').select2({
-        placeholder: "Риелтор",
         ajax: {
             url: contextPath + '/realtors/for/select',
             dataType: 'json',
@@ -64,7 +63,7 @@ function realtorSelect2(id, text) {
             },
             cache: true
         }
-    })
+    });
     if(text !== undefined && id !== undefined) {
         $('#realtorSelect2').append(new Option(text.toString(), id.toString(), true, true));
         $('#realtorSelect2').trigger('change');
@@ -75,7 +74,6 @@ function realtorSelect2(id, text) {
 function roleSelect2(text, id){
     $('#roleSelect2').select2({
         minimumResultsForSearch: -1,
-        placeholder: "Адмін",
         ajax: {
             url: contextPath+'/enum/role',
             dataType: 'json',
@@ -101,7 +99,7 @@ function informationSourceSelect2(text, id){
 
     $(selectName).select2({
         minimumResultsForSearch: -1,
-        placeholder: "Адмін",
+        // placeholder: "Адмін",
         ajax: {
             url: contextPath+url,
             dataType: 'json',
@@ -124,7 +122,7 @@ function informationSourceSelect2(text, id){
 function forSelect2(id, text, selectName, url){
     $(selectName).select2({
         minimumResultsForSearch: -1,
-        placeholder: "Елемент",
+        // placeholder: "Елемент",
         ajax: {
             url: contextPath+url,
             dataType: 'json',
@@ -150,7 +148,7 @@ function forSelect2(id, text, selectName, url){
 }
 function forSelect2WithSearch(id, text, selectName, url, name) {
     $(selectName).select2({
-        placeholder: "element",
+        // placeholder: "element",
         ajax: {
             url: contextPath + url,
             dataType: 'json',
