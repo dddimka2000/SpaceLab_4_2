@@ -12,8 +12,9 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
             <h4 class="fw-bold">Комерческая недвижемось</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                 <ol class="breadcrumb">
@@ -24,7 +25,8 @@
         </div>
         <hr style="margin-top: -5px">
         <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
-            <p style="margin-right: 5px"><input type="checkbox" style="margin-top: 3px" id="printWithAddress">печать с
+
+            <p style="margin-right: 5px"><input type="checkbox" class="form-check-input print-checkbox" style="margin-top: 3px" id="printWithAddress">Печать с
                 адресом</p>
             <button class="btn btn-success" th:onclick="|window.location.href='@{/commercial/add}'|"
                     style="margin-right: 5px">Добавить об'єкт
@@ -149,6 +151,7 @@
                 </ul>
             </div>
         </div>
+    </div>
     </div>
     <script>
         $(document).ready(function () {

@@ -12,7 +12,8 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="content-wrapper">
+        <div class="container-fluid">
         <div class="d-flex justify-content-between">
             <h4 class="fw-bold">Дома и участки</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -24,7 +25,7 @@
         </div>
         <hr style="margin-top: -5px">
         <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
-            <p style="margin-right: 5px"><input type="checkbox" style="margin-top: 3px" id="printWithAddress">печать с
+            <p style="margin-right: 5px"><input type="checkbox" style="margin-top: 3px" id="printWithAddress" class="form-check-input print-checkbox">Печать с
                 адресом</p>
             <button class="btn btn-success" th:onclick="|window.location.href='@{/houses/add}'|"
                     style="margin-right: 5px">Добавить об'єкт
@@ -145,6 +146,7 @@
                 </ul>
             </div>
         </div>
+    </div>
     </div>
     <script>
         function printElements() {
