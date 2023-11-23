@@ -116,9 +116,9 @@
 
                         <div class="col-3">
                             <h6 data-translate="region_district">Обл.район</h6>
-                            <select class="select2 form-select form-select" name="region"
+                            <select class="select2 form-select form-select select2find" name="region"
                                     id="region">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <script th:inline="javascript">
                                     var selectRegionOptions = /*[[${selectRegion}]]*/ [];
                                     var selectRegion = /*[[${element.getAddress().getRegion()}]]*/ '';
@@ -136,13 +136,13 @@
                         </div>
                         <div class="col-3">
                             <h6 data-translate="city">Нас.пункт</h6>
-                            <select class="select2 form-select form-select" name="city" disabled>
+                            <select class="select2 form-select form-select select2find" name="city" disabled>
                             </select>
                         </div>
                         <div class="col-2">
                             <h6 data-translate="district">Район</h6>
-                            <select class="select2 form-select form-select" name="district" disabled>
-                                <option selected value=""></option>
+                            <select class="select2 form-select form-select select2find" name="district" disabled>
+                                <option selected value="" disabled></option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
@@ -169,7 +169,7 @@
                         </div>
                         <div class="col-2">
                             <h6 data-translate="topzone">Топозона</h6>
-                            <select class="select2 form-select form-select" name="topozone">
+                            <select class="select2 form-select form-select select2find" name="topozone">
                                 <option value="" selected></option>
                                 <option th:each="entity : ${selectTopozone}"
                                         th:value="${entity}"
@@ -239,7 +239,7 @@
                         </div>
                         <div class="col-3">
                             <h6 data-translate="ownership_rights">Право собственности</h6>
-                            <select class="select2 form-select form-select" name="ownership">
+                            <select class="select2 form-select form-select select2find" name="ownership">
                                 <option th:each="status : ${ownershipType}"
                                         th:value="${status}"
                                         th:text="${status}" th:data-translate="${status}"
@@ -269,8 +269,8 @@
                     <div class="row">
                         <div class="col-2">
                             <h6 data-translate="publication_status">Статус публикации</h6>
-                            <select class="select2 form-select form-select" id="publicationStatus">
-                                <option selected></option>
+                            <select class="select2 form-select form-select select2find" id="publicationStatus">
+                                <option selected disabled></option>
                                 <option th:each="status : ${publicationStatus}"
                                         th:value="${status}"
                                         th:text="${status}"  th:data-translate="${status}"
@@ -348,8 +348,8 @@
                     <div class="row">
                         <div class="col-2">
                             <h6 data-translate="completion_date">Срок сдачи</h6>
-                            <select id="buildStatus" class="select2 form-select form-select">
-                                <option selected></option>
+                            <select id="buildStatus" class="select2 form-select form-select select2find">
+                                <option selected disabled></option>
                                 <option th:each="status : ${propertyBuildStatus}"
                                         th:value="${status}"
                                         th:text="${status.status}" th:data-translate="${status}"
@@ -413,8 +413,8 @@
                         </div>
                         <div class="col-3">
                             <h6 data-translate="apartment_condition">Состояние квартиры</h6>
-                            <select id="state" class="select2 form-select form-select">
-                                <option selected></option>
+                            <select id="state" class="select2 form-select form-select select2find">
+                                <option selected disabled></option>
                                 <option th:each="status : ${propertyOrigin}"
                                         th:value="${status}"
                                         th:text="${status}" th:data-translate="${status}"
@@ -426,8 +426,8 @@
                     <div class="row">
                         <div class="col-3">
                             <h6 data-translate="kitchen">Кухня</h6>
-                            <select id="kitchen" class="select2 form-select form-select">
-                                <option selected></option>
+                            <select id="kitchen" class="select2 form-select form-select select2find">
+                                <option selected disabled></option>
                                 <option th:each="status : ${kitchenType}"
                                         th:value="${status}"
                                         th:text="${status}" th:data-translate="${status}"
@@ -435,8 +435,8 @@
                             </select></div>
                         <div class="col-3">
                             <h6 data-translate="bathroom">Санузел</h6>
-                            <select id="bathroom" class="select2 form-select form-select">
-                                <option selected></option>
+                            <select id="bathroom" class="select2 form-select form-select select2find">
+                                <option selected disabled></option>
                                 <option th:each="status : ${bathroomType}"
                                         th:value="${status}"
                                         th:text="${status}" th:data-translate="${status}"
@@ -445,8 +445,8 @@
                         </div>
                         <div class="col-2">
                             <h6 data-translate="balcony_loggia">Балкон/лоджия</h6>
-                            <select id="balcony" class="select2 form-select form-select" name="balconyType">
-                                <option selected></option>
+                            <select id="balcony" class="select2 form-select form-select select2find" name="balconyType">
+                                <option selected disabled></option>
                                 <option th:each="status : ${balconyType}"
                                         th:value="${status}"
                                         th:text="${status}" th:data-translate="${status}"
@@ -455,8 +455,8 @@
                         </div>
                         <div class="col-2">
                             <h6 data-translate="window_view">Вид из окон</h6>
-                            <select id="viewWindow" class="select2 form-select form-select">
-                                <option selected></option>
+                            <select id="viewWindow" class="select2 form-select form-select select2find">
+                                <option selected disabled></option>
                                 <option th:each="status : ${windowViewType}"
                                         th:value="${status}"
                                         th:text="${status}" th:data-translate="${status}"
@@ -468,8 +468,8 @@
                     <div class="row">
                         <div class="col-3">
                             <h6 data-translate="stove_type">Кухонная плита</h6>
-                            <select class="select2 form-select form-select" name="kitchenStoveType" id="kitchenStove">
-                                <option selected></option>
+                            <select class="select2 form-select form-select select2find" name="kitchenStoveType" id="kitchenStove">
+                                <option selected disabled></option>
                                 <option th:each="status : ${kitchenStoveType}"
                                         th:value="${status}"
                                         th:text="${status}" th:data-translate="${status}"
@@ -478,8 +478,8 @@
                         <div class="col-3">
                             <h6 data-translate="heating">Отопление
                             </h6>
-                            <select id="heating" class="select2 form-select form-select">
-                                <option selected></option>
+                            <select id="heating" class="select2 form-select form-select select2find">
+                                <option selected disabled></option>
                                 <option th:each="status : ${heatingType}"
                                         th:value="${status}"
                                         th:text="${status}" th:data-translate="${status}"
@@ -1038,10 +1038,10 @@
                                 container.removeAttr('disabled');
                             }
                             container.empty();
-                            let selectionItem = '<option value=""></option> ';
+                            let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option value="' + category + '">' + category + '</option>';
+                                    selectionItem += '<option value="' + category + '" data-translate="' + category.replaceAll(" ","_") + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
@@ -1052,6 +1052,7 @@
                     }
                 });
             }
+            refreshAllTranslate()
         });
         $("#region").change(function () {
             let selectedValue = $(this).val();
@@ -1082,10 +1083,10 @@
                                 container.removeAttr('disabled');
                             }
                             container.empty();
-                            let selectionItem = '<option value=""></option> ';
+                            let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option value="' + category + '">' + category + '</option>';
+                                    selectionItem += '<option  data-translate="' + category.replaceAll(" ","_") + '" value="' + category + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
@@ -1099,6 +1100,7 @@
                     }
                 });
             }
+            refreshAllTranslate()
         });
         document.addEventListener("DOMContentLoaded", function () {
             let imagesDropzoneBase64 = /*[[${base64Images}]]*/ '';
@@ -1135,7 +1137,7 @@
                             container.removeAttr('disabled');
                         }
                         container.empty();
-                        let selectionItem = '<option value=""></option> ';
+                        let selectionItem = '<option disabled value=""></option> ';
                         if (data.length > 0) {
                             data.forEach(function (category) {
                                 selectionItem += '<option data-translate="' + category.replace(" ", "_") + '" value="' + category + '"';
@@ -1168,7 +1170,7 @@
                             container.removeAttr('disabled');
                         }
                         container.empty();
-                        let selectionItem = '<option value=""></option> ';
+                        let selectionItem = '<option disabled value=""></option> ';
                         if (data.length > 0) {
                             data.forEach(function (category) {
                                 selectionItem += '<option data-translate="' + category.replace(" ", "_") + '"value="' + category + '"';
@@ -1196,6 +1198,7 @@
                     displayFiles(data);
                 })
                 .catch(error => console.error('Error fetching files:', error));
+            refreshAllTranslate();
         });
         let idEntity =/*[[${element.id}]]*/ '';
 

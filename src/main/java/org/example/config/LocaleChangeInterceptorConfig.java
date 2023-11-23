@@ -15,23 +15,23 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
-@Configuration
-public class LocaleChangeInterceptorConfig implements WebMvcConfigurer {
-    @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-        lci.setParamName("translation");
-        return lci;
-    }
-    @Bean
-    public LocaleResolver localeResolver() {
-        SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(Locale.ENGLISH);
-        return slr;
-    }
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
-    }
-
-}
+//@Configuration
+//public class LocaleChangeInterceptorConfig implements WebMvcConfigurer {
+//    @Bean
+//    public LocaleChangeInterceptor localeChangeInterceptor() {
+//        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+//        lci.setParamName("translation");
+//        return lci;
+//    }
+//    @Bean
+//    public LocaleResolver localeResolver() {
+//        SessionLocaleResolver slr = new SessionLocaleResolver();
+//        slr.setDefaultLocale(Locale.ENGLISH);
+//        return slr;
+//    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(localeChangeInterceptor());
+//    }
+//
+//}

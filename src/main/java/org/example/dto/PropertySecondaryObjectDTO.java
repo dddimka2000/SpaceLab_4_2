@@ -108,7 +108,7 @@ public class PropertySecondaryObjectDTO {
     @NotNull(message = "Заполните тип вида из окна")
     public WindowViewType viewType;//
     @NotNull(message = "Заполните тип плиты")
-    public KitchenStoveType kitchenStoveType;//
+    public KitchenStoveType stoveType;//
     @NotNull(message = "Заполните тип отопления")
     public HeatingType heatingType;//
     @NotNull(message = "Заполните метраж комнат")

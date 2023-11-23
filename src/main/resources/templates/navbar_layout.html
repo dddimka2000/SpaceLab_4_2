@@ -24,19 +24,19 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item selected" data-language="eng" onclick="sendLanguage(this)">
+                        <a class="dropdown-item selected" data-language="eng" onclick="sendLanguageNav(this)">
                             <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
                             <span class="align-middle">English</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" data-language="ru" onclick="sendLanguage(this)">
+                        <a class="dropdown-item" data-language="ru" onclick="sendLanguageNav(this)">
                             <i class="fi fi-ru fis rounded-circle me-1 fs-3"></i>
                             <span class="align-middle">Русский</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" data-language="ukr" onclick="sendLanguage(this)">
+                        <a class="dropdown-item" data-language="ukr" onclick="sendLanguageNav(this)">
                             <i class="fi fi-de fis rounded-circle me-1 fs-3"></i>
                             <span class="align-middle">Український</span>
                         </a>
@@ -82,59 +82,89 @@
     </div>
     <script type="text/javascript">
 
-        function changeLanguage(language) {
-            // let selectElements = document.querySelectorAll(".select2");
-            //     selectElements.forEach(function (element) {
-            //         $(element).select2();
-            //     });
-            // if (selectElements)
-            //     selectElements.forEach(function (element) {
-            //         $(element).select2();
-            //         var selectedOption = $(element).find(':selected');
-            //         selectedOption.attr('data-translate', selectedOption.val());
-            //     });
-            // var spans = document.getElementsByClassName("select2-selection__rendered");
-            // if (spans)
-            //     for (var i = 0; i < spans.length; i++) {
-            //         spans[i].setAttribute("data-translate", spans[i].val());
-            //     }
+        function refreshSelect2Find(){
+            let selectElements = document.querySelectorAll(".select2find");
+            if (selectElements) {
+                selectElements.forEach(function (element) {
+                    $(element).select2();
+                });
+            }
+            if ($(".select2-selection__choice")) {
+                $(".select2-selection__choice").each(function (index, element) {
+                    if (element.value !== undefined) {
+                        $(element).setAttribute("data-translate", element.value.toString());
+                    }
+                });
+            }
+            if ($("span.select2-selection__rendered:not(:has(span))")) {
+                $("span.select2-selection__rendered:not(:has(span))").each(function (index, element) {
+                    if ($(element).text())
+                        if (element.value !== undefined) {
+                            $(element).attr('data-translate', element.value.toString());
+                            console.log(element.value.toString())
+                        }
+                });
+            }
+        }
+        async function changeLanguageNav(language) {
+            refreshSelect2Find()
+            console.log("refresh start2")
 
-            fetch('/ProminadaDD' + '/api/translations?language=' + language)
-                .then(response => response.json())
-                .then(newTranslations => {
-                    var translations = newTranslations;
 
-                    for (var lang in translations) {
-                        if (translations.hasOwnProperty(lang)) {
-                            var langTranslations = translations[lang];
-                            for (var key in langTranslations) {
-                                if (langTranslations.hasOwnProperty(key)) {
-                                    var value = langTranslations[key];
-                                    var elements = document.querySelectorAll('[data-translate="' + key + '"]');
-                                    elements.forEach(function (element) {
-                                        element.innerText = value;
-                                    })
-                                    var elements = document.querySelectorAll('[data-translate-placeholder="' + key + '"]');
-                                    elements.forEach(function (element) {
-                                        element.placeholder = value;
-                                    })
-                                    var elements = document.querySelectorAll('[data-translate-value="' + key + '"]');
-                                    elements.forEach(function (element) {
-                                        element.value = value;
-                                    })
+            try {
+                // Запрашиваем переводы
+                await fetch('/ProminadaDD' + '/api/translations?language=' + language)
+                    .then(response => response.json())
+                    .then(newTranslations => {
+                        var translations = newTranslations;
+
+                        for (var lang in translations) {
+                            if (translations.hasOwnProperty(lang)) {
+                                var langTranslations = translations[lang];
+                                for (var key in langTranslations) {
+                                    if (langTranslations.hasOwnProperty(key)) {
+                                        var value = langTranslations[key];
+                                        var elements = document.querySelectorAll('[data-translate="' + key + '"]');
+                                        elements.forEach(function (element) {
+                                            element.innerText = value;
+                                        })
+                                        var elements = document.querySelectorAll('[data-translate-placeholder="' + key + '"]');
+                                        elements.forEach(function (element) {
+                                            element.placeholder = value;
+                                        })
+                                        var elements = document.querySelectorAll('[data-translate-value="' + key + '"]');
+                                        elements.forEach(function (element) {
+                                            element.value = value;
+                                        })
+                                    }
                                 }
                             }
                         }
-                    }
-                })
-                .catch(error => console.error('Error fetching translations:', error));
+                    })
+                    .catch(error => {
+                            console.error('Error fetching translations:', error)
+                            throw error;
+                        }
+                    )
+                ;
+                console.log("refresh start3_ajax end")
+
+                refreshSelect2Find()
+
+                console.log("refresh start3")
+
+            } catch
+                (error) {
+                console.error('Ошибка при получении переводов:', error);
+            }
+
         }
 
 
-        function sendLanguage(el) {
+        function sendLanguageNav(el) {
             var selectedLanguage = el.getAttribute('data-language');
             document.cookie = "selectedLanguage=" + selectedLanguage + "; path=/";
-            changeLanguage(selectedLanguage);
+            changeLanguageNav(selectedLanguage);
         };
 
 
@@ -152,17 +182,18 @@
                 document.cookie = "selectedLanguage=ru; path=/";
                 selectedLanguage = "ru";
             }
-            changeLanguage(selectedLanguage);
+            changeLanguageNav(selectedLanguage);
         });
         let path = /*[[@{/}]]*/ '';
 
         let selectedLanguage;
         document.getElementById('languageSelector').addEventListener('change', function () {
             selectedLanguage = this.value;
-            changeLanguage(selectedLanguage);
+            changeLanguageNav(selectedLanguage);
         });
 
         function refreshAllTranslate() {
+            console.log("refresh start")
             let allCookies = document.cookie;
             let cookiesArray = allCookies.split("; ");
             let cookies = {};
@@ -176,7 +207,7 @@
                 document.cookie = "selectedLanguage=ru; path=/";
                 selectedLanguage = "ru";
             }
-            changeLanguage(selectedLanguage);
+            changeLanguageNav(selectedLanguage);
 
         }
 

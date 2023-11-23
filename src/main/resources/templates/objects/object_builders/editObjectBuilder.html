@@ -138,7 +138,7 @@
                             </div>
                             <div class="col-3">
                                 <h6 data-translate="region_district">Обл.район</h6>
-                                <select class="select2 form-select form-select" name="region" id="region">
+                                <select class="select2 form-select form-select select2find" name="region" id="region">
                                     <option selected></option>
                                     <script th:inline="javascript">
                                         var selectRegionOptions = /*[[${selectRegion}]]*/ [];
@@ -159,7 +159,7 @@
                             </div>
                             <div class="col-3">
                                 <h6 data-translate="city">Нас.пункт</h6>
-                                <select class="select2 form-select form-select" name="city">
+                                <select class="select2 form-select form-select select2find" name="city">
                                     <option selected></option>
                                     <option th:each="entity : ${selectRegion}"
                                             th:value="${entity}"
@@ -169,7 +169,7 @@
                             </div>
                             <div class="col-3">
                                 <h6 data-translate="district">Район</h6>
-                                <select class="select2 form-select form-select" name="district">
+                                <select class="select2 form-select form-select select2find" name="district">
                                     <option selected value=""></option>
                                 </select></div>
                             <div class="col-1"></div>
@@ -236,7 +236,7 @@
                             </div>
                             <div class="col-3">
                                 <h6 data-translate="construction_company">Строительная компания</h6>
-                                <select class="select2 form-select form-select" name="nameCompany">
+                                <select class="select2 form-select form-select select2find" name="nameCompany">
                                     <option th:selected="${objectBuilder.getNameCompany() == ''}" value=""></option>
                                     <option th:selected="${objectBuilder.getNameCompany() == '1'}" value="1">One
                                     </option>
@@ -248,7 +248,7 @@
                             </div>
                             <div class="col-3">
                                 <h6 data-translate="completion_date">Срок сдачи</h6>
-                                <select id="buildStatus" class="select2 form-select form-select" name="buildStatus">
+                                <select id="buildStatus" class="select2 form-select form-select select2find" name="buildStatus">
                                     <option></option>
                                     <option th:each="status : ${propertyBuildStatus}"
                                             th:value="${status}"
@@ -988,7 +988,7 @@
                 document.cookie = "selectedLanguage=ru; path=/";
                 selectedLanguage = "ru";
             }
-            changeLanguage(selectedLanguage);
+            changeLanguageNav(selectedLanguage);
 
         }
 
@@ -1302,7 +1302,7 @@
                             document.cookie = "selectedLanguage=ru; path=/";
                             selectedLanguage = "ru";
                         }
-                        changeLanguage(selectedLanguage);
+                        changeLanguageNav(selectedLanguage);
                     }
                 }
             }
@@ -1335,21 +1335,21 @@
                                 container.removeAttr('disabled');
                             }
                             container.empty();
-                            let selectionItem = '<option value=""></option> ';
+                            let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option data-aos="tr" value="' + category + '" data-translate="'+category.replace(' ','_')+'">' + category + '</option>';
+                                    selectionItem += '<option value="' + category + '" data-translate="' + category.replaceAll(" ","_") + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
                         }
-                        refreshAllTranslate()
                     },
                     error: function (error) {
                         console.log("Error:", error);
                     }
                 });
             }
+            refreshAllTranslate()
         });
         $("#region").change(function () {
             let selectedValue = $(this).val();
@@ -1380,10 +1380,10 @@
                                 container.removeAttr('disabled');
                             }
                             container.empty();
-                            let selectionItem = '<option value=""></option> ';
+                            let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option value="' + category + '" data-translate="'+category+'">' + category + '</option>';
+                                    selectionItem += '<option  data-translate="' + category.replaceAll(" ","_") + '" value="' + category + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
@@ -1391,13 +1391,13 @@
                             container2.empty();
                             container2.prop('disabled', true);
                         }
-                        refreshAllTranslate()
                     },
                     error: function (error) {
                         console.log("Error:", error);
                     }
                 });
             }
+            refreshAllTranslate()
         });
 
         function showNotification(bigTextMessage, message, isSuccess) {

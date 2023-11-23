@@ -106,7 +106,7 @@
                         <div class="row">
                             <div class="col-4">
                                 <h6 data-translate="district">Район</h6>
-                                <select id="select2Multiple24" class="select2 form-select for-filter" multiple>
+                                <select id="select2Multiple24" class="select2 form-select for-filter select2find" multiple>
                                     <script th:inline="javascript">
                                         let pathLink = /*[[@{/}]]*/ '';
                                         let selectElement = document.getElementById("select2Multiple24");
@@ -175,7 +175,7 @@
                         <div class="row">
                             <div class="col-4">
                                 <h6 data-translate="topzone">Топозона</h6>
-                                <select class="select2 form-select for-filter" multiple id="select2MultipleTopozone">
+                                <select class="select2 form-select for-filter select2find" multiple id="select2MultipleTopozone">
                                     <option th:each="entity : ${selectTopozone}"
                                             th:value="${entity}" th:data-translate="${entity}"
                                             th:text="${entity}"></option>
@@ -225,7 +225,7 @@
                             </div>
                             <div class="col-4">
                                 <h6 data-translate="contact_date">Дата последнего контакта</h6>
-                                <select id="day" name="day" class="form-select select2 for-filter">
+                                <select id="day" name="day" class="form-select select2 for-filter select2find">
                                     <option selected value="" disabled></option>
                                     <option value="1" data-translate="one_day">1 день</option>
                                     <script>
@@ -305,8 +305,8 @@
                             </div>
                         </div>
                         <div class="col-2">
-                            <p data-translate="number_of_rows">Колличество строк:</p>
-                            <select class="form-select form-control select2" id="pageSize">
+                            <p data-translate="number_of_rows">Количество строк:</p>
+                            <select class="form-select form-control select2 select2find" id="pageSize">
                                 <option value="2">2</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>

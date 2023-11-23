@@ -139,9 +139,9 @@
                         </div>
                         <div class="col-3">
                             <h6 data-translate="region_district">Обл.район</h6>
-                            <select class="select2 form-select form-select" data-allow-clear="true" name="region"
+                            <select class="select2 form-select form-select select2find"  name="region"
                                     id="region">
-                                <option selected></option>
+                                <option selected disabled></option>
                                 <script th:inline="javascript">
                                     var selectRegionOptions = /*[[${selectRegion}]]*/ [];
                                     for (var i = 0; i < selectRegionOptions.length; i++) {
@@ -155,13 +155,13 @@
                         </div>
                         <div class="col-3">
                             <h6 data-translate="city">Нас.пункт</h6>
-                            <select class="select2 form-select form-select" name="city" disabled>
+                            <select class="select2 form-select form-select select2find" name="city" disabled>
                             </select>
                         </div>
                         <div class="col-3">
                             <h6 data-translate="district">Район</h6>
-                            <select class="select2 form-select form-select" name="district" disabled>
-                                <option selected value=""></option>
+                            <select class="select2 form-select form-select select2find" name="district" disabled>
+                                <option selected disabled value=""></option>
                             </select></div>
                         <div class="col-1"></div>
                     </div>
@@ -169,7 +169,7 @@
                     <div class="row">
                         <div class="col-2">
                             <h6 data-translate="topzone">Топозона</h6>
-                            <select class="select2 form-select form-select" name="topozone">
+                            <select class="select2 form-select form-select" name="topozone" select2find>
                                 <option value="" selected></option>
                                 <script th:inline="javascript">
                                     var selectRegionOptions = /*[[${selectRegion}]]*/ [];
@@ -219,8 +219,8 @@
                         </div>
                         <div class="col-3">
                             <h6 data-translate="construction_company">Строительная компания</h6>
-                            <select class="select2 form-select form-select" name="nameCompany">
-                                <option selected></option>
+                            <select class="select2 form-select form-select select2find" name="nameCompany">
+                                <option selected disabled></option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
@@ -228,8 +228,8 @@
                         </div>
                         <div class="col-3">
                             <h6 data-translate="completion_date">Срок сдачи</h6>
-                            <select id="buildStatus" class="select2 form-select form-select" name="buildStatus">
-                                <option selected></option>
+                            <select id="buildStatus" class="select2 form-select form-select select2find" name="buildStatus">
+                                <option selected disabled></option>
                                 <option th:each="status : ${propertyBuildStatus}"
                                         th:value="${status}"
                                         th:text="${status}"
@@ -847,7 +847,7 @@
                 document.cookie = "selectedLanguage=ru; path=/";
                  selectedLanguage = "ru";
             }
-            changeLanguage(selectedLanguage);
+            changeLanguageNav(selectedLanguage);
 
         }
 
@@ -889,21 +889,21 @@
                                 container.removeAttr('disabled');
                             }
                             container.empty();
-                            let selectionItem = '<option value=""></option> ';
+                            let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option data-aos="tr" value="' + category + '" data-translate="'+category.replace(' ','_')+'">' + category + '</option>';
+                                    selectionItem += '<option value="' + category + '" data-translate="' + category.replaceAll(" ","_") + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
                         }
-                        refreshAllTranslate()
                     },
                     error: function (error) {
                         console.log("Error:", error);
                     }
                 });
             }
+            refreshAllTranslate()
         });
         $("#region").change(function () {
             let selectedValue = $(this).val();
@@ -934,10 +934,10 @@
                                 container.removeAttr('disabled');
                             }
                             container.empty();
-                            let selectionItem = '<option value=""></option> ';
+                            let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option value="' + category + '" data-translate="'+category+'">' + category + '</option>';
+                                    selectionItem += '<option  data-translate="' + category.replaceAll(" ","_") + '" value="' + category + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
@@ -945,13 +945,13 @@
                             container2.empty();
                             container2.prop('disabled', true);
                         }
-                        refreshAllTranslate()
                     },
                     error: function (error) {
                         console.log("Error:", error);
                     }
                 });
             }
+            refreshAllTranslate()
         });
 
         function showNotification(bigTextMessage, message, isSuccess) {
