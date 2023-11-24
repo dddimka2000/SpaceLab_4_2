@@ -25,7 +25,9 @@ public class QuestionServiceImpl {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
         return questionRepository.findAll(pageable);
     }
-
+    public long count() {
+        return questionRepository.count();
+    }
     public Question getById(int id) {
         return questionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A question with an id = "+id +" was not found"));
     }

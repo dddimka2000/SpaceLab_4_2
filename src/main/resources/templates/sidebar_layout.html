@@ -18,6 +18,12 @@
 
     <ul class="menu-inner py-1">
         <!-- Page -->
+        <li th:class="'menu-item ' + ${mainPageActive != null ? 'active' : ''}">
+            <a th:href="@{/}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-building-community"></i>
+                <div data-i18n="Builder Objects" data-translate="builder_objects_from_builders">Главная</div>
+            </a>
+        </li>
         <li th:class="'menu-item ' + ${builderObjectsActive != null ? 'active' : ''}">
             <a th:href="@{/builder_objects}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-building-community"></i>

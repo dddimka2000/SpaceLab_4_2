@@ -34,4 +34,5 @@ public class ApplicationController {
         return ResponseEntity.ok().body("Заявку видалено успішно");
     }
 
+
 }

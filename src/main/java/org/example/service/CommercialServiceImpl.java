@@ -37,6 +37,9 @@ public class CommercialServiceImpl {
     private final CommercialInfoMapper commercialInfoMapper;
     private final CommercialMaterialAndAreaMapper commercialMaterialAndAreaMapper;
     private final CommercialAddressMapper commercialAddressMapper;
+    public long count() {
+        return propertyCommercialObjectRepository.count();
+    }
     public void add(CommercialInfoDto commercialInfoDto,
                     CommercialMaterialAndAreaDto commercialMaterialAndAreaDto,
                     CommercialAddressDto commercialAddressDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {

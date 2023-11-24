@@ -37,7 +37,9 @@ public class HousesServiceImpl {
     private final RealtorServiceImpl realtorService;
     private final HouseInfoMapper houseInfoMapper;
     private final MinioService minioService;
-
+    public long count() {
+        return propertyHouseObjectRepository.count();
+    }
     public void add(HouseMaterialDto materialDTO, HouseInfoDto infoDTO, HouseAddressDto addressDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         PropertyHouseObject house = new PropertyHouseObject();
         if(infoDTO.getId()!=null)house = getById(infoDTO.getId());

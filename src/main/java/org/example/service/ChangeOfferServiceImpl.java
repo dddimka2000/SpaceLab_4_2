@@ -27,6 +27,9 @@ public class ChangeOfferServiceImpl {
     public ChangeOffer getById(Integer id) {
         return changeOfferRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A offer with an id = "+id +", was not found"));
     }
+    public long count() {
+        return changeOfferRepository.count();
+    }
 
     public void deleteById(Integer id) {
         changeOfferRepository.deleteById(id);

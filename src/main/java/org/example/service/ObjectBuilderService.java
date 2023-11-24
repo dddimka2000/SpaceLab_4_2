@@ -21,7 +21,9 @@ public class ObjectBuilderService {
     public ObjectBuilderService(BuilderObjectRepository builderObjectRepository) {
         this.builderObjectRepository = builderObjectRepository;
     }
-
+    public long count() {
+        return builderObjectRepository.count();
+    }
     public Optional<BuilderObject> findById(Integer id) {
         log.info("ObjectBuilderService-findById start");
         Optional<BuilderObject> entity = builderObjectRepository.findById(id);

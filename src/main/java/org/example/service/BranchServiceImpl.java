@@ -38,6 +38,9 @@ public class BranchServiceImpl {
 
         save(branch);
     }
+    public long count() {
+        return branchRepository.count();
+    }
     public Branch getById(int id){
         return branchRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A branch with an id = "+id +", was not found"));
     }

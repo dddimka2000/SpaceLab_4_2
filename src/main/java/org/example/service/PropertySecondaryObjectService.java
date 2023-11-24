@@ -41,7 +41,9 @@ public class PropertySecondaryObjectService {
         propertySecondaryObjectRepository.save(entity);
         log.info("PropertySecondaryObject-save successfully");
     }
-
+    public long count() {
+        return propertySecondaryObjectRepository.count();
+    }
     public Optional<PropertySecondaryObject> findByCode(String code) {
         log.info("PropertySecondaryObjectService-findByCode start");
         Optional<PropertySecondaryObject> propertySecondaryObject=propertySecondaryObjectRepository.findByObjectCode(code);

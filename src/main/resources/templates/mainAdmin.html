@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" type="image/x-icon"
+          th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js"
+            type="text/javascript"></script>
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+
+
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
+    <script th:src="@{/js/config.js}"></script>
+    <script th:src="@{/vendor/js/template-customizer.js}"></script>
+    <script th:src="@{/vendor/js/helpers.js}"></script>
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
+    <script th:src="@{/vendor/libs/select2/select2.js}"></script>
+    <link rel="stylesheet" th:href="@{/vendor/libs/apex-charts/apex-charts.css}"/>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="content-wrapper">
+            <div id="donutChart"></div>
+            <br>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <a th:href="@{/questions}">
+                        <div class="card" style="height: 170px">
+                            <div class="card-body pb-0">
+                                <div class="card-icon">
+                        <span class="badge bg-label-success rounded-pill p-2">
+                          <i class="ti ti-eye ti-sm"></i>
+                        </span>
+                                </div>
+                                <h5 class="card-title mb-0 mt-2" th:text="${questions}"></h5>
+                                <h3>Количество вопросов</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <a th:href="@{/proposals_for_changes}">
+                        <div class="card" style="height: 170px">
+                            <div class="card-body pb-0">
+                                <div class="card-icon">
+                        <span class="badge bg-label-success rounded-pill p-2">
+                          <i class="ti ti-api ti-sm"></i>
+                        </span>
+                                </div>
+                                <h5 class="card-title mb-0 mt-2" th:text="${changeOffer}"></h5>
+                                <h3>Количество предложений по изменению</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <a th:href="@{/branches}">
+                        <div class="card" style="height: 170px">
+                            <div class="card-body pb-0">
+                                <div class="card-icon">
+                        <span class="badge bg-label-success rounded-pill p-2">
+                          <i class="ti ti-git-branch ti-sm"></i>
+                        </span>
+                                </div>
+                                <h5 class="card-title mb-0 mt-2" th:text="${branches}"></h5>
+                                <h3>Количество филиалов</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/vendor/libs/chartjs/chartjs.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script th:inline="javascript">
+        let Investor =/*[[${Investor}]]*/+0;
+        let Secondary =/*[[${Secondary}]]*/+0;
+        let BuilderObject =/*[[${Builder}]]*/+0;
+        let Commercial =/*[[${Commercial}]]*/+0;
+        let Houses =/*[[${Houses}]]*/'';
+
+        const chartColors = {
+            column: {
+                series1: '#826af9',
+                series2: '#d2b0ff',
+                bg: '#f8d3ff'
+            },
+            donut: {
+                series1: '#ff003d',
+                series2: '#3fd0bd',
+                series3: '#826bf8',
+                series4: '#2b9bf4',
+                series5: '#d700c5'
+            },
+            area: {
+                series1: '#29dac7',
+                series2: '#60f2ca',
+                series3: '#a5f8cd'
+            }
+        };
+        let legendColor = '#ff9100';
+        let headingColor = '#ff9100';
+        const donutChartEl = document.querySelector('#donutChart'),
+            donutChartConfig = {
+                chart: {
+                    height: 390,
+                    type: 'donut'
+                },
+                labels: ['Объекты от строителя', 'Объекты от инвестора', 'Вторичная недвижимость', 'Дома и участки', 'Коммерческая'],
+                series: [BuilderObject, Investor, Secondary, Houses, Commercial],
+                colors: [
+                    chartColors.donut.series1,
+                    chartColors.donut.series4,
+                    chartColors.donut.series3,
+                    chartColors.donut.series2,
+                    chartColors.donut.series5
+                ],
+                stroke: {
+                    show: false,
+                    curve: 'straight'
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function (val, opt) {
+                        return parseInt(val, 10) + '%';
+                    }
+                },
+                legend: {
+                    show: true,
+                    position: 'bottom',
+                    markers: {offsetX: -3},
+                    itemMargin: {
+                        vertical: 3,
+                        horizontal: 10
+                    },
+                    labels: {
+                        colors: legendColor,
+                        useSeriesColors: false
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                name: {
+                                    fontSize: '2rem',
+                                    fontFamily: 'Public Sans'
+                                },
+                                value: {
+                                    fontSize: '1.2rem',
+                                    color: legendColor,
+                                    fontFamily: 'Public Sans',
+                                    formatter: function (val) {
+                                        return parseInt(val, 10) + '%';
+                                    }
+                                },
+                                total: {
+                                    show: true,
+                                    fontSize: '1.5rem',
+                                    color: headingColor,
+                                    label: 'Количество объектов',
+                                    formatter: function (w) {
+                                        return '31%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                responsive: [
+                    {
+                        breakpoint: 992,
+                        options: {
+                            chart: {
+                                height: 380
+                            },
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    colors: legendColor,
+                                    useSeriesColors: false
+                                }
+                            }
+                        }
+                    },
+                    {
+                        breakpoint: 576,
+                        options: {
+                            chart: {
+                                height: 320
+                            },
+                            plotOptions: {
+                                pie: {
+                                    donut: {
+                                        labels: {
+                                            show: true,
+                                            name: {
+                                                fontSize: '1.5rem'
+                                            },
+                                            value: {
+                                                fontSize: '1rem'
+                                            },
+                                            total: {
+                                                fontSize: '1.5rem'
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    colors: legendColor,
+                                    useSeriesColors: false
+                                }
+                            }
+                        }
+                    },
+                    {
+                        breakpoint: 420,
+                        options: {
+                            chart: {
+                                height: 280
+                            },
+                            legend: {
+                                show: false
+                            }
+                        }
+                    },
+                    {
+                        breakpoint: 360,
+                        options: {
+                            chart: {
+                                height: 250
+                            },
+                            legend: {
+                                show: false
+                            }
+                        }
+                    }
+                ]
+            };
+        if (typeof donutChartEl !== undefined && donutChartEl !== null) {
+            const donutChart = new ApexCharts(donutChartEl, donutChartConfig);
+            donutChart.render();
+        }
+    </script>
+</div>
+</body>
+</html>

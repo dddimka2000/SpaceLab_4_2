@@ -55,6 +55,10 @@ public class PropertyInvestorObjectService {
         propertyInvestorObjectRepository.deleteById(entity);
         log.info("PropertyInvestorObjectService-deleteById successfully");
     }
+    public long count() {
+        return propertyInvestorObjectRepository.count();
+    }
+
 
     public Page<PropertyInvestorObject> forSelect(String name, Pageable pageable) {
         return propertyInvestorObjectRepository.findAll(Specification.where(InvestorObjectSpecification.nameContains(name)), pageable);
