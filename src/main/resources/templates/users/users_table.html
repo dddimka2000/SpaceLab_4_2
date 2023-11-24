@@ -13,23 +13,23 @@
 <section layout:fragment="content">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="d-flex justify-content-between">
-            <h4 class="fw-bold">Пользователи</h4>
+            <h4 class="fw-bold" data-translate="users">Пользователи</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Пользователи</li>
+                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" data-translate="users">Пользователи</li>
                 </ol>
             </nav>
         </div>
         <hr style="margin-top: -5px">
         <div style="width: 100%; display: flex; justify-content: flex-end">
-            <a th:href="@{/users/add}" class="btn btn-success mb-1">Добавить пользователя</a>
+            <a th:href="@{/users/add}" class="btn btn-success mb-1" data-translate="addUser">Добавить пользователя</a>
         </div>
 
         <div class="card border">
             <div class="card-header border">
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-default" id="clean-filter">Очистить</button>
+                    <button class="btn btn-default" id="clean-filter" data-translate="clear">Очистить</button>
                 </div>
             </div>
             <div class="card-body">
@@ -37,11 +37,11 @@
                     <table class="table table-bordered table-hover table-striped linkedRow" id="usersTable">
                         <thead>
                         <tr>
-                            <th>Роль</th>
-                            <th>Фамилия</th>
-                            <th>Имя</th>
-                            <th style="min-width: 130px;">Отчество</th>
-                            <th>Телефон</th>
+                            <th data-translate="role">Роль</th>
+                            <th data-translate="lastName">Фамилия</th>
+                            <th data-translate="firstName">Имя</th>
+                            <th style="min-width: 130px;" data-translate="middleName">Отчество</th>
+                            <th data-translate="phone">Телефон</th>
                             <th>Email (логин)</th>
                             <th style="min-width: 130px;"></th>
                         </tr>

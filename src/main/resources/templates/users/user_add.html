@@ -14,12 +14,12 @@
 <section layout:fragment="content">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="d-flex justify-content-between">
-            <h4 class="fw-bold">Новый пользователь</h4>
+            <h4 class="fw-bold" data-translate="newUser">Новый пользователь</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
                     <li class="breadcrumb-item"><a th:href="@{/users}">Пользователи</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Новый пользователь</li>
+                    <li class="breadcrumb-item active" aria-current="page" data-translate="newUser">Новый пользователь</li>
                 </ol>
             </nav>
         </div>
@@ -28,14 +28,14 @@
         <ul class="nav nav-pills mb-3" role="tablist" id="navigationBlock">
             <li class="nav-item">
                 <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home" aria-selected="true">
+                        data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home" aria-selected="true" data-translate="INFORMATION">
                     Информация
                 </button>
             </li>
             <li class="nav-item">
                 <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                         data-bs-target="#navs-pills-top-reviews" aria-controls="navs-pills-top-profile"
-                        aria-selected="false">Отзывы
+                        aria-selected="false" data-translate="reviews">Отзывы
                 </button>
             </li>
         </ul>
@@ -55,35 +55,35 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="form-label">Филиалы</label>
+                                <label class="form-label" data-translate="branches">Филиалы</label>
                                 <select id="branchSelect2Multiple" name="branches" multiple>
                                 </select>
                             </div>
                             <div class="col-6">
-                                <label class="form-label">Роль</label>
+                                <label class="form-label" data-translate="role">Роль</label>
                                 <select id="roleSelect2" name="roles" class="form-select"></select>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="form-label">Фамилия</label>
+                                <label class="form-label" data-translate="lastName">Фамилия</label>
                                 <input id="surname" type="text" class="form-control"
                                        placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
                             </div>
                             <div class="col-6">
-                                <label class="form-label">Имя</label>
+                                <label class="form-label" data-translate="firstName">Имя</label>
                                 <input type="text" class="form-control" id="name"
                                        placeholder="Александр" aria-describedby="defaultFormControlHelp"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="form-label">Отчество</label>
+                                <label class="form-label" data-translate="middleName">Отчество</label>
                                 <input type="text" class="form-control" id="middleName"
                                        placeholder="Сергеевич" aria-describedby="defaultFormControlHelp"/>
                             </div>
                             <div class="col-6">
-                                <label class="form-label">Телефон</label>
+                                <label class="form-label" data-translate="phone">Телефон</label>
                                 <input type="tel" class="form-control" id="phone"/>
                             </div>
                         </div>
@@ -95,16 +95,16 @@
                             </div>
                         </div>
                         <div class="row">
-                            <h3>Сменить пароль</h3>
+                            <h3 data-translate="changePassword">Сменить пароль</h3>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <label class="form-label">Новый пароль</label>
+                                <label class="form-label" data-translate="newPassword">Новый пароль</label>
                                 <input type="password" class="form-control" id="password"
                                        aria-describedby="defaultFormControlHelp"/>
                             </div>
                             <div class="col-6">
-                                <label class="form-label">Повтор пароля</label>
+                                <label class="form-label" data-translate="repeatPassword">Повтор пароля</label>
                                 <input type="password" class="form-control" id="confirmPassword"
                                        aria-describedby="defaultFormControlHelp"/>
                             </div>
@@ -114,8 +114,8 @@
 
                     <div class="tab-pane fade" id="navs-pills-top-reviews">
                         <div class="row mb-3">
-                            <h5>Прикрепить PDF файлы</h5>
-                            <input type="file" accept=".pdf" id="file" onchange="downloadFileTo()">
+                            <h5 data-translate="attachPdfFiles">Прикрепить PDF файлы</h5>
+                            <input type="file" class="form-control" accept=".pdf" id="file" onchange="downloadFileTo()">
                             <div id="block-for-file">
                             </div>
                         </div>
@@ -125,8 +125,8 @@
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-default">Отменить</button>
-                    <button onclick="sendForm()" class="btn btn-success">Сохранить</button>
+                    <button class="btn btn-default" data-translate="cancel">Отменить</button>
+                    <button onclick="sendForm()" class="btn btn-success" data-translate="save">Сохранить</button>
                 </div>
             </div>
         </div>

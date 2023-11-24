@@ -15,48 +15,47 @@
     <div class="content-wrapper">
         <div class="container-fluid">
             <div class="d-flex justify-content-between">
-            <h4 class="fw-bold">Комерческая недвижемось</h4>
+            <h4 class="fw-bold" data-translate="COMMERCIAL">Комерческая недвижемось</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Комерческая</li>
+                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" data-translate="COMMERCIAL">Комерческая</li>
                 </ol>
             </nav>
         </div>
         <hr style="margin-top: -5px">
         <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
 
-            <p style="margin-right: 5px"><input type="checkbox" class="form-check-input print-checkbox" style="margin-top: 3px" id="printWithAddress">Печать с
-                адресом</p>
+            <p><input type="checkbox" class="form-check-input print-checkbox" style="margin-top: 3px" id="printWithAddress" ><div  style="margin-right: 20px" data-translate="printWithAddress"></div></p>
             <button class="btn btn-success" th:onclick="|window.location.href='@{/commercial/add}'|"
-                    style="margin-right: 5px">Добавить об'єкт
+                    style="margin-right: 5px" data-translate="builder_object_add">Добавить об'єкт
             </button>
-            <button class="btn btn-success" onclick="printElements()">Распечатать</button>
+            <button class="btn btn-success" onclick="printElements()"  data-translate="print">Распечатать</button>
         </div>
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        Район
+                        <div data-translate="region_district"></div>
                         <select id="district" multiple></select>
-                        Топзона
+                        <div data-translate="topzone"></div>
                         <select id="topzone" multiple></select>
                     </div>
                     <div class="col-3">
-                        Количество комнат
-                        <br/>
+                        <div data-translate="property.numberOfRooms"></div>
                         1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1">
                         2 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">
                         3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">
                         >3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">
                         <div class="mb-3"></div>
-                        ЖК
+                        <div data-translate="RC"></div>
                         <select id="buildObject" multiple></select>
                     </div>
                     <div class="col-5">
                         <div class="row">
                             <div class="col">
-                                Этаж:
+                                <div data-translate="floor"></div>
+
                                 <div style="display: flex">
                                     <input class="form-control" id="floorMin">
                                     <div class="mt-2">&mdash;</div>
@@ -64,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="col">
-                                Цена ($):
+                                <div data-translate="price"></div>
                                 <div style="display: flex">
                                     <input class="form-control" id="priceMin">
                                     <div class="mt-2">&mdash;</div>
@@ -74,7 +73,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                Участок(кв. м):
+                                <div data-translate="plotArea"></div>
                                 <div style="display: flex">
                                     <input class="form-control" id="plotAreaMin">
                                     <div class="mt-2">&mdash;</div>
@@ -82,7 +81,7 @@
                                 </div>
                             </div>
                             <div class="col">
-                                Площадь(кв. м):
+                                <div data-translate="S_area_sqm"></div>
                                 <div style="display: flex">
                                     <input class="form-control" id="houseAreaMin">
                                     <div class="mt-2">&mdash;</div>
@@ -94,11 +93,11 @@
                 </div>
                 <div class="row mt-1">
                     <div class="col-4">
-                        Вулиця
+                        <div data-translate="street"></div>
                         <input class="form-control" id="street">
                     </div>
                     <div class="col-3">
-                        Дата контакта
+                        <div data-translate="contact_date"></div>
                         <select class="form-control" style="width: 60%;" id="lastContactDate">
                             <option></option>
                             <option value="3">3</option>
@@ -108,7 +107,7 @@
                     </div>
                     <div class="col-5">
                         <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
-                            <button class="btn btn-label-secondary" onclick="clearFilter()" style="margin-right: 5px">
+                            <button class="btn btn-label-secondary" onclick="clearFilter()" style="margin-right: 5px" data-translate="clear">
                                 Очистить фильтр
                             </button>
                             <button class="btn btn-label-secondary" onclick="getPageWithFilter(0)">Поиск</button>
@@ -120,22 +119,23 @@
         <div class="card border mt-3">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped linkedRow" id="houseTable">
+                    <table class="invoice-list-table table border-top dataTable no-footer dtr-column" id="houseTable" style=" width: 100%;
+    table-layout: auto;">
                         <thead>
                         <tr>
-                            <th>Дата контакта</th>
-                            <th>Код</th>
-                            <th>Район</th>
-                            <th>Топзона</th>
-                            <th>Улица</th>
-                            <th>Комнат</th>
-                            <th>Етаж</th>
-                            <th>Етажность</th>
-                            <th>Площадь</th>
-                            <th>Цена</th>
-                            <th>Реклама</th>
-                            <th>Статус</th>
-                            <th>Фото</th>
+                            <th data-translate="contact_date">Дата контакта</th>
+                            <th data-translate="code">Код</th>
+                            <th data-translate="district">Район</th>
+                            <th data-translate="topzone">Топзона</th>
+                            <th data-translate="street">Улица</th>
+                            <th data-translate="rooms">Комнат</th>
+                            <th data-translate="floor">Этаж</th>
+                            <th data-translate="number_of_floors">Этажность</th>
+                            <th data-translate="S_area_sqm">Площадь</th>
+                            <th data-translate="price">Цена</th>
+                            <th data-translate="advertisement">Реклама</th>
+                            <th data-translate="status">Статус</th>
+                            <th data-translate="photo">Фото</th>
                             <th></th>
                             <th style="min-width: 130px;"></th>
                         </tr>

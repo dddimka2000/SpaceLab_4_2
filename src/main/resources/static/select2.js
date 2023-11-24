@@ -145,6 +145,7 @@ function forSelect2(id, text, selectName, url){
         $(selectName).append(new Option(text.toString(), id.toString(), true, true));
         $(selectName).trigger('change');
     }
+
 }
 function forSelect2WithSearch(id, text, selectName, url, name) {
     $(selectName).select2({

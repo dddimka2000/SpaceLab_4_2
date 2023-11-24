@@ -81,7 +81,9 @@
                          class="d-flex align-items-center">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a>
-                            <li class="breadcrumb-item active" aria-current="page" data-translate="secondary_real_estate">Вторичная недвижимость</li>
+                            <li class="breadcrumb-item active" aria-current="page"
+                                data-translate="secondary_real_estate">Вторичная недвижимость
+                            </li>
                         </ol>
                     </nav>
                 </div>
@@ -106,7 +108,8 @@
                         <div class="row">
                             <div class="col-4">
                                 <h6 data-translate="district">Район</h6>
-                                <select id="select2Multiple24" class="select2 form-select for-filter select2find" multiple>
+                                <select id="select2Multiple24" class="select2 form-select for-filter select2find"
+                                        multiple>
                                     <script th:inline="javascript">
                                         let pathLink = /*[[@{/}]]*/ '';
                                         let selectElement = document.getElementById("select2Multiple24");
@@ -175,7 +178,8 @@
                         <div class="row">
                             <div class="col-4">
                                 <h6 data-translate="topzone">Топозона</h6>
-                                <select class="select2 form-select for-filter select2find" multiple id="select2MultipleTopozone">
+                                <select class="select2 form-select for-filter select2find" multiple
+                                        id="select2MultipleTopozone">
                                     <option th:each="entity : ${selectTopozone}"
                                             th:value="${entity}" th:data-translate="${entity}"
                                             th:text="${entity}"></option>
@@ -230,13 +234,15 @@
                                     <option value="1" data-translate="one_day">1 день</option>
                                     <script>
                                         for (let i = 2; i <= 31; i++) {
-                                            document.write('<option value="' + i + '" data-translate="'+i+'multiple_days">' + i + ' дней' + '</option>');
+                                            document.write('<option value="' + i + '" data-translate="' + i + 'multiple_days">' + i + ' дней' + '</option>');
                                         }
                                     </script>
                                 </select>
                             </div>
                             <div class="col-4" style="display: flex;align-items: end;justify-content: end">
-                                <button class="btn btn-submit" id="clean-filter" data-translate="clear_filter">Очистить фильтр</button>
+                                <button class="btn btn-submit" id="clean-filter" data-translate="clear_filter">Очистить
+                                    фильтр
+                                </button>
                                 <button class="btn btn-submit" id="search-btn" data-translate="search">Поиск</button>
                             </div>
 
@@ -244,55 +250,57 @@
                     </div>
 
                     <div class="card-body">
-                        <table class="invoice-list-table table border-top dataTable no-footer dtr-column"
-                               id="branchTable">
-                            <thead>
-                            <tr style="text-align: center">
-                                <th data-translate="contact_date">Дата контакта</th>
-                                <th data-translate="code">Код</th>
-                                <th data-translate="district">Район</th>
-                                <th data-translate="topzone">Топозона</th>
-                                <th data-translate="street">Улица</th>
-                                <th data-translate="rooms">Комнат</th>
-                                <th data-translate="floor">Этаж</th>
-                                <th data-translate="number_of_floors">Этажность</th>
-                                <th data-translate="S_area_sqm">Площадь</th>
-                                <th data-translate="advertisement">Реклама</th>
-                                <th data-translate="status">Статус</th>
-                                <th data-translate="photo">Фото</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Дата контакта</td>
-                                <td>Код</td>
-                                <td>Район</td>
-                                <td>Топозона</td>
-                                <td>Улица</td>
-                                <td>Комнат</td>
-                                <td>Этаж</td>
-                                <td>Этажность</td>
-                                <td>Площадь</td>
-                                <td>Реклама</td>
-                                <td>Статус</td>
-                                <td>Фото</td>
-                                <td><input class="form-check-input" type="checkbox"></td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a th:href="@{/}">
-                                            <button class="btn btn-default btn-sm float-right" title="Редактировать"><i
-                                                    class="fa fa-pencil-alt"></i></button>
-                                        </a>
-                                        <button class="btn btn-default btn-sm float-right for-delete"><i
-                                                class="fa fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="invoice-list-table table border-top dataTable no-footer dtr-column"
+                                   id="branchTable">
+                                <thead>
+                                <tr style="text-align: center">
+                                    <th data-translate="contact_date">Дата контакта</th>
+                                    <th data-translate="code">Код</th>
+                                    <th data-translate="district">Район</th>
+                                    <th data-translate="topzone">Топозона</th>
+                                    <th data-translate="street">Улица</th>
+                                    <th data-translate="rooms">Комнат</th>
+                                    <th data-translate="floor">Этаж</th>
+                                    <th data-translate="number_of_floors">Этажность</th>
+                                    <th data-translate="S_area_sqm">Площадь</th>
+                                    <th data-translate="advertisement">Реклама</th>
+                                    <th data-translate="status">Статус</th>
+                                    <th data-translate="photo">Фото</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Дата контакта</td>
+                                    <td>Код</td>
+                                    <td>Район</td>
+                                    <td>Топозона</td>
+                                    <td>Улица</td>
+                                    <td>Комнат</td>
+                                    <td>Этаж</td>
+                                    <td>Этажность</td>
+                                    <td>Площадь</td>
+                                    <td>Реклама</td>
+                                    <td>Статус</td>
+                                    <td>Фото</td>
+                                    <td><input class="form-check-input" type="checkbox"></td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a th:href="@{/}">
+                                                <button class="btn btn-default btn-sm float-right"
+                                                        title="Редактировать"><i
+                                                        class="fa fa-pencil-alt"></i></button>
+                                            </a>
+                                            <button class="btn btn-default btn-sm float-right for-delete"><i
+                                                    class="fa fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <br>
                         <div class="row" id="pagination_container">
                             <div class="col-sm-6" id="rowPanelCount">
@@ -321,16 +329,20 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel" data-translate="confirmDeletionSecondaryEstate">Вы точно хотите удалить объект вторичной недвижимости?</h5>
+                            <h5 class="modal-title" id="exampleModalLabel"
+                                data-translate="confirmDeletionSecondaryEstate">Вы точно хотите удалить объект вторичной
+                                недвижимости?</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelBtn" data-translate="cancel">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelBtn"
+                                        data-translate="cancel">
                                     Отмена
                                 </button>
-                                <button type="button" class="btn btn-primary" id="okBtn" data-translate="yes">Да</button>
+                                <button type="button" class="btn btn-primary" id="okBtn" data-translate="yes">Да
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -343,6 +355,7 @@
     <script th:inline="javascript">
         // $("#day").select2();
         $("#pageSize").select2();
+
         function printButton() {
             var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
 
@@ -606,6 +619,9 @@
             filterElements.each(function () {
                 $(this).val("");
             });
+            $('#day').select2({
+                minimumResultsForSearch: -1,
+            })
             $(".select2-container").find(".select2-selection__choice").remove();
             // $(".select2").find(".select2-selection__rendered").remove();
             let radioFilters = $('[name="flexRadioDefault"]');

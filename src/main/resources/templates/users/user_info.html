@@ -17,9 +17,9 @@
             <h4 class="fw-bold">Пользователь</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Главная</a></li>
-                    <li class="breadcrumb-item"><a href="#">Пользователи</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Пользователь</li>
+                    <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
+                    <li class="breadcrumb-item"><a href="#" data-translate="users">Пользователи</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" data-translate="user">Пользователь</li>
                 </ol>
             </nav>
         </div>
@@ -28,7 +28,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-end">
-                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info ">Редактировать</a>
+                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info " data-translate="edit">Редактировать</a>
                 </div>
                 <hr>
             </div>
@@ -43,23 +43,23 @@
                 <table class="table table-bordered table-striped table-view">
                     <tbody>
                     <tr>
-                        <td><b>Пользователь</b></td>
+                        <td><b data-translate="user">Пользователь</b></td>
                         <td th:text="${user.name}"></td>
                     </tr>
                     <tr>
-                        <td><b>Роль</b></td>
+                        <td><b data-translate="role">Роль</b></td>
                         <td th:text="${user.roles}"></td>
                     </tr>
                     <tr>
-                        <td><b>Телефон</b></td>
+                        <td><b data-translate="phone">Телефон</b></td>
                         <td th:text="${user.phone}"></td>
                     </tr>
                     <tr>
-                        <td><b>Email(логин)</b></td>
+                        <td><b>Email</b></td>
                         <td th:text="${user.email}"></td>
                     </tr>
                     <tr>
-                        <td><b>Філіали</b></td>
+                        <td><b data-translate="branches">Філіали</b></td>
                         <td>
                             <a th:each="branch : ${user.branches}" th:href="@{/branches/{id}(id=${branch.id})}"
                                th:text="${branch.name}" style="display: inline; margin-right: 20px"></a>

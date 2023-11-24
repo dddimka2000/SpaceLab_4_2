@@ -92,7 +92,7 @@
             if ($(".select2-selection__choice")) {
                 $(".select2-selection__choice").each(function (index, element) {
                     if (element.value !== undefined) {
-                        $(element).setAttribute("data-translate", element.value.toString());
+                        $(element).attr("data-translate", element.value);
                     }
                 });
             }
@@ -100,8 +100,7 @@
                 $("span.select2-selection__rendered:not(:has(span))").each(function (index, element) {
                     if ($(element).text())
                         if (element.value !== undefined) {
-                            $(element).attr('data-translate', element.value.toString());
-                            console.log(element.value.toString())
+                            $(element).attr('data-translate', element.value);
                         }
                 });
             }

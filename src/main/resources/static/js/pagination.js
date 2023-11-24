@@ -135,7 +135,7 @@ function updateLabelPagination(currentPage, container, totalElements, lastPageEl
     }
 
     if ((currentPage + 1) * sizePage > totalElements) {
-        label = `<span data-translate="shown">Показано</span> ` + (currentPage * sizePage + 1) + `-` + (currentPage * sizePage + lastPageElements) + ` <span data-translate="of"> из </span>` + totalElements;
+        label = `<span data-translate="shown">Показано</span> ` + (currentPage * sizePage) + `-` + (currentPage * sizePage + lastPageElements) + ` <span data-translate="of"> из </span> ` + totalElements;
     }
 
     if (currentPage * sizePage == 0 && totalElements > 0 && (currentPage + 1) * sizePage > totalElements) {
