@@ -101,6 +101,7 @@
         let BuilderObject =/*[[${Builder}]]*/+0;
         let Commercial =/*[[${Commercial}]]*/+0;
         let Houses =/*[[${Houses}]]*/'';
+        let quantity=(Investor+Secondary+BuilderObject+Commercial+Houses)+0;
 
         const chartColors = {
             column: {
@@ -184,7 +185,7 @@
                                     color: headingColor,
                                     label: 'Количество объектов',
                                     formatter: function (w) {
-                                        return '31%';
+                                        return quantity;
                                     }
                                 }
                             }
