@@ -124,17 +124,17 @@
                             <div style="display:block;" class="ruContent nameContent">
                                 <h6 data-translate="title">Название</h6>
                                 <input type="text" class="form-control" name="nameObject" id="nameObject"
-                                       data-translate-placeholder="enter_description"   placeholder="Введите название объекта">
+                                       data-translate-placeholder="enter_title"   placeholder="Введите название объекта">
                             </div>
                             <div style="display:none;" class="euContent nameContent">
                                 <h6 data-translate="title">Название</h6>
                                 <input type="text" class="form-control" name="nameObjectEu" id="nameObjectEu"
-                                       data-translate-placeholder="enter_description"  placeholder="Input name">
+                                       data-translate-placeholder="enter_title"  placeholder="Input name">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <h6 data-translate="title">Название</h6>
                                 <input type="text" class="form-control" name="nameObjectUkr" id="nameObjectUkr"
-                                       data-translate-placeholder="enter_description"  placeholder="Введіть назву об'єкта">
+                                       data-translate-placeholder="enter_title"  placeholder="Введіть назву об'єкта">
                             </div>
                         </div>
                         <div class="col-3">
@@ -892,11 +892,12 @@
                             let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option value="' + category + '" data-translate="' + category.replaceAll(" ","_") + '">' + category + '</option>';
+                                    selectionItem += '<option data-aos="tr" value="' + category + '" data-translate="' + category.replace(' ', '_') + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
                         }
+                        refreshAllTranslate()
                     },
                     error: function (error) {
                         console.log("Error:", error);
@@ -937,7 +938,7 @@
                             let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option  data-translate="' + category.replaceAll(" ","_") + '" value="' + category + '">' + category + '</option>';
+                                    selectionItem += '<option value="' + category + '" data-translate="' + category + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
@@ -945,6 +946,7 @@
                             container2.empty();
                             container2.prop('disabled', true);
                         }
+                        refreshAllTranslate()
                     },
                     error: function (error) {
                         console.log("Error:", error);

@@ -22,6 +22,7 @@ public class BuilderObject {
     private String name, nameEnglish, nameUkraine;
     private Integer floorQuantity;
     private String phone;
+    @Column(columnDefinition = "TEXT")
     private String description_builder, description_builderEng, description_builderUkr;
     private PropertyBuildStatus buildStatus;
     private String nameCompany;

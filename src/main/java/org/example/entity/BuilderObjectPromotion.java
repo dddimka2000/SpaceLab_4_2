@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 @Embeddable
 public class BuilderObjectPromotion {
-    private String name, nameEng, nameUkr, description, descriptionEng, descriptionUkr;
+    private String name, nameEng, nameUkr;
+    @Column(columnDefinition = "TEXT")
+    private String description, descriptionEng, descriptionUkr;
     private Boolean active;
 }
