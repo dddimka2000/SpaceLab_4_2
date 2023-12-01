@@ -30,7 +30,7 @@ function branchSelect2(id, text) {
             cache: true
         }
     })
-    if(text !== undefined && id !== undefined) {
+    if(text && id) {
         $('#branchSelect2').append(new Option(text.toString(), id.toString(), true, true));
         $('#branchSelect2').trigger('change');
     }
@@ -64,7 +64,7 @@ function realtorSelect2(id, text) {
             cache: true
         }
     });
-    if(text !== undefined && id !== undefined) {
+    if(text && id) {
         $('#realtorSelect2').append(new Option(text.toString(), id.toString(), true, true));
         $('#realtorSelect2').trigger('change');
     }
@@ -88,7 +88,7 @@ function roleSelect2(text, id){
             },
         }
     })
-    if(text !== undefined && id !== undefined) {
+    if(text && id) {
         $('#roleSelect2').append(new Option(text.toString(), id.toString(), true, true));
         $('#roleSelect2').trigger('change');
     }
@@ -114,7 +114,7 @@ function informationSourceSelect2(text, id){
             },
         }
     })
-    if(text !== undefined && id !== undefined) {
+    if(text && id) {
         $(selectName).append(new Option(text.toString(), id.toString(), true, true));
         $(selectName).trigger('change');
     }
@@ -141,7 +141,7 @@ function forSelect2(id, text, selectName, url){
             }
         }
     })
-    if(text !== undefined && id !== undefined) {
+    if(text && id) {
         $(selectName).append(new Option(text.toString(), id.toString(), true, true));
         $(selectName).trigger('change');
     }
@@ -177,7 +177,7 @@ function forSelect2WithSearch(id, text, selectName, url, name) {
             cache: true
         }
     })
-    if(text !== undefined && id !== undefined) {
+    if(text && id) {
         $(selectName).append(new Option(text.toString(), id.toString(), true, true));
         $(selectName).trigger('change');
     }

@@ -6,10 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.example.entity.BuilderObject;
-import org.example.entity.property.type.OwnershipType;
-import org.example.entity.property.type.PropertyBuildStatus;
-import org.example.entity.property.type.PropertyHouseType;
-import org.example.entity.property.type.PublicationStatus;
+import org.example.entity.property.type.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,7 +65,7 @@ public class CommercialInfoDto {
     @NotNull(message = "{error.field.empty}")
     private Integer floor, floorQuantity, roomQuantity;
     @NotNull(message = "{error.field.empty}")
-    private PropertyHouseType houseType;
+    private PropertyCommercialType propertyCommercialType;
     @NotNull(message = "{error.field.empty}")
     private Boolean vnp;
     @DateTimeFormat(pattern="yyyy/MM/dd")

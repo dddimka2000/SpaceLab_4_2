@@ -221,7 +221,7 @@
                         </div>
                         <div class="col-2">
                             Тип недвижимости
-                            <select id="houseType"></select>
+                            <select id="propertyCommercialType"></select>
                         </div>
                     </div>
                     <br/>
@@ -628,7 +628,7 @@
                         forSelect2WithSearch(commercial.builderObject.id, commercial.builderObject.name, "#builderObject", "/builder_objects/for/select")
                         forSelect2(commercial.publicationStatus, commercial.publicationStatus, "#publicationStatus", "/enum/publicationStatus")
                         forSelect2(commercial.buildStatus, commercial.buildStatus, "#buildStatus", "/enum/buildStatus")
-                        forSelect2(commercial.houseType, commercial.houseType, "#houseType", "/enum/propertyType")
+                        forSelect2(commercial.propertyCommercialType, commercial.propertyCommercialType, "#propertyCommercialType", "/enum/propertyCommercialType")
                         forSelect2(commercial.plotPurposeType, commercial.plotPurposeType, "#plotPurposeType", "/enum/plotPurposeType")
                         forSelect2(commercial.stateInterior, commercial.stateInterior, "#stateInterior", "/enum/stateHouse")
                         forSelect2(commercial.propertyStructureState, commercial.propertyStructureState, "#propertyStructureState", "/enum/propertyStructureState")
@@ -670,13 +670,14 @@
                         }
                     }
                 })
-            }else {
+            }
+            else {
                 forSelect2(undefined, undefined, "#zone", "/enum/topzone")
                 forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
                 forSelect2WithSearch(undefined, undefined, "#builderObject", "/builder_objects/for/select")
                 forSelect2(undefined, undefined, "#publicationStatus", "/enum/publicationStatus")
                 forSelect2(undefined, undefined, "#buildStatus", "/enum/buildStatus")
-                forSelect2(undefined, undefined, "#houseType", "/enum/propertyType")
+                forSelect2(undefined, undefined, "#propertyCommercialType", "/enum/propertyCommercialType")
                 forSelect2(undefined, undefined, "#plotPurposeType", "/enum/plotPurposeType")
                 forSelect2(undefined, undefined, "#stateInterior", "/enum/stateHouse")
                 forSelect2(undefined, undefined, "#propertyStructureState", "/enum/propertyStructureState")
@@ -714,7 +715,7 @@
                 numericOnly: true
             })
             new Cleave("#roomMeters", {
-                blocks: [2, 2, 2, 2],
+                blocks: [2, 2],
                 numericOnly: true
             })
         });
@@ -884,8 +885,8 @@
             if (!validateNumber(1, 1000000, floorQuantity)) return false
             var roomQuantity = $("#roomQuantity");
             if (!validateNumber(1, 1000000, roomQuantity)) return false
-            var houseType = $("#houseType");
-            if (!validSelect2(houseType)) return false
+            var propertyCommercialType = $("#propertyCommercialType");
+            if (!validSelect2(propertyCommercialType)) return false
             var vnp = $("#vnp");
             var vnpExpirationDate = $("#vnpExpirationDate");
             if (!validateDate(vnpExpirationDate))return false
@@ -896,7 +897,7 @@
             var areaUseful = $("#areaUseful");
             if (!validateNumber(1, 1000000, areaUseful)) return false
             var roomMeters = $("#roomMeters");
-            if (!validString("8", "8", roomMeters)) return false
+            if (!validString("4", "4", roomMeters)) return false
             var heightCeiling = $("#heightCeiling");
             if (!validateNumber(1, 10, heightCeiling)) return false
             var plotAreaTotal = $("#plotAreaTotal");
@@ -1011,7 +1012,7 @@
             formData.append("floor", floor.val());
             formData.append("floorQuantity", floorQuantity.val());
             formData.append("roomQuantity", roomQuantity.val());
-            formData.append("houseType", houseType.val());
+            formData.append("propertyCommercialType", propertyCommercialType.val());
             formData.append("vnp", vnp.val());
             formData.append("vnpExpirationDate", vnpExpirationDate.val());
             formData.append("informationSource", informationSource.val());

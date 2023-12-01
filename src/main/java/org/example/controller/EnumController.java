@@ -261,4 +261,9 @@ public class EnumController {
     public List<PropertyBuildStatus> getBuildStatus() {
         return List.of(PropertyBuildStatus.values());
     }
+    @GetMapping("/propertyCommercialType")
+    @ResponseBody
+    public List<PropertyCommercialType> getPropertyCommercialType() {
+        return List.of(PropertyCommercialType.values());
+    }
 }
