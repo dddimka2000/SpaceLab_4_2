@@ -1,4 +1,25 @@
 var contextPath = "/ProminadaDD"
+async function translateAllSelect2() {
+    $(".select2-selection__choice").each(async function (index, element) {
+        try {
+            const originalName = await getOriginalValue($(element).text());
+            $(element).text(translateValue(originalName));
+        } catch (error) {
+            console.error('Caught an error:', error);
+        }
+    });
+
+    $("span.select2-selection__rendered:not(:has(span))").each(async function (index, element) {
+        if ($(element).text()) {
+            try {
+                const originalName = await getOriginalValue($(element).text());
+                $(element).text(translateValue(originalName));
+            } catch (error) {
+                console.error('Caught an error:', error);
+            }
+        }
+    });
+}
 
 function branchSelect2(id, text) {
     $('#branchSelect2').select2({
@@ -78,6 +99,7 @@ function roleSelect2(text, id){
             url: contextPath+'/enum/role',
             dataType: 'json',
             processResults: function(data) {
+
                 var index = 0;
                 var results = data.map(function(data) {
                     return { id: data, text: data };
@@ -127,10 +149,9 @@ function forSelect2(id, text, selectName, url){
             url: contextPath+url,
             dataType: 'json',
             processResults: function(data) {
-                var index = 0;
                 var results = data.map(function(data) {
-                    if(data.id)return { id: data.id, text: data.name };
-                    return { id: data, text: data };
+                    if(data.id)return { id: data.id, text: translateValue(data.name) };
+                    return { id: data, text: translateValue(data) };
                 });
                 return {
                     results: results
@@ -142,10 +163,9 @@ function forSelect2(id, text, selectName, url){
         }
     })
     if(text && id) {
-        $(selectName).append(new Option(text.toString(), id.toString(), true, true));
+        $(selectName).append(new Option(text.el.text, id.el.value, true, true));
         $(selectName).trigger('change');
     }
-
 }
 function forSelect2WithSearch(id, text, selectName, url, name) {
     $(selectName).select2({

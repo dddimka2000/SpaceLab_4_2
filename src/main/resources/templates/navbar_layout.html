@@ -85,8 +85,43 @@
         </ul>
     </div>
     <script type="text/javascript">
+        var translationsSecondExample
+        var languageSecondExample
 
-        function refreshSelect2Find(){
+        function translateValue(key) {
+            if (translationsSecondExample.hasOwnProperty(languageSecondExample) && translationsSecondExample[languageSecondExample].hasOwnProperty(key)) {
+                return translationsSecondExample[languageSecondExample][key];
+            } else {
+                return key;
+            }
+        }
+
+        async function getOriginalValue(translatedName) {
+            try {
+                const translationsResponse = await fetch('/ProminadaDD/api/translations');
+                const translations = await translationsResponse.json();
+                for (const language of ['ukr', 'ru', 'eng']) {
+                    const langTranslations = translations[language];
+                    for (var key in langTranslations) {
+                        if (langTranslations.hasOwnProperty(key)) {
+                            var value = langTranslations[key];
+                            if (value === translatedName) {
+                                return key;
+                            }
+                        }
+
+                    }
+                }
+                return translatedName;
+
+            } catch (error) {
+                console.error('Error getting original name:', error);
+                throw error;
+            }
+        }
+
+
+        function refreshSelect2Find() {
             let selectElements = document.querySelectorAll(".select2find");
             if (selectElements) {
                 selectElements.forEach(function (element) {
@@ -109,6 +144,7 @@
                 });
             }
         }
+
         async function changeLanguageNav(language) {
             refreshSelect2Find()
             console.log("refresh start2")
@@ -120,7 +156,7 @@
                     .then(response => response.json())
                     .then(newTranslations => {
                         var translations = newTranslations;
-
+                        translationsSecondExample = newTranslations
                         for (var lang in translations) {
                             if (translations.hasOwnProperty(lang)) {
                                 var langTranslations = translations[lang];
@@ -165,7 +201,9 @@
 
 
         function sendLanguageNav(el) {
+            translateAllSelect2()
             var selectedLanguage = el.getAttribute('data-language');
+            languageSecondExample = selectedLanguage
             document.cookie = "selectedLanguage=" + selectedLanguage + "; path=/";
             changeLanguageNav(selectedLanguage);
         };
@@ -180,7 +218,7 @@
                 cookies[cookie[0]] = cookie[1];
             }
             selectedLanguage = cookies["selectedLanguage"];
-            console.log(selectedLanguage)
+            languageSecondExample = cookies["selectedLanguage"];
             if (selectedLanguage == undefined) {
                 document.cookie = "selectedLanguage=ru; path=/";
                 selectedLanguage = "ru";
