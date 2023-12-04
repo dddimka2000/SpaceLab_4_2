@@ -26,12 +26,14 @@ public class WebSecurityConfig {
     private final
     RecaptchaService recaptchaService;
 
-    private final ClientRegistrationRepository clientRegistrationRepository;
+//    private final ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, ClientRegistrationRepository clientRegistrationRepository, RestTemplate restTemplate, RecaptchaService recaptchaService) {
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl,
+//                             ClientRegistrationRepository clientRegistrationRepository,
+                             RestTemplate restTemplate, RecaptchaService recaptchaService) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
-        this.clientRegistrationRepository = clientRegistrationRepository;
+//        this.clientRegistrationRepository = clientRegistrationRepository;
         this.restTemplate = restTemplate;
         this.recaptchaService = recaptchaService;
     }
@@ -61,11 +63,11 @@ public class WebSecurityConfig {
                                                 .requestMatchers("/admin/**","/personal_account").authenticated()
                                                 .anyRequest().permitAll()
                                 )
-                                .oauth2Login(oauth2Login ->
-                                                oauth2Login
-//                                                .defaultSuccessUrl("/auth/login")
-                                                        .clientRegistrationRepository(clientRegistrationRepository)
-                                )
+//                                .oauth2Login(oauth2Login ->
+//                                                oauth2Login
+////                                                .defaultSuccessUrl("/auth/login")
+//                                                        .clientRegistrationRepository(clientRegistrationRepository)
+//                                )
 //                                .authorizeHttpRequests(authorize ->
 //                                        authorize
 //                                                .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login", "/swagger-resources/**",
