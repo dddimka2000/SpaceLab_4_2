@@ -163,7 +163,7 @@ function forSelect2(id, text, selectName, url){
         }
     })
     if(text && id) {
-        $(selectName).append(new Option(text.el.text, id.el.value, true, true));
+        $(selectName).append(new Option(text.toString(), id.toString(), true, true));
         $(selectName).trigger('change');
     }
 }
