@@ -60,7 +60,7 @@ public class WebSecurityConfig {
                                 .authorizeHttpRequests(authorize2 ->
                                         authorize2
                                                 .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login").permitAll()
-                                                .requestMatchers("/admin/**","/personal_account").authenticated()
+                                                .requestMatchers("/admin/**", "/personal_account").authenticated()
                                                 .anyRequest().permitAll()
                                 )
 //                                .oauth2Login(oauth2Login ->

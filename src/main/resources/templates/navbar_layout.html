@@ -147,7 +147,6 @@
 
         async function changeLanguageNav(language) {
             refreshSelect2Find()
-            console.log("refresh start2")
 
 
             try {
@@ -186,11 +185,9 @@
                         }
                     )
                 ;
-                console.log("refresh start3_ajax end")
 
                 refreshSelect2Find()
 
-                console.log("refresh start3")
 
             } catch
                 (error) {
@@ -234,7 +231,6 @@
         });
 
         function refreshAllTranslate() {
-            console.log("refresh start")
             let allCookies = document.cookie;
             let cookiesArray = allCookies.split("; ");
             let cookies = {};

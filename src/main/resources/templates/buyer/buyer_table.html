@@ -141,11 +141,11 @@
                         cell0.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
 
                         var cell1 = newRow.insertCell(1);
-                        cell1.innerHTML = buyer.realtor.branch.name
+                        cell1.innerHTML = buyer.realtor?buyer.realtor.branch.name:''
                         cell1.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
 
                         var cell2 = newRow.insertCell(2);
-                        cell2.innerHTML = buyer.realtor.name;
+                        cell2.innerHTML = buyer.realtor?buyer.realtor.name:'';
                         cell2.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
 
                         var cell3 = newRow.insertCell(3);
@@ -161,7 +161,7 @@
                         cell5.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
 
                         var cell6 = newRow.insertCell(6);
-                        cell6.innerHTML = buyer.application.priceMax;
+                        cell6.innerHTML = buyer.application?buyer.application.priceMax:'';
                         cell6.setAttribute('onclick', 'window.location.href="[[@{/buyers/}]]' + buyerId + '"');
 
                         var cell7 = newRow.insertCell(7);
