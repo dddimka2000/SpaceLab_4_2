@@ -284,16 +284,16 @@
                     url: '[[@{/buyers/getById/}]]' + buyerId,
                     success: function (buyer) {
                         ID = buyer.id
-                        APPLICATION_ID = buyer.application.id
-                        $("#surname").val(buyer.surname)
-                        $("#name").val(buyer.name)
-                        $("#middleName").val(buyer.middleName)
-                        $("#phone").val(buyer.phone)
-                        $("#email").val(buyer.email)
+                        if(buyer.application)APPLICATION_ID = buyer.application.id
+                        $("#surname").val(buyer.surname || '')
+                        $("#name").val(buyer.name || '')
+                        $("#middleName").val(buyer.middleName || '')
+                        $("#phone").val(buyer.phone || '')
+                        $("#email").val(buyer.email || '')
                         $("#passport").val(buyer.passport)
-                        $("#birthdate").val(buyer.birthdate.replace(/-/g, '/'))
-                        $("#lastVisit").val(buyer.lastContactDate.replace(/-/g, '/'))
-                        $("#comment").val(buyer.comment)
+                        $("#birthdate").val(buyer.birthdate?buyer.birthdate.replace(/-/g, '/'):'')
+                        $("#lastVisit").val(buyer.lastContactDate?buyer.lastContactDate.replace(/-/g, '/'):'')
+                        $("#comment").val(buyer.comment||'')
                         for (var note of buyer.notes) {
                             addNoteBlock(note.id, note.comment)
                         }
@@ -331,23 +331,28 @@
                             blockForFile.append(row);
                         }
 
-                        $(".roomNumbers[value='" + buyer.application.roomQuantity + "']").prop("checked", true);
+                        if(APPLICATION_ID) {
+                            $(".roomNumbers[value='" + buyer.application.roomQuantity + "']").prop("checked", true);
 
-                        $("#floorMin").val(buyer.application.floorMin)
-                        $("#floorMax").val(buyer.application.floorMax)
-                        $("#priceMin").val(buyer.application.priceMin)
-                        $("#priceMax").val(buyer.application.priceMax)
-                        $("#plotAreaMin").val(buyer.application.plotAreaMin)
-                        $("#plotAreaMax").val(buyer.application.plotAreaMax)
-                        $("#houseAreaMin").val(buyer.application.houseAreaMin)
-                        $("#houseAreaMax").val(buyer.application.houseAreaMax)
+                            $("#floorMin").val(buyer.application.floorMin)
+                            $("#floorMax").val(buyer.application.floorMax)
+                            $("#priceMin").val(buyer.application.priceMin)
+                            $("#priceMax").val(buyer.application.priceMax)
+                            $("#plotAreaMin").val(buyer.application.plotAreaMin)
+                            $("#plotAreaMax").val(buyer.application.plotAreaMax)
+                            $("#houseAreaMin").val(buyer.application.houseAreaMin)
+                            $("#houseAreaMax").val(buyer.application.houseAreaMax)
 
-                        $("#phoneExample2").val(buyer.application.phone)
-                        $("#commentExample").val(buyer.application.comment)
+                            $("#phoneExample2").val(buyer.application.phone)
+                            $("#commentExample").val(buyer.application.comment)
 
 
-                        forSelect2WithSearch(buyer.application.realtor.id, buyer.application.realtor.name, "#realtorSelect2example2", "/realtors/for/select");
-                        forSelect2WithSearch(buyer.application.builderObject.id, buyer.application.builderObject.name, "#builderObjects", "/builder_objects/for/select", "builderObject");
+                            forSelect2WithSearch(buyer.application.realtor.id, buyer.application.realtor.name, "#realtorSelect2example2", "/realtors/for/select");
+                            forSelect2WithSearch(buyer.application.builderObject.id, buyer.application.builderObject.name, "#builderObjects", "/builder_objects/for/select", "builderObject");
+                        }else {
+                            forSelect2WithSearch(undefined, undefined, "#realtorSelect2example2", "/realtors/for/select");
+                            forSelect2WithSearch(undefined, undefined, "#builderObjects", "/builder_objects/for/select");
+                        }
                         $("#district").select2({
                             minimumResultsForSearch: -1,
                             placeholder: "Елемент",
@@ -366,7 +371,7 @@
                                 },
                             }
                         })
-                        if(buyer.application.districts)
+                        if(buyer.application && buyer.application.districts)
                         for (var district of buyer.application.districts) {
                             $("#district").append(new Option(district, district, true, true));
                             $("#district").trigger('change');
@@ -390,16 +395,22 @@
                                 },
                             }
                         })
-                        if(buyer.application.topzones)
+                        if(buyer.application && buyer.application.topzones)
                         for (var topzone of buyer.application.topzones) {
                             $("#topzone").append(new Option(topzone, topzone, true, true));
                             $("#topzone").trigger('change');
                         }
-                        forSelect2(buyer.application.status, buyer.application.status, "#status", "/enum/applicationStatus");
-                        forSelect2(buyer.application.origin, buyer.application.origin, "#propertyOrigin", "/enum/propertyOrigin");
-                        forSelect2(buyer.application.type, buyer.application.type, "#propertyApplicationType", "/enum/propertyApplicationType");
-                        realtorSelect2(buyer.realtor.id, buyer.realtor.name);
-                        informationSourceSelect2(buyer.informationSource, buyer.informationSource);
+                        if(buyer.application) {
+                            forSelect2(buyer.application.status, buyer.application.status, "#status", "/enum/applicationStatus");
+                            forSelect2(buyer.application.origin, buyer.application.origin, "#propertyOrigin", "/enum/propertyOrigin");
+                            forSelect2(buyer.application.type, buyer.application.type, "#propertyApplicationType", "/enum/propertyApplicationType");
+                        }else {
+                            forSelect2(undefined, undefined, "#status", "/enum/applicationStatus");
+                            forSelect2(undefined, undefined, "#propertyOrigin", "/enum/propertyOrigin");
+                            forSelect2(undefined, undefined, "#propertyApplicationType", "/enum/propertyApplicationType");
+                        }
+                        buyer.realtor?realtorSelect2(buyer.realtor.id, buyer.realtor.name):realtorSelect2(undefined, undefined)
+                        buyer.informationSource?informationSourceSelect2(buyer.informationSource, buyer.informationSource):informationSourceSelect2(undefined, undefined)
                     }
                 })
 
