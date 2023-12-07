@@ -14,12 +14,12 @@
 <section layout:fragment="content">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="d-flex justify-content-between">
-            <h4 class="fw-bold">Об'єкт</h4>
+            <h4 class="fw-bold" data-translate="object">Об'єкт</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                    <li class="breadcrumb-item"><a th:href="@{/houses}">Дома и участки</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Дома</li>
+                    <li class="breadcrumb-item" data-translate="breadcrumb.home"><a th:href="@{/}">Главная</a></li>
+                    <li class="breadcrumb-item" data-translate="houses_and_plots"><a th:href="@{/houses}">Дома и участки</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" data-translate="houses">Дома</li>
                 </ol>
             </nav>
         </div>
@@ -31,7 +31,7 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel2">Покупатели</h5>
+                    <h5 class="modal-title" id="exampleModalLabel2"  data-translate="buyers">Покупатели</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modal-body">
@@ -89,88 +89,94 @@
                             content.innerHTML = `
                 <div class="card">
                     <div class="card-header">
-                        <h3>Редактировать
-                        <a href="[[@{/houses/edit/}]]` + houseId + `" class="float-end btn btn-primary">Редактировать</a>
-                        <a href="#" onclick="checkModalWindow()" class="float-end btn btn-primary" style="margin-right: 5px" data-translate="searchBuyer">Поиск покупателя</a>
-                        </h3>
+                    <div class="row">
+                        <div class="col">
+                            <h3 data-translate="edit">Редактировать</h3>
+                        </div>
+                        <div class="col">
+                            <a href="[[@{/houses/edit/}]]` + houseId + `" class="float-end btn btn-primary" data-translate="edit">Редактировать</a>
+                            <a href="#" onclick="checkModalWindow()" class="float-end btn btn-primary" style="margin-right: 5px" data-translate="searchBuyer">Поиск покупателя</a>
+                        </div>
+                    </div>
                     </div>
                     <div class="card-body">
                     <img src="` + url + `" style=" margin-bottom: 5px" class="d-block w-px-auto h-px-300 rounded">
                         <table class="table table-bordered table-view">
                             <tr>
-                                <td>Код об'єкта</td>
+                                <td data-translate="object_code">Код об'єкта</td>
                                 <td>` + house.objectCode + `</td>
                             </tr>
                             <tr>
-                                <td>Риелтор</td>
+                                <td data-translate="realtor">Риелтор</td>
                                 <td>` + house.realtor.surname + ' ' + house.realtor.name + ' ' + house.realtor.middleName + `</td>
                             </tr>
                             <tr>
-                                <td>Цена</td>
+                                <td data-translate="price">Цена</td>
                                 <td>` + house.price + `</td>
                             </tr>
                             <tr>
-                                <td>Район</td>
+                                <td data-translate="district">Район</td>
                                 <td>` + house.address.district + `</td>
                             </tr>
                             <tr>
-                                <td>Улица</td>
+                                <td data-translate="street">Улица</td>
                                 <td>` + house.address.street + `</td>
                             </tr>
                             <tr>
-                                <td>Етажей</td>
+                                <td data-translate="floors">Етажей</td>
                                 <td>` + house.floorQuantity + `</td>
                             </tr>
                             <tr>
-                                <td>Количество комнат</td>
+                                <td data-translate="room_quantity">Количество комнат</td>
                                 <td>` + house.roomQuantity + `</td>
                             </tr>
                             <tr>
-                                <td>Площадь</td>
+                                <td data-translate="area">Площадь</td>
                                 <td>` + house.areaTotal + `</td>
                             </tr>
                             <tr>
-                                <td>Висота потолков</td>
+                                <td data-translate="сeiling_height">Висота потолков</td>
                                 <td>` + house.roomMeters + `</td>
                             </tr>
                             <tr>
-                                <td>Тип стен</td>
+                                <td data-translate="wall_material">Тип стен</td>
                                 <td>` + house.wallMaterial + `</td>
                             </tr>
                             <tr>
-                                <td>Участок</td>
+                                <td data-translate="plotArea">Участок</td>
                                 <td>` + house.plotAreaTotal + `</td>
                             </tr>
                             <tr>
-                                <td>Водоснабжение</td>
+                                <td data-translate="water_type">Водоснабжение</td>
                                 <td>` + house.waterType + `</td>
                             </tr>
                             <tr>
-                                <td>Газ. магистраль</td>
+                                <td data-translate="gas_type">Газ. магистраль</td>
                                 <td>` + house.gasType + `</td>
                             </tr>
                             <tr>
-                                <td>Канализация</td>
+                                <td data-translate="sewage_type">Канализация</td>
                                 <td>` + house.sewageType + `</td>
                             </tr>
                             <tr>
-                                <td>Всего строений</td>
+                                <td data-translate="house_quantity">Всего строений</td>
                                 <td>` + house.houseQuantity + `</td>
                             </tr>
                             <tr>
-                                <td>Состояние</td>
+                                <td data-translate="state">Состояние</td>
                                 <td>` + house.stateHouse + `</td>
                             </tr>
                         </table>
                     </div>
                 </div>
-                <b>Описание</b><br/>
+                <b data-translate="description">Описание</b><br/>
                 ` + house.description + `<br/><br/>
-                <b>Рекламний заголовок</b><br/>
+                <b data-translate="enter_ad_title">Рекламний заголовок</b><br/>
                 ` + house.advertisementHeadline + `<br/><br/>
-                <b>Рекламний текст</b><br/>
+                <b data-translate="enter_ad_text">Рекламний текст</b><br/>
                 ` + house.advertisementText + `<br/>
                 `
+                            changeLanguageNav(languageSecondExample)
                         }
                     })
                 }

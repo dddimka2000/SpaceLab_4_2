@@ -15,12 +15,12 @@
         <div class="container-fluid">
             <br>
             <div class="d-flex justify-content-between">
-                <h4 class="fw-bold">Новый объект</h4>
+                <h4 class="fw-bold" data-translate="new_object">Новый объект</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                        <li class="breadcrumb-item"><a th:href="@{/houses}">Дома и участки</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/houses}" data-translate="houses_and_plots">Дома и участки</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="new_object">
                             Новый объект
                         </li>
                     </ol>
@@ -32,19 +32,19 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-home"
-                            type="button" role="tab" aria-controls="pills-home" aria-selected="true">Адрессная часть
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true" data-translate="address_section">Адрессная часть
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-profile"
-                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Основное
+                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false" data-translate="main_section">Основное
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-contact"
-                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Галерея
+                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false" data-translate="gallery">Галерея
                     </button>
                 </li>
             </ul>
@@ -52,27 +52,27 @@
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <div class="row">
                         <div class="col-2">
-                            Номер дома
+                            <span data-translate="house_number"></span>
                             <input type="text" class="form-control onlyNumber" id="houseNumber" placeholder="34">
                         </div>
                         <div class="col-2">
-                            Обл. Район
+                            <span data-translate="region_district"></span>
                             <select class="form-control" id="region"> </select>
                         </div>
-                        <div class="col-2">
-                            Нас.пункт
+                        <div class="col-2" >
+                            <span data-translate="city"></span>
                             <select class="form-control" id="city" disabled></select>
                         </div>
                         <div class="col-2">
-                            Район
+                            <span data-translate="district"></span>
                             <select class="form-control" id="district" disabled></select>
                         </div>
-                        <div class="col-2">
-                            Улица(RU)
+                        <div class="col-2" >
+                            <span data-translate="street"></span>
                             <input class="form-control" id="street">
                         </div>
-                        <div class="col-2">
-                            Топозона
+                        <div class="col-2" >
+                            <span data-translate="topzone"></span>
                             <select id="topzone"></select>
                         </div>
                     </div>
@@ -80,62 +80,63 @@
                     <div class="row">
                         <div class="col">
                             <button class="btn btn-info mt-4" style="width: auto; margin-right: 5px"
-                                    onclick="checkAddress(this)">Проверить адрес
+                                    onclick="checkAddress(this)" data-translate="check_address">Проверить адрес
                             </button>
                         </div>
                         <div class="col">
-                            <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto">Проверить
+                            <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto" data-translate="check_phone_number">Проверить
                                 номер телефона
                             </button>
                         </div>
                         <div class="col">
-                            Улица(UK)
+                            <span data-translate="streetUK"></span>
                             <input class="form-control" id="streetUkr">
                         </div>
                         <div class="col">
-                            Улица(EN)
+                            <span data-translate="streetENG"></span>
                             <input class="form-control" id="streetEng">
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            ФИО владельца
+                            <span data-translate="enter_owner_name"></span>
                             <input class="form-control" type="text" id="owner" placeholder="Введите ФИО владельца">
                         </div>
                         <div class="col-3">
-                            Телефон
+                            <span data-translate="enter_phone_number"></span>
                             <input type="tel" id="telephone" class="form-control phone"
                                    placeholder="Введите номер телефона">
                         </div>
                         <div class="col-3">
-                            Дата приобретения
+                            <span data-translate="date_of_purchase"></span>
                             <input type="text" id="dateOfPurchase" class="form-control flatpickr-datetime"
                                    placeholder="YYYY/MM/DD"/>
                         </div>
                         <div class="col-3">
-                            Право собственности
+                            <span data-translate="ownership_rights"></span>
                             <select id="ownership"></select>
                         </div>
                     </div>
                     <br>
-                    Важные заметки
+                    <span data-translate="enter_notes">
+                    Важные заметки</span>
                     <input class="form-control" id="note" type="text" placeholder="Введите заметки">
                     <br>
-                    Кадастровий номер участка
+                    <span data-translate="cadastral_number">Кадастровий номер участка</span>
                     <input class="form-control" id="cadastralNumber" type="text" style="width: 40%"
                            placeholder="XXX XXX XXX">
                     <br>
-                    Назначение участка
+                    <span data-translate="idea_plot">Назначение участка</span>
                     <input class="form-control" id="ideaPlot" type="text" placeholder="Введите заметки">
                     <br>
-                    Прикрепить файлы
+                    <span data-translate="houses_files">Прикрепить файлы</span>
                     <input type="file" id="housesFiles" accept=".pdf" class="form-control" style="width: 40%" multiple>
                     <br>
                     <div id="block-for-file">
                     </div>
                     <br>
-                    <h3>Комментарий администратора</h3>
+                    <h3 data-translate="administration_comment">Комментарий администратора</h3>
                     <textarea class="form-control" style="width: 100%; height: 300px" id="administrationComment"
                               placeholder="Введите комментарий"></textarea>
                     <br>
@@ -143,17 +144,17 @@
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="row">
                         <div class="col-3">
-                            Статус публикации
+                            <span data-translate="publication_status">Статус публикации</span>
                             <select id="publicationStatus"></select>
                         </div>
                         <div class="col-3">
-                            Код объекта
+                            <span data-translate="code_object">Код объекта</span>
                             <input class="form-control" type="text" id="codeObject" placeholder="XX XXXX XX">
                         </div>
                         <div class="col-5">
                             <div class="row">
                                 <div class="col-6" style="white-space: nowrap;">
-                                    Код филиала — Код сотрудника
+                                    <span data-translate="branch_and_staff_code">Код филиала — Код сотрудника</span>
                                 </div>
                             </div>
                             <div class="row" style="display:flex; align-items: center">
@@ -172,73 +173,73 @@
                         </div>
                     </div>
                     <br>
-                    Ориентир
+                    <span data-translate="landmark">Ориентир</span>
                     <input class="form-control" style="width: 40%;" type="text" id="landmark"
                            placeholder="Введите ориентир">
                     <br>
-                    Цена
+                    <span data-translate="price">Цена</span>
                     <input class="form-control onlyNumber" style="width: 40%;" type="text" id="price"
                            placeholder="Введите цену">
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            Тип недвижимости
+                            <span data-translate="property_type">Тип недвижимости</span>
                             <select id="propertyType"></select>
                         </div>
                         <div class="col-2">
-                            S уч.(сот)
+                            <span data-translate="plot_area_total">S уч.(сот)</span>
                             <input class="form-control onlyNumber" id="plotAreaTotal" placeholder="12">
                         </div>
                         <div class="col-2">
-                            S уч.свободно(сот)
+                            <span data-translate="plotAreaFree">S уч.свободно(сот)</span>
                             <input class="form-control onlyNumber" id="plotAreaFree" placeholder="12">
                         </div>
                         <div class="col-2">
-                            Собственость на землю
+                            <span data-translate="landOwnershipPresent">Собственость на землю</span>
                             <select id="landOwnershipPresent">
                                 <option value="true">есть</option>
                                 <option value="false">нет</option>
                             </select>
                         </div>
                         <div class="col-3">
-                            Целевое назначение земли
+                            <span data-translate="plotPurposeType">Целевое назначение земли</span>
                             <select id="plotPurposeType"></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-1">
-                            Кол.домов
+                            <span data-translate="house_quantity">Кол.домов</span>
                             <input class="form-control onlyNumber" id="houseQuantity" placeholder="12">
                         </div>
                         <div class="col-1">
-                            Етажей
+                            <span data-translate="floorQuantity">Етажей</span>
                             <input class="form-control onlyNumber" id="floorQuantity" placeholder="12">
                         </div>
                         <div class="col-1">
-                            Комнат
+                            <span data-translate="room_quantity">Комнат</span>
                             <input class="form-control onlyNumber" id="roomQuantity" placeholder="12">
                         </div>
                         <div class="col-1">
-                            Спален
+                            <span data-translate="bedroomQuantity">Спален</span>
                             <input class="form-control onlyNumber" id="bedroomQuantity" placeholder="12">
                         </div>
                         <div class="col-2">
-                            Высота потолка (м)
+                            <span data-translate="ceiling_height(m)">Высота потолка (м)</span>
                             <input class="form-control onlyNumber" step="0.01" id="myNumberInput"
                                    placeholder="Введите высоту потолка">
                         </div>
                         <div class="col-2">
-                            S общая (м.кв.)*
+                            <span data-translate="area_total">S общая (м.кв.)*</span>
                             <input class="form-control onlyNumber" id="areaTotal"
                                    placeholder="Введите общую площадь">
                         </div>
                         <div class="col-2">
-                            S жилая (м.кв.)*
+                            <span data-translate="areaLiving">S жилая (м.кв.)*</span>
                             <input class="form-control onlyNumber" id="areaLiving"
                                    placeholder="Введите жилую площадь">
                         </div>
                         <div class="col-2">
-                            S кухни (м.кв.)*
+                            <span data-translate="areaKitchen">S кухни (м.кв.)*</span>
                             <input class="form-control onlyNumber" id="areaKitchen"
                                    placeholder="Введите площадь кухни">
                         </div>
@@ -246,106 +247,106 @@
                     <br>
                     <div class="row">
                         <div class="col-2">
-                            Материал стен(RU)
+                            <span data-translate="wall_material">Материал стен(RU)</span>
                             <input class="form-control" type="text" id="wall_material"
                                    placeholder="Введите материал стен">
                         </div>
                         <div class="col-2">
-                            Материал стен(UK)
+                            <span data-translate="wall_materialUkr">Материал стен(UK)</span>
                             <input class="form-control" type="text" id="wall_materialUkr"
                                    placeholder="Введите материал стен">
                         </div>
                         <div class="col-2">
-                            Материал стен(EN)
+                            <span data-translate="wall_materialEng">Материал стен(EN)</span>
                             <input class="form-control" type="text" id="wall_materialEng"
                                    placeholder="Введите материал стен">
                         </div>
                         <div class="col-2">
-                            Состояние интерьера
+                            <span data-translate="stateInterior">Состояние интерьера</span>
                             <select id="stateInterior"></select>
                         </div>
                         <div class="col-2">
-                            Состояние дома
+                            <span data-translate="stateHouse">Состояние дома</span>
                             <select id="stateHouse"></select>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            Кухня
+                            <span data-translate="kitchenType">Кухня</span>
                             <select id="kitchenType"></select>
                         </div>
                         <div class="col-3">
-                            Санузел
+                            <span data-translate="bathroomType">Санузел</span>
                             <select id="bathroomType"></select>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            Газ
+                            <span data-translate="gasType">Газ</span>
                             <select id="gasType"></select>
                         </div>
                         <div class="col-3">
-                            Вода
+                            <span data-translate="waterType">Вода</span>
                             <select id="waterType"></select>
                         </div>
                         <div class="col-3">
-                            Канализация
+                            <span data-translate="sewageType">Канализация</span>
                             <select id="sewageType"></select>
                         </div>
                         <div class="col-3">
-                            Отопление
+                            <span data-translate="heatingType">Отопление</span>
                             <select id="heatingType"></select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-3">
-                            Лестница
+                            <span data-translate="ladderType">Лестница</span>
                             <select id="ladderType"></select>
                         </div>
                         <div class="col-3">
-                            Кровля
+                            <span data-translate="roofType">Кровля</span>
                             <select id="roofType"></select>
                         </div>
                         <div class="col-3">
-                            Пол
+                            <span data-translate="floorType">Пол</span>
                             <select id="floorType"></select>
                         </div>
                         <div class="col-3">
-                            Тип окон
+                            <span data-translate="windowType">Тип окон</span>
                             <select id="windowType"></select>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            Столярка
+                            <span data-translate="carpentryType">Столярка</span>
                             <select id="carpentryType"></select>
                         </div>
                         <div class="col-3">
-                            Входная дверь
+                            <span data-translate="frontDoorType">Входная дверь</span>
                             <select id="frontDoorType"></select>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-2" style="white-space: nowrap;">
-                            Дата последнего контакта
+                            <span data-translate="lastContactDate">Дата последнего контакта</span>
                             <input type="text" class="form-control flatpickr-datetime" id="lastContactDate"
                                    placeholder="YYYY/MM/DD"/>
                         </div>
                         <div class="col-1" style="display: flex; align-items: end">
                             <input class="form-check-input" type="checkbox" value="true" id="vnp" name="statusVNP">
-                            <span class="checkmark"> ВНП</span>
+                            <span class="checkmark" data-translate="vnp">ВНП</span>
                         </div>
                         <div class="col-2">
-                            Дата внп до
+                            <span data-translate="vnpExpirationDate">Дата внп до</span>
                             <input type="text" class="form-control flatpickr-datetime" id="vnpExpirationDate"
                                    placeholder="YYYY/MM/DD"/>
                         </div>
                         <div class="col-2">
-                            Источник информации
+                            <span data-translate="informationSource">Источник информации</span>
                             <input type="text" class="form-control" id="informationSource"
                                    placeholder="Введите источник информации">
                         </div>
@@ -354,27 +355,27 @@
                     <div class="row">
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" id="bargain">
-                            <span class="checkmark">Торг</span>
+                            <span class="checkmark" data-translate="bargain">Торг</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" id="exclusive">
-                            <span class="checkmark">Ексклюзив</span>
+                            <span class="checkmark" data-translate="exclusive">Ексклюзив</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" id="urgent">
-                            <span class="checkmark">Срочно</span>
+                            <span class="checkmark" data-translate="urgent">Срочно</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" id="free">
-                            <span class="checkmark">Свободная</span>
+                            <span class="checkmark" data-translate="free">Свободная</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" id="open">
-                            <span class="checkmark">Объект открыт</span>
+                            <span class="checkmark" data-translate="open">Объект открыт</span>
                         </div>
                         <div class="col-2">
                             <input class="form-check-input" type="checkbox" id="intermediary">
-                            <span class="checkmark">От посредника</span>
+                            <span class="checkmark" data-translate="intermediary">От посредника</span>
                         </div>
                     </div>
                     <br>
@@ -401,50 +402,50 @@
                     <div class="tab-content" id="pills-blovk-content">
                         <div class="tab-pane fade show active" id="pills-uk" role="tabpanel"
                              aria-labelledby="pills-for-uk">
-                            Описание
+                            <span data-translate="description">Описание</span>
                             <textarea class="form-control" style="width: 100%; height: 300px"
                                       id="descriptionUk" placeholder="Введите описание"></textarea>
                             <br>
-                            Рекламный заголовок
+                            <span data-translate="enter_ad_title">Рекламный заголовок</span>
                             <input type="text" id="advertisementHeadlineUk" class="form-control"
                                    placeholder="Укажите рекламный заголовок">
                             <br>
-                            Рекламный текст
+                            <span data-translate="enter_ad_text">Рекламный текст</span>
                             <textarea style="width: 100%; height: 300px" id="advertisementTextUk"
                                       class="form-control" placeholder="Введите рекламный текст"></textarea>
                             <br>
                         </div>
                         <div class="tab-pane fade show" id="pills-ru" role="tabpanel" aria-labelledby="pills-for-ru">
-                            Описание
+                            <span data-translate="description">Описание</span>
                             <textarea class="form-control" style="width: 100%; height: 300px"
                                       id="descriptionRu" placeholder="Введите описание"></textarea>
                             <br>
-                            Рекламный заголовок
+                            <span data-translate="enter_ad_title">Рекламный заголовок</span>
                             <input type="text" id="advertisementHeadlineRu" class="form-control"
                                    placeholder="Укажите рекламный заголовок">
                             <br>
-                            Рекламный текст
+                            <span data-translate="enter_ad_text">Рекламный текст</span>
                             <textarea style="width: 100%; height: 300px" id="advertisementTextRu"
                                       class="form-control" placeholder="Введите рекламный текст"></textarea>
                             <br>
                         </div>
                         <div class="tab-pane fade show" id="pills-en" role="tabpanel" aria-labelledby="pills-for-en">
-                            Описание
+                            <span data-translate="description">Описание</span>
                             <textarea class="form-control" style="width: 100%; height: 300px"
                                       id="descriptionEn" placeholder="Введите описание"></textarea>
                             <br>
-                            Рекламный заголовок
+                            <span data-translate="enter_ad_title">Рекламный заголовок</span>
                             <input type="text" id="advertisementHeadlineEn" class="form-control"
                                    placeholder="Укажите рекламный заголовок">
                             <br>
-                            Рекламный текст
+                            <span data-translate="enter_ad_text">Рекламный текст</span>
                             <textarea style="width: 100%; height: 300px" id="advertisementTextEn"
                                       class="form-control" placeholder="Введите рекламный текст"></textarea>
                             <br>
                         </div>
                     </div>
                     <input class="form-check-input" type="checkbox" value="true" id="advertisementEnabled">
-                    <span class="checkmark">Рекламировать</span>
+                    <span class="checkmark" data-translate="advertise">Рекламировать</span>
                     <br>
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
@@ -464,9 +465,9 @@
 
             </div>
             <div style="text-align: right; margin: 20px">
-                <button class="btn btn-submit">Отмена</button>
+                <button class="btn btn-submit" data-translate="cancel">Отмена</button>
                 <span>
-                <button class="btn btn-success" hx-trigger="click" onclick="sendForm()">
+                <button class="btn btn-success" data-translate="save" hx-trigger="click" onclick="sendForm()">
                 Сохранить </button>
             </span>
             </div>
@@ -988,6 +989,7 @@
                     dateFormat: "Y/m/d"
                 });
             });
+            changeLanguageNav(languageSecondExample)
         })
 
         function addressSelect2(house) {
