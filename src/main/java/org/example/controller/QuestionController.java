@@ -10,6 +10,7 @@ import org.example.service.QuestionServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,5 +48,8 @@ public class QuestionController {
         questionService.deleteById(id);
         return ResponseEntity.ok().body("Елемент видалено успішно");
     }
-
+    @ModelAttribute
+    public void activeMenuItem(Model model) {
+        model.addAttribute("questionsActive", true);
+    }
 }

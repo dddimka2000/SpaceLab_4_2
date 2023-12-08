@@ -118,5 +118,8 @@ public class UserController {
         reviewService.save(review);
         return ResponseEntity.ok("Відгук збережено");
     }
-
+    @ModelAttribute
+    public void activeMenuItem(Model model) {
+        model.addAttribute("usersActive", true);
+    }
 }

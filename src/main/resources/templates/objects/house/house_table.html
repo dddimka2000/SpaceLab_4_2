@@ -29,10 +29,10 @@
             <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
                 <p><input type="checkbox" style="margin-top: 3px" id="printWithAddress"
                                                     class="form-check-input" data-translate="printWithAddress"><div data-translate="printWithAddress"  style="margin-right: 20px"></div></p>
-                <button class="btn btn-success" th:onclick="|window.location.href='@{/houses/add}'|"
+                <button class="btn btn-submit waves-effect waves-light" th:onclick="|window.location.href='@{/houses/add}'|"
                         style="margin-right: 5px" data-translate="builder_object_add">Добавить об'єкт
                 </button>
-                <button class="btn btn-success" onclick="printElements()" data-translate="print">Распечатать</button>
+                <button class="btn btn-submit waves-effect waves-light" onclick="printElements()" data-translate="print">Распечатать</button>
             </div>
             <div class="card">
                 <div class="card-body">
@@ -111,11 +111,11 @@
                         </div>
                         <div class="col-5">
                             <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
-                                <button class="btn btn-label-secondary" onclick="clearFilter()"
+                                <button class="btn btn-submit waves-effect waves-light" onclick="clearFilter()"
                                         style="margin-right: 5px" data-translate="clear">
                                     Очистить фильтр
                                 </button>
-                                <button class="btn btn-label-secondary" onclick="getPageWithFilter(0)">Поиск</button>
+                                <button class="btn btn-submit waves-effect waves-light" onclick="getPageWithFilter(0)">Поиск</button>
                             </div>
                         </div>
                     </div>

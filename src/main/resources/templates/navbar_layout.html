@@ -28,19 +28,19 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item selected" data-language="eng" onclick="sendLanguageNav(this)">
+                        <a class="dropdown-item for-language" data-language="eng" onclick="sendLanguageNav(this)">
                             <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
                             <span class="align-middle">English</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" data-language="ru" onclick="sendLanguageNav(this)">
+                        <a class="dropdown-item for-language" data-language="ru" onclick="sendLanguageNav(this)">
                             <i class="fi fi-ru fis rounded-circle me-1 fs-3"></i>
                             <span class="align-middle">Русский</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" data-language="ukr" onclick="sendLanguageNav(this)">
+                        <a class="dropdown-item for-language" data-language="ukr" onclick="sendLanguageNav(this)">
                             <i class="fi fi-de fis rounded-circle me-1 fs-3"></i>
                             <span class="align-middle">Український</span>
                         </a>
@@ -96,7 +96,14 @@
                 return key;
             }
         }
-
+        function selectedItemForLanguage(language){
+            var items = $('.for-language')
+            for (var item of items) {
+                if($(item).attr('data-language') == language){
+                    $(item).css('background-color', '#7367f0')
+                }else $(item).css('background-color', '')
+            }
+        }
         async function getOriginalValue(translatedName) {
             try {
                 const translationsResponse = await fetch('/ProminadaDD/api/translations');
@@ -147,6 +154,7 @@
         }
 
         async function changeLanguageNav(language) {
+            selectedItemForLanguage(language)
             refreshSelect2Find()
 
 

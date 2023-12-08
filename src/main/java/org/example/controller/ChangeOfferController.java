@@ -6,6 +6,7 @@ import org.example.entity.Question;
 import org.example.service.ChangeOfferServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,5 +38,9 @@ public class ChangeOfferController {
     @GetMapping("/delete/{id}")
     public void deleteById(@PathVariable Integer id) {
         changeOfferService.deleteById(id);
+    }
+    @ModelAttribute
+    public void activeMenuItem(Model model) {
+        model.addAttribute("changesActive", true);
     }
 }

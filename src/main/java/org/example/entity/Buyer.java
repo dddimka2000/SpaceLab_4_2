@@ -56,7 +56,7 @@ public class Buyer {
     @JsonManagedReference
     private List<BuyerNote> notes;
 
-    @OneToMany(mappedBy = "buyer")
+    @OneToMany(mappedBy = "buyer",cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Question> questions;
 }
