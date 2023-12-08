@@ -24,13 +24,11 @@ public class PageController {
     PageService pageService;
 
 
-    public PageController(PageService pageService, PageMapper pageMapper) {
+    public PageController(PageService pageService) {
         this.pageService = pageService;
-        this.pageMapper = pageMapper;
     }
 
-    private final
-    PageMapper pageMapper;
+
 
     @GetMapping
     public String mainPage(Model model) {

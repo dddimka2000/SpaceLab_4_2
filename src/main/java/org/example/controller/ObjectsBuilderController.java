@@ -1,17 +1,15 @@
 package org.example.controller;
 
 import io.minio.errors.*;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.apache.poi.ss.usermodel.*;
 import org.example.dto.*;
-import org.example.entity.*;
-import org.example.entity.property.type.PropertyBuildStatus;
-import org.example.entity.property.type.PropertyObjectAddress;
+import org.example.entity.BuilderObject;
+import org.example.entity.ImagesForObject;
+import org.example.entity.Layout;
 import org.example.entity.property.type.TypeObject;
+import org.example.mapper.LayoutMapper;
+import org.example.mapper.ObjectBuilderMapper;
 import org.example.service.ImagesForObjectService;
 import org.example.service.LayoutService;
 import org.example.service.MinioService;
@@ -25,19 +23,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -46,7 +40,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import static org.example.util.ControllerHelper.saveFilesInMinIO;
 
 @Controller
 @RequestMapping("/builder_objects")
@@ -79,7 +73,6 @@ public class ObjectsBuilderController {
     @ResponseBody
     public Page<BuilderObject> showPageObjectBuilder(@ModelAttribute ObjectBuilderDtoSearch objectBuilderDto
             , @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
-//        log.info(objectBuilderDto);
         Pageable pageable = PageRequest.of(numberPage, pageSize);
         Page<BuilderObject> pageElements = objectBuilderService.findBuilderObjectsByCriteria(
                 objectBuilderDto.getName(),
@@ -98,29 +91,9 @@ public class ObjectsBuilderController {
     }
 
     @GetMapping
-    public ModelAndView ObjectsBuilderShow(Model model, @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
+    public ModelAndView ObjectsBuilderShow() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/objects/object_builders/objectsBuilders");
-        Page<BuilderObject> pageElements = objectBuilderService.findBuilderObjectsPage(numberPage, pageSize);
-        List<BuilderObject> list = pageElements.getContent();
-        model.addAttribute("list", list);
-        List<Integer> listPrices = new ArrayList<>();
-        for (BuilderObject elem : list) {
-            List<Integer> prices = layoutService.findByBuilderObject(elem).stream().map(s -> s.getPrice()).collect(Collectors.toList());
-            listPrices.add(Collections.min(prices));
-        }
-        model.addAttribute("listPrice", listPrices);
-        model.addAttribute("currentPage", numberPage);
-        model.addAttribute("totalPages", pageElements.getTotalPages());
-        Long count = pageElements.getTotalElements();
-        String panelCount;
-        if (count == 0) {
-            panelCount = "Нету данных";
-        } else {
-            panelCount = "Показано " + (pageSize * numberPage + 1) + "-" + (list.size() + (pageSize * numberPage)) + " из " + count;
-        }
-//        log.info(panelCount);
-        model.addAttribute("panelCount", panelCount);
         return modelAndView;
     }
 
@@ -143,56 +116,9 @@ public class ObjectsBuilderController {
             , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         objectBuilderValidator.validate(objectBuilderDto, bindingResult);
         if (bindingResult.hasErrors()) {
-            log.error("error validation");
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .collect(Collectors.toList()));
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
-        log.info("ok validation");
-        log.info(objectBuilderDto);
-        BuilderObject builderObject = new BuilderObject();
-        PropertyObjectAddress propertyObjectAddress = new PropertyObjectAddress();
-        propertyObjectAddress.setCity(objectBuilderDto.getCity());
-        propertyObjectAddress.setDistrict(objectBuilderDto.getDistrict());
-        propertyObjectAddress.setHouseNumber(objectBuilderDto.getHouseNumber());
-        propertyObjectAddress.setRegion(objectBuilderDto.getRegion());
-        propertyObjectAddress.setSection(objectBuilderDto.getSection());
-        propertyObjectAddress.setStreet(objectBuilderDto.getStreet());
-        propertyObjectAddress.setStreetUkr(objectBuilderDto.getStreetUkr());
-        propertyObjectAddress.setStreetEng(objectBuilderDto.getStreetEng());
-
-        propertyObjectAddress.setZone(objectBuilderDto.getTopozone());
-        builderObject.setAddress(propertyObjectAddress);
-
-        builderObject.setName(objectBuilderDto.getNameObject());
-        builderObject.setNameEnglish(objectBuilderDto.getNameObjectEng());
-        builderObject.setNameUkraine(objectBuilderDto.getNameObjectUkr());
-
-
-
-
-
-        builderObject.setFloorQuantity(objectBuilderDto.getFloorQuantity());
-        builderObject.setPhone(objectBuilderDto.getTelephone());
-        builderObject.setDescription_builder(objectBuilderDto.getDescription());
-        builderObject.setDescription_builderEng(objectBuilderDto.getDescriptionEng());
-        builderObject.setDescription_builderUkr(objectBuilderDto.getDescriptionUkr());
-
-        builderObject.setNameCompany(objectBuilderDto.getNameCompany());
-
-        builderObject.setBuildStatus(PropertyBuildStatus.valueOf(objectBuilderDto.getBuildStatus()));
-
-
-        BuilderObjectPromotion builderObjectPromotion = new BuilderObjectPromotion();
-        builderObjectPromotion.setName(objectBuilderDto.getPromotionName());
-        builderObjectPromotion.setNameEng(objectBuilderDto.getPromotionNameEng());
-        builderObjectPromotion.setNameUkr(objectBuilderDto.getPromotionNameUkr());
-        builderObjectPromotion.setDescription(objectBuilderDto.getDescriptionPromotion());
-        builderObjectPromotion.setDescriptionEng(objectBuilderDto.getDescriptionPromotionEng());
-        builderObjectPromotion.setDescriptionUkr(objectBuilderDto.getDescriptionPromotionUkr());
-        Boolean statusPromotion = Boolean.parseBoolean(objectBuilderDto.getStatusPromotion());
-        builderObjectPromotion.setActive(statusPromotion);
-        builderObject.setPromotion(builderObjectPromotion);
+        BuilderObject builderObject = ObjectBuilderMapper.INSTANCE.toEntity(objectBuilderDto);
 
         String uuidFile = UUID.randomUUID().toString();
 
@@ -213,54 +139,30 @@ public class ObjectsBuilderController {
 
         objectBuilderService.save(builderObject);
         for (LayoutDTO dto : objectBuilderDto.getLayoutDTOList()) {
-            Layout layout = new Layout();
-            layout.setName(dto.getNameLayout());
-            layout.setNameEng(dto.getNameLayoutEng());
-            layout.setNameUkr(dto.getNameLayoutUkr());
-
-            layout.setPrice(dto.getPriceLayout());
-            layout.setRoomQuantity(dto.getRoomQuantityLayout());
-            layout.setAreaKitchen(dto.getAreaKitchenLayout());
-            layout.setAreaLiving(dto.getAreaLivingLayout());
-            layout.setAreaTotal(dto.getAreaTotalLayout());
-            layout.setActive(dto.getStatusLayout());
-            layout.setDescription(dto.getDescriptionLayout());
-            layout.setDescriptionEng(dto.getDescriptionLayoutEng());
-            layout.setDescriptionUkr(dto.getDescriptionLayoutUkr());
-
+            Layout layout = LayoutMapper.INSTANCE.toEntity(dto);
+            //files to MinIO and add UUID
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + dto.getImg1Layout().getOriginalFilename();
             minioService.putMultipartFile(dto.getImg1Layout(), imagesBucketName, resultFilename);
             layout.setImg1(resultFilename);
-
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + dto.getImg2Layout().getOriginalFilename();
             minioService.putMultipartFile(dto.getImg2Layout(), imagesBucketName, resultFilename);
             layout.setImg2(resultFilename);
-
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + dto.getImg3Layout().getOriginalFilename();
             minioService.putMultipartFile(dto.getImg3Layout(), imagesBucketName, resultFilename);
             layout.setImg3(resultFilename);
-
             layout.setBuilderObject(builderObject);
             layoutService.save(layout);
         }
-        for (MultipartFile file : objectBuilderDto.getFiles()) {
-            ImagesForObject imagesForObject = new ImagesForObject();
-            imagesForObject.setIdObject(builderObject.getId());
-            imagesForObject.setTypeObject(TypeObject.BY_BUILDER);
-
-            uuidFile = UUID.randomUUID().toString();
-            resultFilename = uuidFile + "." + file.getOriginalFilename();
-            minioService.putMultipartFile(file, imagesBucketName, resultFilename);
-            imagesForObject.setPath(resultFilename);
-
-            imagesForObjectService.save(imagesForObject);
-        }
+        //add pictures to MinIO
+        saveFilesInMinIO(builderObject, objectBuilderDto.getFiles(), objectBuilderDto, imagesBucketName, minioService, imagesForObjectService);
 
         return ResponseEntity.ok().body("Сохранено");
     }
+
+
 
     @GetMapping("/card/{id}")
     public ModelAndView CardObjectsBuilderShow(@PathVariable Integer id, Model model) {
@@ -325,13 +227,14 @@ public class ObjectsBuilderController {
         model.addAttribute("base64ImagesSize", base64ImagesListSize);
         List<Layout> layouts = layoutService.findByBuilderObject(objectBuilder.get());
         model.addAttribute("layouts", layouts);
-//        log.info("size" + layouts.size());
         List<String> img1 = new ArrayList<>();
         List<String> img2 = new ArrayList<>();
         List<String> img3 = new ArrayList<>();
         List<String> img1Name = new ArrayList<>();
         List<String> img2Name = new ArrayList<>();
         List<String> img3Name = new ArrayList<>();
+
+        //hide img path
         for (Layout layout : layouts) {
             img1.add(minioService.getFileInString(layout.getImg1(), imagesBucketName));
             img2.add(minioService.getFileInString(layout.getImg2(), imagesBucketName));
@@ -339,7 +242,6 @@ public class ObjectsBuilderController {
             img1Name.add(layout.getImg1());
             img2Name.add(layout.getImg2());
             img3Name.add(layout.getImg3());
-
         }
         model.addAttribute("img1Name", img1Name);
         model.addAttribute("img2Name", img2Name);
@@ -351,119 +253,43 @@ public class ObjectsBuilderController {
         return "/objects/object_builders/editObjectBuilder";
     }
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Transactional
     @PostMapping("/edit/{id}")
-    public ResponseEntity EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDtoEdit objectBuilderDtoEdit, BindingResult bindingResult, @PathVariable Integer id)
-            throws ServerException, InsufficientDataException, ErrorResponseException, IOException
-            , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        log.info(objectBuilderDtoEdit);
-//        log.info(objectBuilderDtoEdit.getOldFiles());
-//        log.info(objectBuilderDtoEdit.getOldFiles().size());
-
+    public ResponseEntity EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDtoEdit objectBuilderDtoEdit, BindingResult bindingResult, @PathVariable Integer id) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         objectBuilderValidator.validateEdit(objectBuilderDtoEdit, bindingResult, id);
-        try {
-            if (!objectBuilderDtoEdit.getFiles().isEmpty()) {
-                log.info(objectBuilderDtoEdit.getFiles().stream().map(s -> s.getOriginalFilename()).collect(Collectors.toList()));
-                log.info(objectBuilderDtoEdit.getFiles().size());
-            }
-        } catch (NullPointerException e) {
-        }
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }
-
         BuilderObject builderObject = objectBuilderService.findById(id).get();
-        PropertyObjectAddress propertyObjectAddress = new PropertyObjectAddress();
-        propertyObjectAddress.setCity(objectBuilderDtoEdit.getCity());
-        propertyObjectAddress.setDistrict(objectBuilderDtoEdit.getDistrict());
-        propertyObjectAddress.setHouseNumber(objectBuilderDtoEdit.getHouseNumber());
-        propertyObjectAddress.setRegion(objectBuilderDtoEdit.getRegion());
-        propertyObjectAddress.setSection(objectBuilderDtoEdit.getSection());
-        propertyObjectAddress.setStreet(objectBuilderDtoEdit.getStreet());
-        propertyObjectAddress.setStreetUkr(objectBuilderDtoEdit.getStreetUkr());
-        propertyObjectAddress.setStreetEng(objectBuilderDtoEdit.getStreetEng());
-
-
-        propertyObjectAddress.setZone(objectBuilderDtoEdit.getTopozone());
-        builderObject.setAddress(propertyObjectAddress);
-
-        builderObject.setName(objectBuilderDtoEdit.getNameObject());
-        builderObject.setNameEnglish(objectBuilderDtoEdit.getNameObjectEng());
-        builderObject.setNameUkraine(objectBuilderDtoEdit.getNameObjectUkr());
-
-
-        builderObject.setFloorQuantity(objectBuilderDtoEdit.getFloorQuantity());
-        builderObject.setPhone(objectBuilderDtoEdit.getTelephone());
-        builderObject.setDescription_builder(objectBuilderDtoEdit.getDescription());
-        builderObject.setDescription_builderEng(objectBuilderDtoEdit.getDescriptionEng());
-        builderObject.setDescription_builderUkr(objectBuilderDtoEdit.getDescriptionUkr());
-
-        builderObject.setNameCompany(objectBuilderDtoEdit.getNameCompany());
-
-        builderObject.setBuildStatus(PropertyBuildStatus.valueOf(objectBuilderDtoEdit.getBuildStatus()));
-
-
-        BuilderObjectPromotion builderObjectPromotion = new BuilderObjectPromotion();
-        builderObjectPromotion.setName(objectBuilderDtoEdit.getPromotionName());
-        builderObjectPromotion.setNameEng(objectBuilderDtoEdit.getPromotionNameEng());
-        builderObjectPromotion.setNameUkr(objectBuilderDtoEdit.getPromotionNameUkr());
-        builderObjectPromotion.setDescription(objectBuilderDtoEdit.getDescriptionPromotion());
-        builderObjectPromotion.setDescriptionEng(objectBuilderDtoEdit.getDescriptionPromotionEng());
-        builderObjectPromotion.setDescriptionUkr(objectBuilderDtoEdit.getDescriptionPromotionUkr());
-
-        Boolean statusPromotion = Boolean.parseBoolean(objectBuilderDtoEdit.getStatusPromotion());
-        builderObjectPromotion.setActive(statusPromotion);
-        builderObject.setPromotion(builderObjectPromotion);
-
+        ObjectBuilderMapper.INSTANCE.toEntity(builderObject, objectBuilderDtoEdit);
         String uuidFile = UUID.randomUUID().toString();
         String resultFilename;
-
+        //save to MinIo
         if (objectBuilderDtoEdit.getPrices() != null && objectBuilderDtoEdit.getPrices().isPresent()) {
             resultFilename = uuidFile + "." + objectBuilderDtoEdit.getPrices().get().getOriginalFilename();
             minioService.putMultipartFile(objectBuilderDtoEdit.getPrices().get(), filesBucketName, resultFilename);
             builderObject.setFilePrices(resultFilename);
         }
-
         if (objectBuilderDtoEdit.getChessboardFile() != null && objectBuilderDtoEdit.getChessboardFile().isPresent()) {
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + objectBuilderDtoEdit.getChessboardFile().get().getOriginalFilename();
             minioService.putMultipartFile(objectBuilderDtoEdit.getChessboardFile().get(), filesBucketName, resultFilename);
             builderObject.setFileCheckerboard(resultFilename);
         }
-
         if (objectBuilderDtoEdit.getInstallmentTerms() != null && objectBuilderDtoEdit.getInstallmentTerms().isPresent()) {
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + objectBuilderDtoEdit.getInstallmentTerms().get().getOriginalFilename();
             minioService.putMultipartFile(objectBuilderDtoEdit.getInstallmentTerms().get(), filesBucketName, resultFilename);
             builderObject.setFileInstallmentTerms(resultFilename);
         }
-
-
         objectBuilderService.save(builderObject);
-
+        //Delete old Layouts
         layoutService.deleteAllByBuilderObject(builderObject);
 
         for (LayoutDTOEdit dto : objectBuilderDtoEdit.getLayoutDTOList()) {
-            Layout layout = new Layout();
-            layout.setName(dto.getNameLayout());
-            layout.setNameEng(dto.getNameLayoutEng());
-            layout.setNameUkr(dto.getNameLayoutUkr());
-
-            layout.setPrice(dto.getPriceLayout());
-            layout.setRoomQuantity(dto.getRoomQuantityLayout());
-            layout.setAreaKitchen(dto.getAreaKitchenLayout());
-            layout.setAreaLiving(dto.getAreaLivingLayout());
-            layout.setAreaTotal(dto.getAreaTotalLayout());
-            layout.setActive(dto.getStatusLayout());
-            layout.setDescription(dto.getDescriptionLayout());
-            layout.setDescriptionUkr(dto.getDescriptionLayoutUkr());
-            layout.setDescriptionEng(dto.getDescriptionLayoutEng());
-
+            Layout layout = LayoutMapper.INSTANCE.toEntity(dto);
             if (dto.getImg1Layout() != null && !dto.getImg1Layout().isEmpty()) {
                 uuidFile = UUID.randomUUID().toString();
                 resultFilename = uuidFile + "." + dto.getImg1Layout().get().getOriginalFilename();
@@ -495,49 +321,21 @@ public class ObjectsBuilderController {
             layoutService.save(layout);
         }
 
-        List<ImagesForObject> namesImages = imagesForObjectService.findByIdObjectAndTypeObject(id, TypeObject.BY_BUILDER).stream()
-                .filter(path -> !objectBuilderDtoEdit.getOldFiles().contains(path.getPath()))
-                .collect(Collectors.toList());
-        log.info(namesImages);
+        List<ImagesForObject> namesImages = imagesForObjectService.findByIdObjectAndTypeObject(id, TypeObject.BY_BUILDER).stream().filter(path -> !objectBuilderDtoEdit.getOldFiles().contains(path.getPath())).collect(Collectors.toList());
+        //delete old images
         namesImages.stream().forEach(s -> imagesForObjectService.deleteById(s.getIdImage()));
+        //delete old images in MinIO
         namesImages.stream().forEach(s -> {
             try {
                 minioService.deleteImg(s.getPath(), imagesBucketName);
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            } catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
+            } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
+                     InvalidResponseException | NoSuchAlgorithmException | ServerException | XmlParserException |
+                     IOException e) {
                 throw new RuntimeException(e);
             }
         });
-
-        for (MultipartFile file : objectBuilderDtoEdit.getFiles()) {
-            ImagesForObject imagesForObject = new ImagesForObject();
-            imagesForObject.setIdObject(builderObject.getId());
-            imagesForObject.setTypeObject(TypeObject.BY_BUILDER);
-
-            uuidFile = UUID.randomUUID().toString();
-            resultFilename = uuidFile + "." + file.getOriginalFilename();
-            minioService.putMultipartFile(file, imagesBucketName, resultFilename);
-            imagesForObject.setPath(resultFilename);
-
-            imagesForObjectService.save(imagesForObject);
-        }
-
-
+        //save new images in MinIO, ImagesForObjectService
+        saveFilesInMinIO(builderObject, objectBuilderDtoEdit.getFiles(), objectBuilderDtoEdit, imagesBucketName, minioService, imagesForObjectService);
         return ResponseEntity.ok().body("ok");
     }
 
@@ -663,8 +461,8 @@ public class ObjectsBuilderController {
     @GetMapping("/for/select")
     @ResponseBody
     public Page<BuilderObject> search(@RequestParam("query") String name,
-                               @RequestParam("page") int page,
-                               @RequestParam("size") int size) {
+                                      @RequestParam("page") int page,
+                                      @RequestParam("size") int size) {
         Page<BuilderObject> searchResults = objectBuilderService.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
         return searchResults;
     }

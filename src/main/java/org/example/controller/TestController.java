@@ -12,23 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Log4j2
 public class TestController {
 
-    public TestController(EmailService emailService) {
-        this.emailService = emailService;
-    }
-
     @GetMapping("/test")
     public String lol() {
         return "/test";
     }
-    private final
-    EmailService emailService;
 
-    @PostMapping("/testEmail")
-    public String sendTestEmail(){
-        emailService.sendEmail("2000-dimk@ukr.net","aaaa","afasaasfasfasfasf");
-        emailService.sendEmail("2000dimk@gmail.com","aaaa","afasaasfasfasfasf");
-        log.info("Отправлен");
-        return "redirect:/test";
-    }
 
 }
