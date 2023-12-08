@@ -1008,8 +1008,8 @@
                         processResults: function (data) {
                             var index = 0;
                             var results = data.map(function (data) {
-                                if (data.id) return {id: data.id, text: data.name};
-                                return {id: data, text: data};
+                                if (data.id) return {id: data.id, text: translateValue(data.name)};
+                                return {id: data, text: translateValue(data)};
                             });
                             return {
                                 results: results
