@@ -12,6 +12,7 @@ import org.example.entity.*;
 import org.example.entity.property.type.PropertyBuildStatus;
 import org.example.entity.property.type.PropertyObjectAddress;
 import org.example.entity.property.type.TypeObject;
+import org.example.mapper.ObjectInvestorMapper;
 import org.example.service.ImagesForObjectService;
 import org.example.service.LayoutService;
 import org.example.service.MinioService;
@@ -150,8 +151,11 @@ public class ObjectsBuilderController {
         }
         log.info("ok validation");
         log.info(objectBuilderDto);
-        BuilderObject builderObject = new BuilderObject();
+        BuilderObject builderObject =new BuilderObject();
         PropertyObjectAddress propertyObjectAddress = new PropertyObjectAddress();
+
+
+
         propertyObjectAddress.setCity(objectBuilderDto.getCity());
         propertyObjectAddress.setDistrict(objectBuilderDto.getDistrict());
         propertyObjectAddress.setHouseNumber(objectBuilderDto.getHouseNumber());

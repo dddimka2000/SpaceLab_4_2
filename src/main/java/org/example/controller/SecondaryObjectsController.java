@@ -4,12 +4,14 @@ import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Logger;
 import org.example.dto.InvestorObjectDtoSearch;
 import org.example.dto.PropertySecondaryObjectDTO;
 import org.example.dto.PropertySecondaryObjectDTO;
 import org.example.dto.PropertySecondaryObjectDTO;
 import org.example.entity.BuilderObject;
 import org.example.entity.Realtor;
+import org.example.entity.property.PropertyInvestorObject;
 import org.example.entity.property.PropertySecondaryObject;
 import org.example.entity.property.PropertySecondaryObject;
 import org.example.entity.property.PropertySecondaryObject;
@@ -19,7 +21,9 @@ import org.example.service.MinioService;
 import org.example.service.ObjectBuilderService;
 import org.example.service.PropertySecondaryObjectService;
 import org.example.service.RealtorServiceImpl;
+import org.example.util.ResponseEntityHelper;
 import org.example.util.validator.SecondaryObjectValidator;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
@@ -39,6 +43,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.example.util.ResponseEntityHelper.getResponseEntity;
 
 @Controller
 @RequestMapping("/secondary_objects")
@@ -175,7 +181,6 @@ public class SecondaryObjectsController {
     public ResponseEntity editObjectsSecondaryControllerPost(@PathVariable Integer id, @Valid @ModelAttribute PropertySecondaryObjectDTO propertySecondaryObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info(propertySecondaryObjectDTO);
         PropertySecondaryObject propertySecondaryObject= propertySecondaryObjectService.findById(id).get();
-
         Realtor realtor = new Realtor();
         try {
             realtor = realtorService.getById(propertySecondaryObjectDTO.getEmployeeCode());
@@ -186,74 +191,12 @@ public class SecondaryObjectsController {
         if(propertySecondaryObjectDTO.getOldFiles()==null){
             propertySecondaryObjectDTO.setOldFiles(new ArrayList<>());
         }
-
-
         if (bindingResult.hasErrors()) {
-            log.info("error");
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }
-        List<String> namesFilesDelete = propertySecondaryObject.getFiles().stream()
-                .filter(path -> !propertySecondaryObjectDTO.getOldFiles().contains(path))
-                .collect(Collectors.toList());
-        log.info(namesFilesDelete);
-        namesFilesDelete.stream().forEach(s-> {
-            try {
-                minioService.deleteImg(s,filesBucketName);
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            }
-            catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        List<String> namesPicturesDelete = propertySecondaryObject.getPictures().stream()
-                .filter(path -> !propertySecondaryObjectDTO.getOldPictures().contains(path))
-                .collect(Collectors.toList());
-        log.info(namesPicturesDelete);
-        namesPicturesDelete.stream().forEach(s-> {
-            try {
-                minioService.deleteImg(s,imagesBucketName);
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            } catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-
-
-
+        ResponseEntityHelper.streamFiles(propertySecondaryObject.getFiles(), propertySecondaryObjectDTO.getOldFiles(), log, minioService, filesBucketName, propertySecondaryObject.getPictures(), propertySecondaryObjectDTO.getOldPictures(), imagesBucketName, propertySecondaryObjectDTO, propertySecondaryObject);
         ObjectSecondaryMapper.INSTANCE.toOldEntity(propertySecondaryObject, propertySecondaryObjectDTO);
         propertySecondaryObject.setRealtor(realtor);
 
@@ -277,45 +220,18 @@ public class SecondaryObjectsController {
 
         return ResponseEntity.ok().body("ok");
     }
+
+
+
     String imagesBucketName = "images";
     String filesBucketName = "files";
     @GetMapping("/files/{id}")
     public ResponseEntity getFiles(@PathVariable Integer id) {
         Optional<PropertySecondaryObject> objectBuilder = propertySecondaryObjectService.findById(id);
         List<byte[]> fileDataList = new ArrayList<>();
-        if (objectBuilder.isEmpty()) {
-            ResponseEntity.badRequest();
-        }
-        fileDataList = objectBuilder.get().getFiles().stream().map(s -> {
-            try {
-                return minioService.getPhoto(s, filesBucketName);
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            } catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList());
-
-        List<String> base64FileList = fileDataList.stream()
-                .map(Base64.getEncoder()::encodeToString)
-                .toList();
-
-        return ResponseEntity.ok().body(base64FileList);
+        return getResponseEntity(objectBuilder.isEmpty(), objectBuilder.get().getFiles(), minioService, filesBucketName, objectBuilder);
     }
+
     @GetMapping("/filter")
     @ResponseBody
     public Page<PropertySecondaryObject> showPageObjectBuilder(@ModelAttribute InvestorObjectDtoSearch objectDto

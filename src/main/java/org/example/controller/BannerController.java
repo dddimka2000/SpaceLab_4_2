@@ -68,31 +68,13 @@ public class BannerController {
         ModelAndView modelAndView = new ModelAndView();
         BannerDto bannerDto = new BannerDto();
         Optional<Banner> byId = bannerService.findById(id);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             modelAndView.setViewName("error/404");
         }
         BannerMapper.INSTANCE.updateDtoFromBanner(byId.get(), bannerDto);
         modelAndView.addObject("banner", bannerDto);
         List<BannerSlide> list = bannerSlideService.findAllByBanner(byId.get());
-        List<BannerSlideDto> listDto = new ArrayList<>();
-        AtomicInteger atomicInteger = new AtomicInteger(0);
-        list.stream().forEach(s -> {
-            BannerSlideDto bannerDto1 = new BannerSlideDto();
-            BannerSlideMapper.INSTANCE.updateDtoFromEntity(s, bannerDto1);
-            String path = null;
-            try {
-                path = minioService.getFileInString(s.getImgPath(), imagesBucketName);
-            } catch (ErrorResponseException | InsufficientDataException | InternalException |InvalidKeyException | InvalidResponseException
-                     | NoSuchAlgorithmException | ServerException | XmlParserException | IOException  e) {
-                throw new RuntimeException(e);
-            }
-            bannerDto1.setOldImgPath(path);
-                bannerDto1.setOldImgName(s.getImgPath());
-
-            listDto.add(bannerDto1);
-            atomicInteger.incrementAndGet();
-        });
-
+        List<BannerSlideDto> listDto = bannerSlideService.findAllByBannerIdDTO(list);
         modelAndView.addObject("bannerList", listDto);
         modelAndView.addObject("idModel", id);
         modelAndView.setViewName("banners/banners_edit");
@@ -111,13 +93,12 @@ public class BannerController {
         }
         if (bindingResult.hasErrors()) {
             log.error("error validation");
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .collect(Collectors.toList()));
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
         bannerSlideService.deleteAllByBannerId(id);
         BannerMapper.INSTANCE.updateBannerFromDto(bannerDto, banner.get());
-        log.warn("banner " + banner.get());
+
+        //get slides from dto
         List<BannerSlide> slideList = new ArrayList<>();
         AtomicInteger num_1 = new AtomicInteger(0);
         banner.get().getSlides().stream().forEach(s -> {
@@ -126,42 +107,23 @@ public class BannerController {
             }
             num_1.incrementAndGet();
         });
+
+        //add new slides
         slideList.addAll(banner.get().getSlides());
         bannerService.save(banner.get());
-        slideList.stream().forEach(s -> log.warn("slideList getImgPath " + s.getImgPath()));
-        bannerDto.getSlides().stream().forEach(s -> log.warn("bannerDto getOldImgPath " + s.getOldImgPath()));
-        bannerDto.getSlides().stream().forEach(s -> log.warn("bannerDto getImgPath " + s.getImgPath()));
-        log.warn("banner " + banner.get());
         slideList.stream().forEach(s -> s.setBanner(banner.get()));
         slideList.stream().forEach(s -> bannerSlideService.save(s));
         AtomicInteger num = new AtomicInteger(0);
+
+        //add new pict and delete old in MinIo
         bannerDto.getSlides().stream().forEach(s -> {
             if (s.getImgPath() != null) {
                 try {
-                    log.info(s.getImgPath().getOriginalFilename() + " minioSAVE");
-                    log.info(slideList.get(num.get()).getImgPath() + "name minio");
                     minioService.putMultipartFile(s.getImgPath(), imagesBucketName, slideList.get(num.get()).getImgPath());
                     if (s.getOldImgPath() != null) {
-                        log.info(s.getImgPath().getOriginalFilename() + " minioDelete");
                         minioService.deleteImg(s.getOldImgName(), imagesBucketName);
                     }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (ServerException e) {
-                    throw new RuntimeException(e);
-                } catch (InsufficientDataException e) {
-                    throw new RuntimeException(e);
-                } catch (ErrorResponseException e) {
-                    throw new RuntimeException(e);
-                } catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException(e);
-                } catch (InvalidKeyException e) {
-                    throw new RuntimeException(e);
-                } catch (InvalidResponseException e) {
-                    throw new RuntimeException(e);
-                } catch (XmlParserException e) {
-                    throw new RuntimeException(e);
-                } catch (InternalException e) {
+                } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | NoSuchAlgorithmException | ServerException | XmlParserException | IOException e) {
                     throw new RuntimeException(e);
                 }
             }
