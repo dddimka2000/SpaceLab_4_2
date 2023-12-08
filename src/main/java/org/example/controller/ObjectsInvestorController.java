@@ -250,7 +250,6 @@ public class ObjectsInvestorController {
     @GetMapping("/files/{id}")
     public ResponseEntity getFiles(@PathVariable Integer id) {
         Optional<PropertyInvestorObject> objectBuilder = propertyInvestorObjectService.findById(id);
-        List<byte[]> fileDataList;
         return getResponseEntity(objectBuilder.isEmpty(), objectBuilder.get().getFiles(), minioService, filesBucketName, objectBuilder);
     }
 
