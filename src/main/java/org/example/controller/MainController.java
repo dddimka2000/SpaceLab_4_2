@@ -43,7 +43,6 @@ public class MainController {
 
     @GetMapping("/")
     public String local(Model model) {
-
         model.addAttribute("questions", questionService.count());
         model.addAttribute("changeOffer", changeOfferService.count());
         model.addAttribute("branches", branchService.count());

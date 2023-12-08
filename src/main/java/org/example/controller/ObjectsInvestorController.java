@@ -5,18 +5,13 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.InvestorObjectDtoSearch;
-import org.example.dto.ObjectBuilderDtoSearch;
 import org.example.dto.PropertyInvestorObjectDTO;
-import org.example.entity.BuilderObject;
-import org.example.entity.ImagesForObject;
 import org.example.entity.Realtor;
 import org.example.entity.property.PropertyInvestorObject;
-import org.example.entity.property.type.TypeObject;
 import org.example.mapper.ObjectInvestorMapper;
 import org.example.service.*;
-import org.example.service.specification.InvestorObjectSpecification;
+import org.example.util.ControllerHelper;
 import org.example.util.validator.ObjectInvestorValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,13 +25,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.example.util.ControllerHelper.getResponseEntity;
+import static org.example.util.ControllerHelper.streamFiles;
 
 @Controller
 @RequestMapping("/investor_objects")
@@ -209,64 +208,7 @@ public class ObjectsInvestorController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }
-        List<String> namesFilesDelete = propertyInvestorObject.getFiles().stream()
-                .filter(path -> !propertyInvestorObjectDTO.getOldFiles().contains(path))
-                .collect(Collectors.toList());
-        log.info(namesFilesDelete);
-        namesFilesDelete.stream().forEach(s-> {
-            try {
-                minioService.deleteImg(s,filesBucketName);
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            }
-            catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        List<String> namesPicturesDelete = propertyInvestorObject.getPictures().stream()
-                .filter(path -> !propertyInvestorObjectDTO.getOldPictures().contains(path))
-                .collect(Collectors.toList());
-        log.info(namesPicturesDelete);
-        namesPicturesDelete.stream().forEach(s-> {
-            try {
-                minioService.deleteImg(s,imagesBucketName);
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            }
-            catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
+        streamFiles(propertyInvestorObject.getFiles(), propertyInvestorObjectDTO.getOldFiles(), log, minioService, filesBucketName, propertyInvestorObject.getPictures(), propertyInvestorObjectDTO.getOldPictures(), imagesBucketName, propertyInvestorObjectDTO, propertyInvestorObject);
 
 
         ObjectInvestorMapper.INSTANCE.toOldEntity(propertyInvestorObject, propertyInvestorObjectDTO);
@@ -303,40 +245,10 @@ public class ObjectsInvestorController {
     @GetMapping("/files/{id}")
     public ResponseEntity getFiles(@PathVariable Integer id) {
         Optional<PropertyInvestorObject> objectBuilder = propertyInvestorObjectService.findById(id);
-        List<byte[]> fileDataList = new ArrayList<>();
-        if (objectBuilder.isEmpty()) {
-            ResponseEntity.badRequest();
-        }
-        fileDataList = objectBuilder.get().getFiles().stream().map(s -> {
-            try {
-                return minioService.getPhoto(s, filesBucketName);
-            } catch (ErrorResponseException e) {
-                throw new RuntimeException(e);
-            } catch (InsufficientDataException e) {
-                throw new RuntimeException(e);
-            } catch (InternalException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidKeyException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidResponseException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            } catch (ServerException e) {
-                throw new RuntimeException(e);
-            } catch (XmlParserException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList());
-
-        List<String> base64FileList = fileDataList.stream()
-                .map(Base64.getEncoder()::encodeToString)
-                .toList();
-
-        return ResponseEntity.ok().body(base64FileList);
+        return getResponseEntity(objectBuilder.isEmpty(), objectBuilder.get().getFiles(), minioService, filesBucketName, objectBuilder);
     }
+
+
 
 
     @GetMapping("/card/{id}")
