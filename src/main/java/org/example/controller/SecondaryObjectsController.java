@@ -4,26 +4,17 @@ import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.Logger;
 import org.example.dto.InvestorObjectDtoSearch;
 import org.example.dto.PropertySecondaryObjectDTO;
-import org.example.dto.PropertySecondaryObjectDTO;
-import org.example.dto.PropertySecondaryObjectDTO;
-import org.example.entity.BuilderObject;
 import org.example.entity.Realtor;
-import org.example.entity.property.PropertyInvestorObject;
 import org.example.entity.property.PropertySecondaryObject;
-import org.example.entity.property.PropertySecondaryObject;
-import org.example.entity.property.PropertySecondaryObject;
-import org.example.mapper.ObjectSecondaryMapper;
 import org.example.mapper.ObjectSecondaryMapper;
 import org.example.service.MinioService;
 import org.example.service.ObjectBuilderService;
 import org.example.service.PropertySecondaryObjectService;
 import org.example.service.RealtorServiceImpl;
-import org.example.util.ResponseEntityHelper;
+import org.example.util.ControllerHelper;
 import org.example.util.validator.SecondaryObjectValidator;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
@@ -41,10 +32,13 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.example.util.ResponseEntityHelper.getResponseEntity;
+import static org.example.util.ControllerHelper.getResponseEntity;
 
 @Controller
 @RequestMapping("/secondary_objects")
@@ -196,7 +190,7 @@ public class SecondaryObjectsController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }
-        ResponseEntityHelper.streamFiles(propertySecondaryObject.getFiles(), propertySecondaryObjectDTO.getOldFiles(), log, minioService, filesBucketName, propertySecondaryObject.getPictures(), propertySecondaryObjectDTO.getOldPictures(), imagesBucketName, propertySecondaryObjectDTO, propertySecondaryObject);
+        ControllerHelper.streamFiles(propertySecondaryObject.getFiles(), propertySecondaryObjectDTO.getOldFiles(), log, minioService, filesBucketName, propertySecondaryObject.getPictures(), propertySecondaryObjectDTO.getOldPictures(), imagesBucketName, propertySecondaryObjectDTO, propertySecondaryObject);
         ObjectSecondaryMapper.INSTANCE.toOldEntity(propertySecondaryObject, propertySecondaryObjectDTO);
         propertySecondaryObject.setRealtor(realtor);
 

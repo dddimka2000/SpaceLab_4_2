@@ -5,20 +5,13 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.InvestorObjectDtoSearch;
-import org.example.dto.ObjectBuilderDtoSearch;
 import org.example.dto.PropertyInvestorObjectDTO;
-import org.example.entity.BuilderObject;
-import org.example.entity.ImagesForObject;
 import org.example.entity.Realtor;
 import org.example.entity.property.PropertyInvestorObject;
-import org.example.entity.property.type.TypeObject;
 import org.example.mapper.ObjectInvestorMapper;
 import org.example.service.*;
-import org.example.service.specification.InvestorObjectSpecification;
-import org.example.util.ResponseEntityHelper;
+import org.example.util.ControllerHelper;
 import org.example.util.validator.ObjectInvestorValidator;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,15 +25,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.example.util.ResponseEntityHelper.getResponseEntity;
+import static org.example.util.ControllerHelper.getResponseEntity;
+import static org.example.util.ControllerHelper.streamFiles;
 
 @Controller
 @RequestMapping("/investor_objects")
@@ -213,7 +208,7 @@ public class ObjectsInvestorController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }
-        ResponseEntityHelper.streamFiles(propertyInvestorObject.getFiles(), propertyInvestorObjectDTO.getOldFiles(), log, minioService, filesBucketName, propertyInvestorObject.getPictures(), propertyInvestorObjectDTO.getOldPictures(), imagesBucketName, propertyInvestorObjectDTO, propertyInvestorObject);
+        streamFiles(propertyInvestorObject.getFiles(), propertyInvestorObjectDTO.getOldFiles(), log, minioService, filesBucketName, propertyInvestorObject.getPictures(), propertyInvestorObjectDTO.getOldPictures(), imagesBucketName, propertyInvestorObjectDTO, propertyInvestorObject);
 
 
         ObjectInvestorMapper.INSTANCE.toOldEntity(propertyInvestorObject, propertyInvestorObjectDTO);
