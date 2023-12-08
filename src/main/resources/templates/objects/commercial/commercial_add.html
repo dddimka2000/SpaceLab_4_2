@@ -1088,8 +1088,8 @@
                         processResults: function (data) {
                             var index = 0;
                             var results = data.map(function (data) {
-                                if (data.id) return {id: data.id, text: data.name};
-                                return {id: data, text: data};
+                                if (data.id) return {id: data.id, text: translateValue(data.name)};
+                                return {id: data, text: translateValue(data)};
                             });
                             return {
                                 results: results
@@ -1099,7 +1099,7 @@
                 })
             }
             $('#region').on('select2:select', function (e) {
-                var element = e.params.data.text
+                var element = e.params.data.id
                 $("#city").empty();
                 $("#city").removeAttr("disabled");
 
@@ -1115,8 +1115,8 @@
                         processResults: function (data) {
                             var index = 0;
                             var results = data.map(function (data) {
-                                if (data.id) return {id: data.id, text: data.name};
-                                return {id: data, text: data};
+                                if (data.id) return {id: data.id, text: translateValue(data.name)};
+                                return {id: data, text: translateValue(data)};
                             });
                             return {
                                 results: results
@@ -1126,7 +1126,7 @@
                 })
             });
             $('#city').on('select2:select', function (e) {
-                var element = e.params.data.text
+                var element = e.params.data.id
                 $("#district").empty();
                 $("#district").removeAttr("disabled");
                 $("#district").select2({
@@ -1138,8 +1138,8 @@
                         processResults: function (data) {
                             var index = 0;
                             var results = data.map(function (data) {
-                                if (data.id) return {id: data.id, text: data.name};
-                                return {id: data, text: data};
+                                if (data.id) return {id: data.id, text: translateValue(data.name)};
+                                return {id: data, text: translateValue(data)};
                             });
                             return {
                                 results: results

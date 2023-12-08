@@ -89,6 +89,8 @@
         var languageSecondExample
 
         function translateValue(key) {
+            key = key.replaceAll(" ","_")
+            console.log(key)
             if (translationsSecondExample.hasOwnProperty(languageSecondExample) && translationsSecondExample[languageSecondExample].hasOwnProperty(key)) {
                 return translationsSecondExample[languageSecondExample][key];
             } else {
