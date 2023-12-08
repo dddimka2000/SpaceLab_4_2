@@ -3,6 +3,7 @@ var contextPath = "/ProminadaDD"
 async function translateAllSelect2() {
     $(".select2-selection__choice").each(async function (index, element) {
         try {
+            $(element).text($(element).text().replace('×',''))
             const originalName = await getOriginalValue($(element).text());
             $(element).text(translateValue(originalName));
         } catch (error) {
