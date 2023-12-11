@@ -26,5 +26,4 @@ public class BuyerNote {
     @ManyToOne
     @JsonBackReference
     private Buyer buyer;
-
 }

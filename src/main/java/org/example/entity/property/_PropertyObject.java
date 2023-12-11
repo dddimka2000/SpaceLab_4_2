@@ -6,6 +6,8 @@ import org.example.entity.BuilderObject;
 import org.example.entity.Realtor;
 import org.example.entity.UserEntity;
 import org.example.entity.property.type.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -82,9 +84,11 @@ public class _PropertyObject {
     private List<String> pictures;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private BuilderObject builderObject;
 
     @ManyToOne
     @JoinColumn(name = "realtor_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Realtor realtor;
 }

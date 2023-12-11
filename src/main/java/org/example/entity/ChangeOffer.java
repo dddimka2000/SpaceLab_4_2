@@ -3,6 +3,8 @@ package org.example.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.example.entity.property._PropertyObject;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "change_offers", schema = "my_bd", catalog = "")
@@ -19,6 +21,7 @@ public class ChangeOffer {
 
     @ManyToOne
     @JoinColumn(name = "id_object", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private _PropertyObject propertyObject;
 
 }

@@ -11,6 +11,8 @@ import org.example.entity.property.type.ApplicationStatus;
 import org.example.entity.property.type.PropertyApplicationType;
 import org.example.entity.property.type.PropertyObjectAddress;
 import org.example.entity.property.type.PropertyOrigin;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -47,13 +49,15 @@ public class BuyerApplication {
     @ToString.Exclude
     private Buyer buyer;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Realtor realtor;
     private String phone;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_builder_object", referencedColumnName = "id", nullable = true)
     @JsonManagedReference
     @ToString.Exclude
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private BuilderObject builderObject;
 
     @OneToMany(mappedBy = "application", cascade = CascadeType.REMOVE)

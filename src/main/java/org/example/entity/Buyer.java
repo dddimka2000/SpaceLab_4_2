@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.example.entity.property.type.InformationSource;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -42,6 +44,7 @@ public class Buyer {
     private List<String> files;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Realtor realtor;
 
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -50,6 +53,7 @@ public class Buyer {
 
     @ManyToOne
     @JoinColumn(name = "id_branch", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Branch branch;
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.REMOVE)
