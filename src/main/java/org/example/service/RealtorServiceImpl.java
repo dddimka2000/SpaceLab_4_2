@@ -29,51 +29,84 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @Log4j2
 public class RealtorServiceImpl {
+
     private final RealtorRepository realtorRepository;
     private final RealtorMapper realtorMapper;
     private final MinioService minioService;
 
     @Transactional
     public void add(RealtorDto realtorDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        log.info("RealtorServiceImpl-add start");
+
         Realtor realtor;
-        if (realtorDto.getId() == null) realtor = realtorMapper.toEntity(realtorDto, minioService);
-        else {
+        if (realtorDto.getId() == null) {
+            realtor = realtorMapper.toEntity(realtorDto, minioService);
+        } else {
             realtor = getById(realtorDto.getId());
             realtorMapper.updateEntityFromDto(realtorDto, realtor, minioService);
         }
+
         for (RealtorContact contact : realtor.getContacts()) {
             contact.setRealtor(realtor);
         }
+
         realtor.setCreationDate(LocalDate.now());
         save(realtor);
+
+        log.info("RealtorServiceImpl-add successfully");
     }
 
     public Page<Realtor> getAll(int page, String branchId, String code, String fullName, String phone, String email, String birthdate) {
+        log.info("RealtorServiceImpl-getAll start");
+
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
-        return realtorRepository.findAll(Specification.where(RealtorSpecification.branchContains(branchId))
+        Page<Realtor> result = realtorRepository.findAll(Specification.where(RealtorSpecification.branchContains(branchId))
                 .and(RealtorSpecification.codeContains(code)).and(RealtorSpecification.phoneContains(phone)).and(RealtorSpecification.birthdateContains(birthdate))
                 .and((RealtorSpecification.nameContains(fullName).or(RealtorSpecification.surnameContains(fullName))
                         .or(RealtorSpecification.middlenameContains(fullName)).and(RealtorSpecification.emailContains(email)))), pageable);
+
+        log.info("RealtorServiceImpl-getAll successfully");
+        return result;
     }
 
     public Realtor getById(int id) {
-        return realtorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A realtor with an id = "+id +" was not found"));
+        log.info("RealtorServiceImpl-getById start");
+        Realtor result = realtorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A realtor with an id = " + id + " was not found"));
+        log.info("RealtorServiceImpl-getById successfully");
+        return result;
     }
 
     public void deleteById(int id) {
+        log.info("RealtorServiceImpl-deleteById start");
         realtorRepository.deleteById(id);
+        log.info("RealtorServiceImpl-deleteById successfully");
     }
+
     @Transactional
     public void save(Realtor realtor) {
+        log.info("RealtorServiceImpl-save start");
         realtorRepository.save(realtor);
+        log.info("RealtorServiceImpl-save successfully");
     }
+
     public Page<Realtor> forSelect(String name, Pageable pageable) {
-        return realtorRepository.findAll(Specification.where(BranchSpecification.nameContains(name)), pageable);
+        log.info("RealtorServiceImpl-forSelect start");
+        Page<Realtor> result = realtorRepository.findAll(Specification.where(BranchSpecification.nameContains(name)), pageable);
+        log.info("RealtorServiceImpl-forSelect successfully");
+        return result;
     }
-    public int countByCode(int code){
-        return realtorRepository.countByCode(code);
+
+    public int countByCode(int code) {
+        log.info("RealtorServiceImpl-countByCode start");
+        int result = realtorRepository.countByCode(code);
+        log.info("RealtorServiceImpl-countByCode successfully");
+        return result;
     }
+
     public Realtor getByCode(Integer staffCode) {
-        return realtorRepository.findByCode(staffCode);
+        log.info("RealtorServiceImpl-getByCode start");
+        Realtor result = realtorRepository.findByCode(staffCode);
+        log.info("RealtorServiceImpl-getByCode successfully");
+        return result;
     }
 }

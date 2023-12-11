@@ -4,6 +4,7 @@ import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,18 +19,21 @@ import java.util.Base64;
 import java.util.UUID;
 
 @Service
+@Log4j2
 public class MinioService {
-    String bucketName="project.4.2";
 
     private final MinioClient minioClient;
-    String imagesBucketName = "images";
-    String filesBucketName = "files";
+    private final String bucketName = "project.4.2";
+    private final String imagesBucketName = "images";
+    private final String filesBucketName = "files";
 
     public MinioService(MinioClient minioClient) {
         this.minioClient = minioClient;
     }
 
-    public void putMultipartFile(MultipartFile multipartFile, String directory,String nameFile) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public void putMultipartFile(MultipartFile multipartFile, String directory, String nameFile) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        log.info("MinioService-putMultipartFile start");
+
         String prefix = "/" + directory + "/";
         String objectName = prefix + nameFile;
 
@@ -44,9 +48,13 @@ public class MinioService {
                 .build());
 
         tempFile.delete();
+
+        log.info("MinioService-putMultipartFile successfully");
     }
 
     public void deleteImg(String objectName, String directory) throws ErrorResponseException, InsufficientDataException, InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException, XmlParserException, IOException {
+        log.info("MinioService-deleteImg start");
+
         String prefix = "/" + directory + "/";
         String objectNameToDelete = prefix + objectName;
 
@@ -54,13 +62,13 @@ public class MinioService {
                 .bucket(bucketName)
                 .object(objectNameToDelete)
                 .build());
+
+        log.info("MinioService-deleteImg successfully");
     }
 
+    public byte[] getPhoto(String objectName, String directory) throws ErrorResponseException, InsufficientDataException, InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException, XmlParserException, IOException {
+        log.info("MinioService-getPhoto start");
 
-
-    public byte[] getPhoto(String objectName, String directory) throws ErrorResponseException, InsufficientDataException
-            , InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException
-            , XmlParserException, IOException {
         String prefix = "/" + directory + "/";
         String objectNameToRetrieve = prefix + objectName;
 
@@ -74,12 +82,13 @@ public class MinioService {
 
         objectStream.close();
 
+        log.info("MinioService-getPhoto successfully");
         return photoBytes;
     }
 
-    public String getFileInString(String objectName, String directory) throws ErrorResponseException, InsufficientDataException
-            , InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException
-            , XmlParserException, IOException {
+    public String getFileInString(String objectName, String directory) throws ErrorResponseException, InsufficientDataException, InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException, XmlParserException, IOException {
+        log.info("MinioService-getFileInString start");
+
         String prefix = "/" + directory + "/";
         String objectNameToRetrieve = prefix + objectName;
 
@@ -89,34 +98,54 @@ public class MinioService {
                         .object(objectNameToRetrieve)
                         .build());
 
-        byte[] photoBytes = IOUtils.toByteArray(objectStream);
+        byte[] fileBytes = IOUtils.toByteArray(objectStream);
 
         objectStream.close();
-        return Base64.getEncoder().encodeToString(photoBytes);
+
+        log.info("MinioService-getFileInString successfully");
+        return Base64.getEncoder().encodeToString(fileBytes);
     }
+
     public String putImage(MultipartFile image) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        log.info("MinioService-putImage start");
+
         String extension = image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf(".") + 1);
-        String name = UUID.randomUUID()+"."+image.getOriginalFilename();
+        String name = UUID.randomUUID() + "." + extension;
         putMultipartFile(image, imagesBucketName, name);
+
+        log.info("MinioService-putImage successfully");
         return name;
     }
-    public String putFile(MultipartFile image) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        String name = UUID.randomUUID()+"."+image.getOriginalFilename();
-        putMultipartFile(image, filesBucketName, name);
+
+    public String putFile(MultipartFile file) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        log.info("MinioService-putFile start");
+
+        String name = UUID.randomUUID() + "." + file.getOriginalFilename();
+        putMultipartFile(file, filesBucketName, name);
+
+        log.info("MinioService-putFile successfully");
         return name;
     }
+
     @SneakyThrows
     public String getUrl(String fileName) {
+        log.info("MinioService-getUrl start");
+
         GetPresignedObjectUrlArgs args = GetPresignedObjectUrlArgs.builder()
                 .bucket("project.4.2")
-                .object("/images/"+fileName)
+                .object("/images/" + fileName)
                 .method(Method.GET)
                 .build();
-        return minioClient.getPresignedObjectUrl(args);
+
+        String url = minioClient.getPresignedObjectUrl(args);
+
+        log.info("MinioService-getUrl successfully");
+        return url;
     }
-    public long getObjectSize(String objectName) throws ErrorResponseException, InsufficientDataException,
-            InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException,
-            XmlParserException, IOException {
+
+    public long getObjectSize(String objectName) throws ErrorResponseException, InsufficientDataException, InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException, XmlParserException, IOException {
+        log.info("MinioService-getObjectSize start");
+
         String prefix = "/images/";
         String objectNameToRetrieve = prefix + objectName;
 
@@ -126,6 +155,7 @@ public class MinioService {
                         .object(objectNameToRetrieve)
                         .build());
 
+        log.info("MinioService-getObjectSize successfully");
         return stat.size();
     }
 }

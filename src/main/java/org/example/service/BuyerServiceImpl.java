@@ -3,6 +3,7 @@ package org.example.service;
 import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.example.dto.BuyerPersonalDataDto;
 import org.example.entity.Buyer;
 import org.example.entity.BuyerApplication;
@@ -35,7 +36,9 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class BuyerServiceImpl {
+
     private final BuyerRepository buyerRepository;
     private final BuyerApplicationRepository buyerApplicationRepository;
     private final BuyerNoteRepository buyerNoteRepository;
@@ -46,7 +49,9 @@ public class BuyerServiceImpl {
     private final HousesServiceImpl housesService;
     private final PropertyInvestorObjectService propertyInvestorObjectService;
     private final PropertySecondaryObjectService propertySecondaryObjectService;
+
     public Integer addPersonalData(BuyerPersonalDataDto buyerDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        log.info("BuyerServiceImpl-addPersonalData start");
         Buyer buyer;
         if(buyerDto.getId()== null){
             buyer = buyerMapper.toEntity(buyerDto, minioService);
@@ -54,18 +59,29 @@ public class BuyerServiceImpl {
             buyer = getById(buyerDto.getId());
             buyerMapper.updateEntityFromDto(buyerDto, buyer, minioService);
         }
-        return save(buyer).getId();
+        Integer result = save(buyer).getId();
+        log.info("BuyerServiceImpl-addPersonalData successfully");
+        return result;
     }
+
     public Buyer getById(int id) {
-        return buyerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A buyer with an id = "+id +" was not found"));
+        log.info("BuyerServiceImpl-getById start");
+        Buyer result = buyerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A buyer with an id = "+id +" was not found"));
+        log.info("BuyerServiceImpl-getById successfully");
+        return result;
     }
+
     @Transactional
     public Buyer save(Buyer buyer){
-        return buyerRepository.save(buyer);
+        log.info("BuyerServiceImpl-save start");
+        Buyer result = buyerRepository.save(buyer);
+        log.info("BuyerServiceImpl-save successfully");
+        return result;
     }
 
     @Transactional
     public void addApplication(BuyerApplication buyerApplication) {
+        log.info("BuyerServiceImpl-addApplication start");
         if(buyerApplication.getId()!=null) {
             BuyerApplicationEditLog history = new BuyerApplicationEditLog();
             history.setDate(LocalDate.now());
@@ -77,27 +93,39 @@ public class BuyerServiceImpl {
         Buyer buyer = buyerApplication.getBuyer();
         buyer.setApplication(buyerApplication);
         buyerRepository.save(buyer);
+        log.info("BuyerServiceImpl-addApplication successfully");
     }
 
     public void addNote(BuyerNote buyerNote) {
+        log.info("BuyerServiceImpl-addNote start");
         buyerNoteRepository.save(buyerNote);
+        log.info("BuyerServiceImpl-addNote successfully");
     }
+
     public void deleteNote(Integer id) {
+        log.info("BuyerServiceImpl-deleteNote start");
         buyerNoteRepository.deleteById(id);
+        log.info("BuyerServiceImpl-deleteNote successfully");
     }
 
     public Page<Buyer> getAll(Integer page, String branch, String realtor, String name, String phone, String email, String price) {
+        log.info("BuyerServiceImpl-getAll start");
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
-        return buyerRepository.findAll(Specification.where(BuyerSpecification.branchContains(branch).and(BuyerSpecification.realtorContains(realtor))
+        Page<Buyer> result = buyerRepository.findAll(Specification.where(BuyerSpecification.branchContains(branch).and(BuyerSpecification.realtorContains(realtor))
                 .and(BuyerSpecification.middleNameContains(name).or(BuyerSpecification.nameContains(name)).or(BuyerSpecification.surnameContains(name)))
                 .and(BuyerSpecification.phoneContains(phone)).and(BuyerSpecification.emailContains(email)).and(BuyerSpecification.priceGreaterThanOrEqual(price))),pageable);
+        log.info("BuyerServiceImpl-getAll successfully");
+        return result;
     }
 
     public void deleteById(Integer id) {
+        log.info("BuyerServiceImpl-deleteById start");
         buyerRepository.deleteById(id);
+        log.info("BuyerServiceImpl-deleteById successfully");
     }
 
     public List<Buyer> filterForObject(Integer id, String type) {
+        log.info("BuyerServiceImpl-filterForObject start");
         List<BuyerApplication> applications = new ArrayList<>();
         switch (type){
             case "COMMERCIAL":
@@ -112,8 +140,10 @@ public class BuyerServiceImpl {
             case "SECONDARY":
                 applications = buyerApplicationRepository.findAll(new BuyerForObjectSpecification(propertySecondaryObjectService.findById(id).get()));
         }
-        return applications.stream()
+        List<Buyer> result = applications.stream()
                 .map(BuyerApplication::getBuyer)
                 .collect(Collectors.toList());
+        log.info("BuyerServiceImpl-filterForObject successfully");
+        return result;
     }
 }

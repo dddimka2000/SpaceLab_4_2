@@ -23,6 +23,8 @@ public class EmailService {
     }
 
     public void sendEmail(String to, String subject, String text) {
+        log.info("EmailService-sendEmail start");
+
         SendGrid sendGrid = new SendGrid("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");
         Request request = new Request();
 
@@ -41,18 +43,22 @@ public class EmailService {
             String responseBody = response.getBody();
             int statusCode = response.getStatusCode();
             if (statusCode == 202) {
-                System.out.println("Email был успешно отправлен.");
-                System.out.println("Response Body: " + responseBody);
+                log.info("Email was successfully sent.");
+                log.info("Response Body: {}", responseBody);
             } else {
-                System.out.println("Ошибка при отправке email.");
-                System.out.println("Response Body: " + responseBody);
+                log.error("Error sending email.");
+                log.error("Response Body: {}", responseBody);
             }
         } catch (IOException ex) {
-            log.info(ex);
-            ex.printStackTrace();
+            log.error("Exception occurred while sending email.", ex);
         }
+
+        log.info("EmailService-sendEmail successfully");
     }
+
     public String generateRandomPassword(int minLength, int maxLength) {
+        log.info("EmailService-generateRandomPassword start");
+
         String uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
         String digits = "0123456789";
@@ -70,6 +76,7 @@ public class EmailService {
             password.append(randomChar);
         }
 
+        log.info("EmailService-generateRandomPassword successfully");
         return password.toString();
     }
 }
