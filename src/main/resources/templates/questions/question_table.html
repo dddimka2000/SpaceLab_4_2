@@ -179,8 +179,9 @@
                     modalElement.querySelector('input[id="email"]').value = question.email
                     modalElement.querySelector('input[id="phone"]').value = question.phone
                     modalElement.querySelector('textarea[id="question"]').value = question.question
-                    modalElement.querySelector('textarea[id="answer"]').value = question.answer
-
+                    if (question.answer) {
+                        modalElement.querySelector('textarea[id="answer"]').value = question.answer
+                    }
                     modalElement.querySelector('textarea[id="answer"]').setAttribute('rows', 6);
                     modalElement.querySelector('textarea[id="question"]').setAttribute('rows', 6);
 
@@ -213,7 +214,11 @@
                         // cell1.setAttribute('onclick', 'window.location.href="[[@{/questions/}]]' + questionId + '"');
 
                         var cell2 = newRow.insertCell(1);
-                        cell2.innerHTML = textForTable(question.answer, 40);
+                        if (question.answer) {
+                            cell2.innerHTML = textForTable(question.answer, 40);
+                        } else {
+                            cell2.innerHTML = textForTable('', 40);
+                        }
                         // cell2.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + questionId + '"');
 
                         var cell3 = newRow.insertCell(2);
