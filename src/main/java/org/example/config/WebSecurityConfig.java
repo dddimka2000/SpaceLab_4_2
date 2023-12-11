@@ -63,20 +63,6 @@ public class WebSecurityConfig {
                                                 .requestMatchers("/admin/**", "/personal_account").authenticated()
                                                 .anyRequest().permitAll()
                                 )
-//                                .oauth2Login(oauth2Login ->
-//                                                oauth2Login
-////                                                .defaultSuccessUrl("/auth/login")
-//                                                        .clientRegistrationRepository(clientRegistrationRepository)
-//                                )
-//                                .authorizeHttpRequests(authorize ->
-//                                        authorize
-//                                                .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login", "/swagger-resources/**",
-//                                                        "/swagger-ui.html",
-//                                                        "/webjars/**",
-//                                                        "favicon.ico").permitAll()
-//                                                .requestMatchers("/admin/**","/personal_account").authenticated()
-//                                                .anyRequest().permitAll()
-//                                )
                                 .logout()
                                 .logoutSuccessUrl("/")
                                 .permitAll();

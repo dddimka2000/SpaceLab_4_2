@@ -5,9 +5,11 @@ import lombok.extern.log4j.Log4j2;
 import org.example.dto.ObjectBuilderDto;
 import org.example.dto.ObjectBuilderDtoEdit;
 import org.example.dto.PropertyInvestorObjectDTO;
+import org.example.entity.Realtor;
 import org.example.service.BranchServiceImpl;
 import org.example.service.ObjectBuilderService;
 import org.example.service.PropertyInvestorObjectService;
+import org.example.service.RealtorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -32,27 +34,37 @@ public class ObjectInvestorValidator implements Validator {
     private final
     PropertyInvestorObjectService propertyInvestorObjectService;
 
-    public ObjectInvestorValidator(PropertyInvestorObjectService propertyInvestorObjectService, BranchServiceImpl branchService) {
+    public ObjectInvestorValidator(PropertyInvestorObjectService propertyInvestorObjectService, BranchServiceImpl branchService, RealtorServiceImpl realtorService) {
         this.propertyInvestorObjectService = propertyInvestorObjectService;
         this.branchService = branchService;
+        this.realtorService = realtorService;
     }
 
     @Override
     public boolean supports(Class<?> clazz) {
         return PropertyInvestorObjectDTO.class.isAssignableFrom(clazz) || ObjectBuilderDtoEdit.class.isAssignableFrom(clazz);
     }
+
     private final
     BranchServiceImpl branchService;
+    final
+    RealtorServiceImpl realtorService;
 
     @Override
     public void validate(Object target, Errors errors) {
         PropertyInvestorObjectDTO entity = (PropertyInvestorObjectDTO) target;
-        if(propertyInvestorObjectService.findByCode(entity.getObjectCode()).isPresent()){
+        Realtor realtor = new Realtor();
+        try {
+            realtor = realtorService.getById(entity.getEmployeeCode());
+        } catch (EntityNotFoundException | NullPointerException ex) {
+            errors.rejectValue("employeeCode", "", "Кода данного сотрудника не существует");
+        }
+        if (propertyInvestorObjectService.findByCode(entity.getObjectCode()).isPresent()) {
             errors.rejectValue("objectCode", "", "Объект с таким кодом уже существует");
         }
         try {
             branchService.getById(entity.getBranchCode());
-        }catch (EntityNotFoundException | NullPointerException e){
+        } catch (EntityNotFoundException | NullPointerException e) {
             errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
         }
         if (entity.getFiles() != null && entity.getFiles().size() > 0) {
@@ -83,12 +95,18 @@ public class ObjectInvestorValidator implements Validator {
 
     public void validateEdit(Object target, Errors errors, String code) {
         PropertyInvestorObjectDTO entity = (PropertyInvestorObjectDTO) target;
-        if(!entity.getObjectCode().equals(code)&& propertyInvestorObjectService.findByCode(entity.getObjectCode()).isPresent()){
+        Realtor realtor = new Realtor();
+        try {
+            realtor = realtorService.getById(entity.getEmployeeCode());
+        } catch (EntityNotFoundException | NullPointerException ex) {
+            errors.rejectValue("employeeCode", "", "Кода данного сотрудника не существует");
+        }
+        if (!entity.getObjectCode().equals(code) && propertyInvestorObjectService.findByCode(entity.getObjectCode()).isPresent()) {
             errors.rejectValue("objectCode", "", "Объект с таким кодом уже существует");
         }
         try {
             branchService.getById(entity.getBranchCode());
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
         }
         if (entity.getFiles() != null && entity.getFiles().size() > 0) {

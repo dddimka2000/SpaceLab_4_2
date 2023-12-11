@@ -52,5 +52,5 @@ public class LayoutService {
         layoutRepository.deleteAllByBuilderObject(builderObject);
         log.info("LayoutService-deleteAllByBuilderObject successfully");
     }
-}
 
+}

@@ -1,5 +1,4 @@
-var contextPath = "/ProminadaDD"
-
+var contextPath = "/MinionsDD"
 function previewImage(event, imageId) {
     var reader = new FileReader();
     reader.onload = function () {
@@ -44,8 +43,7 @@ function validateAndUpload(imageId, allowedExtensions) {
         return true;
     });
 }
-
-function validateOneFile(file, allowedExtensions) {
+function validateOneFile(file, allowedExtensions){
     if (!file) {
         showToast('Файл не вибрано', 'danger');
         return false;
@@ -97,6 +95,7 @@ function validateFile(imageId, allowedExtensions) {
     }
     return true;
 }
+
 function validateNumber(min, max, number) {
     if (number.val() === '') {
         showToast("Число повинно бути вказане", "danger")

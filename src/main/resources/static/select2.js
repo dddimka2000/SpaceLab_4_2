@@ -1,4 +1,4 @@
-var contextPath = "/ProminadaDD"
+var contextPath = "/MinionsDD"
 
 async function translateAllSelect2() {
     $(".select2-selection__choice").each(async function (index, element) {
@@ -149,7 +149,7 @@ function informationSourceSelect2(text, id) {
 function forSelect2(id, text, selectName, url) {
     if (translationsSecondExample === undefined) {
         $.ajax({
-            url: '/ProminadaDD/api/translations?language=' + languageSecondExample,
+            url: '/MinionsDD/api/translations?language=' + languageSecondExample,
             dataType: 'json',
             success: function (newTranslations) {
                 translationsSecondExample = newTranslations;

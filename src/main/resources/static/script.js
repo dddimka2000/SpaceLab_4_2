@@ -1,4 +1,4 @@
-var contextPath = "/ProminadaDD"
+var contextPath = "/MinionsDD"
 
 
 function showToast(message, type) {
