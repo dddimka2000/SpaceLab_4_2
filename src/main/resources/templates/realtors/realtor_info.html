@@ -60,9 +60,8 @@
                         </tr>
                         <tr>
                             <td><b data-translate="fullName">ФИО</b></td>
-                            <td>
-                                <a th:href="@{/users/{id}(id=${realtor.id})}"
-                                   th:text="${realtor.surname + ' ' + realtor.name + ' ' + realtor.middleName}"></a>
+                            <td
+                                th:text="${realtor.surname + ' ' + realtor.name + ' ' + realtor.middleName}">
                             </td>
                         </tr>
                         <tr>

@@ -111,6 +111,16 @@ $(document).ready(function () {
             prefix: "+380"
         })
     });
+    $(".for-filter").each(function(index, element) {
+        var maxLength = 20;
+        $(element).attr("maxlength", maxLength);
+        $(element).on("input", function() {
+            if ($(this).val().length > maxLength) {
+                $(this).val($(this).val().substring(0, maxLength));
+            }
+        });
+    });
+
     var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
     flatpickrDateTimes.forEach(function (element) {
         element.flatpickr({

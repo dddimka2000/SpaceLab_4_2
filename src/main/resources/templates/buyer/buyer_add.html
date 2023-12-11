@@ -32,22 +32,22 @@
 
         <ul class="nav nav-pills mb-3" role="tablist">
             <li class="nav-item">
-                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home"
+                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" id="navs-pills-top-info"
+                        data-bs-target="#top-info" aria-controls="navs-pills-top-home"
                         aria-selected="true" data-translate="INFORMATION">
                     Информация
                 </button>
             </li>
             <li class="nav-item">
-                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-application" aria-controls="navs-pills-top-application"
+                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" id="navs-pills-top-application"
+                        data-bs-target="#top-application" aria-controls="navs-pills-top-application"
                         aria-selected="false" data-translate="request">
                     Заявка
                 </button>
             </li>
             <li class="nav-item">
-                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-note" aria-controls="navs-pills-top-note"
+                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" id="navs-pills-top-note"
+                        data-bs-target="#top-note" aria-controls="navs-pills-top-note"
                         aria-selected="false" data-translate="notes">
                     Заметки
                 </button>
@@ -56,7 +56,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="navs-pills-top-info">
+                    <div class="tab-pane fade show active" aria-labelledby="navs-pills-top-info" id="top-info">
                         <div class="row">
                             <div class="col" data-translate="lastName">
                                 Фамилия
@@ -146,7 +146,7 @@
                         <div id="block-for-file">
                         </div>
                     </div>
-                    <div class="tab-pane fade show" id="navs-pills-top-application">
+                    <div class="tab-pane fade show" aria-labelledby="navs-pills-top-application" id="top-application">
                         <div class="row">
                             <div class="col-4" >
                                 <p data-translate="district">Район</p>
@@ -237,7 +237,7 @@
                                   rows="4"></textarea>
                         <a href="#" onclick="showModal()" data-translate="showChangeHistory">Показать историю изменений</a>
                     </div>
-                    <div class="tab-pane fade show" id="navs-pills-top-note">
+                    <div class="tab-pane fade show" aria-labelledby="navs-pills-top-note" id="top-note">
                         <div id="noteBlock"></div>
                         <div style="width: 100%; display: flex; justify-content: flex-end">
                             <button type="button" onclick="addNoteBlock()" class="btn btn-success mb-1" data-translate="addNote">Добавить
@@ -660,15 +660,11 @@
 
 
             districts.next().find(".select2-selection").css("border-color", "")
-            if (districts.val().length === 0) {
-                showToast("Елемент має бути вибрано", "danger")
-                districts.next().find(".select2-selection").css("border", "1px solid #ff0000");
+            if (!validSelect2(districts)) {
                 return
             }
             topzones.next().find(".select2-selection").css("border-color", "")
-            if (topzones.val().length === 0) {
-                showToast("Елемент має бути вибрано", "danger")
-                topzones.next().find(".select2-selection").css("border", "1px solid #ff0000");
+            if (!validSelect2(topzones)) {
                 return
             }
             floorMin.css("border-color", "")

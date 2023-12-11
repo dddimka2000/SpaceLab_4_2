@@ -818,9 +818,11 @@
                 url: '[[@{/realtors/getByCode/}]]' + staffCode.val(),
                 success: function (realtor) {
                     if (realtor == '') {
+                        scrollToElement(staffCode)
                         showToast("Користувача за таким кодом не знайдено", "danger")
                         staffCode.css("border", "1px solid #ff0000");
                     } else if (realtor.branch.code.toString() !== branchCode.val().toString()) {
+                        scrollToElement(branchCode)
                         showToast("Ріелтор не належить вказаному філіалу", "danger")
                         branchCode.css("border", "1px solid #ff0000");
                     } else {
