@@ -1,4 +1,4 @@
-var contextPath = "/ProminadaDD"
+var contextPath = "/MinionsDD"
 function previewImage(event, imageId) {
     var reader = new FileReader();
     reader.onload = function () {

@@ -25,7 +25,7 @@ import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 //                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 //                .authorizationUri("https://accounts.google.com/o/oauth2/auth")
 //                .tokenUri("https://www.googleapis.com/oauth2/v4/token")
-//                .redirectUri("http://localhost:8080/ProminadaDD/callback")
+//                .redirectUri("http://localhost:8080/MinionsDD/callback")
 //                .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
 //                .userNameAttributeName(IdTokenClaimNames.SUB)
 //                .clientName("Google")

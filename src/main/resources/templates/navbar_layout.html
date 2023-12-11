@@ -99,7 +99,7 @@
 
         async function getOriginalValue(translatedName) {
             try {
-                const translationsResponse = await fetch('/ProminadaDD/api/translations');
+                const translationsResponse = await fetch('/MinionsDD/api/translations');
                 const translations = await translationsResponse.json();
                 for (const language of ['ukr', 'ru', 'eng']) {
                     const langTranslations = translations[language];
@@ -152,7 +152,7 @@
 
             try {
                 // Запрашиваем переводы
-                await fetch('/ProminadaDD' + '/api/translations?language=' + language)
+                await fetch('/MinionsDD' + '/api/translations?language=' + language)
                     .then(response => response.json())
                     .then(newTranslations => {
                         var translations = newTranslations;

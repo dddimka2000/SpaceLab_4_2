@@ -41,7 +41,6 @@ public class LayoutService {
     @Transactional
     public void deleteAllByBuilderObject(BuilderObject builderObject) {
         layoutRepository.deleteAllByBuilderObject(builderObject);
-        log.info("LayoutService deleteAllByBuilderObject");
     }
 
 }
