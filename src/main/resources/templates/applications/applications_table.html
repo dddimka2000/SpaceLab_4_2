@@ -6,96 +6,98 @@
         layout:decorate="~{layout.html}"
         xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
-  <title>Content page</title>
+    <title>Content page</title>
 </head>
 
 <body>
-
 <section layout:fragment="content">
-  <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="d-flex justify-content-between">
-      <h4 class="fw-bold">Заявки с сайта</h4>
-      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Заявки с сайта</li>
-        </ol>
-      </nav>
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="d-flex justify-content-between">
+            <h4 class="fw-bold" data-translate="website.requests">Заявки с сайта</h4>
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" data-translate="website.requests">Заявки с
+                        сайта
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <hr style="margin-top: -5px">
+        <div class="card border">
+            <div class="card-body">
+                <table class="table table-bordered table-hover table-striped linkedRow" id="applicationsTable">
+                    <thead>
+                    <tr>
+                        <th data-translate="request.object">Объект</th>
+                        <th data-translate="request.text">Текст</th>
+                        <th data-translate="request.sender.contacts">Контакты отправителя</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <hr style="margin-top: -5px">
-    <div class="card border">
-      <div class="card-body">
-        <table class="table table-bordered table-hover table-striped linkedRow" id="applicationsTable">
-          <thead>
-          <tr>
-            <th>Объект</th>
-            <th>Текст</th>
-            <th>Контакты отправителя</th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <script>
-    $(document).ready(function () {
-      $.ajax({
-        type: "Get",
-        url: '[[@{/applications/getAll}]]',
-        success: function (applications) {
-          var table = document.getElementById("applicationsTable");
-          var tbody = table.querySelector("tbody");
-          for (var application of applications) {
-            var newRow = tbody.insertRow();
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "Get",
+                url: '[[@{/applications/getAll}]]',
+                success: function (applications) {
+                    var table = document.getElementById("applicationsTable");
+                    var tbody = table.querySelector("tbody");
+                    for (var application of applications) {
+                        var newRow = tbody.insertRow();
 
-            var cell0 = newRow.insertCell(0);
-            cell0.innerHTML = application.id
+                        var cell0 = newRow.insertCell(0);
+                        cell0.innerHTML = application.id
 
-            var cell1 = newRow.insertCell(1);
-            cell1.innerHTML = application.description
+                        var cell1 = newRow.insertCell(1);
+                        cell1.innerHTML = application.description
 
-            var cell2 = newRow.insertCell(2);
-            cell2.innerHTML = `
-              <p>`+application.name+`</p>
-              <p>тел. `+application.phone+`, email: `+application.email+`</p>
+                        var cell2 = newRow.insertCell(2);
+                        cell2.innerHTML = `
+              <p>` + application.name + `</p>
+              <p><span data-translate="phone">тел</span> ` + application.phone + `, email: ` + application.email + `</p>
             `
 
-            var cell3 = newRow.insertCell(3);
-            cell3.innerHTML = `
+                        var cell3 = newRow.insertCell(3);
+                        cell3.innerHTML = `
               <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + application.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>
             `
-          }
-        },
-      });
-    });
-    function deleteElement(button, applicationId) {
-      $('#confirmationModal').modal('show');
-
-      $('.confirm-delete').on('click', function () {
-        var table = document.getElementById("applicationsTable");
-        var row = button.parentElement.parentElement;
-        table.deleteRow(row.rowIndex);
-
-        $.ajax({
-          type: "Get",
-          url: '[[@{/applications/delete/}]]' + applicationId,
-          success: function (response) {
-            showToast(response, "success")
-          },
+                    }
+                },
+            });
         });
 
-        $('#confirmationModal').modal('hide');
-        $('.confirm-delete').off('click');
-      });
-      $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
-        $('#confirmationModal').modal('hide');
-        $('.confirm-delete').off('click');
-      });
-    }
-  </script>
+        function deleteElement(button, applicationId) {
+            $('#confirmationModal').modal('show');
+
+            $('.confirm-delete').on('click', function () {
+                var table = document.getElementById("applicationsTable");
+                var row = button.parentElement.parentElement;
+                table.deleteRow(row.rowIndex);
+
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/applications/delete/}]]' + applicationId,
+                    success: function (response) {
+                        showToast(response, "success")
+                    },
+                });
+
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+            $('#confirmationModal .close, #confirmationModal [data-dismiss="modal"]').on('click', function () {
+                $('#confirmationModal').modal('hide');
+                $('.confirm-delete').off('click');
+            });
+        }
+    </script>
 </section>
 </body>
 </html>
