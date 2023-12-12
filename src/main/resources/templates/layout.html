@@ -158,7 +158,24 @@
                         </div>
                     </div>
                 </section>
-
+                <div id="logoutModal" class="modal animate__animated animate__flipInX"
+                     tabindex="-1" aria-labelledby="flipInXAnimationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" data-translate="exit.confirmation.message">Вы точно хотите выйти из своего аккаунта?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <a th:href="@{/logout}">
+                                    <button type="button" class="btn btn-success d-block mx-auto"
+                                            data-bs-dismiss="modal" data-translate="Yes">Да
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Footer -->
 
@@ -213,7 +230,11 @@
 
 <script th:src="@{/vendor/js/menu.js}"></script>
 <!-- endbuild -->
-
+<script>
+    function modalForLogoutModal() {
+        $('#logoutModal').modal("show")
+    }
+</script>
 <!-- Vendors JS -->
 
 <!-- Main JS -->

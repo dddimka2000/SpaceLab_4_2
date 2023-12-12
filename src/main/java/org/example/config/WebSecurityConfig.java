@@ -53,23 +53,20 @@ public class WebSecurityConfig {
                 .csrf().disable()
 //                .cors().disable()
                 .authorizeHttpRequests(authorize ->
-                {
-                    try {
-                        authorize
-                                .and()
-                                .authorizeHttpRequests(authorize2 ->
-                                        authorize2
-                                                .requestMatchers("/auth/login", "/auth/registration", "/auth/process_login").permitAll()
-                                                .requestMatchers("/admin/**", "/personal_account").authenticated()
-                                                .anyRequest().permitAll()
-                                )
-                                .logout()
-                                .logoutSuccessUrl("/")
-                                .permitAll();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                })
+                        {
+                            try {
+                                authorize.requestMatchers("/auth/login", "/auth/registration", "/auth/process_login").permitAll()
+                                        .requestMatchers("/admin/**", "/personal_account").authenticated()
+                                        .anyRequest().permitAll()
+                                        .and()
+                                        .logout()
+                                        .logoutSuccessUrl("/auth/login")
+                                        .permitAll();
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                )
                 .formLogin(form ->
                         form.loginPage("/auth/login")
                                 .loginProcessingUrl("/auth/process_login")
