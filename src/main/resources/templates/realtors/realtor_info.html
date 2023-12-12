@@ -61,7 +61,7 @@
                         <tr>
                             <td><b data-translate="fullName">ФИО</b></td>
                             <td
-                                th:text="${realtor.surname + ' ' + realtor.name + ' ' + realtor.middleName}">
+                                th:text="${realtor.surname!=null?realtor.surname:'' + ' ' + (realtor.name!=null?realtor.name:'') + ' ' + (realtor.middleName!=null?realtor.middleName:'')}">
                             </td>
                         </tr>
                         <tr>
@@ -78,8 +78,8 @@
                         <tr>
                             <td><b data-translate-placeholder="branch">Филиал</b></td>
                             <td>
-                                <a th:href="@{/branches/{id}(id=${realtor.branch.id})}"
-                                   th:text="${realtor.branch.name}"></a>
+                                <a th:href="@{/branches/{id}(id=${realtor.branch != null ? realtor.branch.id : ''})}"
+                                   th:text="${realtor.branch != null ? realtor.branch.name : ''}"></a>
                             </td>
                         </tr>
                         </tbody>
@@ -90,6 +90,7 @@
     </div>
     <script>
         $(document).ready(function () {
+            if('[[${realtor.img}]]')
             $.ajax({
                 type: "Get",
                 url: '[[@{/realtors/getUrl}]]',
@@ -100,6 +101,8 @@
                     $('#previewImage').attr('src', url);
                 },
             });
+            else $('#previewImage').attr('src', 'http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg');
+
         });
     </script>
 </section>

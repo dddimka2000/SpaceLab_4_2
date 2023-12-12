@@ -389,16 +389,6 @@
                     <br>
                     <div class="row">
                         <div class="col-3">
-                            <h6 data-translate="apartment_condition">Состояние квартиры</h6>
-                            <select id="propertyOrigin" class="select2 form-select form-select select2find">
-                                <option selected disabled></option>
-                                <option th:each="status : ${propertyOrigin}"
-                                        th:value="${status}"
-                                        th:text="${status}"
-                                        th:data-translate="${status}"></option>
-                            </select>
-                        </div>
-                        <div class="col-3">
                             <h6 data-translate="wall_material">Материал стен</h6>
 
                             <div style="display:block;" class="ruContent nameContent">
@@ -821,8 +811,6 @@
             formData.append("windowType", $("#windowType").val());
             formData.append("carpentryType", $("#carpentryType").val());
             formData.append("frontDoorType", $("#frontDoorType").val());
-
-            formData.append("propertyOrigin", $("#propertyOrigin").val());
 
             let i = 1;
             for (let [fileName, file] of uploadedFiles) {

@@ -122,9 +122,7 @@ public class PropertySecondaryObjectDTO {
     @Size(min = 1, max = 31, message = "(Англ)Тип стен должен быть от 2 до 30 символов.")
     public String wallMaterialEng;//
     @Size(min = 1, max = 31, message = "(Укр)Тип стен должен быть от 2 до 30 символов.")
-    public String wallMaterialUkr;//
-    @NotNull(message = "Заполните состояние квартиры")
-    public PropertyOrigin propertyOrigin;//
+    public String wallMaterialUkr;
     public Boolean bargain;
     public Boolean exclusive;
     public Boolean urgent;

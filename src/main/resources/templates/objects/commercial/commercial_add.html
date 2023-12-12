@@ -571,7 +571,7 @@
                         $("#administrationComment").val(commercial.administrationComment)
 
                         $("#objectCode").val(commercial.objectCode)
-                        if(commercial.realtor!==null){
+                        if(commercial.realtor){
                             $("#branchCode").val(commercial.realtor.branch.code)
                             $("#staffCode").val(commercial.realtor.code)
                         }
@@ -624,7 +624,8 @@
 
                         forSelect2(commercial.address.zone, commercial.address.zone, "#zone", "/enum/topzone")
                         forSelect2(commercial.ownershipType, commercial.ownershipType, "#ownership", "/enum/ownership")
-                        forSelect2WithSearch(commercial.builderObject.id, commercial.builderObject.name, "#builderObject", "/builder_objects/for/select")
+                        if(commercial.builderObject)forSelect2WithSearch(commercial.builderObject.id, commercial.builderObject.name, "#builderObject", "/builder_objects/for/select")
+                        else forSelect2WithSearch(undefined, undefined, "#builderObject", "/builder_objects/for/select")
                         forSelect2(commercial.publicationStatus, commercial.publicationStatus, "#publicationStatus", "/enum/publicationStatus")
                         forSelect2(commercial.buildStatus, commercial.buildStatus, "#buildStatus", "/enum/buildStatus")
                         forSelect2(commercial.propertyCommercialType, commercial.propertyCommercialType, "#propertyCommercialType", "/enum/propertyCommercialType")

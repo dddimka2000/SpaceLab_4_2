@@ -8,6 +8,7 @@ import org.example.dto.InvestorObjectDtoSearch;
 import org.example.dto.PropertyInvestorObjectDTO;
 import org.example.entity.Realtor;
 import org.example.entity.property.PropertyInvestorObject;
+import org.example.entity.property.type.PropertyOrigin;
 import org.example.mapper.ObjectInvestorMapper;
 import org.example.service.*;
 import org.example.util.ControllerHelper;
@@ -112,6 +113,7 @@ public class ObjectsInvestorController {
         }
         propertyInvestorObject.setPictures(namePictures);
         propertyInvestorObject.setBuilderObject(objectBuilderService.findById(propertyInvestorObjectDTO.getResidentialComplexId()).get());
+        propertyInvestorObject.setPropertyOrigin(PropertyOrigin.INVESTOR);
         propertyInvestorObjectService.save(propertyInvestorObject);
         return ResponseEntity.ok().body("ok");
     }
@@ -209,7 +211,7 @@ public class ObjectsInvestorController {
         propertyInvestorObjectDTO.getOldPictures().addAll(namePictures);
         propertyInvestorObject.setPictures(propertyInvestorObjectDTO.getOldPictures());
 
-
+        propertyInvestorObject.setPropertyOrigin(PropertyOrigin.INVESTOR);
         propertyInvestorObjectService.save(propertyInvestorObject);
 
         return ResponseEntity.ok().body("ok");

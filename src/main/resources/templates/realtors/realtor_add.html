@@ -297,7 +297,7 @@
             });
             if (realtor.branch != null) branchSelect2(realtor.branch.id, realtor.branch.name)
             else branchSelect2()
-            if (realtor.id != null) {
+            if (realtor.id != null && realtor.img) {
                 $.ajax({
                     type: "Get",
                     url: '[[@{/realtors/getUrl}]]',
@@ -308,7 +308,8 @@
                         $('#previewImage').attr('src', url);
                     },
                 });
-            }
+            }else
+                $('#previewImage').attr('src', 'http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg');
         })
 
         function deletePhone(button, id) {

@@ -402,16 +402,6 @@
                                        data-translate-placeholder="enter_wall_material" placeholder="Введите материал стен">
                             </div>
                         </div>
-                        <div class="col-3">
-                            <h6 data-translate="apartment_condition">Состояние квартиры</h6>
-                            <select id="state" class="select2 form-select form-select select2find">
-                                <option selected disabled></option>
-                                <option th:each="status : ${propertyOrigin}"
-                                        th:value="${status}"
-                                        th:text="${status}"
-                                        th:data-translate="${status}"></option>
-                            </select>
-                        </div>
                     </div>
                     <br>
                     <div class="row">
@@ -727,7 +717,6 @@
             formData.append("wallMaterialUkr", $("#wall_materialUkr").val());
 
 
-            formData.append("propertyOrigin", $("#state").val());
             formData.append("kitchenType", $("#kitchen").val());
             formData.append("buildStatus", $("#buildStatus").val());
 

@@ -55,7 +55,6 @@ public class TranslationController {
             log.info("classpath:translation_" + language + ".properties");
             Resource resource = resourceLoader.getResource("classpath:translation_" + language + ".properties");
 
-            // Явно указываем кодировку UTF-8 при загрузке свойств
             try (InputStream inputStream = resource.getInputStream();
                  InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 
