@@ -37,66 +37,18 @@
                 url: '[[@{/buyers/getById/}]]' + getLastDigitFromPath(window.location.pathname),
                 success: function (buyer) {
                     var districts = ''
-                    for (var i = 0; i < buyer.application.districts.length; i++) {
-                        districts+= buyer.application.districts[i]+',  '
+                    if(buyer.application) {
+                        for (var i = 0; i < buyer.application.districts.length; i++) {
+                            districts += buyer.application.districts[i] + ',  '
+                        }
+                        var topzones = ''
+                        for (var i = 0; i < buyer.application.topzones.length; i++) {
+                            topzones += buyer.application.topzones[i] + ',  '
+                        }
                     }
-                    var topzones = ''
-                    for (var i = 0; i < buyer.application.topzones.length; i++) {
-                        topzones+= buyer.application.topzones[i]+',  '
-                    }
-                    var content = document.getElementById("main-content")
-                    content.innerHTML = `
-                <div class="card">
-                    <div class="card-header">
-                        <h3 data-translate="INFORMATION">Информация
-                        <a href="[[@{/buyers/edit/}]]`+buyer.id+`" class="float-end btn btn-primary" data-translate="edit">Редактировать</a>
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-view">
-                            <tr>
-                                <td data-translate="fullName">ФИО</td>
-                                <td>` + buyer.middleName + ` ` + buyer.name + ` ` + buyer.surname + `</td>
-                            </tr>
-                            <tr>
-                                <td data-translate="phone">Телефон</td>
-                                <td>` + buyer.phone+ `</td>
-                            </tr>
-                            <tr>
-                                <td>Email</td>
-                                <td>` + buyer.email + `</td>
-                            </tr>
-                            <tr>
-                                <td data-translate="branch">Филиал</td>
-                                <td>` + buyer.realtor.branch.name + `</td>
-                            </tr>
-                            <tr>
-                                <td data-translate="realtor">Риелтор</td>
-                                <td>` + (buyer.realtor?buyer.realtor.name:'') + `</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="card mt-4">
-                    <div class="card-body">
-                        `+ buyer.comment +`
-                    </div>
-                </div>
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h3 data-translate="application">Заявка</h3
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered table-view">
-                            <tr>
-                                <td data-translate="district">Райони</td>
-                                <td>` + districts + `</td>
-                            </tr>
-                            <tr>
-                                <td data-translate="topzone">Топзона</td>
-                                <td>` + topzones + `</td>
-                            </tr>
-                            <tr>
+                    if(buyer.application)
+                    var element = `
+                    <tr>
                                 <td data-translate="RC">ЖК</td>
                                 <td>` + buyer.application.builderObject.name + `</td>
                             </tr>
@@ -128,6 +80,60 @@
                                 <td data-translate="price">Цена</td>
                                 <td>` + buyer.application.priceMin + `-` + buyer.application.priceMax + `</td>
                             </tr>
+                    `
+                    var content = document.getElementById("main-content")
+                    content.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <h3 data-translate="INFORMATION">Информация
+                        <a href="[[@{/buyers/edit/}]]`+buyer.id+`" class="float-end btn btn-primary" data-translate="edit">Редактировать</a>
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-view">
+                            <tr>
+                                <td data-translate="fullName">ФИО</td>
+                                <td>` + buyer.middleName + ` ` + buyer.name + ` ` + buyer.surname + `</td>
+                            </tr>
+                            <tr>
+                                <td data-translate="phone">Телефон</td>
+                                <td>` + buyer.phone+ `</td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>` + buyer.email + `</td>
+                            </tr>
+                            <tr>
+                                <td data-translate="branch">Филиал</td>
+                                <td>` + (buyer.realtor?buyer.realtor.branch.name:'') + `</td>
+                            </tr>
+                            <tr>
+                                <td data-translate="realtor">Риелтор</td>
+                                <td>` + (buyer.realtor?buyer.realtor.name:'') + `</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-body">
+                        `+ (buyer.comment || '') +`
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3 data-translate="application">Заявка</h3
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-view">
+                            <tr>
+                                <td data-translate="district">Райони</td>
+                                <td>` + (districts || '') + `</td>
+                            </tr>
+                            <tr>
+                                <td data-translate="topzone">Топзона</td>
+                                <td>` + (topzones || '') + `</td>
+                            </tr>
+                            `+ (element||'') +`
                         </table>
                     </div>
                 </div>

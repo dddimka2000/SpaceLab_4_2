@@ -77,6 +77,7 @@
             $.ajax({
                 url: '[[@{/users/get/id/}]]' + getLastDigitFromPath(window.location.pathname),
                 success: function (user) {
+                    if(user.img)
                     $.ajax({
                         type: "GET",
                         url: '[[@{/users/get/url}]]',
@@ -88,6 +89,7 @@
                             $('#previewImage').attr('src', url);
                         },
                     });
+                    else $('#previewImage').attr('src', 'http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg');
                 }
             })
         })

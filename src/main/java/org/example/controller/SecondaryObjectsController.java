@@ -8,6 +8,7 @@ import org.example.dto.InvestorObjectDtoSearch;
 import org.example.dto.PropertySecondaryObjectDTO;
 import org.example.entity.Realtor;
 import org.example.entity.property.PropertySecondaryObject;
+import org.example.entity.property.type.PropertyOrigin;
 import org.example.mapper.ObjectSecondaryMapper;
 import org.example.service.MinioService;
 import org.example.service.ObjectBuilderService;
@@ -107,6 +108,7 @@ public class SecondaryObjectsController {
         propertySecondaryObject.setBuilderObject(objectBuilderService.findById(propertySecondaryObjectDTO.getResidentialComplexId()).get());
 
         propertySecondaryObject.setPictures(namePictures);
+        propertySecondaryObject.setPropertyOrigin(PropertyOrigin.SECONDARY);
         propertySecondaryObjectService.save(propertySecondaryObject);
         return ResponseEntity.ok().body("ok");
     }
@@ -210,6 +212,7 @@ public class SecondaryObjectsController {
         propertySecondaryObjectDTO.getOldPictures().addAll(namePictures);
         propertySecondaryObject.setPictures(propertySecondaryObjectDTO.getOldPictures());
         propertySecondaryObject.setBuilderObject(objectBuilderService.findById(propertySecondaryObjectDTO.getResidentialComplexId()).get());
+        propertySecondaryObject.setPropertyOrigin(PropertyOrigin.SECONDARY);
         propertySecondaryObjectService.save(propertySecondaryObject);
 
         return ResponseEntity.ok().body("ok");
