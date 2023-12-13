@@ -3,7 +3,7 @@ package org.example.service;
 import lombok.extern.log4j.Log4j2;
 import org.example.entity.BuilderObject;
 import org.example.repository.BuilderObjectRepository;
-import org.example.service.specification.BuilderObjectSpecification;
+import org.example.specification.BuilderObjectSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -67,8 +67,6 @@ public class ObjectBuilderService {
         if (builderObject.isPresent()) {
             builderObjectRepository.delete(builderObject.get());
             log.info("ObjectBuilderService-deleteById successfully: " + id);
-        } else {
-            log.error("builderObject empty");
         }
     }
 

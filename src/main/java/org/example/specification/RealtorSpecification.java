@@ -1,4 +1,4 @@
-package org.example.service.specification;
+package org.example.specification;
 
 import jakarta.persistence.criteria.*;
 import org.example.entity.Branch;

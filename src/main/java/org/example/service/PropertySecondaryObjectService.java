@@ -1,24 +1,13 @@
 package org.example.service;
 
 import lombok.extern.log4j.Log4j2;
-import org.example.entity.property.PropertyInvestorObject;
 import org.example.entity.property.PropertySecondaryObject;
-import org.example.entity.property.PropertySecondaryObject;
-import org.example.entity.property.type.PropertySecondaryType;
 import org.example.repository.PropertySecondaryObjectRepository;
-import org.example.repository.PropertySecondaryObjectRepository;
-import org.example.service.specification.InvestorObjectSpecification;
-import org.example.service.specification.SecondaryObjectSpecification;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.specification.SecondaryObjectSpecification;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.util.List;

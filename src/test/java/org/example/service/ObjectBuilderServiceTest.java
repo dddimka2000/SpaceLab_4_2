@@ -9,11 +9,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -127,6 +128,66 @@ class ObjectBuilderServiceTest {
 
         // Assert
         verify(builderObjectRepository, times(1)).delete(builderObject);
+    }
+    @Test
+    void testFindBuilderObjectsByCriteria() {
+        // Arrange
+        String name = "BuilderObjectName";
+        String district = "DistrictName";
+        String zone = "ZoneName";
+        String street = "StreetName";
+        Integer floorQuantity = 5;
+        Integer minPrice = 100000;
+        PageRequest pageable = PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id")));
+        List<BuilderObject> builderObjects = new ArrayList<>();
+        Page<BuilderObject> expectedPage = new PageImpl<>(builderObjects);
+
+        when(builderObjectRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(expectedPage);
+
+        // Act
+        Page<BuilderObject> result = objectBuilderService.findBuilderObjectsByCriteria(
+                name, district, zone, street, floorQuantity, minPrice, pageable);
+
+        // Assert
+        assertEquals(expectedPage, result);
+        verify(builderObjectRepository, times(1)).findAll(any(Specification.class), any(Pageable.class));
+    }
+
+    @Test
+    void testFindBuilderObjectsPage() {
+        // Arrange
+        Integer pageNumber = 0;
+        Integer pageSize = 10;
+        PageRequest pageable = PageRequest.of(pageNumber, pageSize);
+        List<BuilderObject> builderObjects = new ArrayList<>();
+        Page<BuilderObject> expectedPage = new PageImpl<>(builderObjects);
+
+        when(builderObjectRepository.findAll(any(Pageable.class))).thenReturn(expectedPage);
+
+        // Act
+        Page<BuilderObject> result = objectBuilderService.findBuilderObjectsPage(pageNumber, pageSize);
+
+        // Assert
+        assertEquals(expectedPage, result);
+        verify(builderObjectRepository, times(1)).findAll(any(Pageable.class));
+    }
+
+    @Test
+    void testForSelect() {
+        // Arrange
+        String name = "BuilderObjectName";
+        PageRequest pageable = PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id")));
+        List<BuilderObject> builderObjects = new ArrayList<>();
+        Page<BuilderObject> expectedPage = new PageImpl<>(builderObjects);
+
+        when(builderObjectRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(expectedPage);
+
+        // Act
+        Page<BuilderObject> result = objectBuilderService.forSelect(name, pageable);
+
+        // Assert
+        assertEquals(expectedPage, result);
+        verify(builderObjectRepository, times(1)).findAll(any(Specification.class), any(Pageable.class));
     }
 
 

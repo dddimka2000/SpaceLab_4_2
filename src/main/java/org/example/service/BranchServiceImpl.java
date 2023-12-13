@@ -8,7 +8,7 @@ import org.example.dto.BranchDto;
 import org.example.entity.Branch;
 import org.example.mapper.BranchMapper;
 import org.example.repository.BranchRepository;
-import org.example.service.specification.BranchSpecification;
+import org.example.specification.BranchSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

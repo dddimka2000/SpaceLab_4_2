@@ -33,7 +33,6 @@ public class RecaptchaService {
                 HttpMethod.POST,
                 entity,
                 RecaptchaResponse.class);
-        log.info(response.getBody());
         return response.getBody();
     }
 }

@@ -1,4 +1,4 @@
-package org.example.service.specification;
+package org.example.specification;
 
 import jakarta.persistence.criteria.*;
 import lombok.extern.log4j.Log4j2;

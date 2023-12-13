@@ -1,4 +1,4 @@
-package org.example.service.specification;
+package org.example.specification;
 
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;

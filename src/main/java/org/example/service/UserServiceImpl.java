@@ -8,7 +8,7 @@ import org.example.dto.UserDto;
 import org.example.entity.UserEntity;
 import org.example.mapper.UserMapper;
 import org.example.repository.UserRepository;
-import org.example.service.specification.UserSpecification;
+import org.example.specification.UserSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -1,6 +1,5 @@
 package org.example.service;
 
-import com.github.javafaker.Faker;
 import io.minio.errors.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,7 @@ import org.example.mapper.HouseAddressMapper;
 import org.example.mapper.HouseInfoMapper;
 import org.example.mapper.HouseMaterialMapper;
 import org.example.repository.PropertyHouseObjectRepository;
-import org.example.service.specification.HouseObjectSpecification;
+import org.example.specification.HouseObjectSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
