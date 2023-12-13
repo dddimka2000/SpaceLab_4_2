@@ -19,20 +19,13 @@ public class BannerService {
     public BannerService(BannerRepository bannerRepository) {
         this.bannerRepository = bannerRepository;
     }
-    public Optional<Banner> findByName(String name) {
-        log.info("BannerService-findByName start");
-        Optional<Banner> exchange_rates=bannerRepository.findByNameBanners(name);
-        log.info("BannerService-findByName successfully");
-        return exchange_rates;
-    }
+
     public Optional<Banner> findById(Integer id) {
         log.info("BannerService-findById start");
         Optional<Banner> banner=bannerRepository.findById(id);
         log.info("BannerService-findById successfully");
         return banner;
     }
-
-
     public void save(Banner entity) {
         bannerRepository.save(entity);
     }
