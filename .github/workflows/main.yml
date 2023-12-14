@@ -17,11 +17,7 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
           cache: maven
-      - name: Build app
-        run: |
-          mvn clean
-          mvn -B package --file pom.xml
       - name: Build with Maven
-        run: mvn -B test --file pom.xml
+        run: mvn -B package --file pom.xml
       - name: Run tests
         run: mvn test
