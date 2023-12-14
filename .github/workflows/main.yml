@@ -16,9 +16,9 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
       - name: Display Java version
-          run: java -version
+        run: java -version
       - name: Display Maven version
-          run: mvn -version
+        run: mvn -version
       - name: Build app
         run: |
           mvn clean
