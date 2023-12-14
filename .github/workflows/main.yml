@@ -2,7 +2,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "dima" ]
 
 jobs:
   build:
@@ -21,7 +21,6 @@ jobs:
       - name: Run tests
         run: mvn test
       - name: Build app
-        needs: ["Run tests"]
         run: |
           mvn clean
           mvn -B package --file pom.xml
