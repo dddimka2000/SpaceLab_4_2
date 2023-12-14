@@ -41,6 +41,9 @@
 <div layout:fragment="content">
     <div class="container-fluid">
         <div class="content-wrapper">
+            <div style="text-align: center">
+                <h1 style="color: #ff9100"><span data-translate="objects.count"></span><span id="pasteItem"></span></h1>
+            </div>
             <div id="donutChart"></div>
             <br>
             <div class="row">
@@ -54,7 +57,7 @@
                         </span>
                                 </div>
                                 <h5 class="card-title mb-0 mt-2" th:text="${questions}"></h5>
-                                <h3>Количество вопросов</h3>
+                                <h3 data-translate="questions.count">Количество вопросов</h3>
                             </div>
                         </div>
                     </a>
@@ -69,7 +72,7 @@
                         </span>
                                 </div>
                                 <h5 class="card-title mb-0 mt-2" th:text="${changeOffer}"></h5>
-                                <h3>Количество предложений по изменению</h3>
+                                <h3 data-translate="change.sentences.count">Количество предложений по изменению</h3>
                             </div>
                         </div>
                     </a>
@@ -84,7 +87,7 @@
                         </span>
                                 </div>
                                 <h5 class="card-title mb-0 mt-2" th:text="${branches}"></h5>
-                                <h3>Количество филиалов</h3>
+                                <h3 data-translate="branches.count">Количество филиалов</h3>
                             </div>
                         </div>
                     </a>
@@ -101,8 +104,10 @@
         let BuilderObject =/*[[${Builder}]]*/+0;
         let Commercial =/*[[${Commercial}]]*/+0;
         let Houses =/*[[${Houses}]]*/'';
-        let quantity=(Investor+Secondary+BuilderObject+Commercial+Houses)+0;
-
+        let quantity = (Investor + Secondary + BuilderObject + Commercial + Houses) + 0;
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById("pasteItem").innerText = ': '+quantity;
+        })
         const chartColors = {
             column: {
                 series1: '#826af9',
@@ -130,7 +135,9 @@
                     height: 390,
                     type: 'donut'
                 },
-                labels: ['Объекты от строителя', 'Объекты от инвестора', 'Вторичная недвижимость', 'Дома и участки', 'Коммерческая'],
+                labels: ['<label data-translate="builder_objects_from_builders">Объекты от строителя</label> ', '<label data-translate="investor_objects">Объекты от инвестора</label>'
+                    , '<label data-translate="secondary_real_estate">Вторичная недвижимость</label>', '<label data-translate="houses_and_plots">Дома и участки</label>'
+                    , '<label data-translate="commercial">Коммерческая</label>'],
                 series: [BuilderObject, Investor, Secondary, Houses, Commercial],
                 colors: [
                     chartColors.donut.series1,
@@ -162,32 +169,14 @@
                         useSeriesColors: false
                     }
                 },
+                tooltip: {
+                    enabled: false
+                },
                 plotOptions: {
                     pie: {
                         donut: {
-                            labels: {
-                                show: true,
-                                name: {
-                                    fontSize: '2rem',
-                                    fontFamily: 'Public Sans'
-                                },
-                                value: {
-                                    fontSize: '1.2rem',
-                                    color: legendColor,
-                                    fontFamily: 'Public Sans',
-                                    formatter: function (val) {
-                                        return parseInt(val, 10) + '%';
-                                    }
-                                },
-                                total: {
-                                    show: true,
-                                    fontSize: '1.5rem',
-                                    color: headingColor,
-                                    label: 'Количество объектов',
-                                    formatter: function (w) {
-                                        return quantity;
-                                    }
-                                }
+                            dataLabels: {
+                                enabled: false
                             }
                         }
                     }
@@ -269,6 +258,7 @@
             const donutChart = new ApexCharts(donutChartEl, donutChartConfig);
             donutChart.render();
         }
+
     </script>
 </div>
 </body>
