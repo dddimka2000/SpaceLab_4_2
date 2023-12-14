@@ -78,9 +78,7 @@ public class SecondaryObjectsController {
     @PostMapping("/create")
     @ResponseBody
     public ResponseEntity newObjectsSecondaryControllerPost(@Valid @ModelAttribute PropertySecondaryObjectDTO propertySecondaryObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        log.info(propertySecondaryObjectDTO);
         PropertySecondaryObject propertySecondaryObject = ObjectSecondaryMapper.INSTANCE.toEntity(propertySecondaryObjectDTO);
-        log.info(propertySecondaryObject);
         Realtor realtor = new Realtor();
         try {
             realtor = realtorService.getById(propertySecondaryObjectDTO.getEmployeeCode());
@@ -90,7 +88,7 @@ public class SecondaryObjectsController {
         secondaryObjectValidator.validate(propertySecondaryObjectDTO, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            log.info("error");
+            log.error("error validation");
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
@@ -129,8 +127,6 @@ public class SecondaryObjectsController {
             model.addAttribute("element", entity.get());
             try {
                 String namePhoto = entity.get().getPictures().get(0);
-                log.info(entity.get().getPictures());
-                log.info(namePhoto);
                 byte[] photoData = minioService.getPhoto(namePhoto, imagesBucketName);
                 String base64Image = Base64.getEncoder().encodeToString(photoData);
                 model.addAttribute("base64Image", base64Image);
@@ -150,7 +146,6 @@ public class SecondaryObjectsController {
         if (objectBuilder.isEmpty()) {
             modelAndView.setViewName("/error/404");
         } else {
-            log.info(objectBuilder.get().getFiles());
             modelAndView.addObject("element", objectBuilder.get());
             modelAndView.addObject("elementObjectBuilder", objectBuilderService.findById(objectBuilder.get().getResidentialComplexId()).get().getName());
             modelAndView.setViewName("/objects/secondary_objects/secondaryObjectsEdit");

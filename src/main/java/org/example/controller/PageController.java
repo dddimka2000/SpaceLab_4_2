@@ -33,7 +33,6 @@ public class PageController {
     @GetMapping
     public String mainPage(Model model) {
         model.addAttribute("pages", pageService.findAll().stream().map(s -> PageMapper.INSTANCE.toDto(s)).collect(Collectors.toList()));
-        log.info(pageService.findAll().stream().map(s -> PageMapper.INSTANCE.toDto(s)).collect(Collectors.toList()));
         return "pages/pages_table";
     }
 
@@ -50,8 +49,6 @@ public class PageController {
     @PostMapping("/edit/{id}")
     @ResponseBody
     public ResponseEntity editPage(@PathVariable Integer id, @Valid @ModelAttribute PageEntityDto pageEntityDto, BindingResult bindingResult) {
-        PageEntity page=pageService.findById(id).get();
-        log.info(pageEntityDto);
         if(bindingResult.hasErrors()){
             log.error("error validation");
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()

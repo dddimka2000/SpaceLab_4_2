@@ -3,6 +3,7 @@ package org.example.service;
 import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -14,16 +15,10 @@ import java.security.SecureRandom;
 
 @Service
 @Log4j2
+@Setter
 public class EmailService {
-
-    private final Environment env;
-
-    public EmailService(Environment env) {
-        this.env = env;
-    }
-
+    private SendGrid sendGrid= new SendGrid(System.getenv("MY_SECRET_KEY"));
     public void sendEmail(String to, String subject, String text) {
-        SendGrid sendGrid = new SendGrid(System.getenv("MY_SECRET_KEY"));
         Request request = new Request();
         Email from = new Email("tymur.foshch@avada-media.com");
         Email toEmail = new Email(to);
@@ -40,15 +35,14 @@ public class EmailService {
             String responseBody = response.getBody();
             int statusCode = response.getStatusCode();
             if (statusCode == 202) {
-                System.out.println("Email был успешно отправлен.");
+                System.out.println("Email was sent successfully");
                 System.out.println("Response Body: " + responseBody);
             } else {
-                System.out.println("Ошибка при отправке email.");
-                System.out.println("Response Body: " + responseBody);
+                System.out.println("Error - email send");
             }
         } catch (IOException ex) {
-            log.info(ex);
-            ex.printStackTrace();
+            log.error("Error sending email.", ex);
+            throw new RuntimeException("Error sending email.", ex); // or handle it appropriately
         }
     }
     public String generateRandomPassword(int minLength, int maxLength) {
@@ -62,13 +56,11 @@ public class EmailService {
         SecureRandom random = new SecureRandom();
         int passwordLength = random.nextInt(maxLength - minLength + 1) + minLength;
         StringBuilder password = new StringBuilder();
-
         for (int i = 0; i < passwordLength; i++) {
             int randomIndex = random.nextInt(allCharacters.length());
             char randomChar = allCharacters.charAt(randomIndex);
             password.append(randomChar);
         }
-
         return password.toString();
     }
 }

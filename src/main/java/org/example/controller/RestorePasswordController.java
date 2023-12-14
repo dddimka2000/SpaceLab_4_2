@@ -39,12 +39,12 @@ public class RestorePasswordController {
     public ResponseEntity restore_password(@RequestParam("email") String email){
         Optional<UserEntity> user=userDetailsService.findByEmail(email);
         if(user.isEmpty()){
-            log.info("Не существует пользователя с таким E-mail :"+ email);
+            log.info("Doesn't  exist user with so E-mail :"+ email);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Не существует пользователя с таким E-mail");
             return ResponseEntity.badRequest().body(response);
         }
-        log.info("Отправка E-mail: "+ email);
+        log.info("Send E-mail: "+ email);
         String code=emailService.generateRandomPassword(20,40);
         emailService.sendEmail(email,"Восстановление пароля", code);
         user.get().setCodeRestorePassword(code);
@@ -59,7 +59,7 @@ public class RestorePasswordController {
     public ResponseEntity checkCode(@RequestParam("code") String code,@RequestParam("email") String email){
         Optional<UserEntity> user=userDetailsService.findByEmail(email);
         if(user.isEmpty() || !code.equals(user.get().getCodeRestorePassword())){
-            log.info("Не существует пользователя с таким E-mail: "+ email+ "\n или кодом :"+ code);
+            log.info("Doesn't  exist user with so E-mail: "+ email+ "\n или кодом :"+ code);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Код отличается от отправленного на почту");
             return ResponseEntity.badRequest().body(response);
@@ -73,7 +73,7 @@ public class RestorePasswordController {
     public ResponseEntity checkCode(@RequestParam("code") String code,@RequestParam("email") String email,@RequestParam("newPassword") String newPassword){
         Optional<UserEntity> user=userDetailsService.findByEmail(email);
         if(user.isEmpty() || !code.equals(user.get().getCodeRestorePassword())){
-            log.info("Не существует пользователя с таким E-mail: "+ email+ "\n или кодом :"+ code);
+            log.info("Doesn't exist user with this e-mail: "+ email+ "\n or code :"+ code);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Код отличается от отправленного на почту");
             return ResponseEntity.badRequest().body(response);

@@ -36,12 +36,12 @@ public class ExcelComponent {
         try {
             Resource resource = new ClassPathResource("static/exelAddress/exelEdit.xlsx");
             byte[] fileBytes = Files.readAllBytes(Paths.get(resource.getURI()));
-            log.info("Старт чтения ексель файла...");
+            log.info("Start reading files...");
             processExcelFile(fileBytes);
-            log.info("Файл ексель для улиц успешно загружен");
+            log.info("File ready");
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("Файл ексель для улиц не был найден, используются старые данные");
+            log.error("File was not found");
         }
     }
     @Transactional
@@ -51,7 +51,7 @@ public class ExcelComponent {
             if (streetExelEntities.size() > 0) {
                 addressRepository.deleteAll(streetExelEntities);
             }
-            log.info("Удалены старые значения");
+            log.info("Delete old streets");
             Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(file));
             Sheet sheet = workbook.getSheetAt(0);
 
@@ -91,7 +91,7 @@ public class ExcelComponent {
                 address.setStreetName(street);
                 address.setHouseNumbers(houseNumbersList);
                 addressRepository.save(address);
-                log.info(address.getId()+" загружен");
+                log.info(address.getId()+" uploaded");
             }
             workbook.close();
         }

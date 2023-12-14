@@ -42,7 +42,6 @@ class RecaptchaServiceTest {
 
         // Act
         RecaptchaResponse actualResponse = recaptchaService.validateToken(recaptchaToken);
-
         // Assert
         verify(restTemplate).exchange(anyString(), eq(HttpMethod.POST), any(), eq(RecaptchaResponse.class));
         assertEquals(expectedResponse, actualResponse);

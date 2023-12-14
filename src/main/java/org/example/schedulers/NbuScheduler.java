@@ -50,16 +50,12 @@ public class NbuScheduler {
             reader.close();
 
             json = content.toString();
-            System.out.println("Полученные JSON-данные:\n" + json);
             JsonArray jsonArray = JsonParser.parseString(json).getAsJsonArray();
 
             if (jsonArray.size() > 0) {
                 JsonObject jsonObject = jsonArray.get(0).getAsJsonObject();
-
                 double rate = jsonObject.get("rate").getAsDouble();
-
-                System.out.println("Курс доллара: " + rate);
-                log.info("Курс доллара: " + rate);
+                log.info("Exchange rate USD in UAH: " + rate);
                 Optional<ExchangeRates> exchangeRates = exchangeRatesService.findByName("Доллар");
                 if (exchangeRates.isEmpty()) {
                     exchangeRates = Optional.of(new ExchangeRates());
@@ -71,7 +67,7 @@ public class NbuScheduler {
                 exchangeRatesService.save(exchangeRates.get());
             }
         } else {
-            log.info("Ошибка получения курса bank.gov.ua");
+            log.info("Error bank.gov.ua");
         }
     }
 }

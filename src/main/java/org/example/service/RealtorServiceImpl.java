@@ -40,12 +40,15 @@ public class RealtorServiceImpl {
         Realtor realtor;
         if (realtorDto.getId() == null) {
             realtor = realtorMapper.toEntity(realtorDto, minioService);
-        } else {
+        }
+        else
+        {
             realtor = getById(realtorDto.getId());
             realtorMapper.updateEntityFromDto(realtorDto, realtor, minioService);
         }
 
-        for (RealtorContact contact : realtor.getContacts()) {
+        for (RealtorContact contact : realtor.getContacts())
+        {
             contact.setRealtor(realtor);
         }
 
