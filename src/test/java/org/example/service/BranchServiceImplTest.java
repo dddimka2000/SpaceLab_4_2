@@ -18,6 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Optional;
+
 // Add appropriate annotations for your testing framework
 @ExtendWith(MockitoExtension.class)
 
@@ -48,6 +50,26 @@ public class BranchServiceImplTest {
 
         // Assert
         verify(branchMapper, times(1)).toEntity(branchDto, minioService);
+        verify(branchRepository, times(1)).save(branch);
+    }
+    @Test
+    void testAddWithId() throws Exception {
+        // Arrange
+        BranchDto branchDto = new BranchDto();
+        branchDto.setId(1);
+        Branch branch = new Branch();
+        branch.setId(1);
+        lenient().when(branchMapper.toEntity(branchDto, minioService)).thenReturn(branch);
+        when(branchRepository.save(branch)).thenReturn(branch);
+        when(branchRepository.findById(1)).thenReturn(Optional.of(branch));
+        doNothing().when(branchMapper).updateEntityFromDto(eq(branchDto), eq(branch), any());
+
+
+        // Act
+        branchService.add(branchDto);
+
+        // Assert
+        verify(branchMapper, times(1)).updateEntityFromDto(eq(branchDto), eq(branch), any());
         verify(branchRepository, times(1)).save(branch);
     }
 

@@ -49,6 +49,7 @@ public class PageController {
     @PostMapping("/edit/{id}")
     @ResponseBody
     public ResponseEntity editPage(@PathVariable Integer id, @Valid @ModelAttribute PageEntityDto pageEntityDto, BindingResult bindingResult) {
+        PageEntity page=pageService.findById(id).get();
         if(bindingResult.hasErrors()){
             log.error("error validation");
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()

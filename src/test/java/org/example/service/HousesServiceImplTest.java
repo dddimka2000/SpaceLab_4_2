@@ -126,7 +126,6 @@ class HousesServiceImplTest {
 
     @Test
     void testGetAll() {
-        // Mock the behavior of the repository
         ObjectForFilterDto propertyCommercialObject = new ObjectForFilterDto();
         PropertyObjectAddress propertyObjectAddress=new PropertyObjectAddress();
         propertyObjectAddress.setStreet("Название улицы");
@@ -136,11 +135,9 @@ class HousesServiceImplTest {
         propertyCommercialObject.setDistrict(new ArrayList<>());
         propertyCommercialObject.setMinFloor(5);
         propertyCommercialObject.setMaxFloor(5);
-        propertyCommercialObject.setMaxPrice(5);  // Примерная цена
+        propertyCommercialObject.setMaxPrice(5);
         propertyCommercialObject.setPage(1);
-//        when()
         when(propertyHouseObjectRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(Page.empty());
-        // Call the service method
         Page<PropertyHouseObject> page = housesService.getAll(propertyCommercialObject);
 
         // Verify that the method behaves as expected
