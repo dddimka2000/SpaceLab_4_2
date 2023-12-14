@@ -33,29 +33,21 @@ class RecaptchaServiceTest {
     @Test
     void testValidateToken() {
         //TODO не получился тест
-
-        // Arrange
         String recaptchaToken = "sampleToken";
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("secret", secretKey);
         map.add("response", recaptchaToken);
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(map, headers);
-
-        RecaptchaResponse expectedResponse = new RecaptchaResponse(true, "sampleChallengeTs", "sampleHostname", 0.5, "sampleAction");
-
-        // Use anyString() for the URL to avoid strict stubbing argument mismatch
-
+        RecaptchaResponse expectedResponse = new RecaptchaResponse(true
+                , "sampleChallengeTs", "sampleHostname"
+                , 0.5, "sampleAction");
         when(recaptchaService.validateToken(recaptchaToken)).thenReturn(expectedResponse);
-
-        when(restTemplate.exchange(recaptchaToken, eq(HttpMethod.POST), any(HttpEntity.class), eq(RecaptchaResponse.class)))
+        when(restTemplate.exchange(recaptchaToken, eq(HttpMethod.POST), any(HttpEntity.class)
+                , eq(RecaptchaResponse.class)))
                 .thenReturn(ResponseEntity.ok().body(expectedResponse));
-        // Act
         RecaptchaResponse result = recaptchaService.validateToken(recaptchaToken);
-
-        // Assert
         assertEquals(expectedResponse, result);
     }
 
