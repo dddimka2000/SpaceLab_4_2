@@ -14,12 +14,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'corretto'
-          maven-version: '3.3.3'
           java-version: '17'
-      - name: Display Java version
-        run: java -version
-      - name: Display Maven version
-        run: mvn -version
       - name: Build app
         run: |
           mvn clean
