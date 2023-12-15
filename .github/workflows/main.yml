@@ -47,7 +47,7 @@ jobs:
       - name: Export Docker image
         run: docker save -o MinionsDD.tar ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
       - name: Copy Docker image to remote server
-        run: scp MinionsDD.tar user@remote-server:/path/to/destination
+        run: scp MinionsDD.tar ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }}:/home/avada/web/slj.avada-media-dev1.od.ua/projects
       - name: SSH to remote server
         uses: appleboy/ssh-action@master
         with:
@@ -55,5 +55,5 @@ jobs:
           username: ${{ secrets.remote_server_username }}
           key: ${{ secrets.remote_server_ssh_key }}
           script: |
-              docker load -i /path/to/destination/MinionsDD.tar
+              docker load -i /home/avada/web/slj.avada-media-dev1.od.ua/projects/MinionsDD.tar
               docker run -d -p 8080:8080 --name your-app ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
