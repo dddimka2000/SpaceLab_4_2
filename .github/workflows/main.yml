@@ -50,7 +50,6 @@ jobs:
           password: ${{ secrets.remote_server_ssh_key }}
           script: |
             scp MinionsDD.tar ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }}:/home/avada/web/slj.avada-media-dev1.od.ua/projects
-
       - name: SSH to remote server and deploy Docker image
         uses: appleboy/ssh-action@master
         with:
