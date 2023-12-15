@@ -47,7 +47,10 @@ jobs:
       - name: Export Docker image
         run: docker save -o MinionsDD.tar ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
       - name: Copy Docker image to remote server
-        run: scp MinionsDD.tar ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }}:/home/avada/web/slj.avada-media-dev1.od.ua/projects
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+          sshpass -p "${{ secrets.remote_server_ssh_key }}" scp MinionsDD.tar ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }}:/home/avada/web/slj.avada-media-dev1.od.ua/projects
       - name: SSH to remote server
         uses: appleboy/ssh-action@master
         with:
