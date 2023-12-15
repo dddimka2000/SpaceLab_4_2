@@ -42,17 +42,21 @@ jobs:
           dockerfile: Dockerfile
           push: true
           tags: ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
+      - name: Transfer Docker image to remote server
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.remote_server_host }}
+            username: ${{ secrets.remote_server_username }}
+            password: ${{ secrets.remote_server_ssh_key }}
+            script: |
+              scp MinionsDD.tar ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }}:/home/avada/web/slj.avada-media-dev1.od.ua/projects
 
-
-      - name: Export Docker image
-        run: docker save -o MinionsDD.tar ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
-      - name: SSH to remote server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.remote_server_host }}
-          username: ${{ secrets.remote_server_username }}
-          password: ${{ secrets.remote_server_ssh_key }}
-          run: scp MinionsDD.tar ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }}:/home/avada/web/slj.avada-media-dev1.od.ua/projects
-          script: |
-              docker load -i /home/avada/web/slj.avada-media-dev1.od.ua/projects/MinionsDD.tar
-              docker run -d -p 8080:8080 --name your-app ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
+      - name: SSH to remote server and deploy Docker image
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.remote_server_host }}
+            username: ${{ secrets.remote_server_username }}
+            password: ${{ secrets.remote_server_ssh_key }}
+            script: |
+              ssh ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }} 'docker load -i /home/avada/web/slj.avada-media-dev1.od.ua/projects/MinionsDD.tar'
+              ssh ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }} 'docker run -d -p 8080:8080 --name your-app ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest'
