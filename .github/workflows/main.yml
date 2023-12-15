@@ -48,6 +48,7 @@ jobs:
           host: ${{ secrets.remote_server_host }}
           username: ${{ secrets.remote_server_username }}
           password: ${{ secrets.remote_server_ssh_key }}
+          port: 22
           script: |
             scp MinionsDD.tar ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }}:/home/avada/web/slj.avada-media-dev1.od.ua/projects
       - name: SSH to remote server and deploy Docker image
@@ -56,6 +57,7 @@ jobs:
           host: ${{ secrets.remote_server_host }}
           username: ${{ secrets.remote_server_username }}
           password: ${{ secrets.remote_server_ssh_key }}
+          port: 22
           script: |
             ssh ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }} 'docker load -i /home/avada/web/slj.avada-media-dev1.od.ua/projects/MinionsDD.tar'
-            ssh ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }} 'docker run -d -p 8080:8080 --name your-app ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest'
+            ssh ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }} 'docker run -d -p 8489:8489 --name your-app ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest'
