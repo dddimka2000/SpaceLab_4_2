@@ -29,7 +29,7 @@ jobs:
           context: .
           dockerfile: Dockerfile
           push: false
-          tags: ${{secrets.SECRET_NAME_DOCKER_HUB}}/spring-boot-for-beginners:$(date-'%Y%m%d%H%M%S')
+          tags: ${{ secrets.SECRET_NAME_DOCKER_HUB }}/spring-boot-for-beginners:latest
       - name: Login to Docker
         users: docker/login-action@v1
         with:
@@ -41,4 +41,4 @@ jobs:
           context: .
           dockerfile: Dockerfile
           push: true
-          tags: ${{secrets.SECRET_NAME_DOCKER_HUB}}/spring-boot-for-beginners:$(date-'%Y%m%d%H%M%S')
+          tags: ${{ secrets.SECRET_NAME_DOCKER_HUB }}/spring-boot-for-beginners:latest
