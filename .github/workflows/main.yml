@@ -31,7 +31,7 @@ jobs:
           push: false
           tags: ${{ secrets.SECRET_NAME_DOCKER_HUB }}/spring-boot-for-beginners:latest
       - name: Login to Docker
-        users: docker/login-action@v1
+        uses: docker/login-action@v1
         with:
           username: ${{secrets.SECRET_NAME_DOCKER_HUB}}
           password: ${{secrets.SECRET_TOKEN}}
