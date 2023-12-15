@@ -23,3 +23,22 @@ jobs:
         run: mvn -B test --file pom.xml
       - name: Run tests
         run: mvn test
+      - name: Build Docker
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          dockerfile: Dockerfile
+          push: false
+          tags: ${{secrets.SECRET_NAME_DOCKER_HUB}}/spring-boot-for-beginners:$(date-'%Y-%m-%d%H-%M-%S')
+      - name: Login to Docker
+        users: docker/login-action@v1
+        with:
+          username: ${{secrets.SECRET_NAME_DOCKER_HUB}}
+          password: ${{secrets.SECRET_TOKEN}}
+      - name: push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          dockerfile: Dockerfile
+          push: true
+          tags: ${{secrets.SECRET_NAME_DOCKER_HUB}}/spring-boot-for-beginners:$(date-'%Y-%m-%d%H-%M-%S')
