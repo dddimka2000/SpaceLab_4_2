@@ -42,20 +42,6 @@ jobs:
           dockerfile: Dockerfile
           push: true
           tags: ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
-      - name: Setup known_hosts
-        run: |
-          mkdir -p $HOME/.ssh
-          touch $HOME/.ssh/known_hosts
-          ssh-keyscan -H ssh slj.avada-media-dev1.od.ua >> $HOME/.ssh/known_hosts
-      - name: Transfer Docker image to remote server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.remote_server_host }}
-          username: ${{ secrets.remote_server_username }}
-          password: ${{ secrets.remote_server_ssh_key }}
-          port: 22
-          script: |
-            scp MinionsDD.tar ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }}:/home/avada/web/slj.avada-media-dev1.od.ua/projects
       - name: SSH to remote server and deploy Docker image
         uses: appleboy/ssh-action@master
         with:
