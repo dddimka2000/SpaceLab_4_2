@@ -51,7 +51,7 @@ jobs:
         with:
           host: ${{ secrets.remote_server_host }}
           username: ${{ secrets.remote_server_username }}
-          key: ${{ secrets.remote_server_ssh_key }}
+          password: ${{ secrets.remote_server_ssh_key }}
           run: scp MinionsDD.tar ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }}:/home/avada/web/slj.avada-media-dev1.od.ua/projects
           script: |
               docker load -i /home/avada/web/slj.avada-media-dev1.od.ua/projects/MinionsDD.tar
