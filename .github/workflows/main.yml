@@ -43,12 +43,12 @@ jobs:
           dockerfile: Dockerfile
           push: true
           tags: ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
-     - name: Deploy to SSH server
-       uses: appleboy/ssh-action@master
-       with:
+      - name: Deploy to SSH server
+        uses: appleboy/ssh-action@master
+        with:
           host: ${{ secrets.remote_server_host }}
           username: ${{ secrets.remote_server_username }}
           password: ${{ secrets.remote_server_ssh_key }}
           script: |
-            docker pull ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
-            docker run -d -p 8489:8489 ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
+          docker pull ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
+          docker run -d -p 8489:8489 ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
