@@ -43,6 +43,7 @@ jobs:
           dockerfile: Dockerfile
           push: true
           tags: ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
+
       - name: Deploy to SSH server
         uses: appleboy/ssh-action@master
         with:
@@ -50,5 +51,9 @@ jobs:
           username: ${{ secrets.remote_server_username }}
           password: ${{ secrets.remote_server_ssh_key }}
           script: |
+            if docker ps -a --format '{{.Names}}' | grep -q '^MinionsDD$'; then
+              docker stop MinionsDD || true
+              docker rm MinionsDD || true
+            fi
             docker pull ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
-            docker run -d -p 8489:8489 ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
+            docker run -d -p 8489:8489 --name MinionsDD ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
