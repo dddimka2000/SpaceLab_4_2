@@ -243,13 +243,13 @@
                            placeholder="+380*********">
                     <br>
                     <h6 data-translate="checkerboard">Шахматка</h6>
-                    <input type="file" class="form-control" name="chessboard" id="chessboard">
+                    <input type="file" class="form-control" name="chessboard" id="chessboard" accept=".pdf" >
                     <br>
                     <h6 data-translate="installment_conditions">Условия рассрочки</h6>
-                    <input type="file" class="form-control" name="installmentTerms" id="installmentTerms">
+                    <input type="file" class="form-control" name="installmentTerms" id="installmentTerms" accept=".pdf">
                     <br>
                     <h6 data-translate="price_file">Файл с ценами</h6>
-                    <input type="file" class="form-control" name="prices" id="prices">
+                    <input type="file" class="form-control" name="prices" id="prices" accept=".pdf">
                     <br>
                     <br>
                     <div style="display:block;" class="ruContent nameContent">
@@ -423,17 +423,17 @@
                             <div class="row" style="text-align: center">
                                 <div class="col-4">
                                     <img id="previewImage1" style="justify-content: center">
-                                    <input type="file" class="form-control" id="inputImage1"
+                                    <input type="file" class="form-control" id="inputImage1"  accept=".jpg, .jpeg, .png"
                                            onchange="updatePreviewImage(this, 'previewImage1')" style="margin-top: 5px">
                                 </div>
                                 <div class="col-4">
                                     <img id="previewImage2" style="justify-content: center">
-                                    <input type="file" class="form-control" id="inputImage2"
+                                    <input type="file" class="form-control" id="inputImage2"  accept=".jpg, .jpeg, .png"
                                            onchange="updatePreviewImage(this, 'previewImage2')" style="margin-top: 5px">
                                 </div>
                                 <div class="col-4">
                                     <img id="previewImage3">
-                                    <input type="file" class="form-control" id="inputImage3"
+                                    <input type="file" class="form-control" id="inputImage3"  accept=".jpg, .jpeg, .png"
                                            onchange="updatePreviewImage(this, 'previewImage3')" style="margin-top: 5px">
                                 </div>
                             </div>
@@ -808,7 +808,7 @@
                                                 <div class="col-4">
                                                     <img id="previewImage` + (imgMaxId) + `"
                                                          style="justify-content: center">
-                                                        <input type="file" class="form-control"
+                                                        <input type="file" class="form-control"  accept=".jpg, .jpeg, .png"
                                                                id="inputImage` + (imgMaxId) + `"
                                                                onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
                                                                style="margin-top: 5px">
@@ -816,14 +816,14 @@
                                                 <div class="col-4">
                                                     <img id="previewImage` + (imgMaxId + 1) + `"
                                                          style="justify-content: center">
-                                                        <input type="file" class="form-control"
+                                                        <input type="file" class="form-control"  accept=".jpg, .jpeg, .png"
                                                                id="inputImage` + (imgMaxId + 1) + `"
                                                                onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
                                                                style="margin-top: 5px">
                                                 </div>
                                                 <div class="col-4">
                                                     <img id="previewImage` + (imgMaxId + 2) + `">
-                                                        <input type="file" class="form-control"
+                                                        <input type="file" class="form-control"  accept=".jpg, .jpeg, .png"
                                                                id="inputImage` + (imgMaxId + 2) + `"
                                                                onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 2) + `')"
                                                                style="margin-top: 5px">
