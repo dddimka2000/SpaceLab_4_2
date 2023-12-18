@@ -23,7 +23,6 @@ jobs:
         run: mvn -B test --file pom.xml
       - name: Run tests
         run: mvn test
-
       - name: Build Docker
         uses: docker/build-push-action@v2
         with:
