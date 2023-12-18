@@ -83,6 +83,12 @@ public class UserController {
     }
     @GetMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable("id")int id){
+        if (id == userService.getAuthUser().getId()){
+            return ResponseEntity.ok().body("ERROR: Неможна видалити самого себе!!!");
+        }
+        if (id == 1){
+            return ResponseEntity.ok().body("ERROR: Це головний адмін його не можна видалити");
+        }
         userService.deleteById(id);
         return ResponseEntity.ok().body("Користува успішно видалено");
     }

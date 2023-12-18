@@ -63,7 +63,7 @@ public class _PropertyObject {
     @DateTimeFormat(pattern="yyyy/MM/dd")
     private LocalDate lastContactDate;
 
-    private Boolean vnp;                    // что такое ВНП блять
+    private Boolean vnp;
 
     @DateTimeFormat(pattern="yyyy/MM/dd")
     private LocalDate vnpExpirationDate;

@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="col-6">
                                     <br/>
-                                    <ul class="nav nav-pills mb-3" id="pills-block" role="tablist">
+                                    <ul class="nav nav-pills mb-4" id="pills-block" role="tablist">
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="pills-for-uk" data-bs-toggle="pill"
                                                     data-bs-target="#pills-uk"
@@ -171,7 +171,7 @@
                                                    aria-describedby="defaultFormControlHelp"/>
                                         </div>
                                         <div class="col-5">
-                                            <select class="form-control">
+                                            <select class="form-control for-select">
                                                 <option th:each="type: ${contactTypes}" th:value="${type}"
                                                         th:text="${type}" th:selected="${type == contact.type}">Viber
                                                 </option>
@@ -286,10 +286,8 @@
     <script>
         const urlForAddFeedBack = '[[@{/realtors/feedback/save}]]'
         const urlForValidCode = '[[@{/realtors/countCode/}]]'
-        var originalCode
         $(document).ready(function () {
             var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
-
             flatpickrDateTimes.forEach(function (element) {
                 element.flatpickr({
                     dateFormat: "Y/m/d"
@@ -310,8 +308,10 @@
                 });
             }else
                 $('#previewImage').attr('src', 'http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg');
+            $('.for-select').select2({
+                minimumResultsForSearch: -1,
+            })
         })
-
         function deletePhone(button, id) {
             $('#confirmationModal').modal('show');
 
@@ -335,7 +335,6 @@
                 $('.confirm-delete').off('click');
             });
         }
-
         function deleteFeedBackBody(button, idBody) {
             $('#confirmationModal').modal('show');
 
@@ -359,7 +358,6 @@
                 $('.confirm-delete').off('click');
             });
         }
-
         function downloadFileToFeedBack() {
             if (validateFile('file', ['.pdf'])) {
                 var fileInput = document.getElementById('file');
@@ -411,7 +409,6 @@
                 });
             }
         }
-
         function deleteFileFromFeedBack(button, link) {
             $('#confirmationModal').modal('show');
 
@@ -442,7 +439,6 @@
                 $('.confirm-delete').off('click');
             });
         }
-
         function downloadFileFromFeedBack(link) {
             $.ajax({
                 type: "GET",
@@ -486,7 +482,7 @@
     </script>
     <script th:inline="javascript">
         var realtor = [[${realtorDto}]]
-
+        var realtorForPhoneBlock = 0;
         function sendForm() {
             cleanInputs()
             if (!getLastDigitFromPath() && !validateOneFile($('.fileInput').get(0).files[0], ['.jpg', '.jpeg', '.png'])) {
@@ -592,8 +588,6 @@
             }
             else save($('#realtorAdd'));
         }
-
-
         function addBlockForPhone() {
             const phoneContainer = document.getElementById("phones");
             const newPhoneBlock = document.createElement("div");
@@ -604,10 +598,10 @@
             newPhoneBlock.innerHTML = `
             <div class="col-5">
                 <input type="text" class="form-control" hidden/>
-                <input type="text" placeholder="+380989898989" class="form-control phone" aria-describedby="defaultFormControlHelp" name="phone" />
+                <input type="text" id="pppp`+(++realtorForPhoneBlock)+`" placeholder="+380989898989" class="form-control phone  for-phone" aria-describedby="defaultFormControlHelp" name="phone" />
             </div>
             <div class="col-5">
-                <select class="form-control" name="type">
+                <select class="form-control for-select" name="type">
                     ${contactTypes.map(type => `<option value="${type}">${type}</option>`).join('')}
                 </select>
             </div>
@@ -624,6 +618,16 @@
                     phoneContainer.removeChild(newPhoneBlock)
                 });
             });
+            $(".for-phone").each(function(index, element) {
+                new Cleave("#" + element.id, {
+                    blocks: [13],
+                    numericOnly: true,
+                    prefix: "+380"
+                })
+            });
+            $('.for-select').select2({
+                minimumResultsForSearch: -1,
+            })
         };
     </script>
 </section>

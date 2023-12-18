@@ -46,55 +46,55 @@ public class ExcelComponent {
     }
     @Transactional
     public void processExcelFile(byte[] file) throws IOException {
-        if (addressRepository.count()<100) {
-            List<StreetExelEntity> streetExelEntities = addressRepository.findAll();
-            if (streetExelEntities.size() > 0) {
-                addressRepository.deleteAll(streetExelEntities);
-            }
-            log.info("Delete old streets");
-            Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(file));
-            Sheet sheet = workbook.getSheetAt(0);
-
-            Iterator<Row> rowIterator = sheet.rowIterator();
-            rowIterator.next();
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                String region = getCellValueAsString(row.getCell(0));
-
-                String area = getCellValueAsString(row.getCell(1));
-
-                String newArea = getCellValueAsString(row.getCell(2));
-
-                String oTGName = getCellValueAsString(row.getCell(3));
-
-                String locality = getCellValueAsString(row.getCell(4));
-                Cell number = row.getCell(5);
-                Integer zipCode = null;
-                if (number != null) {
-                    zipCode = (int) number.getNumericCellValue();
-                }
-
-                String street = getCellValueAsString(row.getCell(6));
-                List<String> houseNumbersList = new ArrayList<>();
-                Cell houseNumbersCell = row.getCell(7);
-                if (houseNumbersCell != null) {
-                    houseNumbersList.addAll(Arrays.asList(String.valueOf(houseNumbersCell).split(",")));
-                }
-
-                StreetExelEntity address = new StreetExelEntity();
-                address.setRegion(region);
-                address.setArea(area);
-                address.setNewArea(newArea);
-                address.setOTGName(oTGName);
-                address.setLocality(locality);
-                address.setZipCode(zipCode);
-                address.setStreetName(street);
-                address.setHouseNumbers(houseNumbersList);
-                addressRepository.save(address);
-                log.info(address.getId()+" uploaded");
-            }
-            workbook.close();
-        }
+//        if (addressRepository.count()<100) {
+//            List<StreetExelEntity> streetExelEntities = addressRepository.findAll();
+//            if (streetExelEntities.size() > 0) {
+//                addressRepository.deleteAll(streetExelEntities);
+//            }
+//            log.info("Delete old streets");
+//            Workbook workbook = WorkbookFactory.create(new ByteArrayInputStream(file));
+//            Sheet sheet = workbook.getSheetAt(0);
+//
+//            Iterator<Row> rowIterator = sheet.rowIterator();
+//            rowIterator.next();
+//            while (rowIterator.hasNext()) {
+//                Row row = rowIterator.next();
+//                String region = getCellValueAsString(row.getCell(0));
+//
+//                String area = getCellValueAsString(row.getCell(1));
+//
+//                String newArea = getCellValueAsString(row.getCell(2));
+//
+//                String oTGName = getCellValueAsString(row.getCell(3));
+//
+//                String locality = getCellValueAsString(row.getCell(4));
+//                Cell number = row.getCell(5);
+//                Integer zipCode = null;
+//                if (number != null) {
+//                    zipCode = (int) number.getNumericCellValue();
+//                }
+//
+//                String street = getCellValueAsString(row.getCell(6));
+//                List<String> houseNumbersList = new ArrayList<>();
+//                Cell houseNumbersCell = row.getCell(7);
+//                if (houseNumbersCell != null) {
+//                    houseNumbersList.addAll(Arrays.asList(String.valueOf(houseNumbersCell).split(",")));
+//                }
+//
+//                StreetExelEntity address = new StreetExelEntity();
+//                address.setRegion(region);
+//                address.setArea(area);
+//                address.setNewArea(newArea);
+//                address.setOTGName(oTGName);
+//                address.setLocality(locality);
+//                address.setZipCode(zipCode);
+//                address.setStreetName(street);
+//                address.setHouseNumbers(houseNumbersList);
+//                addressRepository.save(address);
+//                log.info(address.getId()+" uploaded");
+//            }
+//            workbook.close();
+//        }
     }
     private String getCellValueAsString(Cell cell) {
         return cell != null ? cell.getStringCellValue() : "";
