@@ -43,31 +43,9 @@ jobs:
           dockerfile: Dockerfile
           push: true
           tags: ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
-##      - name: Setup known_hosts
-##        run: |
-##          mkdir -p $HOME/.ssh
-##          touch $HOME/.ssh/known_hosts
-##          ssh-keyscan -H ssh slj.avada-media-dev1.od.ua >> $HOME/.ssh/known_hosts
-#      - name: Set up SSH
-#          run: |
-#            mkdir -p ~/.ssh/
-#            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-#            chmod 600 ~/.ssh/id_rsa
-#            ssh-keyscan slj.avada-media-dev1.od.ua >> ~/.ssh/known_hosts
-#      - name: SSH to remote server and deploy Docker image
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.remote_server_host }}
-#          username: ${{ secrets.remote_server_username }}
-#          password: ${{ secrets.remote_server_ssh_key }}
-#          port: 22
-#          script: |
-#            docker login slj.avawr-dev.od.ua -u qwrasfawqrw -p wrwr242rw
-#            ssh ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }} 'docker load -i /home/avada/web/slj.avada-media-dev1.od.ua/projects/MinionsDD.tar'
-#            ssh ${{ secrets.remote_server_username }}@${{ secrets.remote_server_host }} 'docker run -d -p 8489:8489 --name your-app ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest'
-      - name: Deploy to SSH server
-        uses: appleboy/ssh-action@master
-        with:
+     - name: Deploy to SSH server
+       uses: appleboy/ssh-action@master
+       with:
           host: ${{ secrets.remote_server_host }}
           username: ${{ secrets.remote_server_username }}
           password: ${{ secrets.remote_server_ssh_key }}
