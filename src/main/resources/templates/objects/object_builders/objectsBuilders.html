@@ -365,6 +365,7 @@
                     $("#cancelBtn").click();
                     console.log(response);
                     showNotification("Warn! ", response, false);
+                    getPageWithFilter(0);
                 },
                 error: function (context) {
                     console.log("ERROR " + context);
