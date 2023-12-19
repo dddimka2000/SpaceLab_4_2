@@ -27,6 +27,7 @@
 
   const myDropzone = new Dropzone('#dropzone-basic', {
     previewTemplate: previewTemplate,
+    acceptedFiles: ".jpg, .png, .icon, .jpeg",
     parallelUploads: 5,
     maxFilesize: 10,
     addRemoveLinks: true,

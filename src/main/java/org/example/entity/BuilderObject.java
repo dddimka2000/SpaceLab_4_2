@@ -37,7 +37,7 @@ public class BuilderObject {
     })
     private BuilderObjectPromotion promotion;
 
-    @OneToMany(mappedBy = "builderObject",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "builderObject",fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Layout> layouts;
 
     @OneToMany(mappedBy = "builderObject", cascade = CascadeType.DETACH)

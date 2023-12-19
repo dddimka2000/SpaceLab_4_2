@@ -78,4 +78,7 @@ public class UserServiceImpl {
         userRepository.deleteById(id);
         log.info("UserServiceImpl-deleteById successfully");
     }
+    public UserEntity getAuthUser(){
+        return userRepository.findById(1).get();
+    }
 }

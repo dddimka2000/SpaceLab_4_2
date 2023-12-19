@@ -263,13 +263,13 @@
                                th:value="${objectBuilder.getPhone()}"  placeholder="+380*********">
                         <br>
                         <h6 data-translate="checkerboard">Шахматка</h6>
-                        <input type="file" class="form-control" name="chessboard" id="chessboard">
+                        <input type="file" class="form-control" name="chessboard" id="chessboard" accept=".pdf">
                         <br>
                         <h6 data-translate="installment_conditions">Условия рассрочки</h6>
-                        <input type="file" class="form-control" name="installmentTerms" id="installmentTerms">
+                        <input type="file" class="form-control" name="installmentTerms" id="installmentTerms" accept=".pdf">
                         <br>
                         <h6 data-translate="price_file">Файл с ценами</h6>
-                        <input type="file" class="form-control" name="prices" id="prices">
+                        <input type="file" class="form-control" name="prices" id="prices" accept=".pdf">
                         <br>
                         <div>
                             <div style="display:block;" class="ruContent nameContent">
@@ -477,7 +477,7 @@
                                              class="d-block w-px-300 h-px-300 rounded">
                                         <input type="file" class="form-control" id="inputImage1"
                                                onchange="updatePreviewImage(this, 'previewImage1')"
-                                               style="margin-top: 5px">
+                                               style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                     </div>
                                     <div class="col-4">
                                         <img id="previewImage2" style="justify-content: center"
@@ -485,14 +485,14 @@
                                              class="d-block w-px-300 h-px-300 rounded">
                                         <input type="file" class="form-control" id="inputImage2"
                                                onchange="updatePreviewImage(this, 'previewImage2')"
-                                               style="margin-top: 5px">
+                                               style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                     </div>
                                     <div class="col-4">
                                         <img id="previewImage3" th:src="'data:image/jpeg;base64, ' + ${img3.get(0)}"
                                              class="d-block w-px-300 h-px-300 rounded">
                                         <input type="file" class="form-control" id="inputImage3"
                                                onchange="updatePreviewImage(this, 'previewImage3')"
-                                               style="margin-top: 5px">
+                                               style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                     </div>
                                 </div>
                             </div>
@@ -563,6 +563,7 @@
 
         var myDropzone = new Dropzone("#my-dropzone", {
             url: "/uploadFile",
+            acceptedFiles: ".jpg, .png, .icon, .jpeg",
             previewTemplate: previewTemplate,
             parallelUploads: 5,
             maxFilesize: 10,
@@ -950,7 +951,7 @@
                                                         <input type="file" class="form-control"
                                                                id="inputImage` + (imgMaxId) + `"
                                                                onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
-                                                               style="margin-top: 5px">
+                                                               style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                                 </div>
                                                 <div class="col-4">
                                                     <img id="previewImage` + (imgMaxId + 1) + `"
@@ -958,14 +959,14 @@
                                                         <input type="file" class="form-control"
                                                                id="inputImage` + (imgMaxId + 1) + `"
                                                                onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
-                                                               style="margin-top: 5px">
+                                                               style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                                 </div>
                                                 <div class="col-4">
                                                     <img id="previewImage` + (imgMaxId + 2) + `">
                                                         <input type="file" class="form-control"
                                                                id="inputImage` + (imgMaxId + 2) + `"
                                                                onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 2) + `')"
-                                                               style="margin-top: 5px">
+                                                               style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                                 </div>
                                             </div>
                                             `
