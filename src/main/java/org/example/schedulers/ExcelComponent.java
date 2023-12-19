@@ -28,24 +28,25 @@ import java.util.List;
 public class ExcelComponent {
 
     private final AddressExelRepository addressRepository;
+
     public ExcelComponent(AddressExelRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
-    @PostConstruct
-    public void processScheduledTask() {
-        try {
-            Resource resource = new ClassPathResource("static/exelAddress/exelEdit.xlsx");
-            byte[] fileBytes = Files.readAllBytes(Paths.get(resource.getURI()));
-            log.info("Start reading files...");
-            processExcelFile(fileBytes);
-            log.info("File ready");
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.error("File was not found");
-        }
-    }
-    @Transactional
-    public void processExcelFile(byte[] file) throws IOException {
+//    @PostConstruct
+//    public void processScheduledTask() {
+//        try {
+//            Resource resource = new ClassPathResource("static/exelAddress/exelEdit.xlsx");
+//            byte[] fileBytes = Files.readAllBytes(Paths.get(resource.getURI()));
+//            log.info("Start reading files...");
+//            processExcelFile(fileBytes);
+//            log.info("File ready");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            log.error("File was not found");
+//        }
+//    }
+//    @Transactional
+//    public void processExcelFile(byte[] file) throws IOException {
 //        if (addressRepository.count()<100) {
 //            List<StreetExelEntity> streetExelEntities = addressRepository.findAll();
 //            if (streetExelEntities.size() > 0) {
@@ -95,7 +96,7 @@ public class ExcelComponent {
 //            }
 //            workbook.close();
 //        }
-    }
+//    }
     private String getCellValueAsString(Cell cell) {
         return cell != null ? cell.getStringCellValue() : "";
     }
