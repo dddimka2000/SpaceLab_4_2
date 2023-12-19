@@ -85,4 +85,10 @@ public class BranchServiceImpl {
         log.info("BranchServiceImpl-countByCode successfully");
         return res;
     }
+    public Branch getByCode(int id){
+        log.info("BranchServiceImpl-getByCode start");
+        Branch res = branchRepository.findByCode(id).orElseThrow(() -> new EntityNotFoundException("A branch with an id = "+id +", was not found"));
+        log.info("BranchServiceImpl-getByCode successfully");
+        return res;
+    }
 }

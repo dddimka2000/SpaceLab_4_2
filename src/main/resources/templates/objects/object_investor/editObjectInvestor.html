@@ -297,14 +297,15 @@
                             <div class="row" style="display:flex; align-items: center">
                                 <div class="col-3" style="text-align: right">
                                     <input class="form-control" type="number" id="codeBranch" placeholder="5"
-                                           name="codeBranch" th:value="${element.getBranchCode()}">
+                                           name="codeBranch" th:value="${element.getBranchCode != null ? element.getBranchCode() : ''}">
                                 </div>
                                 <div class="col-1">
                                     <span><h6>—</h6></span>
                                 </div>
                                 <div class="col-3">
                                     <input class="form-control" type="number" id="codeStaff" name="codeStaff"
-                                           placeholder="5" th:value="${element.getRealtor().getId()}">
+                                           placeholder="5" th:value="${element.realtor != null ? element.realtor.id : ''}" >
+
                                 </div>
                             </div>
                         </div>

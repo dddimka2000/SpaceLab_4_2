@@ -55,7 +55,7 @@ public class ObjectInvestorValidator implements Validator {
         PropertyInvestorObjectDTO entity = (PropertyInvestorObjectDTO) target;
         Realtor realtor = new Realtor();
         try {
-            realtor = realtorService.getById(entity.getEmployeeCode());
+            realtor = realtorService.getByCode(entity.getEmployeeCode());
         } catch (EntityNotFoundException | NullPointerException ex) {
             errors.rejectValue("employeeCode", "", "Кода данного сотрудника не существует");
         }
@@ -63,7 +63,7 @@ public class ObjectInvestorValidator implements Validator {
             errors.rejectValue("objectCode", "", "Объект с таким кодом уже существует");
         }
         try {
-            branchService.getById(entity.getBranchCode());
+            branchService.getByCode(entity.getBranchCode());
         } catch (EntityNotFoundException | NullPointerException e) {
             errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
         }
@@ -97,7 +97,7 @@ public class ObjectInvestorValidator implements Validator {
         PropertyInvestorObjectDTO entity = (PropertyInvestorObjectDTO) target;
         Realtor realtor = new Realtor();
         try {
-            realtor = realtorService.getById(entity.getEmployeeCode());
+            realtor = realtorService.getByCode(entity.getEmployeeCode());
         } catch (EntityNotFoundException | NullPointerException ex) {
             errors.rejectValue("employeeCode", "", "Кода данного сотрудника не существует");
         }
@@ -105,7 +105,7 @@ public class ObjectInvestorValidator implements Validator {
             errors.rejectValue("objectCode", "", "Объект с таким кодом уже существует");
         }
         try {
-            branchService.getById(entity.getBranchCode());
+            branchService.getByCode(entity.getBranchCode());
         } catch (EntityNotFoundException e) {
             errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
         }

@@ -48,7 +48,7 @@ public class SecondaryObjectValidator implements Validator {
             errors.rejectValue("objectCode", "", "Объект с таким кодом уже существует");
         }
         try {
-            branchService.getById(entity.getBranchCode());
+            branchService.getByCode(entity.getBranchCode());
         }catch (EntityNotFoundException | NullPointerException e){
             errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
         }
@@ -84,7 +84,7 @@ public class SecondaryObjectValidator implements Validator {
             errors.rejectValue("objectCode", "", "Объект с таким кодом уже существует");
         }
         try {
-            branchService.getById(entity.getBranchCode());
+            branchService.getByCode(entity.getBranchCode());
         }catch (EntityNotFoundException e){
             errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
         }

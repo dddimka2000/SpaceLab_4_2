@@ -90,7 +90,7 @@
                                 <td style="font-weight: bold" data-translate="branch_code">Код объекта</td>
                                 <td th:text="${element.getObjectCode()}"> Район</td>
                             </tr>
-                            <tr>
+                            <tr th:if="${element.getRealtor()!=null}">
                                 <td style="font-weight: bold" data-translate="realtor">Риелтор</td>
                                 <td th:text="${element.getRealtor().getName()} + ' '+${element.getRealtor().getSurname()}">
                                     Район

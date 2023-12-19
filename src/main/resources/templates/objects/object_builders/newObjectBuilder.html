@@ -172,7 +172,7 @@
                             <select class="select2 form-select form-select select2find" name="topozone">
                                 <option value="" selected></option>
                                 <script th:inline="javascript">
-                                    var selectRegionOptions = /*[[${selectRegion}]]*/ [];
+                                    var selectRegionOptions = /*[[${selectTopozone}]]*/ [];
                                     for (var i = 0; i < selectRegionOptions.length; i++) {
                                         var entity = selectRegionOptions[i];
                                         document.write('<option value="' + entity + '" data-translate="'+entity.replace(' ','_')+'">' + entity + '</option>');

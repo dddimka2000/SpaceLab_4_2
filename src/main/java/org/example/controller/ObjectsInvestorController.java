@@ -100,7 +100,7 @@ public class ObjectsInvestorController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }
-        Realtor realtor = realtorService.getById(propertyInvestorObjectDTO.getEmployeeCode());
+        Realtor realtor = realtorService.getByCode(propertyInvestorObjectDTO.getEmployeeCode());
         propertyInvestorObject.setRealtor(realtor);
         List<String> nameFiles = new ArrayList<>();
         for (MultipartFile multipartFile : propertyInvestorObjectDTO.getFiles()) {
@@ -192,7 +192,7 @@ public class ObjectsInvestorController {
                     .collect(Collectors.toList()));
         }
         streamFiles(propertyInvestorObject.getFiles(), propertyInvestorObjectDTO.getOldFiles(), log, minioService, filesBucketName, propertyInvestorObject.getPictures(), propertyInvestorObjectDTO.getOldPictures(), imagesBucketName, propertyInvestorObjectDTO, propertyInvestorObject);
-        Realtor realtor = realtorService.getById(propertyInvestorObjectDTO.getEmployeeCode());
+        Realtor realtor = realtorService.getByCode(propertyInvestorObjectDTO.getEmployeeCode());
         propertyInvestorObject.setRealtor(realtor);
         ObjectInvestorMapper.INSTANCE.toOldEntity(propertyInvestorObject, propertyInvestorObjectDTO);
         propertyInvestorObject.setBuilderObject(objectBuilderService.findById(propertyInvestorObjectDTO.getResidentialComplexId()).get());
