@@ -2,7 +2,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "dima" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -23,3 +23,36 @@ jobs:
         run: mvn -B test --file pom.xml
       - name: Run tests
         run: mvn test
+      - name: Build Docker
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          dockerfile: Dockerfile
+          push: false
+          tags: ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
+      - name: Login to Docker
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.secret_name_docker_hub_lower_case}}
+          password: ${{secrets.secret_lower_case_token}}
+      - name: push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          dockerfile: Dockerfile
+          push: true
+          tags: ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
+
+      - name: Deploy to SSH server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.remote_server_host }}
+          username: ${{ secrets.remote_server_username }}
+          password: ${{ secrets.remote_server_ssh_key }}
+          script: |
+            if docker ps -a --format '{{.Names}}' | grep -q '^MinionsDD$'; then
+              docker stop MinionsDD || true
+              docker rm MinionsDD || true
+            fi
+            docker pull ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
+            docker run -d -p 8489:8489 --name MinionsDD ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
