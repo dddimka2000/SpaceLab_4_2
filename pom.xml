@@ -22,6 +22,7 @@
 
 
     <build>
+        <finalName>minionsDD</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -55,4 +55,4 @@ jobs:
               docker rm MinionsDD || true
             fi
             docker pull ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
-            docker run -d -p 8489:8489 --name MinionsDD ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
+            docker run -d -p 8489:8489 --name MinionsDD --network minionsDD ${{ secrets.secret_name_docker_hub_lower_case }}/spring-boot-for-beginners:latest
