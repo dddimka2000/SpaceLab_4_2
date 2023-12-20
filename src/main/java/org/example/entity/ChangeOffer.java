@@ -7,7 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "change_offers", schema = "my_bd", catalog = "")
+@Table(name = "change_offers", catalog = "")
 @Data
 public class ChangeOffer {
 

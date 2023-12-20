@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
-@Table(name = "pages", schema = "my_bd", catalog = "")
+@Table(name = "pages", catalog = "")
 @Data
 public class PageEntity {
 

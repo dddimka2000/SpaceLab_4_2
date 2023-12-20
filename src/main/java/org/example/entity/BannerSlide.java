@@ -8,7 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import java.util.Optional;
 
 @Entity
-@Table(name = "banner_slides", schema = "my_bd", catalog = "")
+@Table(name = "banner_slides", catalog = "")
 @Data
 public class BannerSlide {
 
