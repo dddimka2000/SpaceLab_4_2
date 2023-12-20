@@ -37,7 +37,7 @@ public class UserController {
     private final ReviewServiceImpl reviewService;
     private final MinioService minioService;
     @GetMapping
-    public ModelAndView mainPage(Model model) {
+    public ModelAndView mainPage() {
         ModelAndView modelAndView = new ModelAndView("users/users_table");
         modelAndView.addObject("usersActive", true);
         return modelAndView;
