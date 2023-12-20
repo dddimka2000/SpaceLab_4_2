@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "buyer_notes", schema = "my_bd", catalog = "")
+@Table(name = "buyer_notes", catalog = "")
 @Data
 public class BuyerNote {
 

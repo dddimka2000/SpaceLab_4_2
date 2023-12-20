@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "branch", schema = "my_bd", catalog = "")
+@Table(name = "branch", catalog = "")
 @Data
 public class Branch {
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "builder_objects", schema = "my_bd")
+@Table(name = "builder_objects")
 public class BuilderObject {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "history_application", schema = "my_bd", catalog = "")
+@Table(name = "history_application", catalog = "")
 @Data
 public class BuyerApplicationEditLog {
 
