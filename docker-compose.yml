@@ -3,7 +3,6 @@ version: '3'
 networks:
   app-tier:
     driver: bridge
-
 services:
   minio:
     image: 'bitnami/minio:latest'
