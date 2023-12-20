@@ -72,22 +72,4 @@ public class TranslationController {
 
         return translations;
     }
-//    @Autowired
-//    private final MessageSource messageSource;
-//
-//
-//
-//    @GetMapping("/")
-//    public String home(Model model, Locale locale) {
-//        String greeting = messageSource.getMessage("greeting", null, locale);
-//        model.addAttribute("greeting", greeting);
-//        return "index";
-//    }
-//
-//    @PostMapping("/change-language")
-//    public String changeLanguage(@RequestBody LanguageRequest request, Model model, Locale locale) {
-//        Locale newLocale = new Locale(request.getTranslation());
-//        model.addAttribute("translation", messageSource.getMessage("translation", null, newLocale));
-//        return "forward:/";
-//    }
 }
