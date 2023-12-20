@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "buyers", schema = "my_bd", catalog = "")
+@Table(name = "buyers", catalog = "")
 @Data
 public class Buyer {
 

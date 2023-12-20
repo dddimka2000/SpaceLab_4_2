@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "website_applications", schema = "my_bd", catalog = "")
+@Table(name = "website_applications")
 public class WebsiteApplication {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

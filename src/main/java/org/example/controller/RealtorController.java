@@ -130,7 +130,7 @@ public class RealtorController {
     @GetMapping("/feedback/save")
     public ResponseEntity<String> save(@RequestParam("id")int id, @RequestParam("name")String name, @RequestParam("phone")String phone, @RequestParam("description")String description) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         realtorFeedBackService.save(new RealtorFeedBack(id, name, phone, description));
-        return ResponseEntity.ok("Feedback deleted successfully");
+        return ResponseEntity.ok("Feedback saved successfully");
     }
     @GetMapping("/download")
     @ResponseBody

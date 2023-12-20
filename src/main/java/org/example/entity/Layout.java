@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "layouts", schema = "my_bd", catalog = "")
+@Table(name = "layouts", catalog = "")
 @Data
 public class Layout {
 

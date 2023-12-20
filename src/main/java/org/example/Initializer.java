@@ -44,8 +44,8 @@ public class Initializer implements CommandLineRunner {
             user.setEmail("admin@gmail.com ");
             userRepository.save(user);
         }
-        createTriggerBeforeDeleteRealtor();
-        createTriggerBeforeDeleteBuilderObject();
+//        createTriggerBeforeDeleteRealtor();
+//        createTriggerBeforeDeleteBuilderObject();
     }
 
     @Transactional
@@ -220,46 +220,46 @@ public class Initializer implements CommandLineRunner {
         topozoneRepository.save(topozoneEntity);
     }
 
-    private void createTriggerBeforeDeleteRealtor() {
-        String triggerSql = "CREATE TRIGGER IF NOT EXISTS before_delete_realtor\n" +
-                "BEFORE DELETE ON realtor\n" +
-                "FOR EACH ROW\n" +
-                "BEGIN\n" +
-                "    UPDATE property_commercial_object\n" +
-                "    SET realtor_id = NULL\n" +
-                "    WHERE realtor_id = OLD.id;\n" +
-                "\n" +
-                "    UPDATE property_house_object\n" +
-                "    SET realtor_id = NULL\n" +
-                "    WHERE realtor_id = OLD.id;\n" +
-                "\n" +
-                "    UPDATE property_investor_object\n" +
-                "    SET realtor_id = NULL\n" +
-                "    WHERE realtor_id = OLD.id;\n" +
-                "\n" +
-                "    UPDATE property_secondary_object\n" +
-                "    SET realtor_id = NULL\n" +
-                "    WHERE realtor_id = OLD.id;\n" +
-                "END;";
-        jdbcTemplate.execute(triggerSql);
-    }
-    private void createTriggerBeforeDeleteBuilderObject() {
-        String triggerSql = "CREATE TRIGGER IF NOT EXISTS before_delete_builder_object\n" +
-                "BEFORE DELETE ON builder_objects\n" +
-                "FOR EACH ROW\n" +
-                "BEGIN\n" +
-                "    DELETE FROM property_commercial_object\n" +
-                "    WHERE builder_object_id = OLD.id;\n" +
-                "\n" +
-                "    DELETE FROM property_house_object\n" +
-                "    WHERE builder_object_id = OLD.id;\n" +
-                "\n" +
-                "    DELETE FROM property_investor_object\n" +
-                "    WHERE builder_object_id = OLD.id;\n" +
-                "\n" +
-                "    DELETE FROM property_secondary_object\n" +
-                "    WHERE builder_object_id = OLD.id;\n" +
-                "END;";
-        jdbcTemplate.execute(triggerSql);
-    }
+//    private void createTriggerBeforeDeleteRealtor() {
+//        String triggerSql = "CREATE TRIGGER IF NOT EXISTS before_delete_realtor\n" +
+//                "BEFORE DELETE ON realtor\n" +
+//                "FOR EACH ROW\n" +
+//                "BEGIN\n" +
+//                "    UPDATE property_commercial_object\n" +
+//                "    SET realtor_id = NULL\n" +
+//                "    WHERE realtor_id = OLD.id;\n" +
+//                "\n" +
+//                "    UPDATE property_house_object\n" +
+//                "    SET realtor_id = NULL\n" +
+//                "    WHERE realtor_id = OLD.id;\n" +
+//                "\n" +
+//                "    UPDATE property_investor_object\n" +
+//                "    SET realtor_id = NULL\n" +
+//                "    WHERE realtor_id = OLD.id;\n" +
+//                "\n" +
+//                "    UPDATE property_secondary_object\n" +
+//                "    SET realtor_id = NULL\n" +
+//                "    WHERE realtor_id = OLD.id;\n" +
+//                "END;";
+//        jdbcTemplate.execute(triggerSql);
+//    }
+//    private void createTriggerBeforeDeleteBuilderObject() {
+//        String triggerSql = "CREATE TRIGGER IF NOT EXISTS before_delete_builder_object\n" +
+//                "BEFORE DELETE ON builder_objects\n" +
+//                "FOR EACH ROW\n" +
+//                "BEGIN\n" +
+//                "    DELETE FROM property_commercial_object\n" +
+//                "    WHERE builder_object_id = OLD.id;\n" +
+//                "\n" +
+//                "    DELETE FROM property_house_object\n" +
+//                "    WHERE builder_object_id = OLD.id;\n" +
+//                "\n" +
+//                "    DELETE FROM property_investor_object\n" +
+//                "    WHERE builder_object_id = OLD.id;\n" +
+//                "\n" +
+//                "    DELETE FROM property_secondary_object\n" +
+//                "    WHERE builder_object_id = OLD.id;\n" +
+//                "END;";
+//        jdbcTemplate.execute(triggerSql);
+//    }
 }

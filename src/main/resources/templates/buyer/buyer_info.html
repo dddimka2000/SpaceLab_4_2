@@ -50,7 +50,7 @@
                     var element = `
                     <tr>
                                 <td data-translate="RC">ЖК</td>
-                                <td>` + buyer.application.builderObject.name + `</td>
+                                <td>` + (buyer.application && buyer.application.builderObject?buyer.application.builderObject.name:'') + `</td>
                             </tr>
                             <tr>
                                 <td data-translate="propertyType">Вид недвижемости</td>
