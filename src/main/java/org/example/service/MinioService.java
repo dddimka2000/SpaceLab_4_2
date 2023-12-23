@@ -129,18 +129,7 @@ public class MinioService {
 
     @SneakyThrows
     public String getUrl(String fileName) {
-        log.info("MinioService-getUrl start");
-
-        GetPresignedObjectUrlArgs args = GetPresignedObjectUrlArgs.builder()
-                .bucket("project.4.2")
-                .object("/images/" + fileName)
-                .method(Method.GET)
-                .build();
-
-        String url = minioClient.getPresignedObjectUrl(args);
-
-        log.info("MinioService-getUrl successfully");
-        return url;
+        return "data:image/jpeg;base64, "+Base64.getEncoder().encodeToString(getPhoto(fileName, "images"));
     }
 
     public long getObjectSize(String objectName) throws ErrorResponseException, InsufficientDataException, InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException, XmlParserException, IOException {
