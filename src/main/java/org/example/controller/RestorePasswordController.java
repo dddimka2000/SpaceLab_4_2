@@ -20,6 +20,11 @@ import java.util.Optional;
 @Controller
 @Log4j2
 public class RestorePasswordController {
+    private  final
+    UserDetailsServiceImpl userDetailsService;
+    private final
+    EmailService emailService;
+
 
     public RestorePasswordController(UserDetailsServiceImpl userDetailsService, EmailService emailService) {
         this.userDetailsService = userDetailsService;
@@ -30,11 +35,6 @@ public class RestorePasswordController {
     public String restore_password(){
         return"/auth/restorePass";
     }
-
-    private  final
-    UserDetailsServiceImpl userDetailsService;
-    private final
-    EmailService emailService;
     @PostMapping("/auth/login/restore_password")
     public ResponseEntity<?> restore_password(@RequestParam("email") String email){
         Optional<UserEntity> user=userDetailsService.findByEmail(email);

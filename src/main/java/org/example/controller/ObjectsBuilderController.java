@@ -289,6 +289,14 @@ public class ObjectsBuilderController {
                 .body(resource);
     }
 
+    @GetMapping("/for/select")
+    @ResponseBody
+    public Page<BuilderObject> search(@RequestParam("query") String name,
+                                      @RequestParam("page") int page,
+                                      @RequestParam("size") int size) {
+        Page<BuilderObject> searchResults = objectBuilderService.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
+        return searchResults;
+    }
 //    @PostMapping("/generate-excel")
 //    public ResponseEntity<?> generateExcel(HttpServletResponse response, @RequestBody ArrayList<ObjectBuilderDtoSearch> objectBuilderDTOSearchList) throws IOException {
 //        log.info(objectBuilderDTOSearchList);
@@ -338,14 +346,6 @@ public class ObjectsBuilderController {
 //                .headers(headers)
 //                .contentType(MediaType.APPLICATION_OCTET_STREAM)
 //                .body(bytes);    }
-//
 
-    @GetMapping("/for/select")
-    @ResponseBody
-    public Page<BuilderObject> search(@RequestParam("query") String name,
-                                      @RequestParam("page") int page,
-                                      @RequestParam("size") int size) {
-        Page<BuilderObject> searchResults = objectBuilderService.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
-        return searchResults;
-    }
+//
 }

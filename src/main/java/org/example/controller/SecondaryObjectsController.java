@@ -38,6 +38,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/secondary_objects")
 @Log4j2
 public class SecondaryObjectsController {
+    String imagesBucketName = "images";
+    String filesBucketName = "files";
     final
     RealtorServiceImpl realtorService;
     final
@@ -49,6 +51,7 @@ public class SecondaryObjectsController {
 
     final
     ObjectBuilderService objectBuilderService;
+
 
     public SecondaryObjectsController(RealtorServiceImpl realtorService, MinioService minioService, PropertySecondaryObjectService propertySecondaryObjectService, SecondaryObjectValidator secondaryObjectValidator, ObjectBuilderService objectBuilderService) {
         this.realtorService = realtorService;
@@ -168,9 +171,6 @@ public class SecondaryObjectsController {
         return ResponseEntity.ok().body("ok");
     }
 
-
-    String imagesBucketName = "images";
-    String filesBucketName = "files";
 
     @GetMapping("/files/{id}")
     public ResponseEntity<?>  getFiles(@PathVariable Integer id) {
