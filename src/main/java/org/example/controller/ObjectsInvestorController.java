@@ -1,17 +1,16 @@
 package org.example.controller;
 
 import io.minio.errors.*;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.InvestorObjectDtoSearch;
 import org.example.dto.PropertyInvestorObjectDTO;
-import org.example.entity.Realtor;
 import org.example.entity.property.PropertyInvestorObject;
-import org.example.entity.property.type.PropertyOrigin;
 import org.example.mapper.ObjectInvestorMapper;
-import org.example.service.*;
-import org.example.util.ControllerHelper;
+import org.example.service.MinioService;
+import org.example.service.ObjectBuilderService;
+import org.example.service.PropertyInvestorObjectService;
+import org.example.service.RealtorServiceImpl;
 import org.example.util.validator.ObjectInvestorValidator;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -35,21 +33,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.example.util.ControllerHelper.getResponseEntity;
-import static org.example.util.ControllerHelper.streamFiles;
 
 @Controller
 @RequestMapping("/investor_objects")
 @Log4j2
 public class ObjectsInvestorController {
+    private final String imagesBucketName = "images";
+    private final String filesBucketName = "files";
     private final
     PropertyInvestorObjectService propertyInvestorObjectService;
     private final
     RealtorServiceImpl realtorService;
     private final
     MinioService minioService;
-
-    private int pageSize = 2;
     private final
     ObjectInvestorValidator objectInvestorValidator;
 
@@ -78,9 +74,9 @@ public class ObjectsInvestorController {
 
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> ObjectsBuilderCreate(@PathVariable Integer id) {
+    public ResponseEntity<String> ObjectsInvestorDelete(@PathVariable Integer id) {
         propertyInvestorObjectService.deleteById(id);
-        return ResponseEntity.ok().body(" Объект от строителя с id " + id + " успешно удален");
+        return ResponseEntity.ok().body("The investor object with ID " + id + " has been successfully deleted.");
     }
 
     @ModelAttribute
@@ -90,31 +86,15 @@ public class ObjectsInvestorController {
 
     @PostMapping("/create")
     @ResponseBody
-    public ResponseEntity newObjectsInvestorControllerPost(@Valid @ModelAttribute PropertyInvestorObjectDTO propertyInvestorObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<?> newObjectsInvestorControllerPost(@Valid @ModelAttribute PropertyInvestorObjectDTO propertyInvestorObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         PropertyInvestorObject propertyInvestorObject = ObjectInvestorMapper.INSTANCE.toEntity(propertyInvestorObjectDTO);
-
         objectInvestorValidator.validate(propertyInvestorObjectDTO, bindingResult);
-
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }
-        Realtor realtor = realtorService.getByCode(propertyInvestorObjectDTO.getEmployeeCode());
-        propertyInvestorObject.setRealtor(realtor);
-        List<String> nameFiles = new ArrayList<>();
-        for (MultipartFile multipartFile : propertyInvestorObjectDTO.getFiles()) {
-            nameFiles.add(minioService.putFile(multipartFile));
-        }
-        propertyInvestorObject.setFiles(nameFiles);
-        List<String> namePictures = new ArrayList<>();
-        for (MultipartFile multipartFile : propertyInvestorObjectDTO.getPictures()) {
-            namePictures.add(minioService.putImage(multipartFile));
-        }
-        propertyInvestorObject.setPictures(namePictures);
-        propertyInvestorObject.setBuilderObject(objectBuilderService.findById(propertyInvestorObjectDTO.getResidentialComplexId()).get());
-        propertyInvestorObject.setPropertyOrigin(PropertyOrigin.INVESTOR);
-        propertyInvestorObjectService.save(propertyInvestorObject);
+        propertyInvestorObjectService.saveCreate(propertyInvestorObject, propertyInvestorObjectDTO);
         return ResponseEntity.ok().body("ok");
     }
 
@@ -142,8 +122,7 @@ public class ObjectsInvestorController {
         return pageElements;
     }
 
-    String imagesBucketName = "images";
-    String filesBucketName = "files";
+
     private final
     ObjectBuilderService objectBuilderService;
 
@@ -180,65 +159,40 @@ public class ObjectsInvestorController {
 
     @ResponseBody
     @PostMapping("/edit/{id}")
-    public ResponseEntity editObjectsInvestorControllerPost(@PathVariable Integer id, @Valid @ModelAttribute PropertyInvestorObjectDTO propertyInvestorObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<?> editObjectsInvestorControllerPost(@PathVariable Integer id, @Valid @ModelAttribute PropertyInvestorObjectDTO propertyInvestorObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         PropertyInvestorObject propertyInvestorObject = propertyInvestorObjectService.findById(id).get();
         objectInvestorValidator.validateEdit(propertyInvestorObjectDTO, bindingResult, propertyInvestorObject.getObjectCode());
-        if (propertyInvestorObjectDTO.getOldFiles() == null) {
-            propertyInvestorObjectDTO.setOldFiles(new ArrayList<>());
-        }
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.toList()));
         }
-        streamFiles(propertyInvestorObject.getFiles(), propertyInvestorObjectDTO.getOldFiles(), log, minioService, filesBucketName, propertyInvestorObject.getPictures(), propertyInvestorObjectDTO.getOldPictures(), imagesBucketName, propertyInvestorObjectDTO, propertyInvestorObject);
-        Realtor realtor = realtorService.getByCode(propertyInvestorObjectDTO.getEmployeeCode());
-        propertyInvestorObject.setRealtor(realtor);
-        ObjectInvestorMapper.INSTANCE.toOldEntity(propertyInvestorObject, propertyInvestorObjectDTO);
-        propertyInvestorObject.setBuilderObject(objectBuilderService.findById(propertyInvestorObjectDTO.getResidentialComplexId()).get());
-        List<String> nameFiles = new ArrayList<>();
-        for (MultipartFile multipartFile : propertyInvestorObjectDTO.getFiles()) {
-            nameFiles.add(minioService.putFile(multipartFile));
-        }
-        propertyInvestorObjectDTO.getOldFiles().addAll(nameFiles);
-        propertyInvestorObject.setFiles(propertyInvestorObjectDTO.getOldFiles());
-
-
-        List<String> namePictures = new ArrayList<>();
-        for (MultipartFile multipartFile : propertyInvestorObjectDTO.getPictures()) {
-            namePictures.add(minioService.putImage(multipartFile));
-        }
-        propertyInvestorObjectDTO.getOldPictures().addAll(namePictures);
-        propertyInvestorObject.setPictures(propertyInvestorObjectDTO.getOldPictures());
-
-        propertyInvestorObject.setPropertyOrigin(PropertyOrigin.INVESTOR);
-        propertyInvestorObjectService.save(propertyInvestorObject);
-
+        propertyInvestorObjectService.saveEdit(propertyInvestorObject, propertyInvestorObjectDTO);
         return ResponseEntity.ok().body("ok");
     }
 
 
     @GetMapping("/files/{id}")
-    public ResponseEntity getFiles(@PathVariable Integer id) {
+    public ResponseEntity<?> getFiles(@PathVariable Integer id) {
         Optional<PropertyInvestorObject> objectBuilder = propertyInvestorObjectService.findById(id);
-        return getResponseEntity(objectBuilder.isEmpty(), objectBuilder.get().getFiles(), minioService, filesBucketName, objectBuilder);
+        return minioService.getResponseEntity(objectBuilder.isEmpty(), objectBuilder.get().getFiles(), filesBucketName);
     }
 
 
     @GetMapping("/card/{id}")
-    public ModelAndView CardObjectsBuilderShow(@PathVariable Integer id, Model model) {
+    public ModelAndView CardObjectsBuilderShow(@PathVariable Integer id) {
         Optional<PropertyInvestorObject> entity = propertyInvestorObjectService.findById(id);
         ModelAndView modelAndView = new ModelAndView();
         if (entity.isEmpty()) {
             modelAndView.setViewName("/error/404");
         } else {
             modelAndView.setViewName("/objects/object_investor/cardObjectInvestor");
-            model.addAttribute("element", entity.get());
+            modelAndView.addObject("element", entity.get());
             try {
                 String namePhoto = entity.get().getPictures().get(0);
                 byte[] photoData = minioService.getPhoto(namePhoto, imagesBucketName);
                 String base64Image = Base64.getEncoder().encodeToString(photoData);
-                model.addAttribute("base64Image", base64Image);
+                modelAndView.addObject("base64Image", base64Image);
             } catch (Exception e) {
                 log.error(e);
             }

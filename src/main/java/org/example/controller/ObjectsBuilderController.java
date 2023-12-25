@@ -40,15 +40,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.example.util.ControllerHelper.saveFilesInMinIO;
 
 @Controller
 @RequestMapping("/builder_objects")
 @Log4j2
 public class ObjectsBuilderController {
     Integer pageSize = 10;
-    String imagesBucketName = "images";
-    String filesBucketName = "files";
+    private final String imagesBucketName = "images";
+    private final String filesBucketName = "files";
     private final
     LayoutService layoutService;
     private final
@@ -107,11 +106,11 @@ public class ObjectsBuilderController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> ObjectsBuilderCreate(@PathVariable Integer id) {
         objectBuilderService.deleteById(id);
-        return ResponseEntity.ok().body(" Объект от строителя с id " + id + " успешно удален");
+        return ResponseEntity.ok().body("Object by builder with ID " + id + " successfully deleted");
     }
 
     @PostMapping("/create")
-    public ResponseEntity ObjectsBuilderCreatePost(@Valid @ModelAttribute ObjectBuilderDto objectBuilderDto, BindingResult bindingResult)
+    public ResponseEntity<?> ObjectsBuilderCreatePost(@Valid @ModelAttribute ObjectBuilderDto objectBuilderDto, BindingResult bindingResult)
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException
             , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         objectBuilderValidator.validate(objectBuilderDto, bindingResult);
@@ -119,49 +118,9 @@ public class ObjectsBuilderController {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
         }
         BuilderObject builderObject = ObjectBuilderMapper.INSTANCE.toEntity(objectBuilderDto);
-
-        String uuidFile = UUID.randomUUID().toString();
-
-        String resultFilename = uuidFile + "." + objectBuilderDto.getPrices().getOriginalFilename();
-        minioService.putMultipartFile(objectBuilderDto.getPrices(), filesBucketName, resultFilename);
-        builderObject.setFilePrices(resultFilename);
-
-        uuidFile = UUID.randomUUID().toString();
-        resultFilename = uuidFile + "." + objectBuilderDto.getChessboardFile().getOriginalFilename();
-        minioService.putMultipartFile(objectBuilderDto.getChessboardFile(), filesBucketName, resultFilename);
-        builderObject.setFileCheckerboard(resultFilename);
-
-        uuidFile = UUID.randomUUID().toString();
-        resultFilename = uuidFile + "." + objectBuilderDto.getInstallmentTerms().getOriginalFilename();
-        minioService.putMultipartFile(objectBuilderDto.getInstallmentTerms(), filesBucketName, resultFilename);
-        builderObject.setFileInstallmentTerms(resultFilename);
-
-
-        objectBuilderService.save(builderObject);
-        for (LayoutDTO dto : objectBuilderDto.getLayoutDTOList()) {
-            Layout layout = LayoutMapper.INSTANCE.toEntity(dto);
-            //files to MinIO and add UUID
-            uuidFile = UUID.randomUUID().toString();
-            resultFilename = uuidFile + "." + dto.getImg1Layout().getOriginalFilename();
-            minioService.putMultipartFile(dto.getImg1Layout(), imagesBucketName, resultFilename);
-            layout.setImg1(resultFilename);
-            uuidFile = UUID.randomUUID().toString();
-            resultFilename = uuidFile + "." + dto.getImg2Layout().getOriginalFilename();
-            minioService.putMultipartFile(dto.getImg2Layout(), imagesBucketName, resultFilename);
-            layout.setImg2(resultFilename);
-            uuidFile = UUID.randomUUID().toString();
-            resultFilename = uuidFile + "." + dto.getImg3Layout().getOriginalFilename();
-            minioService.putMultipartFile(dto.getImg3Layout(), imagesBucketName, resultFilename);
-            layout.setImg3(resultFilename);
-            layout.setBuilderObject(builderObject);
-            layoutService.save(layout);
-        }
-        //add pictures to MinIO
-        saveFilesInMinIO(builderObject, objectBuilderDto.getFiles(), objectBuilderDto, imagesBucketName, minioService, imagesForObjectService);
-
-        return ResponseEntity.ok().body("Сохранено");
+        objectBuilderService.saveCreate(objectBuilderDto, builderObject);
+        return ResponseEntity.ok().body("The object has been saved");
     }
-
 
 
     @GetMapping("/card/{id}")
@@ -201,20 +160,16 @@ public class ObjectsBuilderController {
 
 
     @GetMapping("/edit/{id}")
-    public String EditMainInfoObjectsBuilderShow(@PathVariable Integer id, Model model) throws MinioException,
-            NoSuchAlgorithmException, IOException, InvalidKeyException {
+    public String EditMainInfoObjectsBuilderShow(@PathVariable Integer id, Model model) throws MinioException, NoSuchAlgorithmException, IOException, InvalidKeyException {
         Optional<BuilderObject> objectBuilder = objectBuilderService.findById(id);
         if (objectBuilder.isEmpty()) {
             return "/error/404";
         }
         model.addAttribute("objectBuilder", objectBuilder.get());
-
         List<ImagesForObject> list = imagesForObjectService.findByIdObjectAndTypeObject(objectBuilder.get().getId(), TypeObject.BY_BUILDER);
-
         List<String> base64ImagesList = new ArrayList<>();
         List<Integer> base64ImagesListSize = new ArrayList<>();
         List<String> base64ImagesListName = new ArrayList<>();
-
         for (ImagesForObject imagesForObject : list) {
             byte[] filePrices = minioService.getPhoto(imagesForObject.getPath(), imagesBucketName);
             base64ImagesListName.add(imagesForObject.getPath());
@@ -233,8 +188,7 @@ public class ObjectsBuilderController {
         List<String> img1Name = new ArrayList<>();
         List<String> img2Name = new ArrayList<>();
         List<String> img3Name = new ArrayList<>();
-
-        //hide img path
+        //hide img path, send in bytes
         for (Layout layout : layouts) {
             img1.add(minioService.getFileInString(layout.getImg1(), imagesBucketName));
             img2.add(minioService.getFileInString(layout.getImg2(), imagesBucketName));
@@ -246,7 +200,6 @@ public class ObjectsBuilderController {
         model.addAttribute("img1Name", img1Name);
         model.addAttribute("img2Name", img2Name);
         model.addAttribute("img3Name", img3Name);
-
         model.addAttribute("img1", img1);
         model.addAttribute("img2", img2);
         model.addAttribute("img3", img3);
@@ -255,7 +208,7 @@ public class ObjectsBuilderController {
 
     @Transactional
     @PostMapping("/edit/{id}")
-    public ResponseEntity EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDtoEdit objectBuilderDtoEdit, BindingResult bindingResult, @PathVariable Integer id) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<?> EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDtoEdit objectBuilderDtoEdit, BindingResult bindingResult, @PathVariable Integer id) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         objectBuilderValidator.validateEdit(objectBuilderDtoEdit, bindingResult, id);
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
@@ -264,78 +217,7 @@ public class ObjectsBuilderController {
         }
         BuilderObject builderObject = objectBuilderService.findById(id).get();
         ObjectBuilderMapper.INSTANCE.toEntity(builderObject, objectBuilderDtoEdit);
-        String uuidFile = UUID.randomUUID().toString();
-        String resultFilename;
-        //save to MinIo
-        if (objectBuilderDtoEdit.getPrices() != null && objectBuilderDtoEdit.getPrices().isPresent()) {
-            resultFilename = uuidFile + "." + objectBuilderDtoEdit.getPrices().get().getOriginalFilename();
-            minioService.putMultipartFile(objectBuilderDtoEdit.getPrices().get(), filesBucketName, resultFilename);
-            builderObject.setFilePrices(resultFilename);
-        }
-        if (objectBuilderDtoEdit.getChessboardFile() != null && objectBuilderDtoEdit.getChessboardFile().isPresent()) {
-            uuidFile = UUID.randomUUID().toString();
-            resultFilename = uuidFile + "." + objectBuilderDtoEdit.getChessboardFile().get().getOriginalFilename();
-            minioService.putMultipartFile(objectBuilderDtoEdit.getChessboardFile().get(), filesBucketName, resultFilename);
-            builderObject.setFileCheckerboard(resultFilename);
-        }
-        if (objectBuilderDtoEdit.getInstallmentTerms() != null && objectBuilderDtoEdit.getInstallmentTerms().isPresent()) {
-            uuidFile = UUID.randomUUID().toString();
-            resultFilename = uuidFile + "." + objectBuilderDtoEdit.getInstallmentTerms().get().getOriginalFilename();
-            minioService.putMultipartFile(objectBuilderDtoEdit.getInstallmentTerms().get(), filesBucketName, resultFilename);
-            builderObject.setFileInstallmentTerms(resultFilename);
-        }
-        objectBuilderService.save(builderObject);
-        //Delete old Layouts
-        layoutService.deleteAllByBuilderObject(builderObject);
-
-        for (LayoutDTOEdit dto : objectBuilderDtoEdit.getLayoutDTOList()) {
-            Layout layout = LayoutMapper.INSTANCE.toEntity(dto);
-            if (dto.getImg1Layout() != null && !dto.getImg1Layout().isEmpty()) {
-                uuidFile = UUID.randomUUID().toString();
-                resultFilename = uuidFile + "." + dto.getImg1Layout().get().getOriginalFilename();
-                minioService.putMultipartFile(dto.getImg1Layout().get(), imagesBucketName, resultFilename);
-                layout.setImg1(resultFilename);
-            } else {
-                layout.setImg1(dto.getImg1Old());
-            }
-
-            if (dto.getImg2Layout() != null && !dto.getImg2Layout().isEmpty()) {
-                uuidFile = UUID.randomUUID().toString();
-                resultFilename = uuidFile + "." + dto.getImg2Layout().get().getOriginalFilename();
-                minioService.putMultipartFile(dto.getImg2Layout().get(), imagesBucketName, resultFilename);
-                layout.setImg2(resultFilename);
-            } else {
-                layout.setImg2(dto.getImg2Old());
-            }
-
-            if (dto.getImg3Layout() != null && !dto.getImg3Layout().isEmpty()) {
-                uuidFile = UUID.randomUUID().toString();
-                resultFilename = uuidFile + "." + dto.getImg3Layout().get().getOriginalFilename();
-                minioService.putMultipartFile(dto.getImg3Layout().get(), imagesBucketName, resultFilename);
-                layout.setImg3(resultFilename);
-            } else {
-                layout.setImg3(dto.getImg3Old());
-            }
-
-            layout.setBuilderObject(builderObject);
-            layoutService.save(layout);
-        }
-
-        List<ImagesForObject> namesImages = imagesForObjectService.findByIdObjectAndTypeObject(id, TypeObject.BY_BUILDER).stream().filter(path -> !objectBuilderDtoEdit.getOldFiles().contains(path.getPath())).collect(Collectors.toList());
-        //delete old images
-        namesImages.stream().forEach(s -> imagesForObjectService.deleteById(s.getIdImage()));
-        //delete old images in MinIO
-        namesImages.stream().forEach(s -> {
-            try {
-                minioService.deleteImg(s.getPath(), imagesBucketName);
-            } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
-                     InvalidResponseException | NoSuchAlgorithmException | ServerException | XmlParserException |
-                     IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        //save new images in MinIO, ImagesForObjectService
-        saveFilesInMinIO(builderObject, objectBuilderDtoEdit.getFiles(), objectBuilderDtoEdit, imagesBucketName, minioService, imagesForObjectService);
+       objectBuilderService.saveEdit(objectBuilderDtoEdit, builderObject,id);
         return ResponseEntity.ok().body("ok");
     }
 
@@ -408,7 +290,7 @@ public class ObjectsBuilderController {
     }
 
 //    @PostMapping("/generate-excel")
-//    public ResponseEntity generateExcel(HttpServletResponse response, @RequestBody ArrayList<ObjectBuilderDtoSearch> objectBuilderDTOSearchList) throws IOException {
+//    public ResponseEntity<?> generateExcel(HttpServletResponse response, @RequestBody ArrayList<ObjectBuilderDtoSearch> objectBuilderDTOSearchList) throws IOException {
 //        log.info(objectBuilderDTOSearchList);
 //
 //        Workbook workbook = new XSSFWorkbook();

@@ -96,6 +96,7 @@ public class ObjectInvestorValidator implements Validator {
     public void validateEdit(Object target, Errors errors, String code) {
         PropertyInvestorObjectDTO entity = (PropertyInvestorObjectDTO) target;
         Realtor realtor = new Realtor();
+
         try {
             realtor = realtorService.getByCode(entity.getEmployeeCode());
         } catch (EntityNotFoundException | NullPointerException ex) {

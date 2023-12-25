@@ -65,7 +65,7 @@ public class GlobalMethods {
         return list;
     }
     @GetMapping("/checkStreet")
-    public ResponseEntity checkStreet( String name) {
+    public ResponseEntity<?> checkStreet( String name) {
         Boolean checkStreetExist = exelService.checkStreetExist(name);
         if(checkStreetExist){
             return ResponseEntity.ok().body("Улица(укр) найдена.");

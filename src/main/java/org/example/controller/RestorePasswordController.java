@@ -36,7 +36,7 @@ public class RestorePasswordController {
     private final
     EmailService emailService;
     @PostMapping("/auth/login/restore_password")
-    public ResponseEntity restore_password(@RequestParam("email") String email){
+    public ResponseEntity<?> restore_password(@RequestParam("email") String email){
         Optional<UserEntity> user=userDetailsService.findByEmail(email);
         if(user.isEmpty()){
             log.info("Doesn't  exist user with so E-mail :"+ email);
@@ -56,7 +56,7 @@ public class RestorePasswordController {
 
 
     @PostMapping("/auth/login/checkCode")
-    public ResponseEntity checkCode(@RequestParam("code") String code,@RequestParam("email") String email){
+    public ResponseEntity<?> checkCode(@RequestParam("code") String code,@RequestParam("email") String email){
         Optional<UserEntity> user=userDetailsService.findByEmail(email);
         if(user.isEmpty() || !code.equals(user.get().getCodeRestorePassword())){
             log.info("Doesn't  exist user with so E-mail: "+ email+ "\n или кодом :"+ code);
@@ -70,7 +70,7 @@ public class RestorePasswordController {
     }
 
     @PostMapping("/auth/login/newPassword")
-    public ResponseEntity checkCode(@RequestParam("code") String code,@RequestParam("email") String email,@RequestParam("newPassword") String newPassword){
+    public ResponseEntity<?> checkCode(@RequestParam("code") String code,@RequestParam("email") String email,@RequestParam("newPassword") String newPassword){
         Optional<UserEntity> user=userDetailsService.findByEmail(email);
         if(user.isEmpty() || !code.equals(user.get().getCodeRestorePassword())){
             log.info("Doesn't exist user with this e-mail: "+ email+ "\n or code :"+ code);
