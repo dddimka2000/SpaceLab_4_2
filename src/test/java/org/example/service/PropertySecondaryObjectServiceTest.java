@@ -229,4 +229,5 @@ class PropertySecondaryObjectServiceTest {
         assertEquals(expectedPage, result);
         verify(propertySecondaryObjectRepository, times(1)).findAll(any(Specification.class), any(Pageable.class));
     }
+
 }

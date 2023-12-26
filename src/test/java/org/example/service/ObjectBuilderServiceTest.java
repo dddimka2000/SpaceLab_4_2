@@ -1,16 +1,25 @@
 package org.example.service;
+import static org.mockito.ArgumentMatchers.anyString;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import lombok.SneakyThrows;
+import org.example.dto.LayoutDTO;
+import org.example.dto.LayoutDTOEdit;
+import org.example.dto.ObjectBuilderDto;
+import org.example.dto.ObjectBuilderDtoEdit;
 import org.example.entity.BuilderObject;
+import org.example.entity.property.type.TypeObject;
 import org.example.repository.BuilderObjectRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.mock.web.MockMultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +37,115 @@ class ObjectBuilderServiceTest {
 
     @InjectMocks
     private ObjectBuilderService objectBuilderService;
+    @Mock
+    private MinioService minioService;
 
+    @Mock
+    private LayoutService layoutService;
+    @Mock
+    private ImagesForObjectService imagesForObjectService;
+    @SneakyThrows
+    @Test
+    void testSaveCreate() {
+        // Mock data
+        ObjectBuilderDto objectBuilderDto = createMockObjectBuilderDto();
+        BuilderObject builderObject = createMockBuilderObject();
+
+        // Mock MultipartFile for prices
+        MockMultipartFile pricesFile = Mockito.mock(MockMultipartFile.class);
+        objectBuilderDto.setPrices(pricesFile);
+
+        // Mock MultipartFile for chessboardFile
+        MockMultipartFile chessboardFile = Mockito.mock(MockMultipartFile.class);
+        objectBuilderDto.setChessboardFile(chessboardFile);
+
+        // Mock MultipartFile for installmentTerms
+        MockMultipartFile installmentTermsFile = Mockito.mock(MockMultipartFile.class);
+        objectBuilderDto.setInstallmentTerms(installmentTermsFile);
+
+        // Mock LayoutDTO
+        LayoutDTO layoutDTO = createMockLayoutDTO();
+        objectBuilderDto.setLayoutDTOList(Collections.singletonList(layoutDTO));
+        MockMultipartFile multipartFile = Mockito.mock(MockMultipartFile.class);
+        layoutDTO.setImg1Layout(multipartFile);
+        layoutDTO.setImg2Layout(multipartFile);
+        layoutDTO.setImg3Layout(multipartFile);
+
+// ...
+
+        when(pricesFile.getOriginalFilename()).thenReturn("yourDesiredString");
+        when(chessboardFile.getOriginalFilename()).thenReturn("yourDesiredString");
+        when(installmentTermsFile.getOriginalFilename()).thenReturn("yourDesiredString");
+
+
+        // Mock MinioService interactions
+//        doNothing().when(minioService.putMultipartFile(multipartFile, anyString(), anyString()));
+        Mockito.doNothing().when(minioService).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString(), Mockito.any());
+
+        // Call the method
+        objectBuilderService.saveCreate(objectBuilderDto, builderObject);
+
+        // Add assertions based on the expected behavior
+        Mockito.verify(minioService, Mockito.times(1)).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString(), Mockito.any());
+        Mockito.verify(layoutService, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(builderObjectRepository, Mockito.times(1)).save(Mockito.any());
+    }
+    @SneakyThrows
+    @Test
+    void testSaveEdit() {
+        // Mock data
+        ObjectBuilderDtoEdit objectBuilderDtoEdit = new ObjectBuilderDtoEdit();
+        BuilderObject builderObject = createMockBuilderObject();
+        Integer id = 1;
+
+        // Mock MultipartFile for prices
+        MockMultipartFile pricesFile = Mockito.mock(MockMultipartFile.class);
+        objectBuilderDtoEdit.setPrices(Optional.of(pricesFile));
+
+        // Mock MultipartFile for chessboardFile
+        MockMultipartFile chessboardFile = Mockito.mock(MockMultipartFile.class);
+        objectBuilderDtoEdit.setChessboardFile(Optional.of(chessboardFile));
+
+        // Mock MultipartFile for installmentTerms
+        MockMultipartFile installmentTermsFile = Mockito.mock(MockMultipartFile.class);
+        objectBuilderDtoEdit.setInstallmentTerms(Optional.of(installmentTermsFile));
+
+        // Mock LayoutDTOEdit
+        LayoutDTOEdit layoutDTOEdit = new LayoutDTOEdit();
+        objectBuilderDtoEdit.setLayoutDTOList(Collections.singletonList(layoutDTOEdit));
+        MockMultipartFile multipartFile = Mockito.mock(MockMultipartFile.class);
+        layoutDTOEdit.setImg1Layout(Optional.of(multipartFile));
+        layoutDTOEdit.setImg2Layout(Optional.of(multipartFile));
+        layoutDTOEdit.setImg3Layout(Optional.of(multipartFile));
+
+        // Mock MinioService interactions
+        Mockito.doNothing().when(minioService).putMultipartFile(Mockito.any(), Mockito.anyString(), Mockito.anyString());
+        Mockito.doNothing().when(minioService).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString(), Mockito.any());
+
+        // Call the method
+        objectBuilderService.saveEdit(objectBuilderDtoEdit, builderObject, id);
+
+        // Add assertions based on the expected behavior
+        Mockito.verify(minioService, Mockito.times(1)).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString(), Mockito.any());
+        Mockito.verify(layoutService, Mockito.times(1)).deleteAllByBuilderObject(builderObject);
+        Mockito.verify(layoutService, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(imagesForObjectService, Mockito.times(1)).findByIdObjectAndTypeObject(id, TypeObject.BY_BUILDER);
+    }
+
+    private ObjectBuilderDto createMockObjectBuilderDto() {
+        // Implement mock data for ObjectBuilderDto
+        return new ObjectBuilderDto();
+    }
+
+    private BuilderObject createMockBuilderObject() {
+        // Implement mock data for BuilderObject
+        return new BuilderObject();
+    }
+
+    private LayoutDTO createMockLayoutDTO() {
+        // Implement mock data for LayoutDTO
+        return new LayoutDTO();
+    }
     @Test
     void count() {
         // Arrange
