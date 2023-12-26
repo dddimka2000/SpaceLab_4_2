@@ -146,7 +146,7 @@
         }
 
         function save(form) {
-            validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
+            validatePhoneNumberWithAjax($('#telephone')).then(result => {
                 if (result) {
                     $.ajax({
                         type: 'POST',
