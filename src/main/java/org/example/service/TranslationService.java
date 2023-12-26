@@ -36,7 +36,7 @@ public class TranslationService {
         }
         return translations;
     }
-    private Map<String, String> loadTranslationsForLanguage(String language, Locale locale) {
+    public Map<String, String> loadTranslationsForLanguage(String language, Locale locale) {
         Map<String, String> translations = new HashMap<>();
         try {
             log.info("classpath:translation_" + language + ".properties");

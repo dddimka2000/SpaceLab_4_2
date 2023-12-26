@@ -178,7 +178,7 @@ public class MinioService {
         log.info("MinioService-getObjectSize successfully");
         return stat.size();
     }
-    public static void minIoSend(List<String> files, List<String> oldFiles, Logger log, MinioService minioService, String filesBucketName) {
+    public static void minIoSend(List<String> files, List<String> oldFiles, MinioService minioService, String filesBucketName) {
         List<String> namesFilesDelete = files.stream()
                 .filter(path -> !oldFiles.contains(path))
                 .collect(Collectors.toList());
@@ -209,9 +209,9 @@ public class MinioService {
             imagesForObjectService.save(imagesForObject);
         }
     }
-    public static  <T,D> void streamFiles(List<String> files, List<String> oldFiles, Logger log, MinioService minioService, String filesBucketName, List<String> pictures, List<String> oldPictures, String imagesBucketName, @ModelAttribute @Valid T propertySecondaryObjectDTO, D propertySecondaryObject) {
-        minIoSend(files, oldFiles, log, minioService, filesBucketName);
-        minIoSend(pictures, oldPictures, log, minioService, imagesBucketName);
+    public static  <T,D> void streamFiles(List<String> files, List<String> oldFiles, MinioService minioService, String filesBucketName, List<String> pictures, List<String> oldPictures, String imagesBucketName, @ModelAttribute @Valid T propertySecondaryObjectDTO, D propertySecondaryObject) {
+        minIoSend(files, oldFiles, minioService, filesBucketName);
+        minIoSend(pictures, oldPictures, minioService, imagesBucketName);
     }
     @NotNull
     public <T> ResponseEntity<Object> getResponseEntity(boolean empty, List<String> files, String filesBucketName) {
