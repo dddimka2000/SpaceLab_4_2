@@ -120,13 +120,6 @@ $(document).ready(function () {
             }
         });
     });
-
-    var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
-    flatpickrDateTimes.forEach(function (element) {
-        element.flatpickr({
-            dateFormat: "Y/m/d"
-        });
-    });
     $('.onlyNumber').on('input', function () {
         $(this).val(function (_, value) {
             return value.replace(/[^\d.]+/g, '').replace(/^(\d*\.\d*)\..*$/, '$1');

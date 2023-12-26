@@ -282,17 +282,13 @@
             </div>
         </div>
     </div>
+    <script th:href="@{/vendor/libs/flatpickr/ru.js}"></script>
 
     <script>
         const urlForAddFeedBack = '[[@{/realtors/feedback/save}]]'
         const urlForValidCode = '[[@{/realtors/countCode/}]]'
+
         $(document).ready(function () {
-            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
-            flatpickrDateTimes.forEach(function (element) {
-                element.flatpickr({
-                    dateFormat: "Y/m/d"
-                });
-            });
             if (realtor.branch != null) branchSelect2(realtor.branch.id, realtor.branch.name)
             else branchSelect2()
             if (realtor.id != null && realtor.img) {
