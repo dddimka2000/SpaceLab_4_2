@@ -7,7 +7,6 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.example.entity.ExchangeRates;
 import org.example.service.ExchangeRatesService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

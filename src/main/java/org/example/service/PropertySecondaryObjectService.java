@@ -1,28 +1,95 @@
 package org.example.service;
 
+import io.minio.errors.*;
 import lombok.extern.log4j.Log4j2;
+import org.example.dto.PropertyInvestorObjectDTO;
+import org.example.dto.PropertySecondaryObjectDTO;
+import org.example.entity.Realtor;
+import org.example.entity.property.PropertyInvestorObject;
 import org.example.entity.property.PropertySecondaryObject;
+import org.example.entity.property.type.PropertyOrigin;
+import org.example.mapper.ObjectSecondaryMapper;
 import org.example.repository.PropertySecondaryObjectRepository;
 import org.example.specification.SecondaryObjectSpecification;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Log4j2
 public class PropertySecondaryObjectService {
-    String imagesBucketName = "images";
-    String filesBucketName = "files";
+    private String imagesBucketName = "images";
+    private String filesBucketName = "files";
     private final
     PropertySecondaryObjectRepository propertySecondaryObjectRepository;
+    final
+    RealtorServiceImpl realtorService;
+    final
+    MinioService minioService;
+    final
+    ObjectBuilderService objectBuilderService;
 
-    public PropertySecondaryObjectService(PropertySecondaryObjectRepository propertySecondaryObjectRepository) {
+    public PropertySecondaryObjectService(PropertySecondaryObjectRepository propertySecondaryObjectRepository, RealtorServiceImpl realtorService, MinioService minioService, ObjectBuilderService objectBuilderService) {
         this.propertySecondaryObjectRepository = propertySecondaryObjectRepository;
+        this.realtorService = realtorService;
+        this.minioService = minioService;
+        this.objectBuilderService = objectBuilderService;
+    }
+    public void saveEdit(PropertySecondaryObject propertySecondaryObject,  PropertySecondaryObjectDTO propertySecondaryObjectDTO)throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        Realtor realtor = realtorService.getById(propertySecondaryObjectDTO.getEmployeeCode());
+        minioService.streamFiles(propertySecondaryObject.getFiles(), propertySecondaryObjectDTO.getOldFiles(), minioService, filesBucketName, propertySecondaryObject.getPictures(), propertySecondaryObjectDTO.getOldPictures(), imagesBucketName, propertySecondaryObjectDTO, propertySecondaryObject);
+        ObjectSecondaryMapper.INSTANCE.toOldEntity(propertySecondaryObject, propertySecondaryObjectDTO);
+        propertySecondaryObject.setRealtor(realtor);
+
+
+        List<String> nameFiles = new ArrayList<>();
+        for (MultipartFile multipartFile : propertySecondaryObjectDTO.getFiles()) {
+            nameFiles.add(minioService.putFile(multipartFile));
+        }
+        propertySecondaryObjectDTO.getOldFiles().addAll(nameFiles);
+        propertySecondaryObject.setFiles(propertySecondaryObjectDTO.getOldFiles());
+
+
+        List<String> namePictures = new ArrayList<>();
+        for (MultipartFile multipartFile : propertySecondaryObjectDTO.getPictures()) {
+            namePictures.add(minioService.putImage(multipartFile));
+        }
+        propertySecondaryObjectDTO.getOldPictures().addAll(namePictures);
+        propertySecondaryObject.setPictures(propertySecondaryObjectDTO.getOldPictures());
+        propertySecondaryObject.setBuilderObject(objectBuilderService.findById(propertySecondaryObjectDTO.getResidentialComplexId()).get());
+        propertySecondaryObject.setPropertyOrigin(PropertyOrigin.SECONDARY);
+        save(propertySecondaryObject);
+    }
+    public void saveCreate(PropertySecondaryObject propertySecondaryObject,  PropertySecondaryObjectDTO propertySecondaryObjectDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        log.info("PropertyInvestorObject-create start");
+        Realtor realtor = realtorService.getById(propertySecondaryObjectDTO.getEmployeeCode());
+        propertySecondaryObject.setRealtor(realtor);
+        List<String> nameFiles = new ArrayList<>();
+        for (MultipartFile multipartFile : propertySecondaryObjectDTO.getFiles()) {
+            nameFiles.add(minioService.putFile(multipartFile));
+        }
+        propertySecondaryObject.setFiles(nameFiles);
+        List<String> namePictures = new ArrayList<>();
+        for (MultipartFile multipartFile : propertySecondaryObjectDTO.getPictures()) {
+            namePictures.add(minioService.putImage(multipartFile));
+        }
+        propertySecondaryObject.setBuilderObject(objectBuilderService.findById(propertySecondaryObjectDTO.getResidentialComplexId()).get());
+
+        propertySecondaryObject.setPictures(namePictures);
+        propertySecondaryObject.setPropertyOrigin(PropertyOrigin.SECONDARY);
+        save(propertySecondaryObject);
+        log.info("PropertyInvestorObject-create successfully");
     }
 
     public void save(PropertySecondaryObject entity) {

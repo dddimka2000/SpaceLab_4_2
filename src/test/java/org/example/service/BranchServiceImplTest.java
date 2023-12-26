@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.*;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.dto.BranchDto;
 import org.example.entity.Branch;
 import org.example.mapper.BranchMapper;
@@ -164,5 +165,31 @@ public class BranchServiceImplTest {
         // Assert
         assertEquals(5, result);
         verify(branchRepository, times(1)).countByCode(123);
+    }
+
+    @Test
+    void testGetByCodeWhenBranchExists() {
+        // Arrange
+        int branchCode = 123;
+        Branch mockBranch = new Branch();
+        when(branchRepository.findByCode(branchCode)).thenReturn(Optional.of(mockBranch));
+
+        // Act
+        Branch result = branchService.getByCode(branchCode);
+
+        // Assert
+        assertEquals(mockBranch, result);
+        verify(branchRepository, times(1)).findByCode(branchCode);
+    }
+
+    @Test
+    void testGetByCodeWhenBranchDoesNotExist() {
+        // Arrange
+        int branchCode = 456;
+        when(branchRepository.findByCode(branchCode)).thenReturn(Optional.empty());
+
+        // Act and Assert
+        assertThrows(EntityNotFoundException.class, () -> branchService.getByCode(branchCode));
+        verify(branchRepository, times(1)).findByCode(branchCode);
     }
 }

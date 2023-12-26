@@ -4,9 +4,12 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.ObjectBuilderDtoEdit;
 import org.example.dto.PropertySecondaryObjectDTO;
+import org.example.entity.Realtor;
 import org.example.service.BranchServiceImpl;
 import org.example.service.PropertySecondaryObjectService;
 import org.example.service.PropertySecondaryObjectService;
+import org.example.service.RealtorServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -29,27 +32,37 @@ public class SecondaryObjectValidator implements Validator {
     private final
     PropertySecondaryObjectService propertySecondaryObjectService;
 
-    public SecondaryObjectValidator(PropertySecondaryObjectService propertySecondaryObjectService, BranchServiceImpl branchService) {
+    public SecondaryObjectValidator(PropertySecondaryObjectService propertySecondaryObjectService, BranchServiceImpl branchService, RealtorServiceImpl realtorService) {
         this.propertySecondaryObjectService = propertySecondaryObjectService;
         this.branchService = branchService;
+        this.realtorService = realtorService;
     }
 
     @Override
     public boolean supports(Class<?> clazz) {
         return PropertySecondaryObjectDTO.class.isAssignableFrom(clazz) || ObjectBuilderDtoEdit.class.isAssignableFrom(clazz);
     }
+
     private final
     BranchServiceImpl branchService;
+    final
+    RealtorServiceImpl realtorService;
 
     @Override
     public void validate(Object target, Errors errors) {
         PropertySecondaryObjectDTO entity = (PropertySecondaryObjectDTO) target;
-        if(propertySecondaryObjectService.findByCode(entity.getObjectCode()).isPresent()){
+        Realtor realtor = new Realtor();
+        try {
+            realtor = realtorService.getById(entity.getEmployeeCode());
+        } catch (EntityNotFoundException | NullPointerException ex) {
+            errors.rejectValue("employeeCode", "", "Кода данного сотрудника не существует");
+        }
+        if (propertySecondaryObjectService.findByCode(entity.getObjectCode()).isPresent()) {
             errors.rejectValue("objectCode", "", "Объект с таким кодом уже существует");
         }
         try {
             branchService.getByCode(entity.getBranchCode());
-        }catch (EntityNotFoundException | NullPointerException e){
+        } catch (EntityNotFoundException | NullPointerException e) {
             errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
         }
         if (entity.getFiles() != null && entity.getFiles().size() > 0) {
@@ -80,12 +93,18 @@ public class SecondaryObjectValidator implements Validator {
 
     public void validateEdit(Object target, Errors errors, String code) {
         PropertySecondaryObjectDTO entity = (PropertySecondaryObjectDTO) target;
-        if(!entity.getObjectCode().equals(code)&& propertySecondaryObjectService.findByCode(entity.getObjectCode()).isPresent()){
+        Realtor realtor = new Realtor();
+        try {
+            realtor = realtorService.getById(entity.getEmployeeCode());
+        } catch (EntityNotFoundException ex) {
+            errors.rejectValue("employeeCode", "", "Кода данного сотрудника не существует");
+        }
+        if (!entity.getObjectCode().equals(code) && propertySecondaryObjectService.findByCode(entity.getObjectCode()).isPresent()) {
             errors.rejectValue("objectCode", "", "Объект с таким кодом уже существует");
         }
         try {
             branchService.getByCode(entity.getBranchCode());
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
         }
         if (entity.getFiles() != null && entity.getFiles().size() > 0) {

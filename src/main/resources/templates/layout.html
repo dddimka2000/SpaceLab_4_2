@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="" lang="en"
       class="light-style layout-navbar-fixed layout-menu-fixed"
       dir="ltr"
       data-theme="theme-default"
@@ -40,7 +40,8 @@
     <link rel="stylesheet" th:href="@{/css/demo.css}">
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">//
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
+    //
     <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
@@ -69,27 +70,27 @@
             pointer-events: none;
         }
     </style>
-<script>
-    function showNotification(bigTextMessage, message, isSuccess) {
-        const notification = document.getElementById("notification");
-        const notificationMessage = document.getElementById("notification-message");
+    <script>
+        function showNotification(bigTextMessage, message, isSuccess) {
+            const notification = document.getElementById("notification");
+            const notificationMessage = document.getElementById("notification-message");
 
-        var element = document.getElementById("text_notification");
-        element.textContent = bigTextMessage;
+            var element = document.getElementById("text_notification");
+            element.textContent = bigTextMessage;
 
-        notificationMessage.textContent = message;
-        notification.classList.remove("hidden");
-        notification.classList.toggle("alert-success", isSuccess);
-        notification.classList.toggle("alert-warning", !isSuccess);
-        setTimeout(() => {
-            notification.classList.add("hidden");
-        }, 5000);
-    }
-</script>
+            notificationMessage.textContent = message;
+            notification.classList.remove("hidden");
+            notification.classList.toggle("alert-success", isSuccess);
+            notification.classList.toggle("alert-warning", !isSuccess);
+            setTimeout(() => {
+                notification.classList.add("hidden");
+            }, 5000);
+        }
+    </script>
 
     <!-- Page CSS -->
 
-<!--    флетпикер-->
+    <!--    флетпикер-->
     <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
     <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
     <!-- Helpers -->
@@ -106,7 +107,7 @@
           class="template-customizer-core-css">
     <link th:href="@{/vendor/css/rtl/theme-default.css}"
           class="template-customizer-theme-css">
-<!--    <script  th:src="@{/vendor/libs/flatpickr/flatpickr.js}" />-->
+    <!--    <script  th:src="@{/vendor/libs/flatpickr/flatpickr.js}" />-->
 
 </head>
 <body>
@@ -121,12 +122,17 @@
             <nav layout:insert="~{navbar_layout :: navbar}"></nav>
 
             <div class="content-wrapper">
+                <section layout:fragment="content">
+
+
+                </section>
                 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
                      aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modalLabel" data-translate="confirmDeletion2">Підтвердіть видалення</h5>
+                                <h5 class="modal-title" id="modalLabel" data-translate="confirmDeletion2">Підтвердіть
+                                    видалення</h5>
                                 <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -135,36 +141,36 @@
                                 <p data-translate="confirmDeletion">Ви впевнені, що хочете видалити цей запис?</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-translate="cancel">Скасувати</button>
-                                <button type="button" class="btn btn-primary confirm-delete" data-translate="yes">Так</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                        data-translate="cancel">Скасувати
+                                </button>
+                                <button type="button" class="btn btn-primary confirm-delete" data-translate="yes">Так
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <section layout:fragment="content">
-
-
-
-                    <div class="alert alert-warning notification  d-flex align-items-center hidden" role="alert"
-                         id="notification">
-                        <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.94118 10.7474V20.7444C5.94118 21.0758 5.81103 21.3936 5.57937 21.628C5.3477 21.8623 5.0335 21.994 4.70588 21.994H2.23529C1.90767 21.994 1.59347 21.8623 1.36181 21.628C1.13015 21.3936 1 21.0758 1 20.7444V11.997C1 11.6656 1.13015 11.3477 1.36181 11.1134C1.59347 10.879 1.90767 10.7474 2.23529 10.7474H5.94118ZM5.94118 10.7474C7.25166 10.7474 8.50847 10.2207 9.43512 9.28334C10.3618 8.34594 10.8824 7.07456 10.8824 5.74887V4.49925C10.8824 3.83641 11.1426 3.20071 11.606 2.73201C12.0693 2.26331 12.6977 2 13.3529 2C14.0082 2 14.6366 2.26331 15.0999 2.73201C15.5632 3.20071 15.8235 3.83641 15.8235 4.49925V10.7474H19.5294C20.1847 10.7474 20.8131 11.0107 21.2764 11.4794C21.7397 11.9481 22 12.5838 22 13.2466L20.7647 19.4947C20.5871 20.2613 20.25 20.9196 19.8045 21.3704C19.3589 21.8211 18.8288 22.04 18.2941 21.994H9.64706C8.6642 21.994 7.72159 21.599 7.0266 20.896C6.33162 20.1929 5.94118 19.2394 5.94118 18.2451"
-                                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        <strong id="text_notification"></strong>
-                        <div>
-                            <span id="notification-message"></span>
-                        </div>
+                <div class="alert alert-warning notification  d-flex align-items-center hidden" role="alert"
+                     id="notification">
+                    <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.94118 10.7474V20.7444C5.94118 21.0758 5.81103 21.3936 5.57937 21.628C5.3477 21.8623 5.0335 21.994 4.70588 21.994H2.23529C1.90767 21.994 1.59347 21.8623 1.36181 21.628C1.13015 21.3936 1 21.0758 1 20.7444V11.997C1 11.6656 1.13015 11.3477 1.36181 11.1134C1.59347 10.879 1.90767 10.7474 2.23529 10.7474H5.94118ZM5.94118 10.7474C7.25166 10.7474 8.50847 10.2207 9.43512 9.28334C10.3618 8.34594 10.8824 7.07456 10.8824 5.74887V4.49925C10.8824 3.83641 11.1426 3.20071 11.606 2.73201C12.0693 2.26331 12.6977 2 13.3529 2C14.0082 2 14.6366 2.26331 15.0999 2.73201C15.5632 3.20071 15.8235 3.83641 15.8235 4.49925V10.7474H19.5294C20.1847 10.7474 20.8131 11.0107 21.2764 11.4794C21.7397 11.9481 22 12.5838 22 13.2466L20.7647 19.4947C20.5871 20.2613 20.25 20.9196 19.8045 21.3704C19.3589 21.8211 18.8288 22.04 18.2941 21.994H9.64706C8.6642 21.994 7.72159 21.599 7.0266 20.896C6.33162 20.1929 5.94118 19.2394 5.94118 18.2451"
+                              stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                    <strong id="text_notification"></strong>
+                    <div>
+                        <span id="notification-message"></span>
                     </div>
-                </section>
+                </div>
                 <div id="logoutModal" class="modal animate__animated animate__flipInX"
                      tabindex="-1" aria-labelledby="flipInXAnimationModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" data-translate="exit.confirmation.message">Вы точно хотите выйти из своего аккаунта?</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h5 class="modal-title" data-translate="exit.confirmation.message">Вы точно хотите выйти
+                                    из своего аккаунта?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <a th:href="@{/logout}">
@@ -180,25 +186,23 @@
                 <!-- Footer -->
 
                 <footer class="content-footer footer bg-footer-theme">
-                    <div class="container-xxl">
-                        <div
-                                class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column"
-                        >
-                            <div>
-                                ©
-                                <script>
-                                    document.write(new Date().getFullYear());
-                                </script>
-                                , made with ❤
-                            </div>
-                            <div>
-                                <a
-                                        href="#"
-                                        target="_blank"
-                                        class="footer-link me-4"
-                                >Documentation</a
-                                >
-                            </div>
+                    <div
+                            class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column"
+                    >
+                        <div>
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                            , made with ❤
+                        </div>
+                        <div>
+                            <a
+                                    href="#"
+                                    target="_blank"
+                                    class="footer-link me-4"
+                            >Documentation</a
+                            >
                         </div>
                     </div>
                 </footer>

@@ -85,7 +85,7 @@ public class BannerController {
     @PostMapping("/{id}")
     @ResponseBody
     @Transactional
-    public ResponseEntity editPagePost(@PathVariable Integer id, @Valid @ModelAttribute BannerDto bannerDto, BindingResult bindingResult) {
+    public ResponseEntity<?> editPagePost(@PathVariable Integer id, @Valid @ModelAttribute BannerDto bannerDto, BindingResult bindingResult) {
         Optional<Banner> banner = bannerService.findById(id);
         bannerDto.getSlides().stream().forEach(s -> log.info("SLIDE DTO" + s));
         if (!bindingResult.hasErrors()) {
@@ -97,38 +97,7 @@ public class BannerController {
         }
         bannerSlideService.deleteAllByBannerId(id);
         BannerMapper.INSTANCE.updateBannerFromDto(bannerDto, banner.get());
-
-        //get slides from dto
-        List<BannerSlide> slideList = new ArrayList<>();
-        AtomicInteger num_1 = new AtomicInteger(0);
-        banner.get().getSlides().stream().forEach(s -> {
-            if (s.getImgPath() == null) {
-                s.setImgPath(bannerDto.getSlides().get(num_1.get()).getOldImgPath());
-            }
-            num_1.incrementAndGet();
-        });
-
-        //add new slides
-        slideList.addAll(banner.get().getSlides());
-        bannerService.save(banner.get());
-        slideList.stream().forEach(s -> s.setBanner(banner.get()));
-        slideList.stream().forEach(s -> bannerSlideService.save(s));
-        AtomicInteger num = new AtomicInteger(0);
-
-        //add new pict and delete old in MinIo
-        bannerDto.getSlides().stream().forEach(s -> {
-            if (s.getImgPath() != null) {
-                try {
-                    minioService.putMultipartFile(s.getImgPath(), imagesBucketName, slideList.get(num.get()).getImgPath());
-                    if (s.getOldImgPath() != null) {
-                        minioService.deleteImg(s.getOldImgName(), imagesBucketName);
-                    }
-                } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | NoSuchAlgorithmException | ServerException | XmlParserException | IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            num.incrementAndGet();
-        });
+        bannerSlideService.saveEdit(banner,  bannerDto);
         return ResponseEntity.ok().body("ok");
     }
 

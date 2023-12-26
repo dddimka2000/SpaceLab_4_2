@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import org.example.repository.ImageForObjectsRepository;
+import org.example.service.TranslationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,6 +25,8 @@ class TranslationControllerTest {
 
     @InjectMocks
     private TranslationController translationController;
+    @Mock
+    private TranslationService translationService;
 
     @Test
     void getAllTranslations() {
