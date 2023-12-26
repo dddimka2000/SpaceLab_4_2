@@ -59,7 +59,7 @@ public class HouseController {
         if(bindingResult2.hasErrors())return ResponseEntity.ok().body("ERROR: "+bindingResult2.getAllErrors().get(0).getDefaultMessage());
         if(bindingResult3.hasErrors())return ResponseEntity.ok().body("ERROR: "+bindingResult3.getAllErrors().get(0).getDefaultMessage());
         housesService.add(materialDTO, infoDTO, addressDTO);
-        return ResponseEntity.ok().body("Об'єкт збережено успішно");
+        return ResponseEntity.ok().body("save");
     }
 
     @PostMapping("/get/all")
@@ -71,7 +71,7 @@ public class HouseController {
     @GetMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Integer id) {
         housesService.deleteById(id);
-        return ResponseEntity.ok().body("Елемент видалено успішно");
+        return ResponseEntity.ok().body("delete");
     }
 
     @GetMapping("/getById/{id}")
@@ -137,7 +137,7 @@ public class HouseController {
         house.getPictures().remove(url);
         minioService.deleteImg(url, "images");
         housesService.save(house);
-        return ResponseEntity.ok().body("Фото з дропзони видалено успішно");
+        return ResponseEntity.ok().body("delete");
     }
 
     @DeleteMapping("/deleteFile")
@@ -146,7 +146,7 @@ public class HouseController {
         house.getFiles().remove(url);
         minioService.deleteImg(url, "images");
         housesService.save(house);
-        return ResponseEntity.ok().body("Файл видалено успішно");
+        return ResponseEntity.ok().body("delete");
     }
     @ModelAttribute
     public void activeMenuItem(Model model) {

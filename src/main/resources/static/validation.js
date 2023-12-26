@@ -16,15 +16,18 @@ function validateAndUpload(imageId, allowedExtensions) {
         const toastContainer = document.createElement('div');
         toastContainer.classList.add('position-fixed', 'bottom-0', 'end-0', 'p-3');
         document.body.appendChild(toastContainer);
-
         if (!file) {
-            showToast('Файл не вибрано', 'danger');
+            if (languageSecondExample == 'eng') showToast('No file selected', 'danger')
+            else if (languageSecondExample == 'ru')showToast('Файл не вибран', 'danger')
+            else showToast('Файл не вибрано', 'danger')
             fileInput.value = '';
             return false;
         }
 
         if (file.size > 20 * 1024 * 1024) {
-            showToast('Файл перевищує 20 МБ', 'danger');
+            if (languageSecondExample == 'eng') showToast('file more more than 20MB', 'danger')
+            else if (languageSecondExample == 'ru')showToast('Файл превышает 20 МБ', 'danger')
+            else showToast('Файл перевищує 20 МБ', 'danger')
             fileInput.value = '';
             return false;
         }
@@ -33,30 +36,40 @@ function validateAndUpload(imageId, allowedExtensions) {
         const lowerCaseExtension = `.${fileExtension.toLowerCase()}`;
 
         if (!allowedExtensions.includes(lowerCaseExtension)) {
-            showToast(`Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`, 'danger');
+            if (languageSecondExample == 'eng') showToast(`Unsupported file type The following types are available: ${allowedExtensions.join(', ')}`, 'danger')
+            else if (languageSecondExample == 'ru')showToast(`Неподдерживаемый тип файла доступны следующие типы: ${allowedExtensions.join(', ')}`, 'danger')
+            else showToast(`Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`, 'danger')
             fileInput.value = '';
             return false;
         }
 
-        showToast('Файл успішно завантажено', 'success');
+        if (languageSecondExample == 'eng') showToast(`File uploaded successfully: ${allowedExtensions.join(', ')}`, 'danger')
+        else if (languageSecondExample == 'ru')showToast(`Файл успешно загружен: ${allowedExtensions.join(', ')}`, 'danger')
+        else showToast('Файл успішно завантажено', 'success');
         if (imageId != null && imageId.length > 1) previewImage(event, imageId);
         return true;
     });
 }
 function validateOneFile(file, allowedExtensions){
     if (!file) {
-        showToast('Файл не вибрано', 'danger');
+        if (languageSecondExample == 'eng') showToast('No file selected', 'danger')
+        else if (languageSecondExample == 'ru')showToast('Файл не вибран', 'danger')
+        else showToast('Файл не вибрано', 'danger')
         return false;
     }
 
     if (file.size > 20 * 1024 * 1024) {
-        showToast('Файл перевищує 20 МБ', 'danger');
+        if (languageSecondExample == 'eng') showToast('file more more than 20MB', 'danger')
+        else if (languageSecondExample == 'ru')showToast('Файл превышает 20 МБ', 'danger')
+        else showToast('Файл перевищує 20 МБ', 'danger')
         return false;
     }
     const fileExtension = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2);
     const lowerCaseExtension = `.${fileExtension.toLowerCase()}`;
     if (!allowedExtensions.includes(lowerCaseExtension)) {
-        showToast(`Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`, 'danger');
+        if (languageSecondExample == 'eng') showToast(`Unsupported file type The following types are available: ${allowedExtensions.join(', ')}`, 'danger')
+        else if (languageSecondExample == 'ru')showToast(`Неподдерживаемый тип файла доступны следующие типы: ${allowedExtensions.join(', ')}`, 'danger')
+        else showToast(`Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`, 'danger')
         return false;
     }
 
@@ -71,14 +84,18 @@ function validateFile(imageId, allowedExtensions) {
     document.body.appendChild(toastContainer);
 
     if (!file) {
-        showToast('Файл не вибрано', 'danger');
+        if (languageSecondExample == 'eng') showToast('No file selected', 'danger')
+        else if (languageSecondExample == 'ru')showToast('Файл не вибран', 'danger')
+        else showToast('Файл не вибрано', 'danger')
         fileInput.style.borderColor = '#ff0000'
         fileInput.value = '';
         return false;
     }
 
     if (file.size > 20 * 1024 * 1024) {
-        showToast('Файл перевищує 20 МБ', 'danger');
+        if (languageSecondExample == 'eng') showToast('file more more than 20MB', 'danger')
+        else if (languageSecondExample == 'ru')showToast('Файл превышает 20 МБ', 'danger')
+        else showToast('Файл перевищує 20 МБ', 'danger')
         fileInput.style.borderColor = '#ff0000'
         fileInput.value = '';
         return false;
@@ -88,7 +105,9 @@ function validateFile(imageId, allowedExtensions) {
     const lowerCaseExtension = `.${fileExtension.toLowerCase()}`;
 
     if (!allowedExtensions.includes(lowerCaseExtension)) {
-        showToast(`Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`, 'danger');
+        if (languageSecondExample == 'eng') showToast(`Unsupported file type The following types are available: ${allowedExtensions.join(', ')}`, 'danger')
+        else if (languageSecondExample == 'ru')showToast(`Неподдерживаемый тип файла доступны следующие типы: ${allowedExtensions.join(', ')}`, 'danger')
+        else showToast(`Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`, 'danger')
         fileInput.style.borderColor = '#ff0000'
         fileInput.value = '';
         return false;
@@ -98,7 +117,9 @@ function validateFile(imageId, allowedExtensions) {
 
 function validateNumber(min, max, number) {
     if (number.val() === '') {
-        showToast("Число повинно бути вказане", "danger")
+        if (languageSecondExample == 'eng') showToast(`The number must be specified`, 'danger')
+        else if (languageSecondExample == 'ru')showToast(`Число должно быть указано`, 'danger')
+        else showToast("Число повинно бути вказане", "danger")
         number.css("border", "1px solid #ff0000");
         scrollToElement(number)
         return false;
@@ -107,7 +128,13 @@ function validateNumber(min, max, number) {
     if (result === false) {
         scrollToElement(number)
         number.css("border", "1px solid #ff0000");
-        showToast("Число повинно бути в діапазоні від " + min + " до " + max, "danger")
+        if (languageSecondExample == 'eng') {
+            showToast(`The number must be in the range from ${min} to ${max}`, 'danger');
+        } else if (languageSecondExample == 'ru') {
+            showToast(`Число должно быть в диапазоне от ${min} до ${max}`, 'danger');
+        } else {
+            showToast(`Число повинно бути в діапазоні від ${min} до ${max}`, 'danger');
+        }
     }
     return result
 }
@@ -134,7 +161,13 @@ function validString(minLength, maxLength, inputString) {
     }
     if (!result) {
         scrollToElement(inputString)
-        showToast("Поле повино містити від " + minLength + " до " + maxLength + " символів", "danger")
+        if (languageSecondExample == 'eng') {
+            showToast(`The field must contain between ${minLength} and ${maxLength} characters`, 'danger');
+        } else if (languageSecondExample == 'ru') {
+            showToast(`Поле должно содержать от ${minLength} до ${maxLength} символов`, 'danger');
+        } else {
+            showToast(`Поле повино містити від ${minLength} до ${maxLength} символів`, 'danger');
+        }
         inputString.css("border", "1px solid #ff0000");
     }
     return result
@@ -146,7 +179,13 @@ function validatePhoneNumber(input) {
     var result = phoneNumberRegex.test(input.val().replace(/\s/g, '')) && regExp.test(input.val().replace(/\s/g, ''));
     if (!result) {
         scrollToElement(input)
-        showToast("Телефон повинен бути в форматі +380_________. Та мати існуючий префікс(96), (68), (98) та інші.", "danger")
+        if (languageSecondExample == 'eng') {
+            showToast("The phone must be in the format +380_________. And have existing prefixes (96), (68), (98), and others.", 'danger');
+        } else if (languageSecondExample == 'ru') {
+            showToast("Телефон должен быть в формате +380_________. Иметь существующие префиксы (96), (68), (98) и другие.", 'danger');
+        } else {
+            showToast("Телефон повинен бути в форматі +380_________. Та мати існуючий префікс(96), (68), (98) та інші.", 'danger');
+        }
         input.css("border", "1px solid #ff0000");
     }
     return result
@@ -158,7 +197,13 @@ function validatePhoneNumberWithAjax(input) {
         var result = phoneNumberRegex.test(input.val().replace(/\s/g, '')) && regExp.test(input.val().replace(/\s/g, ''));
         if (!result) {
             scrollToElement(input);
-            showToast("Телефон повинен бути в форматі +380_________. Та мати існуючий префікс", "danger");
+            if (languageSecondExample == 'eng') {
+                showToast("The phone must be in the format +380_________. And have an existing prefix", 'danger');
+            } else if (languageSecondExample == 'ru') {
+                showToast("Телефон должен быть в формате +380_________. Иметь существующий префикс", 'danger');
+            } else {
+                showToast("Телефон повинен бути в форматі +380_________. Та мати існуючий префікс", 'danger');
+            }
             input.css("border", "1px solid #ff0000");
             reject(false);
         }
@@ -168,7 +213,13 @@ function validatePhoneNumberWithAjax(input) {
             data: { phone: input.val() },
             success: function (resultFromAjax) {
                 if (resultFromAjax && !getLastDigitFromPath(window.location.pathname)) {
-                    showToast("Телефон вже існує", "danger");
+                    if (languageSecondExample == 'eng') {
+                        showToast("The phone already exists", 'danger');
+                    } else if (languageSecondExample == 'ru') {
+                        showToast("Телефон уже существует", 'danger');
+                    } else {
+                        showToast("Телефон вже існує", 'danger');
+                    }
                     result = false;
                     reject(false);
                 }
@@ -185,7 +236,13 @@ function validateEmail(input) {
     var result = emailRegex.test(input.val());
     if (!result) {
         scrollToElement(input)
-        showToast("Email не коректний", "danger")
+        if (languageSecondExample == 'eng') {
+            showToast("Email is not valid", 'danger');
+        } else if (languageSecondExample == 'ru') {
+            showToast("Email некорректен", 'danger');
+        } else {
+            showToast("Email не коректний", 'danger');
+        }
         input.css("border", "1px solid #ff0000");
     }
     return result
@@ -195,7 +252,13 @@ function validateDate(input) {
     var regex = /^\d{4}\/\d{2}\/\d{2}$/;
     if (!regex.test(input.val())) {
         scrollToElement(input)
-        showToast("Дата повина бути вказана", "danger")
+        if (languageSecondExample == 'eng') {
+            showToast("The date must be specified", 'danger');
+        } else if (languageSecondExample == 'ru') {
+            showToast("Дата должна быть указана", 'danger');
+        } else {
+            showToast("Дата повина бути вказана", 'danger');
+        }
         input.css("border", "1px solid #ff0000");
         return false;
     }
@@ -211,14 +274,26 @@ function validateDate(input) {
         return true;
     }
     input.css("border", "1px solid #ff0000");
-    showToast("Дата вказана не коректно", "danger")
+    if (languageSecondExample == 'eng') {
+        showToast("The date is specified incorrectly", 'danger');
+    } else if (languageSecondExample == 'ru') {
+        showToast("Дата указана неверно", 'danger');
+    } else {
+        showToast("Дата вказана не коректно", 'danger');
+    }
     return false;
 }
 
 function validSelect2(select) {
     if (!select.val()  ||  (Array.isArray(select.val()) && select.val().length===0)) {
         scrollToElement(select)
-        showToast("Елемент має бути вибрано", "danger");
+        if (languageSecondExample == 'eng') {
+            showToast("The item must be selected", 'danger');
+        } else if (languageSecondExample == 'ru') {
+            showToast("Элемент должен быть выбран", 'danger');
+        } else {
+            showToast("Елемент має бути вибрано", 'danger');
+        }
         select.next().find(".select2-selection").css("border", "1px solid #ff0000");
         return false;
     }

@@ -66,19 +66,19 @@ public class BuyerController {
     @PostMapping("/add/application")
     public ResponseEntity<String> addApplication(@ModelAttribute BuyerApplication buyerApplication) {
         buyerService.addApplication(buyerApplication);
-        return ResponseEntity.ok().body("Заявку успішно збережено");
+        return ResponseEntity.ok().body("saveObj");
     }
 
     @PostMapping("/add/note")
     public ResponseEntity<String> addNote(@ModelAttribute BuyerNote buyerNote) {
         buyerService.addNote(buyerNote);
-        return ResponseEntity.ok().body("Заметка успішно збережена");
+        return ResponseEntity.ok().body("");
     }
 
     @GetMapping("/delete/note/{id}")
     public ResponseEntity<String> deleteNote(@PathVariable Integer id) {
         buyerService.deleteNote(id);
-        return ResponseEntity.ok().body("Замітку успішно видалено");
+        return ResponseEntity.ok().body("deleteObj");
     }
 
     @GetMapping("/delete/file")
@@ -87,7 +87,7 @@ public class BuyerController {
         Buyer buyer = buyerService.getById(id);
         buyer.getFiles().remove(url);
         buyerService.save(buyer);
-        return ResponseEntity.ok("Файл видалено успішно");
+        return ResponseEntity.ok("deleteObj");
     }
 
     @GetMapping("/get/application/history/{id}")
@@ -105,7 +105,7 @@ public class BuyerController {
     @GetMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Integer id) {
         buyerService.deleteById(id);
-        return ResponseEntity.ok().body("Покупця видалено успішно");
+        return ResponseEntity.ok().body("deleteObj");
     }
 
     @GetMapping("/{typeObjectForUrl}/{id}")

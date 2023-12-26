@@ -82,13 +82,13 @@ public class RealtorController {
             return ResponseEntity.ok().body("ERROR(" + fieldError.getField() + "): " + fieldError.getDefaultMessage());
         }
         realtorService.add(realtorDto);
-        return ResponseEntity.ok().body("Об'єкт успішно збережено");
+        return ResponseEntity.ok().body("saveObj");
     }
     @GetMapping("/delete/{id}")
     @ResponseBody
     public ResponseEntity<String> deleteById(@PathVariable("id")int id){
         realtorService.deleteById(id);
-        return ResponseEntity.ok("Елемент успішно видалений");
+        return ResponseEntity.ok("deleteObj");
     }
     @GetMapping("/get-all")
     @ResponseBody
@@ -115,22 +115,22 @@ public class RealtorController {
         Realtor realtor = realtorService.getById(id);
         realtor.getFiles().remove(url);
         realtorService.save(realtor);
-        return ResponseEntity.ok("Файл видалено успішно");
+        return ResponseEntity.ok("deleteObj");
     }
     @GetMapping("/feedback/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable("id")int id) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         realtorFeedBackService.deleteById(id);
-        return ResponseEntity.ok("Відгук видалено");
+        return ResponseEntity.ok("deleteObj");
     }
     @GetMapping("/delete/contact/{id}")
     public ResponseEntity<String> deleteContact(@PathVariable("id")int id) {
         realtorContactService.deleteById(id);
-        return ResponseEntity.ok("Контакт видалено успішно");
+        return ResponseEntity.ok("deleteObj");
     }
     @GetMapping("/feedback/save")
     public ResponseEntity<String> save(@RequestParam("id")int id, @RequestParam("name")String name, @RequestParam("phone")String phone, @RequestParam("description")String description) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         realtorFeedBackService.save(new RealtorFeedBack(id, name, phone, description));
-        return ResponseEntity.ok("Feedback saved successfully");
+        return ResponseEntity.ok("saveObj");
     }
     @GetMapping("/download")
     @ResponseBody

@@ -29,7 +29,7 @@ public class ApplicationController {
     @GetMapping("/delete/{id}")
     public ResponseEntity<String> deleteByID(@PathVariable Integer id){
         feedBackService.deleteById(id);
-        return ResponseEntity.ok().body("Заявку видалено успішно");
+        return ResponseEntity.ok().body("deleteObj");
     }
     @ModelAttribute
     public void activeMenuItem(Model model) {

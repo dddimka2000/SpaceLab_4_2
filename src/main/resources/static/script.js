@@ -11,7 +11,8 @@ function showToast(message, type) {
         toastContainer.style.zIndex = '9999';
         document.body.appendChild(toastContainer);
     }
-
+    if(message == 'saveObj'  ||  message == 'deleteObj'  ||  message == 'editObj')
+        message = translateValue(message)
     const toast = document.createElement('div');
     toast.classList.add('toast', `bg-${type}`);
     toast.style.transform = 'translateY(0)';

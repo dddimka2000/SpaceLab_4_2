@@ -41,12 +41,12 @@ public class QuestionController {
     public ResponseEntity<String> edit(@ModelAttribute @Valid QuestionDto questionDto, BindingResult bindingResult){
         if(bindingResult.hasErrors())return ResponseEntity.ok().body(bindingResult.getAllErrors().get(0).toString());
         questionService.edit(questionDto);
-        return ResponseEntity.ok().body("Відповідь відредагована успішно");
+        return ResponseEntity.ok().body("editObj");
     }
     @GetMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Integer id){
         questionService.deleteById(id);
-        return ResponseEntity.ok().body("Елемент видалено успішно");
+        return ResponseEntity.ok().body("deleteObj");
     }
     @ModelAttribute
     public void activeMenuItem(Model model) {

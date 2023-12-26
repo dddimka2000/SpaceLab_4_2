@@ -59,7 +59,7 @@ public class BranchController {
             return ResponseEntity.ok().body("ERROR(" + fieldError.getField() + "): " + fieldError.getDefaultMessage());
         }
         branchServiceImpl.add(branchDto);
-        return ResponseEntity.ok().body("Об'єкт успішно збережено");
+        return ResponseEntity.ok().body("saveObj");
     }
 
 
@@ -78,7 +78,7 @@ public class BranchController {
     @ResponseBody
     public ResponseEntity<String> deleteById(@PathVariable("id") int id) {
         branchServiceImpl.deleteById(id);
-        return ResponseEntity.ok("Філіал був видалений");
+        return ResponseEntity.ok("deleteObj");
     }
 
     @GetMapping("/for/select")

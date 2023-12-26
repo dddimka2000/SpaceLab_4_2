@@ -57,7 +57,7 @@ public class CommercialObjectsController {
         if(bindingResult2.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult1.getObjectName()+"): "+bindingResult2.getAllErrors().get(0).getDefaultMessage());
         if(bindingResult3.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult1.getObjectName()+"): "+bindingResult3.getAllErrors().get(0).getDefaultMessage());
         commercialService.add(commercialInfoDto, commercialMaterialAndAreaDto, commercialAddressDto);
-        return ResponseEntity.ok().body("Об'єкт збережено успішно");
+        return ResponseEntity.ok().body("saveObj");
     }
     @PostMapping("/get/all")
     @ResponseBody
@@ -72,7 +72,7 @@ public class CommercialObjectsController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Integer id){
         commercialService.deleteById(id);
-        return ResponseEntity.ok().body("Елемент видалено успішно");
+        return ResponseEntity.ok().body("deleteObj");
     }
     @GetMapping("/getUrl/{id}")
     public ResponseEntity<String> getUrl(@PathVariable Integer id) {
@@ -130,7 +130,7 @@ public class CommercialObjectsController {
         house.getPictures().remove(url);
         minioService.deleteImg(url, "images");
         commercialService.save(house);
-        return ResponseEntity.ok().body("Фото з дропзони видалено успішно");
+        return ResponseEntity.ok().body("deleteObj");
     }
     @DeleteMapping("/deleteFile")
     public ResponseEntity<String> deleteFile(@RequestParam Integer id, @RequestParam String url) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
@@ -138,7 +138,7 @@ public class CommercialObjectsController {
         house.getFiles().remove(url);
         minioService.deleteImg(url, "images");
         commercialService.save(house);
-        return ResponseEntity.ok().body("Файл видалено успішно");
+        return ResponseEntity.ok().body("deleteObj");
     }
     @ModelAttribute
     public void activeMenuItem(Model model) {
