@@ -56,10 +56,12 @@ public class BannerSlideService {
             if (s.getImgPath() != null) {
                 try {
                     minioService.putMultipartFile(s.getImgPath(), imagesBucketName, slideList.get(num.get()).getImgPath());
-                    if (s.getOldImgPath() != null) {
+                    if (s.getOldImgPath() != null)
+                    {
                         minioService.deleteImg(s.getOldImgName(), imagesBucketName);
                     }
-                } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
+                }
+                catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                          InvalidResponseException | NoSuchAlgorithmException | ServerException | XmlParserException |
                          IOException e) {
                     throw new RuntimeException(e);

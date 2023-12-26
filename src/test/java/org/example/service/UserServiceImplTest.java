@@ -120,7 +120,20 @@ class UserServiceImplTest {
         assertEquals(mockPage, result);
     }
 
+
     @Test
-    void getAuthUser() {
+    public void testGetAuthUser() {
+        // Arrange
+        UserEntity expectedUser = new UserEntity(); // Создайте экземпляр UserEntity, который вы ожидаете получить
+        when(userRepository.findById(1)).thenReturn(Optional.of(expectedUser));
+
+        // Act
+        UserEntity actualUser = userService.getAuthUser();
+
+        // Assert
+        // Проверьте, что метод findById вызывается с ожидаемым параметром
+        verify(userRepository, times(1)).findById(1);
+        // Проверьте, что возвращенный пользователь соответствует ожидаемому пользователю
+        assertEquals(expectedUser, actualUser);
     }
 }

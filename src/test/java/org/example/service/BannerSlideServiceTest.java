@@ -5,21 +5,26 @@ import static org.junit.jupiter.api.Assertions.*;
 import io.minio.errors.*;
 import io.minio.messages.ErrorResponse;
 import lombok.SneakyThrows;
+import org.example.dto.BannerDto;
 import org.example.dto.BannerSlideDto;
 import org.example.entity.Banner;
 import org.example.entity.BannerSlide;
+import org.example.repository.BannerRepository;
 import org.example.repository.BannerSlideRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,6 +34,10 @@ class BannerSlideServiceTest {
     @Mock
     private BannerSlideRepository bannerSlideRepository;
     @Mock
+    private BannerRepository bannerRepository;
+    @Mock
+    private BannerService bannerService;
+    @Mock
     private MinioService minioService;
     @InjectMocks
     private BannerSlideService bannerSlideService;
@@ -37,7 +46,86 @@ class BannerSlideServiceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
+    @SneakyThrows
+    @Test
+    public void testSaveEdit() {
+        // Arrange
+        Banner existingBanner = new Banner(); // Создайте существующий баннер для теста
+        List<BannerSlide> existingSlides = new ArrayList<>();
+        existingSlides.add(new BannerSlide());
+        existingBanner.setSlides(existingSlides);
+        MockMultipartFile multipartFile = Mockito.mock(MockMultipartFile.class);
+        BannerDto bannerDto = new BannerDto(); // Создайте объект BannerDto для теста
+        BannerSlideDto bannerSlide=new BannerSlideDto();
+        bannerSlide.setImgPath(multipartFile);
+        List<BannerSlideDto> list=new ArrayList<>();
+        list.add(bannerSlide);
+        bannerDto.setSlides(list);
+        List<BannerSlideDto> newSlides = new ArrayList<>();
+        BannerSlideDto newSlideDto = new BannerSlideDto();
+        newSlideDto.setOldImgPath("old/path");
+        newSlides.add(newSlideDto);
 
+        Optional<Banner> optionalBanner = Optional.of(existingBanner);
+        when(bannerRepository.findById(any())).thenReturn(optionalBanner);
+
+        // Act
+        bannerSlideService.saveEdit(optionalBanner, bannerDto);
+    }
+    @SneakyThrows
+    @Test
+    public void testSaveEditNullIf() {
+        // Arrange
+        Banner existingBanner = new Banner(); // Создайте существующий баннер для теста
+        List<BannerSlide> existingSlides = new ArrayList<>();
+        existingSlides.add(new BannerSlide());
+        existingBanner.setSlides(existingSlides);
+        MockMultipartFile multipartFile = Mockito.mock(MockMultipartFile.class);
+        BannerDto bannerDto = new BannerDto();
+        BannerSlideDto bannerSlide=new BannerSlideDto();
+        bannerSlide.setImgPath(multipartFile);
+        bannerSlide.setOldImgPath("wrrw");
+
+        List<BannerSlideDto> list=new ArrayList<>();
+        list.add(bannerSlide);
+        bannerDto.setSlides(list);
+
+        Optional<Banner> optionalBanner = Optional.of(existingBanner);
+        when(bannerRepository.findById(any())).thenReturn(optionalBanner);
+
+        // Act
+        bannerSlideService.saveEdit(optionalBanner, bannerDto);
+    }
+    @SneakyThrows
+    @Test
+    void testSaveEditHandlesError() {
+        // Создайте mock для MinioService
+        Banner existingBanner = new Banner(); // Создайте существующий баннер для теста
+        List<BannerSlide> existingSlides = new ArrayList<>();
+        existingSlides.add(new BannerSlide());
+        existingBanner.setSlides(existingSlides);
+        MockMultipartFile multipartFile = Mockito.mock(MockMultipartFile.class);
+        BannerDto bannerDto = new BannerDto();
+        BannerSlideDto bannerSlide=new BannerSlideDto();
+        bannerSlide.setImgPath(multipartFile);
+        bannerSlide.setOldImgPath("wrrw");
+
+        List<BannerSlideDto> list=new ArrayList<>();
+        list.add(bannerSlide);
+        bannerDto.setSlides(list);
+
+        Optional<Banner> optionalBanner = Optional.of(existingBanner);
+        when(bannerRepository.findById(any())).thenReturn(optionalBanner);
+
+        // Act
+        // Установите mock так, чтобы выбросить исключение при вызове putMultipartFile
+        doThrow(new RuntimeException()).when(minioService).putMultipartFile(any(), any(), any());
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            bannerSlideService.saveEdit(Optional.of(new Banner()), bannerDto);
+            // убедитесь, что метод putMultipartFile был вызван ожидаемое количество раз
+            verify(minioService, times(1)).putMultipartFile(any(), any(), any());
+        });
+    }
     @Test
     void testSave() {
         // Arrange
