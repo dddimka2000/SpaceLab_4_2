@@ -74,7 +74,8 @@
                             <label data-translate="address">Адрес</label>
                             <input type="text" placeholder="Бейкер-стрит 221B" class="form-control"
                                    th:field="*{address}"
-                                   th:style="${#fields.hasErrors('address') ? 'border-color: #ff0000' : ''}" data-translate-placeholder="enter_street">
+                                   th:style="${#fields.hasErrors('address') ? 'border-color: #ff0000' : ''}"
+                                   data-translate-placeholder="enter_street">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                  th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
                         </div>
@@ -91,7 +92,9 @@
                 <div class="card-footer">
                     <div class="d-flex justify-content-end">
                         <a th:href="@{/branches}" class="btn btn-default" data-translate="cancel">Отменить</a>
-                        <button type="button" onclick="sendForm()" class="btn btn-success" data-translate="save">Сохранить</button>
+                        <button type="button" onclick="sendForm()" class="btn btn-success" data-translate="save">
+                            Сохранить
+                        </button>
                     </div>
                 </div>
             </form>
@@ -102,10 +105,11 @@
     </script>
     <script>
         $(document).ready(function () {
-              if(getLastDigitFromPath()){
-                  $("#telephone").val(branch.telephone)
-              }
+            if (getLastDigitFromPath()) {
+                $("#telephone").val(branch.telephone)
+            }
         })
+
         function sendForm() {
             cleanInputs()
             var code = $("#code")
@@ -140,20 +144,27 @@
                 });
             } else save($('#branchForm'))
         }
-        function save(form){
-            $.ajax({
-                type: 'POST',
-                url: '[[@{/branches/create}]]',
-                data: new FormData(form[0]),
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    showToast(response, "success");
-                },
-                error: function (error) {
-                    console.error('Помилка відправки файлів на сервер:', error);
+
+        function save(form) {
+            validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
+                if (result) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '[[@{/branches/create}]]',
+                        data: new FormData(form[0]),
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            showToast(response, "success");
+                        },
+                        error: function (error) {
+                            console.error('Помилка відправки файлів на сервер:', error);
+                        }
+                    })
                 }
-            });
+            }).catch(error => {
+            })
+
         }
 
     </script>

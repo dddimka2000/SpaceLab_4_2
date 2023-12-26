@@ -144,4 +144,8 @@ public class BuyerServiceImpl {
         log.info("BuyerServiceImpl-filterForObject successfully");
         return result;
     }
+
+    public boolean existsByPhone(String phone) {
+        return buyerRepository.existsByPhone(phone);
+    }
 }

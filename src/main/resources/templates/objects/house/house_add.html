@@ -507,7 +507,12 @@
     <script>
 
         function checkPhone(button) {
-            if (validatePhoneNumber($('#telephone'))) showToast("Телефон коректний", "success")
+            validatePhoneNumberWithAjax($('#telephone')).then(result => {
+                if (result) {
+                    showToast("Телефон коректний", "success");
+                }
+            }).catch(error => {
+            })
         }
 
         function deleteFile(button, url) {
@@ -826,19 +831,38 @@
                         showToast("Ріелтор не належить вказаному філіалу", "danger")
                         branchCode.css("border", "1px solid #ff0000");
                     } else {
-                        $.ajax({
-                            type: 'POST',
-                            url: '[[@{/houses/add/info}]]',
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            success: function (response) {
-                                showToast(response, "success")
-                            },
-                            error: function (error) {
-                                console.error('Помилка відправки файлів на сервер:', error);
+                        validatePhoneNumberWithAjax($('#telephone')).then(result => {
+                            if (result) {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '[[@{/object/checkCode}]]',
+                                    data: {code: $("#codeObject").val()},
+                                    success: function (response) {
+                                        if(response && !getLastDigitFromPath(window.location.pathname)){
+                                            showToast("Об'єкт з таким кодом вже існує", "danger")
+                                            $("#codeObject").css("border", "1px solid #ff0000")
+                                            scrollToElement($("#codeObject"))
+                                        }
+                                        else {
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: '[[@{/houses/add/info}]]',
+                                                data: formData,
+                                                contentType: false,
+                                                processData: false,
+                                                success: function (response) {
+                                                    showToast(response, "success")
+                                                },
+                                                error: function (error) {
+                                                    console.error('Помилка відправки файлів на сервер:', error);
+                                                }
+                                            })
+                                        }
+                                    },
+                                })
                             }
-                        });
+                        }).catch(error => {
+                        })
                     }
                 }
             })
@@ -867,8 +891,8 @@
                         $("#administrationComment").val(house.administrationComment)
 
                         $("#codeObject").val(house.objectCode)
-                        if(house.realtor)$("#codeBranch").val(house.realtor.branch.id)
-                        if(house.realtor)$("#codeStaff").val(house.realtor.id)
+                        if(house.realtor)$("#codeBranch").val(house.realtor.branch.code)
+                        if(house.realtor)$("#codeStaff").val(house.realtor.code)
                         $("#landmark").val(house.landmark)
                         $("#price").val(house.price)
                         $("#plotAreaTotal").val(house.plotAreaTotal)

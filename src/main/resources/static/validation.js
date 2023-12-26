@@ -151,7 +151,35 @@ function validatePhoneNumber(input) {
     }
     return result
 }
-
+function validatePhoneNumberWithAjax(input) {
+    return new Promise((resolve, reject) => {
+        const phoneNumberRegex = /^\+380\d{9}$/;
+        var regExp = /^\+380(31|32|33|34|35|36|38|39|41|43|44|45|46|20|89|94|92|91|67|68|96|97|98|70|90|91|67|68|96|97|98|70|87|89|50|66|95|99|93)\d{7}$/;
+        var result = phoneNumberRegex.test(input.val().replace(/\s/g, '')) && regExp.test(input.val().replace(/\s/g, ''));
+        if (!result) {
+            scrollToElement(input);
+            showToast("Телефон повинен бути в форматі +380_________. Та мати існуючий префікс", "danger");
+            input.css("border", "1px solid #ff0000");
+            reject(false);
+        }
+        $.ajax({
+            type: 'GET',
+            url: contextPath + '/valid/phone',
+            data: { phone: input.val() },
+            success: function (resultFromAjax) {
+                if (resultFromAjax && !getLastDigitFromPath(window.location.pathname)) {
+                    showToast("Телефон вже існує", "danger");
+                    result = false;
+                    reject(false);
+                }
+                resolve(result);
+            },
+            error: function () {
+                reject(false);
+            }
+        });
+    });
+}
 function validateEmail(input) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     var result = emailRegex.test(input.val());
@@ -188,7 +216,6 @@ function validateDate(input) {
 }
 
 function validSelect2(select) {
-    console.log(select.val())
     if (!select.val()  ||  (Array.isArray(select.val()) && select.val().length===0)) {
         scrollToElement(select)
         showToast("Елемент має бути вибрано", "danger");

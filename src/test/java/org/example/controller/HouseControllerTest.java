@@ -70,7 +70,7 @@ class HouseControllerTest {
         HouseInfoDto infoDTO = new HouseInfoDto();
         HouseAddressDto addressDTO = new HouseAddressDto();
         BindingResult bindingResult = new BeanPropertyBindingResult(materialDTO, "materialDTO");
-        ResponseEntity<String> responseEntity = houseController.addInfo(materialDTO, infoDTO, addressDTO, bindingResult);
+        ResponseEntity<String> responseEntity = houseController.addInfo(materialDTO, bindingResult, infoDTO, bindingResult, addressDTO, bindingResult);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Об'єкт збережено успішно", responseEntity.getBody());
         verify(housesService, times(1)).add(materialDTO, infoDTO, addressDTO);

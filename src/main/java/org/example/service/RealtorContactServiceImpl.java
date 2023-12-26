@@ -16,4 +16,8 @@ public class RealtorContactServiceImpl {
         realtorContactRepository.deleteById(id);
         log.info("RealtorContactServiceImpl-deleteById successfully");
     }
+
+    public boolean existsByPhone(String phone) {
+        return realtorContactRepository.existsByPhone(phone);
+    }
 }

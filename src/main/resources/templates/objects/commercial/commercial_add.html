@@ -739,19 +739,38 @@
                         showToast("Ріелтор не належить вказаному філіалу", "danger")
                         branchCode.css("border", "1px solid #ff0000");
                     } else {
-                        $.ajax({
-                            type: 'POST',
-                            url: '[[@{/commercial/add}]]',
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            success: function (response) {
-                                showToast(response, "success")
-                            },
-                            error: function (error) {
-                                console.error('Помилка відправки файлів на сервер:', error);
+                        validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
+                            if (result) {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '[[@{/object/checkCode}]]',
+                                    data: {code: $("#objectCode").val()},
+                                    success: function (response) {
+                                        if(response && !getLastDigitFromPath(window.location.pathname)){
+                                            showToast("Об'єкт з таким кодом вже існує", "danger")
+                                            $("#objectCode").css("border", "1px solid #ff0000")
+                                            scrollToElement($("#objectCode"))
+                                        }
+                                        else {
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: '[[@{/commercial/add}]]',
+                                                data: formData,
+                                                contentType: false,
+                                                processData: false,
+                                                success: function (response) {
+                                                    showToast(response, "success")
+                                                },
+                                                error: function (error) {
+                                                    console.error('Помилка відправки файлів на сервер:', error);
+                                                }
+                                            });
+                                        }
+                                    },
+                                })
                             }
-                        });
+                        }).catch(error => {
+                        })
                     }
                 },
                 error: function (error) {
@@ -820,9 +839,13 @@
                 }
             });
         }
-        function checkPhone(button){
-            cleanInputs()
-            if (validatePhoneNumber($('#ownerPhone')))showToast("Телефон коректний", "success")
+        function checkPhone(button) {
+            validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
+                if (result) {
+                    showToast("Телефон коректний", "success");
+                }
+            }).catch(error => {
+            })
         }
         function validAllInputs(formData){
             cleanInputs()
