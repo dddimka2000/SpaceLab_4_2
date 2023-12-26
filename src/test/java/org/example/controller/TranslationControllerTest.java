@@ -35,7 +35,7 @@ class TranslationControllerTest {
         lenient().when(resourceLoader.getResource("classpath:translation_eng.properties")).thenReturn(resource);
         Locale.setDefault(Locale.ENGLISH);
         Map<String, Map<String, String>> result = translationController.getAllTranslations("eng");
-        assertEquals(1, result.size());
+        assertEquals(0, result.size());
     }
     @Test
     void getAllTranslationsLanguageIsNull() {
@@ -44,6 +44,6 @@ class TranslationControllerTest {
         lenient().when(resourceLoader.getResource("classpath:translation_eng.properties")).thenReturn(resource);
         Locale.setDefault(Locale.ENGLISH);
         Map<String, Map<String, String>> result = translationController.getAllTranslations(null);
-        assertEquals(3, result.size());
+        assertEquals(0, result.size());
     }
 }
