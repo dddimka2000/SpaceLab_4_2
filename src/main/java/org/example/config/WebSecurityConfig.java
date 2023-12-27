@@ -70,7 +70,9 @@ public class WebSecurityConfig {
                 .formLogin(form ->
                         form.loginPage("/auth/login")
                                 .loginProcessingUrl("/auth/process_login")
-                                .failureUrl("/auth/login?error"))
+                                .defaultSuccessUrl("/", true)
+                                .failureUrl("/auth/login?error")
+                )
                 .rememberMe()
                 .and()
                 .httpBasic().disable()
@@ -78,7 +80,7 @@ public class WebSecurityConfig {
                         exceptionHandling
                                 .defaultAuthenticationEntryPointFor(
                                         new LoginUrlAuthenticationEntryPoint("/auth/login"),
-                                        new AntPathRequestMatcher("/admin/**")
+                                        new AntPathRequestMatcher("/**")
                                 )
                 )
                 .addFilterBefore(new CaptchaFilter(recaptchaService), UsernamePasswordAuthenticationFilter.class);
