@@ -48,7 +48,7 @@ class BannerSlideServiceTest {
     }
     @SneakyThrows
     @Test
-    public void testSaveEdit() {
+    public void saveEdit() {
         // Arrange
         Banner existingBanner = new Banner(); // Создайте существующий баннер для теста
         List<BannerSlide> existingSlides = new ArrayList<>();
@@ -74,7 +74,7 @@ class BannerSlideServiceTest {
     }
     @SneakyThrows
     @Test
-    public void testSaveEditNullIf() {
+    public void saveEditNullIf() {
         // Arrange
         Banner existingBanner = new Banner(); // Создайте существующий баннер для теста
         List<BannerSlide> existingSlides = new ArrayList<>();
@@ -98,7 +98,7 @@ class BannerSlideServiceTest {
     }
     @SneakyThrows
     @Test
-    void testSaveEditHandlesError() {
+    void saveEditHandlesError() {
         // Создайте mock для MinioService
         Banner existingBanner = new Banner(); // Создайте существующий баннер для теста
         List<BannerSlide> existingSlides = new ArrayList<>();
@@ -127,7 +127,7 @@ class BannerSlideServiceTest {
         });
     }
     @Test
-    void testSave() {
+    void save() {
         // Arrange
         BannerSlide bannerSlideToSave = new BannerSlide();
 
@@ -139,7 +139,7 @@ class BannerSlideServiceTest {
     }
 
     @Test
-    void testDeleteById() {
+    void deleteById() {
         // Arrange
         Integer bannerSlideId = 1;
 
@@ -151,7 +151,7 @@ class BannerSlideServiceTest {
     }
 
     @Test
-    void testFindAll() {
+    void findAll() {
         // Arrange
         List<BannerSlide> mockBannerSlideList = new ArrayList<>();
         when(bannerSlideRepository.findAll()).thenReturn(mockBannerSlideList);
@@ -167,7 +167,7 @@ class BannerSlideServiceTest {
     }
 
     @Test
-    void testDeleteAllByBannerId() {
+    void deleteAllByBannerId() {
         // Arrange
         Integer bannerId = 1;
 
@@ -179,7 +179,7 @@ class BannerSlideServiceTest {
     }
 
     @Test
-    void testFindAllByBannerIdDTO() throws Exception {
+    void findAllByBannerIdDTO() throws Exception {
         // Arrange
         List<BannerSlide> mockBannerSlideList = new ArrayList<>();
         mockBannerSlideList.add(new BannerSlide());
@@ -199,7 +199,7 @@ class BannerSlideServiceTest {
     }
 
     @Test
-    void testFindAllByBannerIdDTOError() {
+    void findAllByBannerIdDTOError() {
         List<BannerSlide> mockBannerSlideList = new ArrayList<>();
         mockBannerSlideList.add(new BannerSlide());
         when(bannerSlideService.findAllByBannerIdDTO(mockBannerSlideList)).thenThrow(ErrorResponseException.class);
@@ -214,7 +214,7 @@ class BannerSlideServiceTest {
 
 
     @Test
-    void testFindAllByBanner() {
+    void findAllByBanner() {
         // Arrange
         Banner mockBanner = new Banner();
         List<BannerSlide> mockBannerSlideList = new ArrayList<>();

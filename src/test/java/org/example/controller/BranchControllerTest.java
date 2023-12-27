@@ -82,7 +82,7 @@ class BranchControllerTest {
         ResponseEntity<String> responseEntity = branchController.createPage(branchDto, bindingResult);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Об'єкт успішно збережено", responseEntity.getBody());
+        assertEquals("saveObj", responseEntity.getBody());
         verify(branchValidator, times(1)).validate(branchDto, bindingResult);
         verify(branchService, times(1)).add(branchDto);
 
@@ -126,7 +126,7 @@ class BranchControllerTest {
         int idToDelete = 1;
         ResponseEntity<String> responseEntity = branchController.deleteById(idToDelete);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Філіал був видалений", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(branchService, times(1)).deleteById(idToDelete);
     }
 

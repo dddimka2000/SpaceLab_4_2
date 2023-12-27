@@ -59,7 +59,7 @@ class HousesServiceImplTest {
     private HousesServiceImpl housesService;
 
     @Test
-    void testCount() {
+    void count() {
         // Mock the behavior of the repository
         long countMock=5;
         when(propertyHouseObjectRepository.count()).thenReturn(countMock);
@@ -75,7 +75,7 @@ class HousesServiceImplTest {
     }
 
     @Test
-    void testAdd() throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    void add() throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         // Arrange
         HouseMaterialDto materialDTO = new HouseMaterialDto();
         HouseInfoDto infoDTO = new HouseInfoDto();
@@ -97,7 +97,7 @@ class HousesServiceImplTest {
         verify(propertyHouseObjectRepository).save(any());
     }
     @Test
-    void testSave() {
+    void save() {
         // Mock the behavior of the repository
         // ...
 
@@ -110,7 +110,7 @@ class HousesServiceImplTest {
     }
 
     @Test
-    void testGetById() {
+    void getById() {
         // Mock the behavior of the repository
         when(propertyHouseObjectRepository.findById(1)).thenReturn(java.util.Optional.of(new PropertyHouseObject()));
 
@@ -125,7 +125,7 @@ class HousesServiceImplTest {
     }
 
     @Test
-    void testGetAll() {
+    void getAll() {
         ObjectForFilterDto propertyCommercialObject = new ObjectForFilterDto();
         PropertyObjectAddress propertyObjectAddress=new PropertyObjectAddress();
         propertyObjectAddress.setStreet("Название улицы");
@@ -148,7 +148,7 @@ class HousesServiceImplTest {
     }
 
     @Test
-    void testDeleteById() {
+    void deleteById() {
         // Mock the behavior of the repository
         doNothing().when(propertyHouseObjectRepository).deleteById(1);
 

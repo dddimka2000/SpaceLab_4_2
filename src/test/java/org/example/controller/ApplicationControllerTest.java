@@ -52,7 +52,7 @@ public class ApplicationControllerTest {
         ResponseEntity<String> responseEntity = applicationController.deleteByID(idToDelete);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Заявку видалено успішно", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(feedBackService, times(1)).deleteById(idToDelete);
     }
 

@@ -72,7 +72,7 @@ class HouseControllerTest {
         BindingResult bindingResult = new BeanPropertyBindingResult(materialDTO, "materialDTO");
         ResponseEntity<String> responseEntity = houseController.addInfo(materialDTO, bindingResult, infoDTO, bindingResult, addressDTO, bindingResult);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Об'єкт збережено успішно", responseEntity.getBody());
+        assertEquals("saveObj", responseEntity.getBody());
         verify(housesService, times(1)).add(materialDTO, infoDTO, addressDTO);
     }
 
@@ -91,7 +91,7 @@ class HouseControllerTest {
         Integer objectId = 1;
         ResponseEntity<String> responseEntity = houseController.deleteById(objectId);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Елемент видалено успішно", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(housesService, times(1)).deleteById(objectId);
     }
 
@@ -145,7 +145,7 @@ class HouseControllerTest {
         when(housesService.getById(objectId)).thenReturn(houseObject);
         ResponseEntity<String> responseEntity = houseController.deletePicture(objectId, url);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Фото з дропзони видалено успішно", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(housesService, times(1)).getById(objectId);
         verify(housesService, times(1)).save(houseObject);
         verify(minioService, times(1)).deleteImg(url, "images");
@@ -159,7 +159,7 @@ class HouseControllerTest {
         when(housesService.getById(objectId)).thenReturn(houseObject);
         ResponseEntity<String> responseEntity = houseController.deleteFile(objectId, url);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Файл видалено успішно", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(housesService, times(1)).getById(objectId);
         verify(housesService, times(1)).save(houseObject);
         verify(minioService, times(1)).deleteImg(url, "images");

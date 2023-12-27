@@ -213,6 +213,8 @@ function validatePhoneNumberWithAjax(input) {
             data: { phone: input.val() },
             success: function (resultFromAjax) {
                 if (resultFromAjax && !getLastDigitFromPath(window.location.pathname)) {
+                    scrollToElement(input);
+                    input.css("border", "1px solid #ff0000")
                     if (languageSecondExample == 'eng') {
                         showToast("The phone already exists", 'danger');
                     } else if (languageSecondExample == 'ru') {

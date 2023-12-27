@@ -64,7 +64,7 @@ class QuestionControllerTest {
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
         ResponseEntity<String> result = questionController.edit(questionDto, bindingResult);
-        assertEquals(ResponseEntity.ok().body("Відповідь відредагована успішно"), result);
+        assertEquals(ResponseEntity.ok().body("editObj"), result);
         verify(questionService, times(1)).edit(questionDto);
     }
     @Test
@@ -81,7 +81,7 @@ class QuestionControllerTest {
     void deleteById() {
         Integer id = 1;
         ResponseEntity<String> result = questionController.deleteById(id);
-        assertEquals(ResponseEntity.ok().body("Елемент видалено успішно"), result);
+        assertEquals(ResponseEntity.ok().body("deleteObj"), result);
         verify(questionService, times(1)).deleteById(id);
     }
 

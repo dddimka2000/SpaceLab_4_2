@@ -93,7 +93,7 @@ class BuyerControllerTest {
         BuyerApplication buyerApplication = new BuyerApplication();
         ResponseEntity<String> responseEntity = buyerController.addApplication(buyerApplication);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Заявку успішно збережено", responseEntity.getBody());
+        assertEquals("saveObj", responseEntity.getBody());
         verify(buyerService, times(1)).addApplication(buyerApplication);
     }
 
@@ -102,7 +102,7 @@ class BuyerControllerTest {
         BuyerNote buyerNote = new BuyerNote();
         ResponseEntity<String> responseEntity = buyerController.addNote(buyerNote);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Заметка успішно збережена", responseEntity.getBody());
+        assertEquals("saveObj", responseEntity.getBody());
         verify(buyerService, times(1)).addNote(buyerNote);
     }
 
@@ -111,7 +111,7 @@ class BuyerControllerTest {
         Integer noteId = 1;
         ResponseEntity<String> responseEntity = buyerController.deleteNote(noteId);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Замітку успішно видалено", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(buyerService, times(1)).deleteNote(noteId);
     }
 
@@ -120,7 +120,7 @@ class BuyerControllerTest {
         when(buyerService.getById(anyInt())).thenReturn(mock(Buyer.class));
         ResponseEntity<String> responseEntity = buyerController.deleteFile(1, "url");
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Файл видалено успішно", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(minioService, times(1)).deleteImg("url", "images");
     }
 
@@ -157,7 +157,7 @@ class BuyerControllerTest {
         Integer buyerId = 1;
         ResponseEntity<String> responseEntity = buyerController.deleteById(buyerId);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Покупця видалено успішно", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(buyerService, times(1)).deleteById(buyerId);
     }
 

@@ -129,7 +129,7 @@
                                        id="lastVisit"/>
                             </div>
                             <div class="col-4">
-                                <a class="btn btn-success" data-translate="check_phone_number" style="color: black">Проверить номер телефона</a>
+                                <a class="btn btn-success" onclick="checkPhone(this)" data-translate="check_phone_number" style="color: black">Проверить номер телефона</a>
                             </div>
                         </div>
                         <p data-translate="comment">Коментарий</p>
@@ -272,6 +272,14 @@
         </div>
     </div>
     <script>
+        function checkPhone(button) {
+            validatePhoneNumberWithAjax($('#telephone')).then(result => {
+                if (result) {
+                    showToast("Телефон коректний", "success");
+                }
+            }).catch(error => {
+            })
+        }
         var ID
         var APPLICATION_ID
         $(document).ready(function () {
@@ -516,7 +524,6 @@
                         buyer: buyer
                     },
                     success: function (response) {
-                        showToast(response, "success")
                     }
                 })
             }
@@ -863,7 +870,6 @@
             }
 
 
-            showToast('Файли успішно завантажено', 'success');
 
             let formData = new FormData();
             formData.append("surname", surname.val());
@@ -893,7 +899,6 @@
                 success: function (id) {
                     saveNote(id)
                     saveApplication(id)
-                    showToast("Покупця успішно збережено", "success")
                 },
                 error: function (xhr, status, error) {
                     var errors = JSON.parse(xhr.responseText);

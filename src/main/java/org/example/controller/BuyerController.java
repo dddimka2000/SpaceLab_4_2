@@ -72,7 +72,7 @@ public class BuyerController {
     @PostMapping("/add/note")
     public ResponseEntity<String> addNote(@ModelAttribute BuyerNote buyerNote) {
         buyerService.addNote(buyerNote);
-        return ResponseEntity.ok().body("");
+        return ResponseEntity.ok().body("saveObj");
     }
 
     @GetMapping("/delete/note/{id}")

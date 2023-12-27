@@ -70,7 +70,7 @@ class CommercialObjectsControllerTest {
                 materialAndAreaDto, new BeanPropertyBindingResult(materialAndAreaDto, "materialAndAreaDto"),
                 addressDto, new BeanPropertyBindingResult(addressDto, "addressDto"));
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Об'єкт збережено успішно", responseEntity.getBody());
+        assertEquals("saveObj", responseEntity.getBody());
         verify(commercialService, times(1)).add(infoDto, materialAndAreaDto, addressDto);
     }
 
@@ -100,7 +100,7 @@ class CommercialObjectsControllerTest {
         Integer objectId = 1;
         ResponseEntity<String> responseEntity = commercialObjectsController.deleteById(objectId);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Елемент видалено успішно", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(commercialService, times(1)).deleteById(objectId);
     }
 
@@ -144,7 +144,7 @@ class CommercialObjectsControllerTest {
         when(commercialService.getById(objectId)).thenReturn(commercialObject);
         ResponseEntity<String> responseEntity = commercialObjectsController.deletePicture(objectId, url);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Фото з дропзони видалено успішно", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(commercialService, times(1)).getById(objectId);
         verify(commercialService, times(1)).save(commercialObject);
         verify(minioService, times(1)).deleteImg(url, "images");
@@ -158,7 +158,7 @@ class CommercialObjectsControllerTest {
         when(commercialService.getById(objectId)).thenReturn(commercialObject);
         ResponseEntity<String> responseEntity = commercialObjectsController.deleteFile(objectId, url);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Файл видалено успішно", responseEntity.getBody());
+        assertEquals("deleteObj", responseEntity.getBody());
         verify(commercialService, times(1)).getById(objectId);
         verify(commercialService, times(1)).save(commercialObject);
         verify(minioService, times(1)).deleteImg(url, "images");

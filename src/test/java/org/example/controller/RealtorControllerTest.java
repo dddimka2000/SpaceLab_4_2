@@ -97,7 +97,7 @@ class RealtorControllerTest {
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
         ResponseEntity<String> result = realtorController.addPage(realtorDto, bindingResult);
-        assertEquals("Об'єкт успішно збережено", result.getBody());
+        assertEquals("saveObj", result.getBody());
         verify(realtorService, times(1)).add(realtorDto);
     }
     @Test
@@ -115,7 +115,7 @@ class RealtorControllerTest {
     void deleteById() {
         ResponseEntity<String> result = realtorController.deleteById(1);
         assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertEquals("Елемент успішно видалений", result.getBody());
+        assertEquals("deleteObj", result.getBody());
     }
 
     @Test
@@ -151,7 +151,7 @@ class RealtorControllerTest {
         when(realtorService.getById(anyInt())).thenReturn(realtor);
         ResponseEntity<String> result = realtorController.delete("test-url", 1);
         assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertEquals("Файл видалено успішно", result.getBody());
+        assertEquals("deleteObj", result.getBody());
         assertEquals(Collections.emptyList(), realtor.getFiles());
     }
 
@@ -159,21 +159,21 @@ class RealtorControllerTest {
     void testDelete() throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         ResponseEntity<String> result = realtorController.delete(1);
         verify(realtorFeedBackService).deleteById(1);
-        assertEquals("Відгук видалено", result.getBody());
+        assertEquals("deleteObj", result.getBody());
     }
 
     @Test
     void deleteContact() {
         ResponseEntity<String> result = realtorController.deleteContact(1);
         assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertEquals("Контакт видалено успішно", result.getBody());
+        assertEquals("deleteObj", result.getBody());
     }
 
     @Test
     void save() throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         ResponseEntity<String> result = realtorController.save(1, "John Doe", "123456789", "Some description");
         assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertEquals("Feedback saved successfully", result.getBody());
+        assertEquals("saveObj", result.getBody());
     }
 
     @Test
