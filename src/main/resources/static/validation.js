@@ -43,8 +43,8 @@ function validateAndUpload(imageId, allowedExtensions) {
             return false;
         }
 
-        if (languageSecondExample == 'eng') showToast(`File uploaded successfully: ${allowedExtensions.join(', ')}`, 'danger')
-        else if (languageSecondExample == 'ru')showToast(`Файл успешно загружен: ${allowedExtensions.join(', ')}`, 'danger')
+        if (languageSecondExample == 'eng') showToast(`File uploaded successfully`, 'success')
+        else if (languageSecondExample == 'ru')showToast(`Файл успешно загружен`, 'success')
         else showToast('Файл успішно завантажено', 'success');
         if (imageId != null && imageId.length > 1) previewImage(event, imageId);
         return true;
