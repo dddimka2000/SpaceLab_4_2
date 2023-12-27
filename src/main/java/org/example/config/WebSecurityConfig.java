@@ -55,8 +55,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         {
                             try {
-                                authorize.requestMatchers("/auth/login", "/auth/registration", "/auth/process_login").permitAll()
-                                        .requestMatchers("/admin/**", "/personal_account").authenticated()
+                                authorize.requestMatchers("/auth/login", "/auth/registration", "/auth/process_login","/img/**","/vendor/**").permitAll()
+                                        .requestMatchers("/**", "/personal_account").authenticated()
                                         .anyRequest().permitAll()
                                         .and()
                                         .logout()
@@ -73,7 +73,7 @@ public class WebSecurityConfig {
                                 .failureUrl("/auth/login?error"))
                 .rememberMe()
                 .and()
-                .httpBasic().and()
+                .httpBasic().disable()
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling
                                 .defaultAuthenticationEntryPointFor(
