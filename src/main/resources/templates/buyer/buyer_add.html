@@ -330,7 +330,6 @@
 
                             blockForFile.append(row);
                         }
-
                         if(APPLICATION_ID) {
                             $(".roomNumbers[value='" + buyer.application.roomQuantity + "']").prop("checked", true);
 
@@ -346,9 +345,10 @@
                             $("#phoneExample2").val(buyer.application.phone)
                             $("#commentExample").val(buyer.application.comment)
 
-
-                            forSelect2WithSearch(buyer.application.realtor.id, buyer.application.realtor.name, "#realtorSelect2example2", "/realtors/for/select");
-                            forSelect2WithSearch(buyer.application.builderObject.id, buyer.application.builderObject.name, "#builderObjects", "/builder_objects/for/select", "builderObject");
+                            if(buyer.application.realtor) forSelect2WithSearch(buyer.application.realtor.id, buyer.application.realtor.name, "#realtorSelect2example2", "/realtors/for/select");
+                            else forSelect2WithSearch(undefined, undefined, "#realtorSelect2example2", "/realtors/for/select")
+                            if(buyer.application.builderObject)forSelect2WithSearch(buyer.application.builderObject.id, buyer.application.builderObject.name, "#builderObjects", "/builder_objects/for/select", "builderObject");
+                            else forSelect2WithSearch(undefined, undefined, "#builderObjects", "/builder_objects/for/select")
                         }else {
                             forSelect2WithSearch(undefined, undefined, "#realtorSelect2example2", "/realtors/for/select");
                             forSelect2WithSearch(undefined, undefined, "#builderObjects", "/builder_objects/for/select");

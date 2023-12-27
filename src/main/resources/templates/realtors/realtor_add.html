@@ -461,19 +461,24 @@
             });
         }
         function save(form){
-            $.ajax({
-                type: 'POST',
-                url: '[[@{/realtors/add}]]',
-                data: new FormData(form[0]),
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    showToast(response, "success");
-                },
-                error: function (error) {
-                    console.error('Помилка відправки файлів на сервер:', error);
+            validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
+                if (result) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '[[@{/realtors/add}]]',
+                        data: new FormData(form[0]),
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            showToast(response, "success");
+                        },
+                        error: function (error) {
+                            console.error('Помилка відправки файлів на сервер:', error);
+                        }
+                    });
                 }
-            });
+            }).catch(error => {
+            })
         }
     </script>
     <script th:inline="javascript">

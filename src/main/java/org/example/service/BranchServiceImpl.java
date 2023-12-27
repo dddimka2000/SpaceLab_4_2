@@ -91,4 +91,8 @@ public class BranchServiceImpl {
         log.info("BranchServiceImpl-getByCode successfully");
         return res;
     }
+
+    public boolean existsByPhone(String phone) {
+        return branchRepository.existsByTelephone(phone);
+    }
 }

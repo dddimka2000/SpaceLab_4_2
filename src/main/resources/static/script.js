@@ -36,6 +36,7 @@ function getLastDigitFromPath(relativePath) {
     if(!relativePath)relativePath=window.location.pathname
     var pathSegments = relativePath.split("/");
     var lastSegment = pathSegments[pathSegments.length - 1];
+    lastSegment.replace('#','')
     if (/^\d+$/.test(lastSegment)) {
         return parseInt(lastSegment, 10);
     } else {

@@ -52,10 +52,12 @@ public class HouseController {
     }
 
     @PostMapping("/add/info")
-    public ResponseEntity<String> addInfo(@ModelAttribute("materialDTO") @Valid HouseMaterialDto materialDTO,
-                                          @ModelAttribute("infoDTO") @Valid HouseInfoDto infoDTO,
-                                          @ModelAttribute("addressDTO") @Valid HouseAddressDto addressDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        if(bindingResult.hasErrors())return ResponseEntity.ok().body("ERROR: "+bindingResult.getAllErrors().get(0).getDefaultMessage());
+    public ResponseEntity<String> addInfo(@ModelAttribute("materialDTO") @Valid HouseMaterialDto materialDTO, BindingResult bindingResult1,
+                                          @ModelAttribute("infoDTO") @Valid HouseInfoDto infoDTO, BindingResult bindingResult2,
+                                          @ModelAttribute("addressDTO") @Valid HouseAddressDto addressDTO, BindingResult bindingResult3) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        if(bindingResult1.hasErrors())return ResponseEntity.ok().body("ERROR: "+bindingResult1.getAllErrors().get(0).getDefaultMessage());
+        if(bindingResult2.hasErrors())return ResponseEntity.ok().body("ERROR: "+bindingResult2.getAllErrors().get(0).getDefaultMessage());
+        if(bindingResult3.hasErrors())return ResponseEntity.ok().body("ERROR: "+bindingResult3.getAllErrors().get(0).getDefaultMessage());
         housesService.add(materialDTO, infoDTO, addressDTO);
         return ResponseEntity.ok().body("Об'єкт збережено успішно");
     }
