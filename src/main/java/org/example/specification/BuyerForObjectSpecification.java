@@ -31,7 +31,9 @@ public class BuyerForObjectSpecification  implements Specification<BuyerApplicat
         topozone = object.getAddress().getZone();
         floor = object.getFloor();
         price = object.getPrice();
-        realtorId = object.getRealtor().getId();
+        if (object.getRealtor() != null && object.getRealtor().getId() != null) {
+            realtorId = object.getRealtor().getId();
+        }
         residentialComplexId = object.getBuilderObject() == null?null:object.getBuilderObject().getId();
         area = object.getAreaTotal();
         propertyOrigin = object.getPropertyOrigin();

@@ -150,7 +150,7 @@
             method: "POST",
             dataType: 'json',
             success: function (data) {
-                if (data.message == 'Код отправлен') {
+                if (data.message == 'Code sent') {
                     let input = $("#username");
                     input.attr("placeholder", "Введите код");
                     input.val("");
@@ -169,7 +169,7 @@
             },
             error: function (data) {
                 console.log(data);
-                if (data && data.responseJSON && data.responseJSON.message === 'Не существует пользователя с таким E-mail') {
+                if (data && data.responseJSON && data.responseJSON.message === 'Doesn\'t  exist user with so E-mail') {
                     showNotification("Пользователя с таким E-mail не существует", "", false);
                 }
             }
@@ -188,7 +188,7 @@
             method: "POST",
             dataType: 'json',
             success: function (data) {
-                if (data.message == 'Код подтвержден') {
+                if (data.message == 'Code verified') {
                     let button = $("#sendEmail");
                     button.text("Подтвердить новый пароль");
                     button.off("click");
@@ -204,7 +204,7 @@
             },
             error: function (data) {
                 console.log(data);
-                if (data && data.responseJSON && data.responseJSON.message === 'Код отличается от отправленного на почту') {
+                if (data && data.responseJSON && data.responseJSON.message === 'The code is different from the one sent by email') {
                     showNotification("Код отличается от отправленного на почту", "", false);
                 }
             }
@@ -232,7 +232,7 @@
             },
             error: function (data) {
                 console.log(data);
-                if (data && data.responseJSON && data.responseJSON.message === 'Код отличается от отправленного на почту') {
+                if (data && data.responseJSON && data.responseJSON.message === 'The code is different from the one sent by email') {
                     showNotification("Код отличается от отправленного на почту", "", false);
                 }
             }

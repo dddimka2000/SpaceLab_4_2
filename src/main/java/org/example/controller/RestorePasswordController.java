@@ -41,7 +41,7 @@ public class RestorePasswordController {
         if(user.isEmpty()){
             log.info("Doesn't  exist user with so E-mail :"+ email);
             Map<String, String> response = new HashMap<>();
-            response.put("message", "Не существует пользователя с таким E-mail");
+            response.put("message", "Doesn't  exist user with so E-mail");
             return ResponseEntity.badRequest().body(response);
         }
         log.info("Send E-mail: "+ email);
@@ -50,7 +50,7 @@ public class RestorePasswordController {
         user.get().setCodeRestorePassword(code);
         userDetailsService.save(user.get());
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Код отправлен");
+        response.put("message", "Code sent");
         return ResponseEntity.ok().body(response);
     }
 
@@ -61,11 +61,11 @@ public class RestorePasswordController {
         if(user.isEmpty() || !code.equals(user.get().getCodeRestorePassword())){
             log.info("Doesn't  exist user with so E-mail: "+ email+ "\n или кодом :"+ code);
             Map<String, String> response = new HashMap<>();
-            response.put("message", "Код отличается от отправленного на почту");
+            response.put("message", "The code is different from the one sent by email");
             return ResponseEntity.badRequest().body(response);
         }
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Код подтвержден");
+        response.put("message", "Code verified");
         return ResponseEntity.ok().body(response);
     }
 
@@ -75,7 +75,7 @@ public class RestorePasswordController {
         if(user.isEmpty() || !code.equals(user.get().getCodeRestorePassword())){
             log.info("Doesn't exist user with this e-mail: "+ email+ "\n or code :"+ code);
             Map<String, String> response = new HashMap<>();
-            response.put("message", "Код отличается от отправленного на почту");
+            response.put("message", "The code is different from the one sent by email");
             return ResponseEntity.badRequest().body(response);
         }
         Map<String, String> response = new HashMap<>();
