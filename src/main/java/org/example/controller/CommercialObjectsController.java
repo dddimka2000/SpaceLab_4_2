@@ -53,9 +53,9 @@ public class CommercialObjectsController {
     public ResponseEntity<String> add(@Valid @ModelAttribute CommercialInfoDto commercialInfoDto, BindingResult bindingResult1,
                                       @Valid @ModelAttribute CommercialMaterialAndAreaDto commercialMaterialAndAreaDto, BindingResult bindingResult2,
                                       @Valid @ModelAttribute CommercialAddressDto commercialAddressDto, BindingResult bindingResult3) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        if(bindingResult1.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult1.getObjectName()+"): "+bindingResult1.getAllErrors().get(0).getDefaultMessage());
-        if(bindingResult2.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult1.getObjectName()+"): "+bindingResult2.getAllErrors().get(0).getDefaultMessage());
-        if(bindingResult3.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult1.getObjectName()+"): "+bindingResult3.getAllErrors().get(0).getDefaultMessage());
+        if(bindingResult1.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult1.getAllErrors().get(0).getObjectName()+"): "+bindingResult1.getAllErrors().get(0).getDefaultMessage());
+        if(bindingResult2.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult2.getAllErrors().get(0).getObjectName()+"): "+bindingResult2.getAllErrors().get(0).getDefaultMessage());
+        if(bindingResult3.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult3.getAllErrors().get(0).getObjectName()+"): "+bindingResult3.getAllErrors().get(0).getDefaultMessage());
         commercialService.add(commercialInfoDto, commercialMaterialAndAreaDto, commercialAddressDto);
         return ResponseEntity.ok().body("saveObj");
     }

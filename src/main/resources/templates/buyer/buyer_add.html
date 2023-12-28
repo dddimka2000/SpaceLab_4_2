@@ -273,7 +273,7 @@
     </div>
     <script>
         function checkPhone(button) {
-            validatePhoneNumberWithAjax($('#telephone')).then(result => {
+            validatePhoneNumberWithAjax($('#phone')).then(result => {
                 if (result) {
                     showToast("Телефон коректний", "success");
                 }

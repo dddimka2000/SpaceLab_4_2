@@ -105,7 +105,7 @@ function roleSelect2(text, id) {
 
                 var index = 0;
                 var results = data.map(function (data) {
-                    return {id: data, text: data};
+                    return {id: data, text: translateValue(data)};
                 });
                 return {
                     results: results
@@ -132,7 +132,7 @@ function informationSourceSelect2(text, id) {
             processResults: function (data) {
                 var index = 0;
                 var results = data.map(function (data) {
-                    return {id: data, text: data};
+                    return {id: data, text: translateValue(data)};
                 });
                 return {
                     results: results

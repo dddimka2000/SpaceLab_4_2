@@ -572,7 +572,7 @@
 
                         $("#objectCode").val(commercial.objectCode)
                         if(commercial.realtor){
-                            $("#branchCode").val(commercial.realtor.branch.code)
+                            if(commercial.realtor.branch)$("#branchCode").val(commercial.realtor.branch.code)
                             $("#staffCode").val(commercial.realtor.code)
                         }
                         $("#landmark").val(commercial.landmark)

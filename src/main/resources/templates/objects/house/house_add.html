@@ -891,7 +891,7 @@
                         $("#administrationComment").val(house.administrationComment)
 
                         $("#codeObject").val(house.objectCode)
-                        if(house.realtor)$("#codeBranch").val(house.realtor.branch.code)
+                        if(house.realtor && house.realtor.branch)$("#codeBranch").val(house.realtor.branch.code)
                         if(house.realtor)$("#codeStaff").val(house.realtor.code)
                         $("#landmark").val(house.landmark)
                         $("#price").val(house.price)
