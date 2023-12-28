@@ -55,8 +55,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         {
                             try {
-                                authorize.requestMatchers("/auth/login", "/auth/registration", "/auth/process_login").permitAll()
-                                        .requestMatchers("/admin/**", "/personal_account").authenticated()
+                                authorize.requestMatchers("/auth/login", "/auth/registration", "/auth/process_login","/img/**","/vendor/**").permitAll()
+                                        .requestMatchers("/**", "/personal_account").authenticated()
                                         .anyRequest().permitAll()
                                         .and()
                                         .logout()
@@ -70,15 +70,17 @@ public class WebSecurityConfig {
                 .formLogin(form ->
                         form.loginPage("/auth/login")
                                 .loginProcessingUrl("/auth/process_login")
-                                .failureUrl("/auth/login?error"))
+                                .defaultSuccessUrl("/", true)
+                                .failureUrl("/auth/login?error")
+                )
                 .rememberMe()
                 .and()
-                .httpBasic().and()
+                .httpBasic().disable()
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling
                                 .defaultAuthenticationEntryPointFor(
                                         new LoginUrlAuthenticationEntryPoint("/auth/login"),
-                                        new AntPathRequestMatcher("/admin/**")
+                                        new AntPathRequestMatcher("/**")
                                 )
                 )
                 .addFilterBefore(new CaptchaFilter(recaptchaService), UsernamePasswordAuthenticationFilter.class);
