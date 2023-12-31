@@ -84,63 +84,23 @@
             <!--/ User -->
         </ul>
     </div>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/uk.js"></script>
     <script type="text/javascript">
         var translationsSecondExample
         var languageSecondExample
         function translateDatePicker(language){
-            var ua = {
-                weekdays: {
-                    shorthand: ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-                    longhand: ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П’ятниця', 'Субота'],
-                },
-                months: {
-                    shorthand: ['Січ', 'Лют', 'Бер', 'Кві', 'Тра', 'Чер', 'Лип', 'Сер', 'Вер', 'Жов', 'Лис', 'Гру'],
-                    longhand: ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'],
-                },
-                firstDayOfWeek: 1,
-                ordinal: function () {
-                    return "";
-                },
-                rangeSeparator: " до ",
-                weekAbbreviation: "Тиж.",
-                scrollTitle: "Прокрутіть для збільшення",
-                toggleTitle: "Натисніть для перемикання",
-                amPM: ["ДП", "ПП"],
-                yearAriaLabel: "Рік",
-                time_24hr: true
-            };
-            var ru = {
-                weekdays: {
-                    shorthand: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-                    longhand: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-                },
-                months: {
-                    shorthand: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-                    longhand: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-                },
-                firstDayOfWeek: 1,
-                ordinal: function () {
-                    return "";
-                },
-                rangeSeparator: " до ",
-                weekAbbreviation: "Нед.",
-                scrollTitle: "Прокрутите для увеличения",
-                toggleTitle: "Нажмите для переключения",
-                amPM: ["ДП", "ПП"],
-                yearAriaLabel: "Год",
-                time_24hr: true
-            };
             var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
             flatpickrDateTimes.forEach(function (element) {
                 if(language == "ru"){
                     element.flatpickr({
                         dateFormat: "Y/m/d",
-                        locale: ru
+                        locale: "ru"
                     });
-                }else if(language == "ukr"){
+                }else if(language == "uk"){
                     element.flatpickr({
                         dateFormat: "Y/m/d",
-                        locale: ua
+                        locale: "uk"
                     });
                 }else {
                     element.flatpickr({
