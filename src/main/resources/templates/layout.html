@@ -41,7 +41,6 @@
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
-    //
     <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
@@ -111,8 +110,19 @@
 
 </head>
 <body>
+<div id="spinner" style=" display: flex; align-items: center; justify-content: center;height: 100vh;">
+    <div style="text-align: center;">
+        <div class="spinner-border spinner-border text-primary" role="status"
+             style="height:400px; width: 400px">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <br>
+        <br>
+        <h1 style="height:400px; width: 400px; text-align: center;">Loading...</h1>
+    </div>
+</div>
 
-<div class="layout-wrapper layout-content-navbar">
+<div id="content" style="display: none;" class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
         <!-- Menu -->
         <aside layout:insert="~{sidebar_layout :: sidebar}"></aside>
@@ -184,11 +194,8 @@
                 </div>
 
                 <!-- Footer -->
-
-                <footer class="content-footer footer bg-footer-theme">
-                    <div
-                            class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column"
-                    >
+                <footer class="container-fluid content-footer footer bg-footer-theme">
+                    <div class="footer-container d-flex align-items-center justify-content-between py-2 flex-md-row flex-column">
                         <div>
                             ©
                             <script>
@@ -197,12 +204,7 @@
                             , made with ❤
                         </div>
                         <div>
-                            <a
-                                    href="#"
-                                    target="_blank"
-                                    class="footer-link me-4"
-                            >Documentation</a
-                            >
+                            <a href="#" target="_blank">Documentation</a>
                         </div>
                     </div>
                 </footer>
@@ -243,7 +245,16 @@
 
 <!-- Main JS -->
 <script th:src="@{/js/main.js}"></script>
-
+<script>
+    window.onload = function () {
+        var spinner = document.getElementById('spinner');
+        setTimeout(function () {
+            spinner.style.display = 'none';
+            spinner.remove();
+            document.getElementById('content').style.display = 'block';
+        }, 800);
+    };
+</script>
 
 </body>
 </html>

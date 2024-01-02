@@ -26,14 +26,11 @@ public class WebSecurityConfig {
     private final
     RecaptchaService recaptchaService;
 
-//    private final ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl,
-//                             ClientRegistrationRepository clientRegistrationRepository,
                              RestTemplate restTemplate, RecaptchaService recaptchaService) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
-//        this.clientRegistrationRepository = clientRegistrationRepository;
         this.restTemplate = restTemplate;
         this.recaptchaService = recaptchaService;
     }
