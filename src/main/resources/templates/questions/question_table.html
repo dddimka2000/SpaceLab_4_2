@@ -158,6 +158,7 @@
                 processData: false,
                 contentType: false,
                 data: formData,
+                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                 success: function (response) {
                     showToast(response, "success")
                 }

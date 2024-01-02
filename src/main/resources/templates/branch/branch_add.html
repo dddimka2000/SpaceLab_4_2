@@ -152,6 +152,7 @@
                         type: 'POST',
                         url: '[[@{/branches/create}]]',
                         data: new FormData(form[0]),
+                        headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                         contentType: false,
                         processData: false,
                         success: function (response) {

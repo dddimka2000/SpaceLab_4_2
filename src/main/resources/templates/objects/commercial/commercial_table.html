@@ -244,6 +244,7 @@
                 type: "Post",
                 url: '[[@{/commercial/get/all}]]',
                 data: formData,
+                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                 contentType: false,
                 processData: false,
                 success: function (houses) {
@@ -330,6 +331,7 @@
                 $.ajax({
                     type: "delete",
                     url: '[[@{/commercial/delete/}]]' + houseId,
+                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                     success: function (response) {
                         getPageWithFilter(page)
                         showToast(response, "success")

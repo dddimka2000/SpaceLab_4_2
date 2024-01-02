@@ -164,6 +164,7 @@
                     contentType: false,
                     processData: false,
                     data: formData,
+                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                     success: function () {
                         showNotification("Объект сохранен!", "", true);
                     },

@@ -379,6 +379,7 @@
                     url: '[[@{/realtors/download/file}]]',
                     type: "POST",
                     data: formData,
+                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                     processData: false,
                     contentType: false,
                     success: function (url) {
@@ -482,6 +483,7 @@
                 type: 'POST',
                 url: '[[@{/realtors/add}]]',
                 data: new FormData(form[0]),
+                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                 contentType: false,
                 processData: false,
                 success: function (response) {

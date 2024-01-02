@@ -360,6 +360,7 @@
             $.ajax({
                 url: url,
                 method: "DELETE",
+                headers: { 'X-XSRF-TOKEN': [[${_csrf.token}]] },
                 success: function (response) {
                     $("#elementTable" + elementDelete).empty();
                     $("#cancelBtn").click();

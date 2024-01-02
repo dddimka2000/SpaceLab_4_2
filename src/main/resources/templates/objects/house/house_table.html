@@ -269,12 +269,15 @@
             formData.append('minArea', $('#houseAreaMin').val())
             formData.append('maxArea', $('#houseAreaMax').val())
             formData.append('street', $('#street').val())
+            formData.append('X-XSRF-TOKEN', '[[${_csrf.token}]]')
+            console.log('[[${_csrf.token}]]')
             var lastVisitDate = new Date()
             if ($('#lastContactDate').val()) formData.append('lastContactDate', lastVisitDate.toISOString().split('T')[0])
             $.ajax({
-                type: "Post",
+                type: "post",
                 url: '[[@{/houses/get/all}]]',
                 data: formData,
+                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                 contentType: false,
                 processData: false,
                 success: function (houses) {
