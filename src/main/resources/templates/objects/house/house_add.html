@@ -530,6 +530,7 @@
                         id: getLastDigitFromPath(window.location.pathname),
                         url: url,
                     },
+                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                     success: function (response) {
                         showToast(response, "success")
                     },
@@ -848,6 +849,7 @@
                                                 type: 'POST',
                                                 url: '[[@{/houses/add/info}]]',
                                                 data: formData,
+                                                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                                                 contentType: false,
                                                 processData: false,
                                                 success: function (response) {
@@ -1154,6 +1156,7 @@
                         data: {
                             url: file.description,
                         },
+                        headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                         success: function (response) {
                             showToast(response, "success")
                         },

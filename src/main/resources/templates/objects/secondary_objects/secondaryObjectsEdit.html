@@ -890,9 +890,10 @@
             $.ajax({
                 url: url,
                 method: "POST",
+                data: formData,
+                headers: { 'X-XSRF-TOKEN': [[${_csrf.token}]] },
                 contentType: false,
                 processData: false,
-                data: formData,
                 success: function () {
                     showNotification("Объект сохранен!", "", true);
                 },

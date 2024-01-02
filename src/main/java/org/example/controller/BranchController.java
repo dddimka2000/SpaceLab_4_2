@@ -51,6 +51,10 @@ public class BranchController {
         return new ModelAndView("branch/branch_add", "branchDto", branchServiceImpl.getById(id));
     }
 
+    @PostMapping("/add/test")
+    public ModelAndView redirect(){
+        return new ModelAndView("redirect:/branches");
+    }
     @PostMapping("/create")
     public ResponseEntity<String> createPage(@ModelAttribute @Valid BranchDto branchDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         branchValidator.validate(branchDto, bindingResult);

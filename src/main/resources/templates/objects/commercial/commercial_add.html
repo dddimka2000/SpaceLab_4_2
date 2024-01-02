@@ -756,6 +756,7 @@
                                                 type: 'POST',
                                                 url: '[[@{/commercial/add}]]',
                                                 data: formData,
+                                                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                                                 contentType: false,
                                                 processData: false,
                                                 success: function (response) {
@@ -799,6 +800,7 @@
                         id: getLastDigitFromPath(window.location.pathname),
                         url: url,
                     },
+                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                     success: function (response) {
                         showToast(response, "success")
                     },
@@ -1235,6 +1237,7 @@
                         data: {
                             url: file.description,
                         },
+                        headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                         success: function (response) {
                             showToast(response, "success")
                         },

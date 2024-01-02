@@ -41,7 +41,7 @@ public class Initializer implements CommandLineRunner {
             UserEntity user = new UserEntity();
             user.setName("admin");
             user.setPassword("admin");
-            user.setEmail("admin@gmail.com ");
+            user.setEmail("admin@gmail.com");
             userRepository.save(user);
         }
         createTriggerBeforeDeleteRealtor();
