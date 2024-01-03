@@ -1,4 +1,4 @@
-var contextPath = "/MinionsDD"
+var contextPath = "/minions-dd/admin"
 
 
 function showToast(message, type) {
