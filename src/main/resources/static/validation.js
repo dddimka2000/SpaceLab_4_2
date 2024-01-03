@@ -1,4 +1,4 @@
-var contextPath = "/MinionsDD"
+var contextPath = "/minions-dd/admin"
 function previewImage(event, imageId) {
     var reader = new FileReader();
     reader.onload = function () {

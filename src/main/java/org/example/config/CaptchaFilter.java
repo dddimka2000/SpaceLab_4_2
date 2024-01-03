@@ -29,7 +29,7 @@ public class CaptchaFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (request.getMethod().equals("POST")) {
             String requestURI = request.getRequestURI();
-            if (("/MinionsDD/auth/process_login").equals(requestURI)) {
+            if (("/minions-dd/admin/auth/process_login").equals(requestURI)) {
                 String recaptcha = request.getParameter("g-recaptcha-response");
                 RecaptchaResponse recaptchaResponse = recaptchaService.validateToken(recaptcha);
                 if (!recaptchaResponse.success()) {
