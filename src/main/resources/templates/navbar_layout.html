@@ -90,6 +90,7 @@
         var translationsSecondExample
         var languageSecondExample
         function translateDatePicker(language){
+            console.log(language)
             var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
             flatpickrDateTimes.forEach(function (element) {
                 if(language == "ru"){
@@ -97,7 +98,7 @@
                         dateFormat: "Y/m/d",
                         locale: "ru"
                     });
-                }else if(language == "uk"){
+                }else if(language == "ukr"){
                     element.flatpickr({
                         dateFormat: "Y/m/d",
                         locale: "uk"
