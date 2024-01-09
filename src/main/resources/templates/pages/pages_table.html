@@ -12,49 +12,50 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="pages">Страницы</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="pages">Страницы</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
-        <!-- <div style="width: 100%; display: flex; justify-content: flex-end">
-            <button class="btn btn-success">Добавить страницу</button>
-        </div> -->
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="pages">Страницы</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="pages">Страницы</li>
+                    </ol>
+                </nav>
+            </div>
+            <hr style="margin-top: -5px">
+            <!-- <div style="width: 100%; display: flex; justify-content: flex-end">
+                <button class="btn btn-success">Добавить страницу</button>
+            </div> -->
 
-        <div class="card border">
-            <div class="card-body">
-                <table class="table table-bordered table-hover table-striped linkedRow" id="adminsTable">
-                    <thead>
-                    <tr>
-                        <th data-translate="title">Название</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="page:${pages}">
-                        <td th:text="${page.getName()}">Главная</td>
-                        <td>
-                            <div class="d-flex">
-                                <a th:href="@{/pages/edit/{id}(id=${page.getId()})}" >
-                                    <button class="btn btn-default btn-sm">
-                                        <i class="fa fa-pencil"></i>
-                                    </button>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
+            <div class="card border">
+                <div class="card-body">
+                    <table class="table table-bordered table-hover table-striped linkedRow" id="adminsTable">
+                        <thead>
+                        <tr>
+                            <th data-translate="title">Название</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="page:${pages}">
+                            <td th:text="${page.getName()}">Главная</td>
+                            <td>
+                                <div class="d-flex">
+                                    <a th:href="@{/pages/edit/{id}(id=${page.getId()})}">
+                                        <button class="btn btn-default btn-sm">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
     </div>
 </section>
 

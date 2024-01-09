@@ -12,26 +12,29 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="object">Об'єкт</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item" data-translate="breadcrumb.home"><a th:href="@{/}">Главная</a></li>
-                    <li class="breadcrumb-item" data-translate="houses_and_plots"><a th:href="@{/houses}">Дома и участки</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="houses">Дома</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
-        <div id="main-content">
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="object">Об'єкт</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item" data-translate="breadcrumb.home"><a th:href="@{/}">Главная</a></li>
+                        <li class="breadcrumb-item" data-translate="houses_and_plots"><a th:href="@{/houses}">Дома и
+                            участки</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="houses">Дома</li>
+                    </ol>
+                </nav>
+            </div>
+            <hr style="margin-top: -5px">
+            <div id="main-content">
+            </div>
         </div>
     </div>
     <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel2"  data-translate="buyers">Покупатели</h5>
+                    <h5 class="modal-title" id="exampleModalLabel2" data-translate="buyers">Покупатели</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modal-body">
@@ -58,8 +61,8 @@
                     if (buyers) {
                         buyers.forEach(function (buyer) {
                             modalBody.html(modalBody.html() + `
-                    <a href='[[@{/buyers/}]]`+buyer.id+`'>
-                        `+buyer.surname+` `+buyer.name+` `+buyer.middleName+`
+                    <a href='[[@{/buyers/}]]` + buyer.id + `'>
+                        ` + buyer.surname + ` ` + buyer.name + ` ` + buyer.middleName + `
                     </a><br/>
                             `);
                         });
@@ -67,6 +70,7 @@
                 }
             })
         }
+
         $(document).ready(function () {
             var url
             var houseId = getLastDigitFromPath(window.location.pathname)

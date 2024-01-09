@@ -18,240 +18,254 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="buyer">Покупатель</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item"><a th:href="@{/buyer}" data-translate="buyers">Покупатели</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="buyer">Покупатель</li>
-                </ol>
-            </nav>
-        </div>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="buyer">Покупатель</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/buyer}" data-translate="buyers">Покупатели</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="buyer">Покупатель</li>
+                    </ol>
+                </nav>
+            </div>
 
-        <ul class="nav nav-pills mb-3" role="tablist">
-            <li class="nav-item">
-                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" id="navs-pills-top-info"
-                        data-bs-target="#top-info" aria-controls="navs-pills-top-home"
-                        aria-selected="true" data-translate="INFORMATION">
-                    Информация
-                </button>
-            </li>
-            <li class="nav-item">
-                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" id="navs-pills-top-application"
-                        data-bs-target="#top-application" aria-controls="navs-pills-top-application"
-                        aria-selected="false" data-translate="request">
-                    Заявка
-                </button>
-            </li>
-            <li class="nav-item">
-                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" id="navs-pills-top-note"
-                        data-bs-target="#top-note" aria-controls="navs-pills-top-note"
-                        aria-selected="false" data-translate="notes">
-                    Заметки
-                </button>
-            </li>
-        </ul>
-        <div class="card">
-            <div class="card-body">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" aria-labelledby="navs-pills-top-info" id="top-info">
-                        <div class="row">
-                            <div class="col" data-translate="lastName">
-                                Фамилия
+            <ul class="nav nav-pills mb-3" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                            id="navs-pills-top-info"
+                            data-bs-target="#top-info" aria-controls="navs-pills-top-home"
+                            aria-selected="true" data-translate="INFORMATION">
+                        Информация
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                            id="navs-pills-top-application"
+                            data-bs-target="#top-application" aria-controls="navs-pills-top-application"
+                            aria-selected="false" data-translate="request">
+                        Заявка
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" id="navs-pills-top-note"
+                            data-bs-target="#top-note" aria-controls="navs-pills-top-note"
+                            aria-selected="false" data-translate="notes">
+                        Заметки
+                    </button>
+                </li>
+            </ul>
+            <div class="card">
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" aria-labelledby="navs-pills-top-info" id="top-info">
+                            <div class="row">
+                                <div class="col" data-translate="lastName">
+                                    Фамилия
+                                </div>
+                                <div class="col" data-translate="firstName">
+                                    Имя
+                                </div>
+                                <div class="col" data-translate="middleName">
+                                    Отчество
+                                </div>
+                                <div class="col" data-translate="phone">
+                                    Телефон
+                                </div>
+                                <div class="col">
+                                    Email
+                                </div>
+                                <div class="col" data-translate="realtor">
+                                    Риелтор
+                                </div>
                             </div>
-                            <div class="col" data-translate="firstName">
-                                Имя
+                            <div class="row">
+                                <div class="col">
+                                    <input class="form-control" id="surname">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" id="name">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" id="middleName">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control phone" id="phone">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control" id="email">
+                                </div>
+                                <div class="col">
+                                    <select id="realtorSelect2" name="realtor"></select>
+                                </div>
                             </div>
-                            <div class="col" data-translate="middleName">
-                                Отчество
+                            <div class="row">
+                                <div class="col-2" data-translate="passport">
+                                    Паспорт Серия/Номер
+                                </div>
+                                <div class="col-2" data-translate="dateOfBirth">
+                                    Дата рождения
+                                </div>
+                                <div class="col-2" data-translate="information_source">
+                                    Источник информации
+                                </div>
+                                <div class="col-2" data-translate="last_contact_date">
+                                    Дата последнего контакта
+                                </div>
+                                <div class="col-4">
+                                </div>
                             </div>
-                            <div class="col" data-translate="phone">
-                                Телефон
+                            <div class="row">
+                                <div class="col-2">
+                                    <input class="form-control" id="passport" placeholder="XX 1234">
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
+                                           id="birthdate"/>
+                                </div>
+                                <div class="col-2">
+                                    <select id="informationSourceSelect2" name="informationSource"></select>
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
+                                           id="lastVisit"/>
+                                </div>
+                                <div class="col-4">
+                                    <a class="btn btn-success" onclick="checkPhone(this)"
+                                       data-translate="check_phone_number" style="color: black">Проверить номер
+                                        телефона</a>
+                                </div>
                             </div>
-                            <div class="col">
-                                Email
-                            </div>
-                            <div class="col" data-translate="realtor">
-                                Риелтор
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <input class="form-control" id="surname">
-                            </div>
-                            <div class="col">
-                                <input class="form-control" id="name">
-                            </div>
-                            <div class="col">
-                                <input class="form-control" id="middleName">
-                            </div>
-                            <div class="col">
-                                <input class="form-control phone" id="phone">
-                            </div>
-                            <div class="col">
-                                <input class="form-control" id="email">
-                            </div>
-                            <div class="col">
-                                <select id="realtorSelect2" name="realtor"></select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2" data-translate="passport">
-                                Паспорт Серия/Номер
-                            </div>
-                            <div class="col-2" data-translate="dateOfBirth">
-                                Дата рождения
-                            </div>
-                            <div class="col-2" data-translate="information_source">
-                                Источник информации
-                            </div>
-                            <div class="col-2" data-translate="last_contact_date">
-                                Дата последнего контакта
-                            </div>
-                            <div class="col-4">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2">
-                                <input class="form-control" id="passport" placeholder="XX 1234">
-                            </div>
-                            <div class="col-2">
-                                <input type="text" class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
-                                       id="birthdate"/>
-                            </div>
-                            <div class="col-2">
-                                <select id="informationSourceSelect2" name="informationSource"></select>
-                            </div>
-                            <div class="col-2">
-                                <input type="text" class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
-                                       id="lastVisit"/>
-                            </div>
-                            <div class="col-4">
-                                <a class="btn btn-success" onclick="checkPhone(this)" data-translate="check_phone_number" style="color: black">Проверить номер телефона</a>
-                            </div>
-                        </div>
-                        <p data-translate="comment">Коментарий</p>
+                            <p data-translate="comment">Коментарий</p>
 
-                        <textarea class="form-control bootstrap-maxlength-example" id="comment" rows="5"></textarea>
-                        <div class="row mt-2">
-                            <div class="col-5">
-                                <p  data-translate="attach_files">Прикрепить файли</p>
-                                <input type="file" class="form-control" id="files" accept=".pdf" multiple>
+                            <textarea class="form-control bootstrap-maxlength-example" id="comment" rows="5"></textarea>
+                            <div class="row mt-2">
+                                <div class="col-5">
+                                    <p data-translate="attach_files">Прикрепить файли</p>
+                                    <input type="file" class="form-control" id="files" accept=".pdf" multiple>
+                                </div>
+                                <div class="col-7">
+                                </div>
                             </div>
-                            <div class="col-7">
+                            <div id="block-for-file">
                             </div>
                         </div>
-                        <div id="block-for-file">
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show" aria-labelledby="navs-pills-top-application" id="top-application">
-                        <div class="row">
-                            <div class="col-4" >
-                                <p data-translate="district">Район</p>
-                                <select class="form-control" id="district" multiple></select>
-                                <br>
-                                <p data-translate="topzone">Топзона</p>
-                                <select class="form-control" id="topzone" multiple></select>
-                            </div>
-                            <div class="col-3">
-                                <p data-translate="property.numberOfRooms">Количество комнат</p>
-                                1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1">
-                                2 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">
-                                3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">
-                                >3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">
-                            </div>
-                            <div class="col-5">
-                                <div class="row">
-                                    <div class="col">
-                                        <p data-translate="floor">Этаж:</p>
-                                        <div style="display: flex">
-                                            <input class="form-control" id="floorMin">
-                                            <div class="mt-2">&mdash;</div>
-                                            <input class="form-control" id="floorMax">
+                        <div class="tab-pane fade show" aria-labelledby="navs-pills-top-application"
+                             id="top-application">
+                            <div class="row">
+                                <div class="col-4">
+                                    <p data-translate="district">Район</p>
+                                    <select class="form-control" id="district" multiple></select>
+                                    <br>
+                                    <p data-translate="topzone">Топзона</p>
+                                    <select class="form-control" id="topzone" multiple></select>
+                                </div>
+                                <div class="col-3">
+                                    <p data-translate="property.numberOfRooms">Количество комнат</p>
+                                    1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers"
+                                             value="1">
+                                    2 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers"
+                                             value="2">
+                                    3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers"
+                                             value="3">
+                                    >3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers"
+                                              value="4">
+                                </div>
+                                <div class="col-5">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p data-translate="floor">Этаж:</p>
+                                            <div style="display: flex">
+                                                <input class="form-control" id="floorMin">
+                                                <div class="mt-2">&mdash;</div>
+                                                <input class="form-control" id="floorMax">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div data-translate="price"> Цена ($):</div>
+                                            <div style="display: flex">
+                                                <input class="form-control" id="priceMin">
+                                                <div class="mt-2">&mdash;</div>
+                                                <input class="form-control" id="priceMax">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                       <div  data-translate="price"> Цена ($):</div>
-                                        <div style="display: flex">
-                                            <input class="form-control" id="priceMin">
-                                            <div class="mt-2">&mdash;</div>
-                                            <input class="form-control" id="priceMax">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p data-translate="plotArea">Участок(кв. м):</p>
+                                            <div style="display: flex">
+                                                <input class="form-control" id="plotAreaMin">
+                                                <div class="mt-2">&mdash;</div>
+                                                <input class="form-control" id="plotAreaMax">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <p data-translate="S_area_sqm">Площадь(кв. м):</p>
+                                            <div style="display: flex">
+                                                <input class="form-control" id="houseAreaMin">
+                                                <div class="mt-2">&mdash;</div>
+                                                <input class="form-control" id="houseAreaMax">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <p data-translate="plotArea">Участок(кв. м):</p>                                        <div style="display: flex">
-                                            <input class="form-control" id="plotAreaMin">
-                                            <div class="mt-2">&mdash;</div>
-                                            <input class="form-control" id="plotAreaMax">
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <p data-translate="S_area_sqm">Площадь(кв. м):</p>
-                                        <div style="display: flex">
-                                            <input class="form-control" id="houseAreaMin">
-                                            <div class="mt-2">&mdash;</div>
-                                            <input class="form-control" id="houseAreaMax">
-                                        </div>
-                                    </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-2">
+                                    <div data-translate="RC">ЖК</div>
+
+                                    <select class="form-control" id="builderObjects" name="builderObject"></select>
+                                </div>
+                                <div class="col-2">
+                                    <div data-translate="status"> Статус</div>
+
+                                    <select class="form-control" id="status"></select>
+                                </div>
+                                <div class="col-3">
+                                    <div data-translate="propertyType"> Вид недвижемости</div>
+                                    <select class="form-control" id="propertyOrigin"></select>
+                                </div>
+                                <div class="col-3">
+                                    <div data-translate="real_estate_type">Тип недвижимости</div>
+                                    <select class="form-control" id="propertyApplicationType"></select>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <div data-translate="phone">Телефон:</div>
+                                    <input class="form-control phone" id="phoneExample2">
+                                </div>
+                                <div class="col-4">
+                                    <div data-translate="realtor">Риелтор:</div>
+                                    <select class="form-control" id="realtorSelect2example2"></select>
+                                </div>
+                            </div>
+                            <br/>
+                            <h3 data-translate="comment">Коментарий</h3>
+                            <textarea class="form-control bootstrap-maxlength-example" id="commentExample"
+                                      rows="4"></textarea>
+                            <a href="#" onclick="showModal()" data-translate="showChangeHistory">Показать историю
+                                изменений</a>
                         </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-2">
-                                <div  data-translate="RC">ЖК</div>
-
-                                <select class="form-control" id="builderObjects" name="builderObject"></select>
+                        <div class="tab-pane fade show" aria-labelledby="navs-pills-top-note" id="top-note">
+                            <div id="noteBlock"></div>
+                            <div style="width: 100%; display: flex; justify-content: flex-end">
+                                <button type="button" onclick="addNoteBlock()" class="btn btn-success mb-1"
+                                        data-translate="addNote">Добавить
+                                    заметку
+                                </button>
                             </div>
-                            <div class="col-2">
-                                <div data-translate="status"> Статус</div>
-
-                                <select class="form-control" id="status"></select>
-                            </div>
-                            <div class="col-3">
-                                <div  data-translate="propertyType"> Вид недвижемости</div>
-                                <select class="form-control" id="propertyOrigin"></select>
-                            </div>
-                            <div class="col-3">
-                                <div  data-translate="real_estate_type">Тип недвижимости</div>
-                                <select class="form-control" id="propertyApplicationType"></select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2">
-                                <div data-translate="phone">Телефон:</div>
-                                <input class="form-control phone" id="phoneExample2">
-                            </div>
-                            <div class="col-4">
-                                <div data-translate="realtor">Риелтор:</div>
-                                <select class="form-control" id="realtorSelect2example2"></select>
-                            </div>
-                        </div>
-                        <br/>
-                        <h3 data-translate="comment">Коментарий</h3>
-                        <textarea class="form-control bootstrap-maxlength-example" id="commentExample"
-                                  rows="4"></textarea>
-                        <a href="#" onclick="showModal()" data-translate="showChangeHistory">Показать историю изменений</a>
-                    </div>
-                    <div class="tab-pane fade show" aria-labelledby="navs-pills-top-note" id="top-note">
-                        <div id="noteBlock"></div>
-                        <div style="width: 100%; display: flex; justify-content: flex-end">
-                            <button type="button" onclick="addNoteBlock()" class="btn btn-success mb-1" data-translate="addNote">Добавить
-                                заметку
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <div class="d-flex justify-content-end mt-2">
-                <a th:href="@{/realtors}" class="btn btn-default"  data-translate="cancel">Отменить</a>
-                <button onclick="sendForm()" class="btn btn-success"  data-translate="save">Сохранить</button>
+            <div class="card-footer">
+                <div class="d-flex justify-content-end mt-2">
+                    <a th:href="@{/realtors}" class="btn btn-default" data-translate="cancel">Отменить</a>
+                    <button onclick="sendForm()" class="btn btn-success" data-translate="save">Сохранить</button>
+                </div>
             </div>
         </div>
     </div>
@@ -280,6 +294,7 @@
             }).catch(error => {
             })
         }
+
         var ID
         var APPLICATION_ID
         $(document).ready(function () {
@@ -292,16 +307,16 @@
                     url: '[[@{/buyers/getById/}]]' + buyerId,
                     success: function (buyer) {
                         ID = buyer.id
-                        if(buyer.application)APPLICATION_ID = buyer.application.id
+                        if (buyer.application) APPLICATION_ID = buyer.application.id
                         $("#surname").val(buyer.surname || '')
                         $("#name").val(buyer.name || '')
                         $("#middleName").val(buyer.middleName || '')
                         $("#phone").val(buyer.phone || '')
                         $("#email").val(buyer.email || '')
                         $("#passport").val(buyer.passport)
-                        $("#birthdate").val(buyer.birthdate?buyer.birthdate.replace(/-/g, '/'):'')
-                        $("#lastVisit").val(buyer.lastContactDate?buyer.lastContactDate.replace(/-/g, '/'):'')
-                        $("#comment").val(buyer.comment||'')
+                        $("#birthdate").val(buyer.birthdate ? buyer.birthdate.replace(/-/g, '/') : '')
+                        $("#lastVisit").val(buyer.lastContactDate ? buyer.lastContactDate.replace(/-/g, '/') : '')
+                        $("#comment").val(buyer.comment || '')
                         for (var note of buyer.notes) {
                             addNoteBlock(note.id, note.comment)
                         }
@@ -338,7 +353,7 @@
 
                             blockForFile.append(row);
                         }
-                        if(APPLICATION_ID) {
+                        if (APPLICATION_ID) {
                             $(".roomNumbers[value='" + buyer.application.roomQuantity + "']").prop("checked", true);
 
                             $("#floorMin").val(buyer.application.floorMin)
@@ -353,11 +368,11 @@
                             $("#phoneExample2").val(buyer.application.phone)
                             $("#commentExample").val(buyer.application.comment)
 
-                            if(buyer.application.realtor) forSelect2WithSearch(buyer.application.realtor.id, buyer.application.realtor.name, "#realtorSelect2example2", "/realtors/for/select");
+                            if (buyer.application.realtor) forSelect2WithSearch(buyer.application.realtor.id, buyer.application.realtor.name, "#realtorSelect2example2", "/realtors/for/select");
                             else forSelect2WithSearch(undefined, undefined, "#realtorSelect2example2", "/realtors/for/select")
-                            if(buyer.application.builderObject)forSelect2WithSearch(buyer.application.builderObject.id, buyer.application.builderObject.name, "#builderObjects", "/builder_objects/for/select", "builderObject");
+                            if (buyer.application.builderObject) forSelect2WithSearch(buyer.application.builderObject.id, buyer.application.builderObject.name, "#builderObjects", "/builder_objects/for/select", "builderObject");
                             else forSelect2WithSearch(undefined, undefined, "#builderObjects", "/builder_objects/for/select")
-                        }else {
+                        } else {
                             forSelect2WithSearch(undefined, undefined, "#realtorSelect2example2", "/realtors/for/select");
                             forSelect2WithSearch(undefined, undefined, "#builderObjects", "/builder_objects/for/select");
                         }
@@ -379,11 +394,11 @@
                                 },
                             }
                         })
-                        if(buyer.application && buyer.application.districts)
-                        for (var district of buyer.application.districts) {
-                            $("#district").append(new Option(district, district, true, true));
-                            $("#district").trigger('change');
-                        }
+                        if (buyer.application && buyer.application.districts)
+                            for (var district of buyer.application.districts) {
+                                $("#district").append(new Option(district, district, true, true));
+                                $("#district").trigger('change');
+                            }
 
                         $("#topzone").select2({
                             minimumResultsForSearch: -1,
@@ -403,22 +418,22 @@
                                 },
                             }
                         })
-                        if(buyer.application && buyer.application.topzones)
-                        for (var topzone of buyer.application.topzones) {
-                            $("#topzone").append(new Option(topzone, topzone, true, true));
-                            $("#topzone").trigger('change');
-                        }
-                        if(buyer.application) {
+                        if (buyer.application && buyer.application.topzones)
+                            for (var topzone of buyer.application.topzones) {
+                                $("#topzone").append(new Option(topzone, topzone, true, true));
+                                $("#topzone").trigger('change');
+                            }
+                        if (buyer.application) {
                             forSelect2(buyer.application.status, buyer.application.status, "#status", "/enum/applicationStatus");
                             forSelect2(buyer.application.origin, buyer.application.origin, "#propertyOrigin", "/enum/propertyOrigin");
                             forSelect2(buyer.application.type, buyer.application.type, "#propertyApplicationType", "/enum/propertyApplicationType");
-                        }else {
+                        } else {
                             forSelect2(undefined, undefined, "#status", "/enum/applicationStatus");
                             forSelect2(undefined, undefined, "#propertyOrigin", "/enum/propertyOrigin");
                             forSelect2(undefined, undefined, "#propertyApplicationType", "/enum/propertyApplicationType");
                         }
-                        buyer.realtor?realtorSelect2(buyer.realtor.id, buyer.realtor.name):realtorSelect2(undefined, undefined)
-                        buyer.informationSource?informationSourceSelect2(buyer.informationSource, buyer.informationSource):informationSourceSelect2(undefined, undefined)
+                        buyer.realtor ? realtorSelect2(buyer.realtor.id, buyer.realtor.name) : realtorSelect2(undefined, undefined)
+                        buyer.informationSource ? informationSourceSelect2(buyer.informationSource, buyer.informationSource) : informationSourceSelect2(undefined, undefined)
                     }
                 })
 
@@ -451,6 +466,7 @@
                 uppercase: true
             })
         })
+
         function downloadFileFrom(url) {
             $.ajax({
                 type: "GET",
@@ -479,6 +495,7 @@
                 }
             });
         }
+
         function deleteFile(button, url) {
             $('#confirmationModal').modal('show');
 
@@ -508,6 +525,7 @@
                 $('.confirm-delete').off('click');
             });
         }
+
         function saveNote(buyer) {
             var inputs = $('.for-note');
             for (var i = 0; i < inputs.length; i += 3) {
@@ -523,13 +541,14 @@
                         comment: text,
                         buyer: buyer
                     },
-                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                    headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                     success: function (response) {
                     }
                 })
             }
             return
         }
+
         function addNoteBlock(id, text) {
             var newElement = document.createElement("p");
             var currentDate = new Date().toISOString().split('T')[0].replace(/-/g, '/')
@@ -552,6 +571,7 @@
             noteBlock.appendChild(newElement);
             refreshAllTranslate();
         }
+
         function deleteBlock(button) {
             $('#confirmationModal').modal('show');
 
@@ -579,6 +599,7 @@
                 $('.confirm-delete').off('click');
             });
         }
+
         function saveApplication(buyer) {
             var districts = $("#district")
             var topzones = $("#topzone")
@@ -621,7 +642,7 @@
             formData.append("realtor", realtor.val());
             formData.append("comment", comment.val());
             formData.append("buyer", buyer);
-            if(APPLICATION_ID)formData.append("id", APPLICATION_ID);
+            if (APPLICATION_ID) formData.append("id", APPLICATION_ID);
 
 
             $.ajax({
@@ -631,7 +652,7 @@
                 processData: false,
                 contentType: false,
                 data: formData,
-                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                 success: function (response) {
                     showToast(response, "success")
                 },
@@ -644,6 +665,7 @@
                 }
             })
         }
+
         function sendForm() {
             cleanInputs()
 
@@ -872,7 +894,6 @@
             }
 
 
-
             let formData = new FormData();
             formData.append("surname", surname.val());
             formData.append("name", name.val());
@@ -885,7 +906,7 @@
             formData.append("informationSource", informationSourceSelect2.val());
             formData.append("lastContactDate", lastVisit.val());
             formData.append("comment", comment.val());
-            if(ID) formData.append("id", ID);
+            if (ID) formData.append("id", ID);
 
             var filesElement = files[0].files;
             for (var i = 0; i < filesElement.length; i++) {
@@ -898,7 +919,7 @@
                 processData: false,
                 contentType: false,
                 data: formData,
-                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                 success: function (id) {
                     saveNote(id)
                     saveApplication(id)
@@ -912,6 +933,7 @@
                 }
             })
         }
+
         function showModal() {
 
             var modal = new bootstrap.Modal(document.getElementById('modalForHistory'))
@@ -929,7 +951,7 @@
                         modal.show()
                     }
                 })
-            }else{
+            } else {
                 modalElement.querySelector('textarea[name="history"]').value = 'Історія змін пуста'
                 modalElement.querySelector('textarea[name="history"]').setAttribute("data-translate-value", "changeHistoryEmpty");
                 modal.show()

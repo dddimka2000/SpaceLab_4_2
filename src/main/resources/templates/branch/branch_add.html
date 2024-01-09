@@ -12,92 +12,96 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="newBranch">Новый филиал</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                    <li class="breadcrumb-item"><a th:href="@{/branches}" data-translate="branches">Филиалы</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="newBranch">Новый филиал</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="newBranch">Новый филиал</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/branches}" data-translate="branches">Филиалы</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="newBranch">Новый филиал
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <hr style="margin-top: -5px">
 
-        <div class="card">
-            <form id="branchForm" method="post" th:action="@{/branches/create}" th:object="${branchDto}"
-                  enctype="multipart/form-data">
-                <div class="card-header">
-                    <h2 data-translate="INFORMATION">Информация</h2>
-                    <input th:field="*{id}" type="text" class="form-control" hidden>
-                    <hr>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <label data-translate="code">Код</label>
-                            <input type="number" placeholder="11" class="form-control" th:field="*{code}"
-                                   th:style="${#fields.hasErrors('code') ? 'border-color: #ff0000' : ''}">
-                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                 th:if="${#fields.hasErrors('code')}" th:errors="*{code}">
+            <div class="card">
+                <form id="branchForm" method="post" th:action="@{/branches/create}" th:object="${branchDto}"
+                      enctype="multipart/form-data">
+                    <div class="card-header">
+                        <h2 data-translate="INFORMATION">Информация</h2>
+                        <input th:field="*{id}" type="text" class="form-control" hidden>
+                        <hr>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <label data-translate="code">Код</label>
+                                <input type="number" placeholder="11" class="form-control" th:field="*{code}"
+                                       th:style="${#fields.hasErrors('code') ? 'border-color: #ff0000' : ''}">
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                     th:if="${#fields.hasErrors('code')}" th:errors="*{code}">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label data-translate="phone">Телефон</label>
+                                <input type="text" placeholder="+380696969696" class="form-control phone"
+                                       th:field="*{telephone}"
+                                       th:style="${#fields.hasErrors('telephone') ? 'border-color: #ff0000' : ''}">
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                     th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></div>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <label data-translate="phone">Телефон</label>
-                            <input type="text" placeholder="+380696969696" class="form-control phone"
-                                   th:field="*{telephone}"
-                                   th:style="${#fields.hasErrors('telephone') ? 'border-color: #ff0000' : ''}">
-                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                 th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label data-translate="title">Название</label>
+                                <input type="text" placeholder="Барталамео" class="form-control" th:field="*{name}"
+                                       th:style="${#fields.hasErrors('name') ? 'border-color: #ff0000' : ''}">
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                     th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            </div>
+                            <div class="col-6">
+                                <label>Email</label>
+                                <input type="text" placeholder="someemail@gmail.com" class="form-control"
+                                       th:field="*{email}"
+                                       th:style="${#fields.hasErrors('email') ? 'border-color: #ff0000' : ''}">
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                     th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label data-translate="address">Адрес</label>
+                                <input type="text" placeholder="Бейкер-стрит 221B" class="form-control"
+                                       th:field="*{address}"
+                                       th:style="${#fields.hasErrors('address') ? 'border-color: #ff0000' : ''}"
+                                       data-translate-placeholder="enter_street">
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                     th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                            </div>
+                            <div class="col-6">
+                                <label data-translate="attachPhoto">Прикрепить фото</label>
+                                <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png"
+                                       name="imgPath"
+                                       id="imgPath" onchange="validateAndUpload('', ['.jpg', '.jpeg', '.png'])"
+                                       th:style="${#fields.hasErrors('imgPath') ? 'border-color: #ff0000' : ''}">
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                     th:if="${#fields.hasErrors('imgPath')}" th:errors="*{imgPath}"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <label data-translate="title">Название</label>
-                            <input type="text" placeholder="Барталамео" class="form-control" th:field="*{name}"
-                                   th:style="${#fields.hasErrors('name') ? 'border-color: #ff0000' : ''}">
-                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                 th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-                        </div>
-                        <div class="col-6">
-                            <label>Email</label>
-                            <input type="text" placeholder="someemail@gmail.com" class="form-control"
-                                   th:field="*{email}"
-                                   th:style="${#fields.hasErrors('email') ? 'border-color: #ff0000' : ''}">
-                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                 th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-end">
+                            <a th:href="@{/branches}" class="btn btn-default" data-translate="cancel">Отменить</a>
+                            <button type="button" onclick="sendForm()" class="btn btn-success" data-translate="save">
+                                Сохранить
+                            </button>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <label data-translate="address">Адрес</label>
-                            <input type="text" placeholder="Бейкер-стрит 221B" class="form-control"
-                                   th:field="*{address}"
-                                   th:style="${#fields.hasErrors('address') ? 'border-color: #ff0000' : ''}"
-                                   data-translate-placeholder="enter_street">
-                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                 th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
-                        </div>
-                        <div class="col-6">
-                            <label data-translate="attachPhoto">Прикрепить фото</label>
-                            <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png" name="imgPath"
-                                   id="imgPath" onchange="validateAndUpload('', ['.jpg', '.jpeg', '.png'])"
-                                   th:style="${#fields.hasErrors('imgPath') ? 'border-color: #ff0000' : ''}">
-                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
-                                 th:if="${#fields.hasErrors('imgPath')}" th:errors="*{imgPath}"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="d-flex justify-content-end">
-                        <a th:href="@{/branches}" class="btn btn-default" data-translate="cancel">Отменить</a>
-                        <button type="button" onclick="sendForm()" class="btn btn-success" data-translate="save">
-                            Сохранить
-                        </button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
     <script th:inline="javascript">
@@ -152,7 +156,7 @@
                         type: 'POST',
                         url: '[[@{/branches/create}]]',
                         data: new FormData(form[0]),
-                        headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                        headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                         contentType: false,
                         processData: false,
                         success: function (response) {

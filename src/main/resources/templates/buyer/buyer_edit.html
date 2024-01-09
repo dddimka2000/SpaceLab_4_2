@@ -12,232 +12,237 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="buyer">Покупатель</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item"><a th:href="@{/buyer}" data-translate="buyers">Покупатели</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="buyer">Покупатель</li>
-                </ol>
-            </nav>
-        </div>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="buyer">Покупатель</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/buyer}" data-translate="buyers">Покупатели</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="buyer">Покупатель</li>
+                    </ol>
+                </nav>
+            </div>
 
-        <ul class="nav nav-pills mb-3" role="tablist">
-            <li class="nav-item">
-                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home"
-                        aria-selected="true" data-translate="INFORMATION">
-                    Информация
-                </button>
-            </li>
-            <li class="nav-item">
-                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-application" aria-controls="navs-pills-top-application"
-                        aria-selected="false" data-translate="application">
-                    Заявка
-                </button>
-            </li>
-            <li class="nav-item">
-                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-note" aria-controls="navs-pills-top-note"
-                        aria-selected="false" data-translate="important_notes">
-                    Заметки
-                </button>
-            </li>
-        </ul>
-        <div class="card">
-            <div class="card-body">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="navs-pills-top-info">
-                        <div class="row">
-                            <div class="col" data-translate="lastName">
-                                Фамилия
+            <ul class="nav nav-pills mb-3" role="tablist">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home"
+                            aria-selected="true" data-translate="INFORMATION">
+                        Информация
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-top-application" aria-controls="navs-pills-top-application"
+                            aria-selected="false" data-translate="application">
+                        Заявка
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-top-note" aria-controls="navs-pills-top-note"
+                            aria-selected="false" data-translate="important_notes">
+                        Заметки
+                    </button>
+                </li>
+            </ul>
+            <div class="card">
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="navs-pills-top-info">
+                            <div class="row">
+                                <div class="col" data-translate="lastName">
+                                    Фамилия
+                                </div>
+                                <div class="col" data-translate="firstName">
+                                    Имя
+                                </div>
+                                <div class="col" data-translate="middleName">
+                                    Отчество
+                                </div>
+                                <div class="col" data-translate="phone">
+                                    Телефон
+                                </div>
+                                <div class="col">
+                                    Email
+                                </div>
+                                <div class="col" data-translate="realtor">
+                                    Риелтор
+                                </div>
                             </div>
-                            <div class="col" data-translate="firstName">
-                                Имя
+                            <div class="row">
+                                <div class="col">
+                                    <input class="form-control">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control">
+                                </div>
+                                <div class="col">
+                                    <input class="form-control">
+                                </div>
                             </div>
-                            <div class="col" data-translate="middleName">
-                                Отчество
+                            <div class="row">
+                                <div class="col-2" data-translate="passport">
+                                    Паспорт Серия/Номер
+                                </div>
+                                <div class="col-2" data-translate="dateOfBirth">
+                                    Дата рождения
+                                </div>
+                                <div class="col-2" data-translate="information_source">
+                                    Источник информации
+                                </div>
+                                <div class="col-2" data-translate="last_contact_date">
+                                    Дата последнего контакта
+                                </div>
+                                <div class="col-4">
+                                </div>
                             </div>
-                            <div class="col" data-translate="phone">
-                                Телефон
+                            <div class="row">
+                                <div class="col-2">
+                                    <input class="form-control">
+                                </div>
+                                <div class="col-2">
+                                    <input class="form-control">
+                                </div>
+                                <div class="col-2">
+                                    <input class="form-control">
+                                </div>
+                                <div class="col-2">
+                                    <input class="form-control">
+                                </div>
+                                <div class="col-4">
+                                    <a class="btn btn-success" data-translate="check_phone_number">Проверить номер
+                                        телефона</a>
+                                </div>
                             </div>
-                            <div class="col">
-                                Email
-                            </div>
-                            <div class="col" data-translate="realtor">
-                                Риелтор
+                            <h3 data-translate="comment">Коментарий</h3>
+                            <br/>
+                            <textarea class="form-control" rows="5"></textarea>
+                            <div class="row mt-2">
+                                <div class="col-5" data-translate="attach_files">
+                                    Прикрепить файли
+                                    <br/>
+                                    <input type="file" class="form-control" multiple>
+                                </div>
+                                <div class="col-7"></div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <input class="form-control">
-                            </div>
-                            <div class="col">
-                                <input class="form-control">
-                            </div>
-                            <div class="col">
-                                <input class="form-control">
-                            </div>
-                            <div class="col">
-                                <input class="form-control">
-                            </div>
-                            <div class="col">
-                                <input class="form-control">
-                            </div>
-                            <div class="col">
-                                <input class="form-control">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2" data-translate="passport">
-                                Паспорт Серия/Номер
-                            </div>
-                            <div class="col-2" data-translate="dateOfBirth">
-                                Дата рождения
-                            </div>
-                            <div class="col-2" data-translate="information_source">
-                                Источник информации
-                            </div>
-                            <div class="col-2" data-translate="last_contact_date">
-                                Дата последнего контакта
-                            </div>
-                            <div class="col-4">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2">
-                                <input class="form-control">
-                            </div>
-                            <div class="col-2">
-                                <input class="form-control">
-                            </div>
-                            <div class="col-2">
-                                <input class="form-control">
-                            </div>
-                            <div class="col-2">
-                                <input class="form-control">
-                            </div>
-                            <div class="col-4">
-                                <a class="btn btn-success" data-translate="check_phone_number">Проверить номер телефона</a>
-                            </div>
-                        </div>
-                        <h3 data-translate="comment">Коментарий</h3>
-                        <br/>
-                        <textarea class="form-control" rows="5"></textarea>
-                        <div class="row mt-2">
-                            <div class="col-5" data-translate="attach_files">
-                                Прикрепить файли
-                                <br/>
-                                <input type="file" class="form-control" multiple>
-                            </div>
-                            <div class="col-7"></div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show" id="navs-pills-top-application">
-                        <div class="row">
-                            <div class="col-4">
-                                Район
-                                <select class="form-control"></select>
-                                Район
-                                <select class="form-control"></select>
-                            </div>
-                            <div class="col-3" data-translate="property.numberOfRooms">
-                                Количество комнат
-                                <br/>
-                                1 <input type="radio" class="form-check-input" name="flexRadioDefault">
-                                2 <input type="radio" class="form-check-input" name="flexRadioDefault">
-                                3 <input type="radio" class="form-check-input" name="flexRadioDefault">
-                                4 <input type="radio" class="form-check-input" name="flexRadioDefault">
-                            </div>
-                            <div class="col-5">
-                                <div class="row">
-                                    <div class="col" data-translate="floor">
-                                        Этаж:
-                                        <div style="display: flex">
-                                            <input class="form-control">
-                                            <div class="mt-2">&mdash;</div>
-                                            <input class="form-control">
+                        <div class="tab-pane fade show" id="navs-pills-top-application">
+                            <div class="row">
+                                <div class="col-4">
+                                    Район
+                                    <select class="form-control"></select>
+                                    Район
+                                    <select class="form-control"></select>
+                                </div>
+                                <div class="col-3" data-translate="property.numberOfRooms">
+                                    Количество комнат
+                                    <br/>
+                                    1 <input type="radio" class="form-check-input" name="flexRadioDefault">
+                                    2 <input type="radio" class="form-check-input" name="flexRadioDefault">
+                                    3 <input type="radio" class="form-check-input" name="flexRadioDefault">
+                                    4 <input type="radio" class="form-check-input" name="flexRadioDefault">
+                                </div>
+                                <div class="col-5">
+                                    <div class="row">
+                                        <div class="col" data-translate="floor">
+                                            Этаж:
+                                            <div style="display: flex">
+                                                <input class="form-control">
+                                                <div class="mt-2">&mdash;</div>
+                                                <input class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col" data-translate="price">
+                                            Цена ($):
+                                            <div style="display: flex">
+                                                <input class="form-control">
+                                                <div class="mt-2">&mdash;</div>
+                                                <input class="form-control">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col" data-translate="price">
-                                        Цена ($):
-                                        <div style="display: flex">
-                                            <input class="form-control">
-                                            <div class="mt-2">&mdash;</div>
-                                            <input class="form-control">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p data-translate="plotArea">Участок(кв. м):</p>
+                                            <div style="display: flex">
+                                                <input class="form-control">
+                                                <div class="mt-2">&mdash;</div>
+                                                <input class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <p data-translate="S_area_sqm">Площадь(кв. м):</p>
+                                            <div style="display: flex">
+                                                <input class="form-control">
+                                                <div class="mt-2">&mdash;</div>
+                                                <input class="form-control">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <p data-translate="plotArea">Участок(кв. м):</p>
-                                        <div style="display: flex">
-                                            <input class="form-control">
-                                            <div class="mt-2">&mdash;</div>
-                                            <input class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col" >
-                                        <p data-translate="S_area_sqm">Площадь(кв. м):</p>
-                                        <div style="display: flex">
-                                            <input class="form-control">
-                                            <div class="mt-2">&mdash;</div>
-                                            <input class="form-control">
-                                        </div>
-                                    </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-2">
+                                    <div data-translate="RC">ЖК</div>
+                                    <select class="form-control"></select>
+                                </div>
+                                <div class="col-2">
+                                    <div data-translate="status"> Статус</div>
+                                    <select class="form-control"></select>
+                                </div>
+                                <div class="col-3">
+                                    <div data-translate="propertyType"> Вид недвижемости</div>
+                                    <select class="form-control"></select>
+                                </div>
+                                <div class="col-3">
+                                    <div data-translate="real_estate_type">Тип недвижимости</div>
+                                    <select class="form-control"></select>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <div data-translate="phone">Телефон:</div>
+                                    <input class="form-control">
+                                </div>
+                                <div class="col-4">
+                                    <div data-translate="realtor">Риелтор:</div>
+                                    <select class="form-control"></select>
+                                </div>
+                            </div>
+                            <br/>
+                            <div data-translate="comment">Коментарий</div>
+                            <textarea class="form-control" rows="4"></textarea>
+                            <a href="#" onclick="showModal()">Показать историю изменений</a>
                         </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-2">
-                                <div  data-translate="RC">ЖК</div>
-                                <select class="form-control"></select>
+                        <div class="tab-pane fade show" id="navs-pills-top-note">
+                            <div id="noteBlock"></div>
+                            <div style="width: 100%; display: flex; justify-content: flex-end">
+                                <button type="button" onclick="addNoteBlock()" class="btn btn-success mb-1">Добавить
+                                    заметку
+                                </button>
                             </div>
-                            <div class="col-2" >
-                                <div data-translate="status"> Статус</div>
-                                <select class="form-control"></select>
-                            </div>
-                            <div class="col-3">
-                                <div  data-translate="propertyType"> Вид недвижемости</div>
-                                <select class="form-control"></select>
-                            </div>
-                            <div class="col-3">
-                                <div  data-translate="real_estate_type">Тип недвижимости</div>
-                                <select class="form-control"></select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2" >
-                                <div data-translate="phone">Телефон:</div>
-                                <input class="form-control">
-                            </div>
-                            <div class="col-4" >
-                                <div data-translate="realtor">Риелтор:</div>
-                                <select class="form-control"></select>
-                            </div>
-                        </div>
-                        <br/>
-                        <div data-translate="comment">Коментарий</div>
-                        <textarea class="form-control" rows="4"></textarea>
-                        <a href="#" onclick="showModal()">Показать историю изменений</a>
-                    </div>
-                    <div class="tab-pane fade show" id="navs-pills-top-note">
-                        <div id="noteBlock"></div>
-                        <div style="width: 100%; display: flex; justify-content: flex-end">
-                            <button type="button" onclick="addNoteBlock()" class="btn btn-success mb-1">Добавить заметку</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <div class="d-flex justify-content-end mt-2">
-                <a th:href="@{/realtors}" class="btn btn-default" data-translate="cancel">Отменить</a>
-                <button onclick="sendForm()" class="btn btn-success" data-translate="save">Сохранить</button>
+            <div class="card-footer">
+                <div class="d-flex justify-content-end mt-2">
+                    <a th:href="@{/realtors}" class="btn btn-default" data-translate="cancel">Отменить</a>
+                    <button onclick="sendForm()" class="btn btn-success" data-translate="save">Сохранить</button>
+                </div>
             </div>
         </div>
     </div>
@@ -262,7 +267,7 @@
             newElement.innerHTML = `
         <div class="card">
             <div class="card-header">
-                `+new Date().toLocaleDateString()+`
+                ` + new Date().toLocaleDateString() + `
                 <button class="btn" onclick="deleteblock(this)" style='float: right;'>
                     <i class='fa fa-trash'></i>
                 </button>
@@ -275,7 +280,8 @@
             var noteBlock = document.getElementById("noteBlock");
             noteBlock.appendChild(newElement);
         }
-        function showModal(){
+
+        function showModal() {
             var modal = new bootstrap.Modal(document.getElementById('modalForHistory'))
             var modalElement = document.getElementById('modalForHistory')
             modalElement.querySelector('textarea[name="history"]').value = 'asdfasdfqefrgbnh gbhtthnhbgb bv rbg br gbrgv  brsf vaerf'

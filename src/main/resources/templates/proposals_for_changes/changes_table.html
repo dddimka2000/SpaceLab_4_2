@@ -12,47 +12,44 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="Changes">Изменения</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="Home">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="Changes">Изменения</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
-        <!-- <div style="width: 100%; display: flex; justify-content: flex-end">
-            <button class="btn btn-success">Добавить страницу</button>
-        </div> -->
-
-        <div class="card border">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped linkedRow" id="offersTable">
-                        <thead>
-                        <tr>
-                            <th data-translate="Object">Объект</th>
-                            <th data-translate="Text">Текст</th>
-                            <th data-translate="Sender">Отправитель</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                        </tr>
-                        </tbody>
-                    </table>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="Changes">Изменения</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="Home">Главная</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="Changes">Изменения</li>
+                    </ol>
+                </nav>
+            </div>
+            <hr style="margin-top: -5px">
+            <div class="card border">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped linkedRow" id="offersTable">
+                            <thead>
+                            <tr>
+                                <th data-translate="Object">Объект</th>
+                                <th data-translate="Text">Текст</th>
+                                <th data-translate="Sender">Отправитель</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                        id="pagination_container">
+                    </ul>
                 </div>
             </div>
-            <div class="card-footer">
-                <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
-                    id="pagination_container">
-                </ul>
-            </div>
         </div>
-
     </div>
     <div class="modal animate__animated animate__flipInX" id="modalForOffer" tabindex="-1"
          aria-labelledby="flipInXAnimationModalLabel" aria-hidden="true">

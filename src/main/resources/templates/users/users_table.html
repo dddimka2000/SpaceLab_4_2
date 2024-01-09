@@ -11,77 +11,80 @@
 
 <body>
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="users">Пользователи</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="users">Пользователи</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
-        <div style="width: 100%; display: flex; justify-content: flex-end">
-            <a th:href="@{/users/add}" class="btn btn-success mb-1" data-translate="addUser">Добавить пользователя</a>
-        </div>
-
-        <div class="card border">
-            <div class="card-header border">
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-default" id="clean-filter" data-translate="clear">Очистить</button>
-                </div>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="users">Пользователи</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="users">Пользователи</li>
+                    </ol>
+                </nav>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped linkedRow" id="usersTable">
-                        <thead>
-                        <tr>
-                            <th data-translate="role">Роль</th>
-                            <th data-translate="lastName">Фамилия</th>
-                            <th data-translate="firstName">Имя</th>
-                            <th style="min-width: 130px;" data-translate="middleName">Отчество</th>
-                            <th data-translate="phone">Телефон</th>
-                            <th>Email (логин)</th>
-                            <th style="min-width: 130px;"></th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-
-                            </td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
+            <hr style="margin-top: -5px">
+            <div style="width: 100%; display: flex; justify-content: flex-end">
+                <a th:href="@{/users/add}" class="btn btn-success mb-1" data-translate="addUser">Добавить
+                    пользователя</a>
             </div>
-            <div class="card-footer">
-                <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
-                    id="pagination_container">
-                </ul>
+
+            <div class="card border">
+                <div class="card-header border">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-default" id="clean-filter" data-translate="clear">Очистить</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped linkedRow" id="usersTable">
+                            <thead>
+                            <tr>
+                                <th data-translate="role">Роль</th>
+                                <th data-translate="lastName">Фамилия</th>
+                                <th data-translate="firstName">Имя</th>
+                                <th style="min-width: 130px;" data-translate="middleName">Отчество</th>
+                                <th data-translate="phone">Телефон</th>
+                                <th>Email (логин)</th>
+                                <th style="min-width: 130px;"></th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                        id="pagination_container">
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -157,6 +160,7 @@
                 },
             });
         }
+
         function deleteElement(button, userId) {
             $('#confirmationModal').modal('show');
 
@@ -182,6 +186,7 @@
                 $('.confirm-delete').off('click');
             });
         }
+
         $('#clean-filter').click(function () {
             var filterElements = $('.for-filter');
             filterElements[0].value = "";

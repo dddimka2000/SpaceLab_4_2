@@ -15,280 +15,289 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="newRealtor">Новый риелтор</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item"><a th:href="@{/realtors}" data-translate="realtors">Риелторы</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="newRealtor">Новый риелтор
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="newRealtor">Новый риелтор</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/realtors}" data-translate="realtors">Риелторы</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="newRealtor">Новый риелтор
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <hr style="margin-top: -5px">
+            <div th:if="${realtorDto.id}">
+                <ul class="nav nav-pills mb-3" role="tablist">
+                    <li class="nav-item">
+                        <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" id="top-home"
+                                data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home"
+                                aria-selected="true" data-translate="INFORMATION">
+                            Информация
+                        </button>
                     </li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
-        <div th:if="${realtorDto.id}">
-            <ul class="nav nav-pills mb-3" role="tablist">
-                <li class="nav-item">
-                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" id="top-home"
-                            data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home"
-                            aria-selected="true" data-translate="INFORMATION">
-                        Информация
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" id="top-profile"
-                            data-bs-target="#navs-pills-top-reviews" aria-controls="navs-pills-top-profile"
-                            aria-selected="false" data-translate="reviews">Отзывы
-                    </button>
-                </li>
-            </ul>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="navs-pills-top-info" aria-labelledby="top-home">
-                        <form method="post" th:action="@{/realtors/add}" th:object="${realtorDto}"
-                              enctype="multipart/form-data" id="realtorAdd">
-                            <div class="row mb-3">
-                                <div class="col-6">
-                                    <img id="previewImage" class="d-block w-px-auto h-px-300 rounded"
-                                         src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
-                                         style="width: 50%; height: 200px">
-                                    <br>
-                                    <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png"
-                                           onchange="validateAndUpload('previewImage', ['.jpg', '.jpeg', '.png'])"
-                                           th:field="*{img}">
-                                    <input th:field="*{id}" type="text" class="form-control" hidden>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-6">
-                                    <label class="form-label" data-translate="code">Код</label>
-                                    <input placeholder="11" type="number" class="form-control onlyNumber"
-                                           th:field="*{code}">
-                                    <br/>
-                                    <label class="form-label" data-translate="branches">Филиалы</label>
-                                    <select id="branchSelect2" style="margin-right: 12px; margin-left: 12px;"
-                                            th:field="*{branch}"></select>
-                                    <br/>
-                                    <br/>
-                                    <label class="form-label" data-translate="dateOfBirth">Дата рождения</label>
-                                    <input type="text" id="dateOfPurchase" class="form-control flatpickr-datetime"
-                                           placeholder="YYYY/MM/DD" th:field="*{birthdate}"/>
-                                    <br/>
-                                    <label class="form-label">Email</label>
-                                    <input type="text" class="form-control"
-                                           th:field="*{email}"
-                                           placeholder="test@gmail.com"
-                                           aria-describedby="defaultFormControlHelp"/>
-                                </div>
-                                <div class="col-6">
-                                    <br/>
-                                    <ul class="nav nav-pills mb-4" id="pills-block" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="pills-for-uk" data-bs-toggle="pill"
-                                                    data-bs-target="#pills-uk"
-                                                    type="button" role="tab" aria-controls="pills-home"
-                                                    aria-selected="true">Укр
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="pills-for-ru" data-bs-toggle="pill"
-                                                    data-bs-target="#pills-ru"
-                                                    type="button" role="tab" aria-controls="pills-profile"
-                                                    aria-selected="false">Ру
-                                            </button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="pills-for-en" data-bs-toggle="pill"
-                                                    data-bs-target="#pills-en"
-                                                    type="button" role="tab" aria-controls="pills-contact"
-                                                    aria-selected="false">En
-                                            </button>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content" id="pills-blovk-content" style="padding: 0px">
-                                        <div class="tab-pane fade show active" id="pills-uk" role="tabpanel"
-                                             aria-labelledby="pills-for-uk">
-                                            <label class="form-label" data-translate="lastName">Фамилия</label>
-                                            <input type="text" class="form-control" th:field="*{surnameUK}"
-                                                   placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
-                                            <br/>
-                                            <label class="form-label" data-translate="firstName">Имя</label>
-                                            <input type="text" class="form-control" th:field="*{nameUK}"
-                                                   placeholder="Александр"
-                                                   aria-describedby="defaultFormControlHelp"/>
-                                            <br/>
-                                            <label class="form-label" data-translate="middleName">Отчество</label>
-                                            <input type="text" class="form-control" th:field="*{middleNameUK}"
-                                                   placeholder="Сергеевич"
-                                                   aria-describedby="defaultFormControlHelp"/>
-                                        </div>
-                                        <div class="tab-pane fade show" id="pills-ru" role="tabpanel"
-                                             aria-labelledby="pills-for-ru">
-                                            <label class="form-label" data-translate="lastName">Фамилия</label>
-                                            <input type="text" class="form-control" th:field="*{surname}"
-                                                   placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
-                                            <br/>
-                                            <label class="form-label" data-translate="firstName">Имя</label>
-                                            <input type="text" class="form-control" th:field="*{name}"
-                                                   placeholder="Александр"
-                                                   aria-describedby="defaultFormControlHelp"/>
-                                            <br/>
-                                            <label class="form-label" data-translate="middleName">Отчество</label>
-                                            <input type="text" class="form-control" th:field="*{middleName}"
-                                                   placeholder="Сергеевич"
-                                                   aria-describedby="defaultFormControlHelp"/>
-                                        </div>
-                                        <div class="tab-pane fade show" id="pills-en" role="tabpanel"
-                                             aria-labelledby="pills-for-en">
-                                            <label class="form-label" data-translate="lastName">Фамилия</label>
-                                            <input type="text" class="form-control" th:field="*{surnameEN}"
-                                                   placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
-                                            <br/>
-                                            <label class="form-label" data-translate="firstName">Имя</label>
-                                            <input type="text" class="form-control" th:field="*{nameEN}"
-                                                   placeholder="Александр"
-                                                   aria-describedby="defaultFormControlHelp"/>
-                                            <br/>
-                                            <label class="form-label" data-translate="middleName">Отчество</label>
-                                            <input type="text" class="form-control" th:field="*{middleNameEN}"
-                                                   placeholder="Сергеевич"
-                                                   aria-describedby="defaultFormControlHelp"/>
-                                        </div>
+                    <li class="nav-item">
+                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" id="top-profile"
+                                data-bs-target="#navs-pills-top-reviews" aria-controls="navs-pills-top-profile"
+                                aria-selected="false" data-translate="reviews">Отзывы
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="navs-pills-top-info" aria-labelledby="top-home">
+                            <form method="post" th:action="@{/realtors/add}" th:object="${realtorDto}"
+                                  enctype="multipart/form-data" id="realtorAdd">
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <img id="previewImage" class="d-block w-px-auto h-px-300 rounded"
+                                             src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
+                                             style="width: 50%; height: 200px">
+                                        <br>
+                                        <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png"
+                                               onchange="validateAndUpload('previewImage', ['.jpg', '.jpeg', '.png'])"
+                                               th:field="*{img}">
+                                        <input th:field="*{id}" type="text" class="form-control" hidden>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <h3 data-translate="phones">Телефоны</h3>
-                                </div>
-                                <div id="phones">
-                                    <div class="row mb-3" th:each="contact: ${realtorDto.getContacts()}">
-                                        <div class="col-5">
-                                            <input type="text" class="form-control"
-                                                   th:value="${contact.getId()}" hidden>
-                                            <input type="text" class="form-control"
-                                                   th:value="${contact.getPhone()}"
-                                                   aria-describedby="defaultFormControlHelp"/>
+                                    <div class="col-6">
+                                        <label class="form-label" data-translate="code">Код</label>
+                                        <input placeholder="11" type="number" class="form-control onlyNumber"
+                                               th:field="*{code}">
+                                        <br/>
+                                        <label class="form-label" data-translate="branches">Филиалы</label>
+                                        <select id="branchSelect2" style="margin-right: 12px; margin-left: 12px;"
+                                                th:field="*{branch}"></select>
+                                        <br/>
+                                        <br/>
+                                        <label class="form-label" data-translate="dateOfBirth">Дата рождения</label>
+                                        <input type="text" id="dateOfPurchase" class="form-control flatpickr-datetime"
+                                               placeholder="YYYY/MM/DD" th:field="*{birthdate}"/>
+                                        <br/>
+                                        <label class="form-label">Email</label>
+                                        <input type="text" class="form-control"
+                                               th:field="*{email}"
+                                               placeholder="test@gmail.com"
+                                               aria-describedby="defaultFormControlHelp"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <br/>
+                                        <ul class="nav nav-pills mb-4" id="pills-block" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="pills-for-uk" data-bs-toggle="pill"
+                                                        data-bs-target="#pills-uk"
+                                                        type="button" role="tab" aria-controls="pills-home"
+                                                        aria-selected="true">Укр
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="pills-for-ru" data-bs-toggle="pill"
+                                                        data-bs-target="#pills-ru"
+                                                        type="button" role="tab" aria-controls="pills-profile"
+                                                        aria-selected="false">Ру
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="pills-for-en" data-bs-toggle="pill"
+                                                        data-bs-target="#pills-en"
+                                                        type="button" role="tab" aria-controls="pills-contact"
+                                                        aria-selected="false">En
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content" id="pills-blovk-content" style="padding: 0px">
+                                            <div class="tab-pane fade show active" id="pills-uk" role="tabpanel"
+                                                 aria-labelledby="pills-for-uk">
+                                                <label class="form-label" data-translate="lastName">Фамилия</label>
+                                                <input type="text" class="form-control" th:field="*{surnameUK}"
+                                                       placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
+                                                <br/>
+                                                <label class="form-label" data-translate="firstName">Имя</label>
+                                                <input type="text" class="form-control" th:field="*{nameUK}"
+                                                       placeholder="Александр"
+                                                       aria-describedby="defaultFormControlHelp"/>
+                                                <br/>
+                                                <label class="form-label" data-translate="middleName">Отчество</label>
+                                                <input type="text" class="form-control" th:field="*{middleNameUK}"
+                                                       placeholder="Сергеевич"
+                                                       aria-describedby="defaultFormControlHelp"/>
+                                            </div>
+                                            <div class="tab-pane fade show" id="pills-ru" role="tabpanel"
+                                                 aria-labelledby="pills-for-ru">
+                                                <label class="form-label" data-translate="lastName">Фамилия</label>
+                                                <input type="text" class="form-control" th:field="*{surname}"
+                                                       placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
+                                                <br/>
+                                                <label class="form-label" data-translate="firstName">Имя</label>
+                                                <input type="text" class="form-control" th:field="*{name}"
+                                                       placeholder="Александр"
+                                                       aria-describedby="defaultFormControlHelp"/>
+                                                <br/>
+                                                <label class="form-label" data-translate="middleName">Отчество</label>
+                                                <input type="text" class="form-control" th:field="*{middleName}"
+                                                       placeholder="Сергеевич"
+                                                       aria-describedby="defaultFormControlHelp"/>
+                                            </div>
+                                            <div class="tab-pane fade show" id="pills-en" role="tabpanel"
+                                                 aria-labelledby="pills-for-en">
+                                                <label class="form-label" data-translate="lastName">Фамилия</label>
+                                                <input type="text" class="form-control" th:field="*{surnameEN}"
+                                                       placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
+                                                <br/>
+                                                <label class="form-label" data-translate="firstName">Имя</label>
+                                                <input type="text" class="form-control" th:field="*{nameEN}"
+                                                       placeholder="Александр"
+                                                       aria-describedby="defaultFormControlHelp"/>
+                                                <br/>
+                                                <label class="form-label" data-translate="middleName">Отчество</label>
+                                                <input type="text" class="form-control" th:field="*{middleNameEN}"
+                                                       placeholder="Сергеевич"
+                                                       aria-describedby="defaultFormControlHelp"/>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <h3 data-translate="phones">Телефоны</h3>
+                                    </div>
+                                    <div id="phones">
+                                        <div class="row mb-3" th:each="contact: ${realtorDto.getContacts()}">
+                                            <div class="col-5">
+                                                <input type="text" class="form-control"
+                                                       th:value="${contact.getId()}" hidden>
+                                                <input type="text" class="form-control"
+                                                       th:value="${contact.getPhone()}"
+                                                       aria-describedby="defaultFormControlHelp"/>
+                                            </div>
+                                            <div class="col-5">
+                                                <select class="form-control for-select">
+                                                    <option th:each="type: ${contactTypes}" th:value="${type}"
+                                                            th:text="${type}" th:selected="${type == contact.type}">
+                                                        Viber
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-1">
+                                                <button type="button" class="btn btn-default btn-sm"
+                                                        th:onclick="@{deletePhone(this,'{id}')(id=${contact.id})}">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row mb-3">
                                         <div class="col-5">
-                                            <select class="form-control for-select">
-                                                <option th:each="type: ${contactTypes}" th:value="${type}"
-                                                        th:text="${type}" th:selected="${type == contact.type}">Viber
-                                                </option>
-                                            </select>
+                                        </div>
+                                        <div class="col-5 d-flex justify-content-end" id="addPhone">
+                                            <button type="button" onclick="addBlockForPhone()" class="btn btn-info"
+                                                    data-translate="add">Добавить
+                                            </button>
                                         </div>
                                         <div class="col-1">
-                                            <button type="button" class="btn btn-default btn-sm"
-                                                    th:onclick="@{deletePhone(this,'{id}')(id=${contact.id})}">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
                                         </div>
                                     </div>
-
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-5">
+                                    <div class="row mb-3">
+                                        <h3 data-translate="changePassword">Сменить пароль</h3>
                                     </div>
-                                    <div class="col-5 d-flex justify-content-end" id="addPhone">
-                                        <button type="button" onclick="addBlockForPhone()" class="btn btn-info"
-                                                data-translate="add">Добавить
-                                        </button>
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label" data-translate="newPassword">Новый пароль</label>
+                                            <input type="password" class="form-control"
+                                                   th:field="*{password}"
+                                                   aria-describedby="defaultFormControlHelp"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" data-translate="repeatPassword">Повтор
+                                                пароля</label>
+                                            <input type="password" class="form-control" id="password2"
+                                                   aria-describedby="defaultFormControlHelp"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="navs-pills-top-reviews" aria-labelledby="top-profile">
+                            <div class="row mb-3">
+                                <h5 data-translate="attachPdfFiles">Прикрепить PDF файлы</h5>
+                                <input type="file" accept=".pdf" id="file" class="form-control"
+                                       onchange="downloadFileToFeedBack()">
+                                <div id="block-for-file">
+                                    <div class="row" th:each="file: ${realtorDto.getFiles()}" style="margin-top: 5px">
+                                        <div class="col-2"><a href="#" class="text-decoration-none"
+                                                              th:onclick="@{downloadFileFromFeedBack('{file}')(file=${file})}"
+                                                              data-translate="downloadFile">Скачать
+                                            файл</a></div>
+                                        <div class="col"><a href="#" class="text-decoration-none for-delete"
+                                                            th:onclick="@{deleteFileFromFeedBack(this,'{file}')(file=${file})}">
+                                            <button class="btn btn-danger" style="padding: 5px" width="18" height="18"
+                                                    type="button">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     class="icon icon-tabler icon-tabler-trash" width="20" height="20"
+                                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                     fill="none"
+                                                     stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M4 7l16 0"></path>
+                                                    <path d="M10 11l0 6"></path>
+                                                    <path d="M14 11l0 6"></path>
+                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                                </svg>
+                                            </button>
+                                        </a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" th:each="body: ${realtorDto.getRealtorFeedBacks()}"
+                                 th:id="'feedback-' + ${body.id}">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label>Имя</label>
+                                        <input type="text" class="form-control for-feedback" name="id"
+                                               th:value="${body.id}"
+                                               hidden>
+                                        <input type="text" class="form-control for-feedback" name="name"
+                                               th:value="${body.name}">
+                                    </div>
+                                    <div class="col-5">
+                                        <label>Контакт</label>
+                                        <input type="text" class="form-control for-feedback" name="phone"
+                                               th:value="${body.phone}">
                                     </div>
                                     <div class="col-1">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <h3 data-translate="changePassword">Сменить пароль</h3>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-6">
-                                        <label class="form-label" data-translate="newPassword">Новый пароль</label>
-                                        <input type="password" class="form-control"
-                                               th:field="*{password}"
-                                               aria-describedby="defaultFormControlHelp"/>
-                                    </div>
-                                    <div class="col-6">
-                                        <label class="form-label" data-translate="repeatPassword">Повтор пароля</label>
-                                        <input type="password" class="form-control" id="password2"
-                                               aria-describedby="defaultFormControlHelp"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="tab-pane fade" id="navs-pills-top-reviews" aria-labelledby="top-profile">
-                        <div class="row mb-3">
-                            <h5 data-translate="attachPdfFiles">Прикрепить PDF файлы</h5>
-                            <input type="file" accept=".pdf" id="file" class="form-control"
-                                   onchange="downloadFileToFeedBack()">
-                            <div id="block-for-file">
-                                <div class="row" th:each="file: ${realtorDto.getFiles()}" style="margin-top: 5px">
-                                    <div class="col-2"><a href="#" class="text-decoration-none"
-                                                          th:onclick="@{downloadFileFromFeedBack('{file}')(file=${file})}"
-                                                          data-translate="downloadFile">Скачать
-                                        файл</a></div>
-                                    <div class="col"><a href="#" class="text-decoration-none for-delete"
-                                                        th:onclick="@{deleteFileFromFeedBack(this,'{file}')(file=${file})}">
-                                        <button class="btn btn-danger" style="padding: 5px" width="18" height="18"
-                                                type="button">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                 class="icon icon-tabler icon-tabler-trash" width="20" height="20"
-                                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                 stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M4 7l16 0"></path>
-                                                <path d="M10 11l0 6"></path>
-                                                <path d="M14 11l0 6"></path>
-                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                            </svg>
+                                        <button class="btn btn-default btn-sm" style="margin-top: 22.042px;"
+                                                th:onclick="@{deleteFeedBackBody(this,'{idBody}')(idBody=${body.id})}">
+                                            <i class="fa fa-trash"></i>
                                         </button>
-                                    </a></div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row" th:each="body: ${realtorDto.getRealtorFeedBacks()}"
-                             th:id="'feedback-' + ${body.id}">
-                            <div class="row">
-                                <div class="col-5">
-                                    <label>Имя</label>
-                                    <input type="text" class="form-control for-feedback" name="id" th:value="${body.id}"
-                                           hidden>
-                                    <input type="text" class="form-control for-feedback" name="name"
-                                           th:value="${body.name}">
-                                </div>
-                                <div class="col-5">
-                                    <label>Контакт</label>
-                                    <input type="text" class="form-control for-feedback" name="phone"
-                                           th:value="${body.phone}">
-                                </div>
-                                <div class="col-1">
-                                    <button class="btn btn-default btn-sm" style="margin-top: 22.042px;"
-                                            th:onclick="@{deleteFeedBackBody(this,'{idBody}')(idBody=${body.id})}">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-10">
-                                    <label>Отзыв</label>
-                                    <textarea name="description" class="form-control  for-feedback" cols="30" rows="10"
-                                              th:text="${body.description}"></textarea>
+                                <div class="row">
+                                    <div class="col-10">
+                                        <label>Отзыв</label>
+                                        <textarea name="description" class="form-control  for-feedback" cols="30"
+                                                  rows="10"
+                                                  th:text="${body.description}"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-footer">
-                <div class="d-flex justify-content-end">
-                    <a th:href="@{/realtors}" class="btn btn-default" data-translate="cancel">Отменить</a>
-                    <button onclick="sendForm()" type="button" class="btn btn-success" data-translate="save">Сохранить
-                    </button>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <a th:href="@{/realtors}" class="btn btn-default" data-translate="cancel">Отменить</a>
+                        <button onclick="sendForm()" type="button" class="btn btn-success" data-translate="save">
+                            Сохранить
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -379,7 +388,7 @@
                     url: '[[@{/realtors/download/file}]]',
                     type: "POST",
                     data: formData,
-                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                    headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                     processData: false,
                     contentType: false,
                     success: function (url) {
@@ -483,7 +492,7 @@
                 type: 'POST',
                 url: '[[@{/realtors/add}]]',
                 data: new FormData(form[0]),
-                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                 contentType: false,
                 processData: false,
                 success: function (response) {

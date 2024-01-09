@@ -12,95 +12,101 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="realtor">Риелтор</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item"><a th:href="@{/realtors}" data-translate="realtors">Риелторы</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="realtor">Риелтор</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
-
-        <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-end">
-                    <a class="btn btn-info" th:href="@{/realtors/edit/{id}(id=${realtor.id})}" data-translate="edit">Редактировать</a>
-                </div>
-                <hr>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="realtor">Риелтор</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/realtors}" data-translate="realtors">Риелторы</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="realtor">Риелтор</li>
+                    </ol>
+                </nav>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-5">
-                        <img id="previewImage" style="width: 90%; height: auto" class="d-block w-px-auto h-px-300 rounded">
+            <hr style="margin-top: -5px">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-info" th:href="@{/realtors/edit/{id}(id=${realtor.id})}"
+                           data-translate="edit">Редактировать</a>
                     </div>
-                    <div class="col-3">
-                        <div style="display:flex;">
-                            <p data-translate="creationDate">Дата создания</p><span>: [[${realtor.creationDate}]]</span>
-                        </div>
-                        <div style="display:flex;">
-                            <p data-translate="object">Объектов</p><span>:0</span>
-                        </div>
-                    </div>
+                    <hr>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-view">
-                        <thead>
-                        <tr>
-                            <th colspan="2"><h4 data-translate="INFORMATION">Информация</h4></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td><b data-translate="code">Код</b></td>
-                            <td th:text="${realtor.code}"></td>
-                        </tr>
-                        <tr>
-                            <td><b data-translate="fullName">ФИО</b></td>
-                            <td
-                                th:text="${realtor.surname!=null?realtor.surname:'' + ' ' + (realtor.name!=null?realtor.name:'') + ' ' + (realtor.middleName!=null?realtor.middleName:'')}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><b data-translate="phone">Телефоны</b></td>
-                            <td>
-                                <p th:each="contact: ${realtor.getContacts()}"
-                                   th:text="@{{phone}({type})(phone=${contact.phone}, type=${contact.type})}"></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><b>Email</b></td>
-                            <td th:text="${realtor.email}"></td>
-                        </tr>
-                        <tr>
-                            <td><b data-translate-placeholder="branch">Филиал</b></td>
-                            <td>
-                                <a th:href="@{/branches/{id}(id=${realtor.branch != null ? realtor.branch.id : ''})}"
-                                   th:text="${realtor.branch != null ? realtor.branch.name : ''}"></a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <img id="previewImage" style="width: 90%; height: auto"
+                                 class="d-block w-px-auto h-px-300 rounded">
+                        </div>
+                        <div class="col-3">
+                            <div style="display:flex;">
+                                <p data-translate="creationDate">Дата создания</p>
+                                <span>: [[${realtor.creationDate}]]</span>
+                            </div>
+                            <div style="display:flex;">
+                                <p data-translate="object">Объектов</p><span>:0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-view">
+                            <thead>
+                            <tr>
+                                <th colspan="2"><h4 data-translate="INFORMATION">Информация</h4></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><b data-translate="code">Код</b></td>
+                                <td th:text="${realtor.code}"></td>
+                            </tr>
+                            <tr>
+                                <td><b data-translate="fullName">ФИО</b></td>
+                                <td
+                                        th:text="${realtor.surname!=null?realtor.surname:'' + ' ' + (realtor.name!=null?realtor.name:'') + ' ' + (realtor.middleName!=null?realtor.middleName:'')}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b data-translate="phone">Телефоны</b></td>
+                                <td>
+                                    <p th:each="contact: ${realtor.getContacts()}"
+                                       th:text="@{{phone}({type})(phone=${contact.phone}, type=${contact.type})}"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Email</b></td>
+                                <td th:text="${realtor.email}"></td>
+                            </tr>
+                            <tr>
+                                <td><b data-translate-placeholder="branch">Филиал</b></td>
+                                <td>
+                                    <a th:href="@{/branches/{id}(id=${realtor.branch != null ? realtor.branch.id : ''})}"
+                                       th:text="${realtor.branch != null ? realtor.branch.name : ''}"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
         $(document).ready(function () {
-            if('[[${realtor.img}]]')
-            $.ajax({
-                type: "Get",
-                url: '[[@{/realtors/getUrl}]]',
-                data: {
-                    url: '[[${realtor.img}]]'
-                },
-                success: function (url) {
-                    $('#previewImage').attr('src', url);
-                },
-            });
+            if ('[[${realtor.img}]]')
+                $.ajax({
+                    type: "Get",
+                    url: '[[@{/realtors/getUrl}]]',
+                    data: {
+                        url: '[[${realtor.img}]]'
+                    },
+                    success: function (url) {
+                        $('#previewImage').attr('src', url);
+                    },
+                });
             else $('#previewImage').attr('src', 'http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg');
 
         });

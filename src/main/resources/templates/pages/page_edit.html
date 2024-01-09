@@ -34,76 +34,81 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="PAGE.TITLE">Название страницы</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item"><a href="#" data-translate="pages">Страницы</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="PAGE.TITLE">Название страницы</li>
-                </ol>
-            </nav>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="PAGE.TITLE">Название страницы</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a href="#" data-translate="pages">Страницы</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="PAGE.TITLE">Название
+                            страницы
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <hr style="margin-top: -5px">
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 data-translate="INFORMATION">Информация</h2>
+                    <hr>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <label data-translate="title">Название</label><span>(Ру)</span>
+                            <input type="text" class="form-control" name="" id="namePage" th:value="${page.getName()}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label data-translate="CONTENT">Контент</label>
+                        <div class="col-6">
+                            <div id="editor" th:utext="${page.getContent()}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 100px">
+                        <div class="col-6">
+                            <label data-translate="title">Название</label> <span>(Eng)</span>
+                            <input type="text" class="form-control" name="" id="namePageEng"
+                                   th:value="${page.getNameEng()}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label data-translate="CONTENT">Контент</label>
+                        <div class="col-6">
+                            <div id="editor2" th:utext="${page.getContentEng()}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 100px">
+                        <div class="col-6">
+                            <label data-translate="title">Название</label><span>(Укр)</span>
+                            <input type="text" class="form-control" name="" id="namePageUkr"
+                                   th:value="${page.getNameUkr()}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label data-translate="CONTENT">Контент</label>
+                        <div class="col-6">
+                            <div id="editor3" th:utext="${page.getContentUkr()}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-default" data-translate="cancel">Отменить</button>
+                        <button class="btn btn-success" onclick="save()" data-translate="save">Сохранить</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <hr style="margin-top: -5px">
-
-        <div class="card">
-            <div class="card-header">
-                <h2 data-translate="INFORMATION">Информация</h2>
-                <hr>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-6">
-                        <label data-translate="title">Название</label><span>(Ру)</span>
-                        <input type="text" class="form-control" name="" id="namePage" th:value="${page.getName()}">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <label data-translate="CONTENT">Контент</label>
-                    <div class="col-6">
-                        <div id="editor" th:utext="${page.getContent()}">
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 100px">
-                    <div class="col-6">
-                        <label data-translate="title">Название</label> <span>(Eng)</span>
-                        <input type="text" class="form-control" name="" id="namePageEng" th:value="${page.getNameEng()}">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <label data-translate="CONTENT">Контент</label>
-                    <div class="col-6">
-                        <div id="editor2" th:utext="${page.getContentEng()}">
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 100px">
-                    <div class="col-6">
-                        <label data-translate="title">Название</label><span>(Укр)</span>
-                        <input type="text" class="form-control" name="" id="namePageUkr" th:value="${page.getNameUkr()}">
-                    </div>
-                </div>
-
-                <div class="row">
-                    <label data-translate="CONTENT">Контент</label>
-                    <div class="col-6">
-                        <div id="editor3" th:utext="${page.getContentUkr()}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-default" data-translate="cancel">Отменить</button>
-                    <button class="btn btn-success" onclick="save()" data-translate="save">Сохранить</button>
-                </div>
-            </div>
-        </div>
-
     </div>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
@@ -122,14 +127,14 @@
     <script th:inline="javascript">
         function save() {
             console.log($("#editor2").find(".ql-editor").html())
-            let name=$("#namePage")
+            let name = $("#namePage")
             let formData = new FormData();
             formData.append("name", name.val());
             formData.append("nameUkr", $("#namePageUkr").val());
-            formData.append("nameEng",$("#namePageEng").val());
-            formData.append("content",$("#editor").find(".ql-editor").html());
-            formData.append("contentEng",$("#editor2").find(".ql-editor").html());
-            formData.append("contentUkr",$("#editor3").find(".ql-editor").html());
+            formData.append("nameEng", $("#namePageEng").val());
+            formData.append("content", $("#editor").find(".ql-editor").html());
+            formData.append("contentEng", $("#editor2").find(".ql-editor").html());
+            formData.append("contentUkr", $("#editor3").find(".ql-editor").html());
             let contextPath =/*[[@{/}]]*/'';
             let idThymeleaf =/*[[${id}]]*/'';
             let url = contextPath.toString() + "pages/edit/" + idThymeleaf;
@@ -139,7 +144,7 @@
                 contentType: false,
                 processData: false,
                 data: formData,
-                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                 success: function () {
                     showNotification("Объект сохранен!", "", true);
                 },
