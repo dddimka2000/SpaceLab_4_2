@@ -2,9 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-  <title>Page Not Found</title>
+    <title>Page Not Found</title>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta name="description" content=""/>
+    <link rel="icon" type="image/x-icon"
+          th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
+    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/core.css}" class="template-customizer-core-css"/>
+    <link rel="stylesheet" th:href="@{/vendor/css/rtl/theme-default.css}" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" th:href="@{/css/demo.css}">
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
+    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
+    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+    <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
+    <script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
+    <script th:src="@{/vendor/libs/cleavejs/cleave-phone.js}"></script>
+    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
 </head>
 <body>
-  <h1 style="font-size: 48px">ERROR 500</h1>
+<div class="container-xxl container-p-y">
+    <div class="misc-wrapper">
+        <h2 class="mb-1 mt-4">Error 500 :(</h2>
+        <p class="mb-4 mx-2">Oops! 😖 The requested URL was not found on this server.</p>
+        <a th:href="@{/}" class="btn btn-primary mb-4 waves-effect waves-light">Back to home</a>
+        <div class="mt-4">
+            <img th:src="@{/img/illustrations/page-misc-error.png}" alt="page-misc-error" width="225" class="img-fluid">
+        </div>
+    </div>
+</div>
 </body>
 </html>
