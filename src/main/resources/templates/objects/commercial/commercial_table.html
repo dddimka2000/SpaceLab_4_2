@@ -299,7 +299,7 @@
                         cell10.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
 
                         var cell11 = newRow.insertCell(11);
-                        cell11.innerHTML = house.status ? '<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'
+                        cell11.innerHTML = house.publicationStatus == 'PUBLISHED' ? '<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'
                         cell11.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
 
                         var cell12 = newRow.insertCell(12);
