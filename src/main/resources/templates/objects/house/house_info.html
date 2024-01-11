@@ -6,7 +6,7 @@
         layout:decorate="~{layout.html}"
         xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Content page</title>
+    <title data-translate="карточка_будинку"></title>
 </head>
 
 <body>
@@ -18,9 +18,8 @@
                 <h4 class="fw-bold" data-translate="object">Об'єкт</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item" data-translate="breadcrumb.home"><a th:href="@{/}">Главная</a></li>
-                        <li class="breadcrumb-item" data-translate="houses_and_plots"><a th:href="@{/houses}">Дома и
-                            участки</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/houses}" data-translate="houses_and_plots">Дома и участки</a></li>
                         <li class="breadcrumb-item active" aria-current="page" data-translate="houses">Дома</li>
                     </ol>
                 </nav>

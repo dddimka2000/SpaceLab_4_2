@@ -6,7 +6,7 @@
         layout:decorate="~{layout.html}"
         xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Content page</title>
+    <title data-translate="менеджер_користувачів"></title>
 </head>
 
 <body>
@@ -18,8 +18,8 @@
                 <h4 class="fw-bold" data-translate="newUser">Новый пользователь</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                        <li class="breadcrumb-item"><a th:href="@{/users}">Пользователи</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/users}" data-translate="users">Пользователи</a></li>
                         <li class="breadcrumb-item active" aria-current="page" data-translate="newUser">Новый
                             пользователь
                         </li>

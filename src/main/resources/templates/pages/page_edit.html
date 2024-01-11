@@ -6,18 +6,18 @@
         layout:decorate="~{layout.html}"
         xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Content page</title>
+    <title data-translate="менеджер_сторінок"></title>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         .white-text {
-            color: white !important; /* Используйте !important, чтобы сделать стиль более приоритетным */
+            color: white !important;
         }
     </style>
     <style>
         .notification {
             position: fixed;
             top: 90px;
-            right: 40px; /* Расстояние справа */
+            right: 40px;
             padding: 10px;
             border: 1px solid #ccc;
             text-align: center;
@@ -40,8 +40,8 @@
                 <h4 class="fw-bold" data-translate="PAGE.TITLE">Название страницы</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
-                        <li class="breadcrumb-item"><a href="#" data-translate="pages">Страницы</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/pages}" data-translate="pages">Страницы</a></li>
                         <li class="breadcrumb-item active" aria-current="page" data-translate="PAGE.TITLE">Название
                             страницы
                         </li>
