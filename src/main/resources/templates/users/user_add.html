@@ -292,7 +292,8 @@
                             });
                         else $('#previewImage').attr('src', 'http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg');
                         $('#branchSelect2Multiple').select2({
-                            placeholder: "Філіали",
+                            placeholder: translateValue('виберіть_обєкт'),
+                            language: languageForSelect2,
                             ajax: {
                                 url: '[[@{/branches/for/select}]]',
                                 dataType: 'json',
@@ -375,7 +376,7 @@
                 $("#navigationBlock").css("display", "none")
                 roleSelect2()
                 $('#branchSelect2Multiple').select2({
-                    placeholder: "Філіали",
+                    language: languageForSelect2,
                     ajax: {
                         url: '[[@{/branches/for/select}]]',
                         dataType: 'json',

@@ -245,9 +245,10 @@
 
         $(document).ready(function () {
             forSelect2(undefined, undefined, "#district", "/enum/district")
-            // forSelect2(undefined, undefined, "#topzone", "/enum/topzone") изменил на свой варик
             getPageWithFilter(0)
             $('#lastContactDate').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
         });

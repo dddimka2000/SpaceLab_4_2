@@ -160,6 +160,8 @@
             forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
             forSelect2WithSearch(undefined, undefined, "#buildObject", "/builder_objects/for/select")
             $('#lastContactDate').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
             getPageWithFilter(0)

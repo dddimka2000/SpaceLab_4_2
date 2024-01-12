@@ -352,8 +352,7 @@
     </div>
     <script th:src="@{/js/pagination.js}"></script>
     <script th:inline="javascript">
-        // $("#day").select2();
-        $("#pageSize").select2();
+        $("#pageSize").select2({placeholder: translateValue('виберіть_обєкт'), language: languageForSelect2});
 
         function printButton() {
             var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
@@ -397,8 +396,8 @@
         }
 
         $(function () {
-            $("#select2Multiple24").select2();
-            $("#select2MultipleTopozone").select2();
+            $("#select2Multiple24").{placeholder: translateValue('виберіть_обєкт'), language: languageForSelect2});
+            $("#select2MultipleTopozone").select2({placeholder: translateValue('виберіть_обєкт'), language: languageForSelect2});
             select2MultipleResidential();
             getPageWithFilter(0);
         });
@@ -620,6 +619,8 @@
                 $(this).val("");
             });
             $('#day').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
             $(".select2-container").find(".select2-selection__choice").remove();
@@ -636,6 +637,8 @@
             let contextPath = /*[[@{/}]]*/ '';
 
             $('#select2MultipleResidentialComplexId').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
                 ajax: {
                     url: contextPath + 'builder_objects/for/select',
                     dataType: 'json',

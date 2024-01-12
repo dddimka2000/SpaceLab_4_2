@@ -324,6 +324,8 @@
             } else
                 $('#previewImage').attr('src', 'http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg');
             $('.for-select').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
         })
@@ -649,6 +651,7 @@
                 })
             });
             $('.for-select').select2({
+                language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
         };

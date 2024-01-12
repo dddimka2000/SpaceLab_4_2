@@ -377,8 +377,9 @@
                             forSelect2WithSearch(undefined, undefined, "#builderObjects", "/builder_objects/for/select");
                         }
                         $("#district").select2({
+                            placeholder: translateValue('виберіть_обєкт'),
+                            language: languageForSelect2,
                             minimumResultsForSearch: -1,
-                            placeholder: "Елемент",
                             ajax: {
                                 url: contextPath + "/enum/district",
                                 dataType: 'json',
@@ -401,8 +402,9 @@
                             }
 
                         $("#topzone").select2({
+                            placeholder: translateValue('виберіть_обєкт'),
+                            language: languageForSelect2,
                             minimumResultsForSearch: -1,
-                            placeholder: "Елемент",
                             ajax: {
                                 url: contextPath + "/enum/topzone",
                                 dataType: 'json',

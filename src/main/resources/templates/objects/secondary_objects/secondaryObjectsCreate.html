@@ -922,6 +922,8 @@
         function branchSelect3() {
             let contextPath = /*[[@{/}]]*/ '';
             $('#branchSelect3').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
                 ajax: {
                     url: contextPath + 'builder_objects/for/select',
                     dataType: 'json',
