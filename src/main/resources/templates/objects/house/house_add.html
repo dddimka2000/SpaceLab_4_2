@@ -5,7 +5,7 @@
         layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>Content page</title>
+    <title data-translate="менеджер_будинку"></title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
@@ -872,6 +872,8 @@
 
         $(document).ready(function () {
             $('#landOwnershipPresent').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
             var houseId = getLastDigitFromPath(window.location.pathname)
@@ -1028,8 +1030,9 @@
                 forSelect2(house.address.city, house.address.city, "#city", "/getCity/" + house.address.region)
             } else {
                 $("#region").select2({
+                    placeholder: translateValue('виберіть_обєкт'),
+                    language: languageForSelect2,
                     minimumResultsForSearch: -1,
-                    placeholder: "Елемент",
                     ajax: {
                         url: '[[@{/enum/region}]]',
                         dataType: 'json',
@@ -1054,8 +1057,9 @@
                 $("#district").empty();
                 $("#district").prop("disabled", true);
                 $("#city").select2({
+                    placeholder: translateValue('виберіть_обєкт'),
+                    language: languageForSelect2,
                     minimumResultsForSearch: -1,
-                    placeholder: "Елемент",
                     ajax: {
                         url: '[[@{/getCity/}]]' + element,
                         dataType: 'json',
@@ -1077,8 +1081,9 @@
                 $("#district").empty();
                 $("#district").removeAttr("disabled");
                 $("#district").select2({
+                    placeholder: translateValue('виберіть_обєкт'),
+                    language: languageForSelect2,
                     minimumResultsForSearch: -1,
-                    placeholder: "Елемент",
                     ajax: {
                         url: '[[@{/getDistrict/}]]' + element,
                         dataType: 'json',

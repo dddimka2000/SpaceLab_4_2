@@ -6,127 +6,133 @@
         layout:decorate="~{layout.html}"
         xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Content page</title>
+    <title data-translate="менеджер_користувачів"></title>
 </head>
 
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="newUser">Новый пользователь</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}">Главная</a></li>
-                    <li class="breadcrumb-item"><a th:href="@{/users}">Пользователи</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="newUser">Новый пользователь</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="newUser">Новый пользователь</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/users}" data-translate="users">Пользователи</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="newUser">Новый
+                            пользователь
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <hr style="margin-top: -5px">
 
-        <ul class="nav nav-pills mb-3" role="tablist" id="navigationBlock">
-            <li class="nav-item">
-                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home" aria-selected="true" data-translate="INFORMATION">
-                    Информация
-                </button>
-            </li>
-            <li class="nav-item">
-                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                        data-bs-target="#navs-pills-top-reviews" aria-controls="navs-pills-top-profile"
-                        aria-selected="false" data-translate="reviews">Отзывы
-                </button>
-            </li>
-        </ul>
-        <div class="card">
-            <div class="card-body">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="navs-pills-top-info">
-                        <div class="row">
-                            <div class="col-6">
-                                <img id="previewImage" class="pull-left img-responsive mb-2"
-                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
-                                     style="width: 50%; height: 200px">
-                                <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png"
-                                       onchange="validateAndUpload('previewImage', ['.jpg', '.jpeg', '.png'])"
-                                       th:id="img">
+            <ul class="nav nav-pills mb-3" role="tablist" id="navigationBlock">
+                <li class="nav-item">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-top-info" aria-controls="navs-pills-top-home"
+                            aria-selected="true" data-translate="INFORMATION">
+                        Информация
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-top-reviews" aria-controls="navs-pills-top-profile"
+                            aria-selected="false" data-translate="reviews">Отзывы
+                    </button>
+                </li>
+            </ul>
+            <div class="card">
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="navs-pills-top-info">
+                            <div class="row">
+                                <div class="col-6">
+                                    <img id="previewImage" class="pull-left img-responsive mb-2"
+                                         src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
+                                         style="width: 50%; height: 200px">
+                                    <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png"
+                                           onchange="validateAndUpload('previewImage', ['.jpg', '.jpeg', '.png'])"
+                                           th:id="img">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="form-label" data-translate="branches">Филиалы</label>
+                                    <select id="branchSelect2Multiple" name="branches" multiple>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label" data-translate="role">Роль</label>
+                                    <select id="roleSelect2" name="roles" class="form-select"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="form-label" data-translate="lastName">Фамилия</label>
+                                    <input id="surname" type="text" class="form-control"
+                                           placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label" data-translate="firstName">Имя</label>
+                                    <input type="text" class="form-control" id="name"
+                                           placeholder="Александр" aria-describedby="defaultFormControlHelp"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="form-label" data-translate="middleName">Отчество</label>
+                                    <input type="text" class="form-control" id="middleName"
+                                           placeholder="Сергеевич" aria-describedby="defaultFormControlHelp"/>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label" data-translate="phone">Телефон</label>
+                                    <input type="tel" class="form-control" id="phone"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="text" class="form-control" id="email"
+                                           placeholder="test@gmail.com" aria-describedby="defaultFormControlHelp"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h3 data-translate="changePassword">Сменить пароль</h3>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="form-label" data-translate="newPassword">Новый пароль</label>
+                                    <input type="password" class="form-control" id="password"
+                                           aria-describedby="defaultFormControlHelp"/>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label" data-translate="repeatPassword">Повтор пароля</label>
+                                    <input type="password" class="form-control" id="confirmPassword"
+                                           aria-describedby="defaultFormControlHelp"/>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="form-label" data-translate="branches">Филиалы</label>
-                                <select id="branchSelect2Multiple" name="branches" multiple>
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label" data-translate="role">Роль</label>
-                                <select id="roleSelect2" name="roles" class="form-select"></select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="form-label" data-translate="lastName">Фамилия</label>
-                                <input id="surname" type="text" class="form-control"
-                                       placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label" data-translate="firstName">Имя</label>
-                                <input type="text" class="form-control" id="name"
-                                       placeholder="Александр" aria-describedby="defaultFormControlHelp"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="form-label" data-translate="middleName">Отчество</label>
-                                <input type="text" class="form-control" id="middleName"
-                                       placeholder="Сергеевич" aria-describedby="defaultFormControlHelp"/>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label" data-translate="phone">Телефон</label>
-                                <input type="tel" class="form-control" id="phone"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="form-label">Email</label>
-                                <input type="text" class="form-control" id="email"
-                                       placeholder="test@gmail.com" aria-describedby="defaultFormControlHelp"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <h3 data-translate="changePassword">Сменить пароль</h3>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="form-label" data-translate="newPassword">Новый пароль</label>
-                                <input type="password" class="form-control" id="password"
-                                       aria-describedby="defaultFormControlHelp"/>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label" data-translate="repeatPassword">Повтор пароля</label>
-                                <input type="password" class="form-control" id="confirmPassword"
-                                       aria-describedby="defaultFormControlHelp"/>
-                            </div>
-                        </div>
-                    </div>
 
 
-                    <div class="tab-pane fade" id="navs-pills-top-reviews">
-                        <div class="row mb-3">
-                            <h5 data-translate="attachPdfFiles">Прикрепить PDF файлы</h5>
-                            <input type="file" class="form-control" accept=".pdf" id="file" onchange="downloadFileTo()">
-                            <div id="block-for-file">
+                        <div class="tab-pane fade" id="navs-pills-top-reviews">
+                            <div class="row mb-3">
+                                <h5 data-translate="attachPdfFiles">Прикрепить PDF файлы</h5>
+                                <input type="file" class="form-control" accept=".pdf" id="file"
+                                       onchange="downloadFileTo()">
+                                <div id="block-for-file">
+                                </div>
                             </div>
+                            <div id="review-block"></div>
                         </div>
-                        <div id="review-block"></div>
                     </div>
                 </div>
-            </div>
-            <div class="card-footer">
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-default" data-translate="cancel">Отменить</button>
-                    <button onclick="sendForm()" class="btn btn-success" data-translate="save">Сохранить</button>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-default" data-translate="cancel">Отменить</button>
+                        <button onclick="sendForm()" class="btn btn-success" data-translate="save">Сохранить</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -234,7 +240,7 @@
                     url: '[[@{/users/download/file}]]',
                     type: "POST",
                     data: formData,
-                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                    headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                     processData: false,
                     contentType: false,
                     success: function (url) {
@@ -273,20 +279,21 @@
                         $("#phone").val(user.phone)
                         $("#email").val(user.email)
                         roleSelect2(user.roles, user.roles)
-                        if(user.img)
-                        $.ajax({
-                            type: "GET",
-                            url: '[[@{/users/get/url}]]',
-                            data: {
-                                url: user.img
-                            },
-                            success: function (url) {
-                                $('#previewImage').attr('src', url);
-                            },
-                        });
+                        if (user.img)
+                            $.ajax({
+                                type: "GET",
+                                url: '[[@{/users/get/url}]]',
+                                data: {
+                                    url: user.img
+                                },
+                                success: function (url) {
+                                    $('#previewImage').attr('src', url);
+                                },
+                            });
                         else $('#previewImage').attr('src', 'http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg');
                         $('#branchSelect2Multiple').select2({
-                            placeholder: "Філіали",
+                            placeholder: translateValue('виберіть_обєкт'),
+                            language: languageForSelect2,
                             ajax: {
                                 url: '[[@{/branches/for/select}]]',
                                 dataType: 'json',
@@ -369,7 +376,7 @@
                 $("#navigationBlock").css("display", "none")
                 roleSelect2()
                 $('#branchSelect2Multiple').select2({
-                    placeholder: "Філіали",
+                    language: languageForSelect2,
                     ajax: {
                         url: '[[@{/branches/for/select}]]',
                         dataType: 'json',
@@ -474,23 +481,23 @@
                 for (let i = 0; i < reviews.length; i += 4) {
                     let reviewForm = new FormData();
 
-                    reviews[i+1].style.borderColor = '';
-                    if (!validString(8, 50, reviews[i+1])) {
+                    reviews[i + 1].style.borderColor = '';
+                    if (!validString(8, 50, reviews[i + 1])) {
                         return;
                     }
-                    reviews[i+2].style.borderColor = '';
-                    if (!validatePhoneNumber(reviews[i+2])) {
+                    reviews[i + 2].style.borderColor = '';
+                    if (!validatePhoneNumber(reviews[i + 2])) {
                         return;
                     }
-                    reviews[i+3].style.borderColor = '';
-                    if (!validString(10, 1000, reviews[i+3])) {
+                    reviews[i + 3].style.borderColor = '';
+                    if (!validString(10, 1000, reviews[i + 3])) {
                         return;
                     }
 
                     reviewForm.append("id", reviews[i].value)
-                    reviewForm.append("name", reviews[i+1].value)
-                    reviewForm.append("phone", reviews[i+2].value)
-                    reviewForm.append("content", reviews[i+3].value)
+                    reviewForm.append("name", reviews[i + 1].value)
+                    reviewForm.append("phone", reviews[i + 2].value)
+                    reviewForm.append("content", reviews[i + 3].value)
                     reviewForm.append("user", userId)
 
                     $.ajax({
@@ -500,7 +507,7 @@
                         processData: false,
                         contentType: false,
                         data: reviewForm,
-                        headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                        headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                         success: function (response) {
                             showToast(response, "success")
                         },
@@ -531,7 +538,7 @@
                 processData: false,
                 contentType: false,
                 data: formData,
-                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                 success: function (response) {
                     showToast(response, "success")
                 },

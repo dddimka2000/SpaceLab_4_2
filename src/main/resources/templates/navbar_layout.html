@@ -89,7 +89,9 @@
     <script type="text/javascript">
         var translationsSecondExample
         var languageSecondExample
+        var languageForSelect2
         function translateDatePicker(language){
+            console.log(language)
             var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
             flatpickrDateTimes.forEach(function (element) {
                 if(language == "ru"){
@@ -97,7 +99,7 @@
                         dateFormat: "Y/m/d",
                         locale: "ru"
                     });
-                }else if(language == "uk"){
+                }else if(language == "ukr"){
                     element.flatpickr({
                         dateFormat: "Y/m/d",
                         locale: "uk"
@@ -110,12 +112,37 @@
             });
         }
         function translateValue(key) {
-            key = key.replaceAll(" ","_")
-            if (translationsSecondExample.hasOwnProperty(languageSecondExample) && translationsSecondExample[languageSecondExample].hasOwnProperty(key)) {
-                return translationsSecondExample[languageSecondExample][key];
-            } else {
-                return key;
+            if (!translationsSecondExample)
+                $.ajax({
+                    url: '/minions-dd/admin/api/translations',
+                    method: 'GET',
+                    data: {
+                        language: languageSecondExample
+                    },
+                    dataType: 'json',
+                    success: function (newTranslations) {
+                        translationsSecondExample = newTranslations;
+                        key = key.replaceAll(" ", "_")
+                        if (translationsSecondExample.hasOwnProperty(languageSecondExample) && translationsSecondExample[languageSecondExample].hasOwnProperty(key)) {
+                            return translationsSecondExample[languageSecondExample][key];
+                        } else {
+                            return key;
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX request failed: ' + status + ', ' + error);
+                    }
+                })
+
+            else {
+                key = key.replaceAll(" ", "_")
+                if (translationsSecondExample.hasOwnProperty(languageSecondExample) && translationsSecondExample[languageSecondExample].hasOwnProperty(key)) {
+                    return translationsSecondExample[languageSecondExample][key];
+                } else {
+                    return key;
+                }
             }
+
         }
         function selectedItemForLanguage(language){
             var items = $('.for-language')
@@ -152,7 +179,7 @@
             let selectElements = document.querySelectorAll(".select2find");
             if (selectElements) {
                 selectElements.forEach(function (element) {
-                    $(element).select2();
+                    $(element).select2({language: languageForSelect2, placeholder: translateValue('виберіть_обєкт')});
                 });
             }
             if ($(".select2-selection__choice")) {
@@ -173,7 +200,6 @@
         }
         async function changeLanguageNav(language) {
             selectedItemForLanguage(language)
-            refreshSelect2Find()
             try {
                 // Запрашиваем переводы
                 await fetch('/minions-dd/admin' + '/api/translations?language=' + language)
@@ -203,16 +229,15 @@
                                 }
                             }
                         }
+                        refreshSelect2Find()
+                        translateDatePicker(language)
                     })
                     .catch(error => {
                             console.error('Error fetching translations:', error)
                             throw error;
                         }
                     )
-                ;
 
-                refreshSelect2Find()
-                translateDatePicker(language)
             } catch
                 (error) {
                 console.error('Ошибка при получении переводов:', error);
@@ -238,6 +263,9 @@
                 let cookie = cookiesArray[i].split("=");
                 cookies[cookie[0]] = cookie[1];
             }
+            if(cookies["selectedLanguage"]=='ru') languageForSelect2='ru'
+            else if(cookies["selectedLanguage"]=='ukr') languageForSelect2='uk'
+            else languageForSelect2='en'
             selectedLanguage = cookies["selectedLanguage"];
             languageSecondExample = cookies["selectedLanguage"];
             if (selectedLanguage == undefined) {

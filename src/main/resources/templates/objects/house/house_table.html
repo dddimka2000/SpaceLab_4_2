@@ -6,7 +6,7 @@
         layout:decorate="~{layout.html}"
         xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Content page</title>
+    <title data-translate="будинки"></title>
 </head>
 
 <body>
@@ -134,8 +134,8 @@
                                 <th data-translate="district">Район</th>
                                 <th data-translate="topzone">Топзона</th>
                                 <th data-translate="street">Улица</th>
+                                <th data-translate="house_number">Номер будинку</th>
                                 <th data-translate="rooms">Комнат</th>
-                                <th data-translate="floor">Этаж</th>
                                 <th data-translate="number_of_floors">Этажность</th>
                                 <th data-translate="S_area_sqm">Площадь</th>
                                 <th data-translate="advertisement">Реклама</th>
@@ -245,9 +245,10 @@
 
         $(document).ready(function () {
             forSelect2(undefined, undefined, "#district", "/enum/district")
-            // forSelect2(undefined, undefined, "#topzone", "/enum/topzone") изменил на свой варик
             getPageWithFilter(0)
             $('#lastContactDate').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
         });
@@ -308,19 +309,19 @@
                         cell4.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
 
                         var cell5 = newRow.insertCell(5);
-                        cell5.innerHTML = house.roomQuantity;
+                        cell5.innerHTML = house.address.houseNumber;
                         cell5.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
 
                         var cell6 = newRow.insertCell(6);
-                        cell6.innerHTML = house.floorQuantity;
+                        cell6.innerHTML = house.roomQuantity;
                         cell6.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
 
                         var cell7 = newRow.insertCell(7);
-                        cell7.innerHTML = house.areaTotal;
+                        cell7.innerHTML = house.floorQuantity;
                         cell7.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
 
                         var cell8 = newRow.insertCell(8);
-                        cell8.innerHTML = house.price;
+                        cell8.innerHTML = house.areaTotal;
                         cell8.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
 
                         var cell9 = newRow.insertCell(9);
@@ -328,7 +329,7 @@
                         cell9.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')
 
                         var cell10 = newRow.insertCell(10);
-                        cell10.innerHTML = house.status ? '<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'
+                        cell10.innerHTML = house.publicationStatus == 'PUBLISHED' ? '<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'
                         cell10.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"')
 
                         var cell11 = newRow.insertCell(11);
