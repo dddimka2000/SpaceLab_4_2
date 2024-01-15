@@ -733,11 +733,11 @@
                 success: function (realtor) {
                     if (realtor == '') {
                         scrollToElement(staffCode)
-                        showToast("Користувача за таким кодом не знайдено", "danger")
+                        addText(staffCode, "Користувача за таким кодом не знайдено")
                         staffCode.css("border", "1px solid #ff0000");
                     } else if (realtor.branch.code.toString() !== branchCode.val().toString()) {
                         scrollToElement(branchCode)
-                        showToast("Ріелтор не належить вказаному філіалу", "danger")
+                        addText(branchCode,"Ріелтор не належить вказаному філіалу")
                         branchCode.css("border", "1px solid #ff0000");
                     } else {
                         validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
@@ -748,7 +748,7 @@
                                     data: {code: $("#objectCode").val()},
                                     success: function (response) {
                                         if(response && !getLastDigitFromPath(window.location.pathname)){
-                                            showToast("Об'єкт з таким кодом вже існує", "danger")
+                                            addText($("#objectCode"),"Об'єкт з таким кодом вже існує")
                                             $("#objectCode").css("border", "1px solid #ff0000")
                                             scrollToElement($("#objectCode"))
                                         }
@@ -845,136 +845,138 @@
         function checkPhone(button) {
             validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
                 if (result) {
-                    showToast("Телефон коректний", "success");
+                    addText($('#ownerPhone'),"Телефон коректний");
                 }
             }).catch(error => {
             })
         }
         function validAllInputs(formData){
+            var isValidated = true
             cleanInputs()
             var streetUkr = $("#streetUkr");
-            if (!validString("1", "300", streetUkr)) return false
+            if (!validString("1", "300", streetUkr)) isValidated = false
             var street = $("#street");
-            if (!validString("1", "300", street)) return false
+            if (!validString("1", "300", street)) isValidated = false
+            if(!validAllNumberInput())isValidated = false
             var streetEng = $("#streetEng");
-            if (!validString("1", "300", streetEng)) return false
+            if (!validString("1", "300", streetEng)) isValidated = false
             var zone = $("#zone");
-            if (!validSelect2(zone)) return false
+            if (!validSelect2(zone)) isValidated = false
             var region = $("#region");
-            if (!validSelect2(region)) return false
+            if (!validSelect2(region)) isValidated = false
             var city = $("#city");
-            if (!validSelect2(city)) return false
+            if (!validSelect2(city)) isValidated = false
             var district = $("#district");
-            if (!validSelect2(district)) return false
+            if (!validSelect2(district)) isValidated = false
             var houseNumber = $("#houseNumber");
-            if (!validateNumber(1, 1000000, houseNumber)) return false
+            if (!validateNumber(1, 1000000, houseNumber)) isValidated = false
             var section = $("#section");
-            if (!validateNumber(1, 1000, section)) return false
+            if (!validateNumber(1, 1000, section)) isValidated = false
             var apartmentNumber = $("#apartmentNumber");
-            if (!validateNumber(1, 100, apartmentNumber)) return false
+            if (!validateNumber(1, 100, apartmentNumber)) isValidated = false
             var ownerName = $("#ownerName");
-            if (!validString("1", "300", ownerName)) return false
+            if (!validString("1", "300", ownerName)) isValidated = false
             var ownerPhone = $("#ownerPhone");
-            if (!validatePhoneNumber(ownerPhone)) return false
+            if (!validatePhoneNumber(ownerPhone)) isValidated = false
             var boughtDate = $("#boughtDate");
-            if (!validateDate(boughtDate)) return false
+            if (!validateDate(boughtDate)) isValidated = false
             var ownership = $("#ownership");
-            if (!validSelect2(ownership)) return false
+            if (!validSelect2(ownership)) isValidated = false
             var notes = $("#notes");
-            if (!validString("1", "990", notes)) return false
+            if (!validString("1", "990", notes)) isValidated = false
             var cadastralNumber = $("#cadastralNumber");
-            if (!validString("9", "9", cadastralNumber)) return false
+            if (!validString("9", "9", cadastralNumber)) isValidated = false
             var plotDescription = $("#plotDescription");
-            if (!validString("1", "990", plotDescription)) return false
+            if (!validString("1", "990", plotDescription)) isValidated = false
             var files = $("#files");
-            if (!getLastDigitFromPath(window.location.pathname)  &&  !validateFile('files', [".pdf"])) return false
+            if (!getLastDigitFromPath(window.location.pathname)  &&  !validateFile('files', [".pdf"])) isValidated = false
             var administrationComment = $("#administrationComment");
-            if (!validString("1", "990", administrationComment)) return false
+            if (!validString("1", "990", administrationComment)) isValidated = false
             var publicationStatus = $("#publicationStatus");
-            if (!validSelect2(publicationStatus)) return false
+            if (!validSelect2(publicationStatus)) isValidated = false
             var objectCode = $("#objectCode");
-            if (!validString("8", "8", objectCode)) return false
+            if (!validString("8", "8", objectCode)) isValidated = false
             var branchCode = $("#branchCode");
-            if (!validateNumber(1, 1000000, branchCode)) return false
+            if (!validateNumber(1, 1000000, branchCode)) isValidated = false
             var staffCode = $("#staffCode");
-            if (!validateNumber(1, 1000000, staffCode)) return false
+            if (!validateNumber(1, 1000000, staffCode)) isValidated = false
             var price = $("#price");
-            if (!validateNumber(1, 100000000, price)) return false
+            if (!validateNumber(1, 100000000, price)) isValidated = false
             var landmark = $("#landmark");
-            if (!validString("1", "500", landmark)) return false
+            if (!validString("1", "500", landmark)) isValidated = false
             var builderObject = $("#builderObject");
-            if (!validSelect2(builderObject)) return false
+            if (!validSelect2(builderObject)) isValidated = false
             var buildStatus = $("#buildStatus");
-            if (!validSelect2(buildStatus)) return false
+            if (!validSelect2(buildStatus)) isValidated = false
             var dateDeliveryHouse = $("#dateDeliveryHouse");
-            if (!validateDate(dateDeliveryHouse))return false
+            if (!validateDate(dateDeliveryHouse))isValidated = false
             var floor = $("#floor");
-            if (!validateNumber(1, 1000000, floor)) return false
+            if (!validateNumber(1, 1000000, floor)) isValidated = false
             var floorQuantity = $("#floorQuantity");
-            if (!validateNumber(1, 1000000, floorQuantity)) return false
+            if (!validateNumber(1, 1000000, floorQuantity)) isValidated = false
             var roomQuantity = $("#roomQuantity");
-            if (!validateNumber(1, 1000000, roomQuantity)) return false
+            if (!validateNumber(1, 1000000, roomQuantity)) isValidated = false
             var propertyCommercialType = $("#propertyCommercialType");
-            if (!validSelect2(propertyCommercialType)) return false
+            if (!validSelect2(propertyCommercialType)) isValidated = false
             var vnp = $("#vnp");
             var vnpExpirationDate = $("#vnpExpirationDate");
-            if (!validateDate(vnpExpirationDate))return false
+            if (!validateDate(vnpExpirationDate))isValidated = false
             var informationSource = $("#informationSource");
-            if (!validString("1", "300", informationSource)) return false
+            if (!validString("1", "300", informationSource)) isValidated = false
             var areaTotal = $("#areaTotal");
-            if (!validateNumber(1, 1000000, areaTotal)) return false
+            if (!validateNumber(1, 1000000, areaTotal)) isValidated = false
             var areaUseful = $("#areaUseful");
-            if (!validateNumber(1, 1000000, areaUseful)) return false
+            if (!validateNumber(1, 1000000, areaUseful)) isValidated = false
             var roomMeters = $("#roomMeters");
-            if (!validString("4", "4", roomMeters)) return false
+            if (!validString("4", "4", roomMeters)) isValidated = false
             var heightCeiling = $("#heightCeiling");
-            if (!validateNumber(1, 10, heightCeiling)) return false
+            if (!validateNumber(1, 10, heightCeiling)) isValidated = false
             var plotAreaTotal = $("#plotAreaTotal");
-            if (!validateNumber(1, 1000000, plotAreaTotal)) return false
+            if (!validateNumber(1, 1000000, plotAreaTotal)) isValidated = false
             var plotAreaFree = $("#plotAreaFree");
-            if (!validateNumber(1, 1000000, plotAreaFree)) return false
+            if (!validateNumber(1, 1000000, plotAreaFree)) isValidated = false
             var plotPurposeType = $("#plotPurposeType");
-            if (!validSelect2(plotPurposeType)) return false
+            if (!validSelect2(plotPurposeType)) isValidated = false
             var landOwnershipPresent = $("#landOwnershipPresent");
             var stateInterior = $("#stateInterior");
-            if (!validSelect2(stateInterior)) return false
+            if (!validSelect2(stateInterior)) isValidated = false
             var propertyStructureState = $("#propertyStructureState")
-            if (!validSelect2(propertyStructureState)) return false
+            if (!validSelect2(propertyStructureState)) isValidated = false
             var bathroomType = $("#bathroomType");
-            if (!validSelect2(bathroomType)) return false
+            if (!validSelect2(bathroomType)) isValidated = false
             var windowViewType = $("#windowViewType");
-            if (!validSelect2(windowViewType)) return false
+            if (!validSelect2(windowViewType)) isValidated = false
             var environment = $("#environment");
             var parking = $("#parking");
             var fund = $("#fund");
             var facade = $("#facade");
             var railway = $("#railway");
             var gasType = $("#gasType");
-            if (!validSelect2(gasType)) return false
+            if (!validSelect2(gasType)) isValidated = false
             var waterType = $("#waterType");
-            if (!validSelect2(waterType)) return false
+            if (!validSelect2(waterType)) isValidated = false
             var sewageType = $("#sewageType");
-            if (!validSelect2(sewageType)) return false
+            if (!validSelect2(sewageType)) isValidated = false
             var heatingType = $("#heatingType");
-            if (!validSelect2(heatingType)) return false
+            if (!validSelect2(heatingType)) isValidated = false
             var airConditioningType = $("#airConditioningType");
-            if (!validSelect2(airConditioningType)) return false
+            if (!validSelect2(airConditioningType)) isValidated = false
             var ventilationType = $("#ventilationType");
-            if (!validSelect2(ventilationType)) return false
+            if (!validSelect2(ventilationType)) isValidated = false
             var ladderType = $("#ladderType");
-            if (!validSelect2(ladderType)) return false
+            if (!validSelect2(ladderType)) isValidated = false
             var electricityType = $("#electricityType");
-            if (!validSelect2(electricityType)) return false
+            if (!validSelect2(electricityType)) isValidated = false
             var floorType = $("#floorType");
-            if (!validSelect2(floorType)) return false
+            if (!validSelect2(floorType)) isValidated = false
             var windowType = $("#windowType");
-            if (!validSelect2(windowType)) return false
+            if (!validSelect2(windowType)) isValidated = false
             var carpentryType = $("#carpentryType");
-            if (!validSelect2(carpentryType)) return false
+            if (!validSelect2(carpentryType)) isValidated = false
             var frontDoorType = $("#frontDoorType");
-            if (!validSelect2(frontDoorType)) return false
+            if (!validSelect2(frontDoorType)) isValidated = false
             var lastContactDate = $("#lastContactDate");
-            if (!validateDate(lastContactDate))return false
+            if (!validateDate(lastContactDate))isValidated = false
             var bargain = $("#bargain");
             var exclusive = $("#exclusive");
             var urgent = $("#urgent");
@@ -983,30 +985,30 @@
             var intermediary = $("#intermediary");
             var advertisementEnabled = $("#advertisementEnabled");
             var descriptionUk = $("#descriptionUk");
-            if (!validString("1", "990", descriptionUk)) return false
+            if (!validString("1", "990", descriptionUk)) isValidated = false
             var advertisementHeadlineUk = $("#advertisementHeadlineUk");
-            if (!validString("1", "300", advertisementHeadlineUk)) return false
+            if (!validString("1", "300", advertisementHeadlineUk)) isValidated = false
             var advertisementTextUk = $("#advertisementTextUk");
-            if (!validString("1", "990", advertisementTextUk)) return false
+            if (!validString("1", "990", advertisementTextUk)) isValidated = false
             var description = $("#description");
-            if (!validString("1", "990", description)) return false
+            if (!validString("1", "990", description)) isValidated = false
             var advertisementHeadline = $("#advertisementHeadline");
-            if (!validString("1", "300", advertisementHeadline)) return false
+            if (!validString("1", "300", advertisementHeadline)) isValidated = false
             var advertisementText = $("#advertisementText");
-            if (!validString("1", "990", advertisementText)) return false
+            if (!validString("1", "990", advertisementText)) isValidated = false
             var descriptionEn = $("#descriptionEn");
-            if (!validString("1", "990", descriptionEn)) return false
+            if (!validString("1", "990", descriptionEn)) isValidated = false
             var advertisementHeadlineEn = $("#advertisementHeadlineEn");
-            if (!validString("1", "300", advertisementHeadlineEn)) return false
+            if (!validString("1", "300", advertisementHeadlineEn)) isValidated = false
             var advertisementTextEn = $("#advertisementTextEn");
-            if (!validString("1", "990", advertisementTextEn)) return false
+            if (!validString("1", "990", advertisementTextEn)) isValidated = false
             var pictures = myDropzone.getAcceptedFiles();
             pictures.forEach(function (file) {
                 formData.append('pictures', file)
             })
             if (!getLastDigitFromPath(window.location.pathname)  &&  pictures.length <= 0) {
                 showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
-                return false
+                isValidated = false
             }
             if(getLastDigitFromPath()){
                 formData.append("id", getLastDigitFromPath());
@@ -1098,7 +1100,7 @@
             for (var i = 0; i < filesElement.length; i++) {
                 formData.append("files", filesElement[i]);
             }
-            return true
+            return isValidated
         }
         function addressSelect2(house) {
             if (house) {

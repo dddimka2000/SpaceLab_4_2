@@ -113,24 +113,30 @@
                 $("#telephone").val(branch.telephone)
             }
         })
-
         function sendForm() {
             cleanInputs()
+            var isValidated = true
             var code = $("#code")
-            if (!validateNumber(1, 99999, code)) return
+            if (!validateNumber(1, 99999, code)) isValidated = false
             var telephone = $("#telephone")
-            if (!validatePhoneNumber(telephone)) return
+            if (!validatePhoneNumber(telephone)) isValidated = false
             var name = $("#name")
-            if (!validString("1", "100", name)) return;
+            if (!validString("1", "100", name)) isValidated = false
             var email = $("#email")
-            if (!validateEmail(email)) return;
+            if (!validateEmail(email)) isValidated = false
             var address = $("#address")
-            if (!validString("1", "300", address)) return;
+            if (!validString("1", "300", address)) isValidated = false
+            if(!validAllNumberInput())isValidated = false
             var imgPath = $("#imgPath")
             if (!getLastDigitFromPath() && !validateOneFile(imgPath.get(0).files[0], ['.jpg', '.jpeg', '.png'])) {
+                if (languageSecondExample == 'eng') addText($('#imgPath'),'No file selected')
+                else if (languageSecondExample == 'ru')addText($('#imgPath'), 'Файл не вибран')
+                else addText($('#imgPath'), 'Файл не вибрано')
                 $('#imgPath').css('border-color', '#ff0000')
-                return;
+                isValidated = false
             }
+            countError = 0
+            if(!isValidated)return
             if (code.val() != branch.code) {
                 var ajaxRequest = $.ajax({
                     type: "GET",

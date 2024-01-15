@@ -175,16 +175,16 @@
                                 <div class="col-5">
                                     <div class="row">
                                         <div class="col">
-                                            <p data-translate="floor">Этаж:</p>
-                                            <div style="display: flex">
+                                            <div data-translate="floor">Этаж:</div>
+                                            <div id="floorBlock" style="display: flex">
                                                 <input class="form-control" id="floorMin">
                                                 <div class="mt-2">&mdash;</div>
                                                 <input class="form-control" id="floorMax">
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <div data-translate="price"> Цена ($):</div>
-                                            <div style="display: flex">
+                                            <div data-translate="price">Цена ($):</div>
+                                            <div id="priceBlock" style="display: flex">
                                                 <input class="form-control" id="priceMin">
                                                 <div class="mt-2">&mdash;</div>
                                                 <input class="form-control" id="priceMax">
@@ -193,16 +193,16 @@
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <p data-translate="plotArea">Участок(кв. м):</p>
-                                            <div style="display: flex">
+                                            <div data-translate="plotArea">Участок(кв. м):</div>
+                                            <div id="plotAreaBlock" style="display: flex">
                                                 <input class="form-control" id="plotAreaMin">
                                                 <div class="mt-2">&mdash;</div>
                                                 <input class="form-control" id="plotAreaMax">
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <p data-translate="S_area_sqm">Площадь(кв. м):</p>
-                                            <div style="display: flex">
+                                            <div data-translate="S_area_sqm">Площадь(кв. м):</div>
+                                            <div id="houseAreaBlock" style="display: flex">
                                                 <input class="form-control" id="houseAreaMin">
                                                 <div class="mt-2">&mdash;</div>
                                                 <input class="form-control" id="houseAreaMax">
@@ -691,123 +691,123 @@
             var realtor = $("#realtorSelect2example2")
             var comment = $("#commentExample")
 
-
+            var isValidated = true
             districts.next().find(".select2-selection").css("border-color", "")
             if (!validSelect2(districts)) {
-                return
+                isValidated = false
             }
             topzones.next().find(".select2-selection").css("border-color", "")
             if (!validSelect2(topzones)) {
-                return
-            }
-            floorMin.css("border-color", "")
-            floorMax.css("border-color", "")
-            if (!validateNumber(1, 200, floorMin)) {
-                floorMin.css("border-color", "#ff0000")
-                floorMax.css("border-color", "#ff0000")
-                return
-            }
-            if (!validateNumber(1, 200, floorMax)) {
-                floorMin.css("border-color", "#ff0000")
-                floorMax.css("border-color", "#ff0000")
-                return
-            }
-            if (parseInt(floorMin.val()) > parseInt(floorMax.val())) {
-                floorMin.css("border-color", "#ff0000")
-                floorMax.css("border-color", "#ff0000")
-                showToast("Поверх 'від' повинен бути менший за поверх 'до'", "danger")
-                return
-            }
-            priceMin.css("border-color", "")
-            priceMax.css("border-color", "")
-            if (!validateNumber(1, 20000000, priceMin)) {
-                priceMin.css("border-color", "#ff0000")
-                priceMax.css("border-color", "#ff0000")
-                return
-            }
-            if (!validateNumber(1, 20000000, priceMax)) {
-                priceMin.css("border-color", "#ff0000")
-                priceMax.css("border-color", "#ff0000")
-                return
-            }
-            if (parseInt(priceMin.val()) > parseInt(priceMax.val())) {
-                priceMin.css("border-color", "#ff0000")
-                priceMax.css("border-color", "#ff0000")
-                showToast("Ціна 'від' повина бути менша за ціну 'до'", "danger")
-                return
-            }
-            plotAreaMin.css("border-color", "")
-            plotAreaMax.css("border-color", "")
-            if (!validateNumber(1, 800, plotAreaMin)) {
-                plotAreaMin.css("border-color", "#ff0000")
-                plotAreaMax.css("border-color", "#ff0000")
-                return
-            }
-            if (!validateNumber(1, 800, plotAreaMax)) {
-                plotAreaMin.css("border-color", "#ff0000")
-                plotAreaMax.css("border-color", "#ff0000")
-                return
-            }
-            if (parseInt(plotAreaMin.val()) > parseInt(plotAreaMax.val())) {
-                plotAreaMin.css("border-color", "#ff0000")
-                plotAreaMax.css("border-color", "#ff0000")
-                showToast("Участок 'від' повинен бути меншим за участок 'до'", "danger")
-                return;
-            }
-            houseAreaMin.css("border-color", "")
-            houseAreaMax.css("border-color", "")
-            if (!validateNumber(1, 2000, houseAreaMin)) {
-                houseAreaMin.css("border-color", "#ff0000")
-                houseAreaMax.css("border-color", "#ff0000")
-                return
-            }
-            if (!validateNumber(1, 2000, houseAreaMax)) {
-                houseAreaMin.css("border-color", "#ff0000")
-                houseAreaMax.css("border-color", "#ff0000")
-                return
-            }
-            if (parseInt(houseAreaMin.val()) > parseInt(houseAreaMax.val())) {
-                houseAreaMin.css("border-color", "#ff0000")
-                houseAreaMax.css("border-color", "#ff0000")
-                showToast("Площина 'від' повина бути менша за площину 'до'", "danger")
-                return;
-            }
-            if (builderObjects.val() === null) {
-                showToast("Елемент має бути вибрано", "danger");
-                builderObjects.next().find(".select2-selection").css("border", "1px solid #ff0000")
-                return;
+                isValidated = false
             }
 
+            if(!floorMin.val() || !floorMax.val() || floorMin.val() < 1 || floorMin.val() > 100 || floorMax.val() < 1 || floorMax.vax() > 100){
+                floorMin.css("border-color", "#ff0000")
+                floorMax.css("border-color", "#ff0000")
+                if (languageSecondExample == 'eng') addText($('#floorBlock'),"field must be between 1 and 100")
+                else if (languageSecondExample == 'ru')addText($('#floorBlock'),"поле должно быть от 1 до 100")
+                else addText($('#floorBlock'),"field must be between 1 and 100",)
+                isValidated = false
+            }
+
+            if (parseInt(floorMin.val()) > parseInt(floorMax.val())  &&  floorMin.val()  &&  floorMax.val()) {
+                floorMin.css("border-color", "#ff0000")
+                floorMax.css("border-color", "#ff0000")
+                if (languageSecondExample == 'eng') addText($('#floorBlock'),"The 'from' floor must be less than the 'to' floor")
+                else if (languageSecondExample == 'ru')addText($('#floorBlock'),"Этаж 'от' должен быть меньше этажа 'до'")
+                else addText($('#floorBlock'),"Поверх 'від' повинен бути менший за поверх 'до'")
+                isValidated = false
+            }
+            if(!priceMin.val() || !priceMax.val() || priceMin.val() < 1000 || priceMin.val() > 10000000 || priceMax.val() < 1000 || priceMax.vax() > 10000000){
+                priceMin.css("border-color", "#ff0000")
+                priceMax.css("border-color", "#ff0000")
+                if (languageSecondExample == 'eng') addText($('#priceBlock'),"field must be between 1000 and 10000000")
+                else if (languageSecondExample == 'ru')addText($('#priceBlock'),"поле должно быть от 1000 до 10000000")
+                else addText($('#priceBlock'),"field must be between 1000 and 10000000",)
+                isValidated = false
+            }
+            if (parseInt(priceMin.val()) > parseInt(priceMax.val())  &&  priceMin.val()  &&  priceMax.val()) {
+                priceMin.css("border-color", "#ff0000")
+                priceMax.css("border-color", "#ff0000")
+                if (languageSecondExample == 'eng') addText($('#priceBlock'),"The 'from' price must be less than the 'to' price")
+                else if (languageSecondExample == 'ru')addText($('#priceBlock'),"Цена 'от' должна быть меньше цены 'до'")
+                else addText($('#priceBlock'),"Ціна 'від' повина бути менша за ціну 'до'")
+                isValidated = false
+            }
+            if(!plotAreaMin.val() || !plotAreaMax.val() || plotAreaMin.val() < 1 || plotAreaMin.val() > 100000 || plotAreaMax.val() < 1 || plotAreaMax.vax() > 100000){
+                plotAreaMin.css("border-color", "#ff0000")
+                plotAreaMax.css("border-color", "#ff0000")
+                if (languageSecondExample == 'eng') addText($('#plotAreaBlock'),"field must be between 1 and 100000")
+                else if (languageSecondExample == 'ru')addText($('#plotAreaBlock'),"поле должно быть от 1 до 100000")
+                else addText($('#plotAreaBlock'),"field must be between 1 and 100000",)
+                isValidated = false
+            }
+            if (parseInt(plotAreaMin.val()) > parseInt(plotAreaMax.val())  &&  plotAreaMin.val()  &&  plotAreaMax.val()) {
+                plotAreaMin.css("border-color", "#ff0000")
+                plotAreaMax.css("border-color", "#ff0000")
+                if (languageSecondExample == 'eng') addText($('#plotAreaBlock'),"The 'from' section must be smaller than the 'to' section")
+                else if (languageSecondExample == 'ru')addText($('#plotAreaBlock'),"Участок 'от' должен быть меньше участка 'до'")
+                else addText($('#plotAreaBlock'),"Участок 'від' повинен бути меншим за участок 'до'")
+                isValidated = false;
+            }
+            if(!houseAreaMin.val() || !houseAreaMax.val() || houseAreaMin.val() < 1 || houseAreaMin.val() > 100000 || houseAreaMax.val() < 1 || houseAreaMax.vax() > 100000){
+                houseAreaMin.css("border-color", "#ff0000")
+                houseAreaMax.css("border-color", "#ff0000")
+                if (languageSecondExample == 'eng') addText($('#houseAreaBlock'),"field must be between 1 and 100000")
+                else if (languageSecondExample == 'ru')addText($('#houseAreaBlock'),"поле должно быть от 1 до 100000")
+                else addText($('#houseAreaBlock'),"field must be between 1 and 100000",)
+                isValidated = false
+            }
+            if (parseInt(houseAreaMin.val()) > parseInt(houseAreaMax.val())  &&  houseAreaMin.val()  &&  houseAreaMax.val()) {
+                houseAreaMin.css("border-color", "#ff0000")
+                houseAreaMax.css("border-color", "#ff0000")
+                if (languageSecondExample == 'eng') addText($('#houseAreaBlock'),"The 'from' area must be less than the 'to' area")
+                else if (languageSecondExample == 'ru')addText($('#houseAreaBlock'),"Площина 'от' должна быть меньше площади 'до'")
+                else addText($('#houseAreaBlock'),"Площина 'від' повина бути менша за площину 'до'")
+                isValidated = false;
+            }
+            if (builderObjects.val() === null) {
+                if (languageSecondExample == 'eng') addText(builderObjects.next().find(".select2-selection"),"The item must be selected")
+                else if (languageSecondExample == 'ru')addText(builderObjects.next().find(".select2-selection"),"Элемент должен быть выбран")
+                else addText(builderObjects.next().find(".select2-selection"),"Елемент має бути вибрано")
+                builderObjects.next().find(".select2-selection").css("border", "1px solid #ff0000")
+                isValidated = false;
+            }
+            if(!validAllNumberInput())isValidated = false
             if (status.val() === null) {
-                showToast("Елемент має бути вибрано", "danger");
+                if (languageSecondExample == 'eng') addText(status.next().find(".select2-selection"),"The item must be selected")
+                else if (languageSecondExample == 'ru')addText(status.next().find(".select2-selection"),"Элемент должен быть выбран")
+                else addText(status.next().find(".select2-selection"),"Елемент має бути вибрано")
                 status.next().find(".select2-selection").css("border", "1px solid #ff0000")
-                return;
+                isValidated = false;
             }
 
             if (origin.val() === null) {
-                showToast("Елемент має бути вибрано", "danger");
+                if (languageSecondExample == 'eng') addText(origin.next().find(".select2-selection"),"The item must be selected")
+                else if (languageSecondExample == 'ru')addText(origin.next().find(".select2-selection"),"Элемент должен быть выбран")
+                else addText(origin.next().find(".select2-selection"),"Елемент має бути вибрано")
                 origin.next().find(".select2-selection").css("border", "1px solid #ff0000");
-                return;
+                isValidated = false;
             }
 
             if (type.val() === null) {
-                showToast("Елемент має бути вибрано", "danger");
+                if (languageSecondExample == 'eng') addText(type.next().find(".select2-selection"),"The item must be selected")
+                else if (languageSecondExample == 'ru')addText(type.next().find(".select2-selection"),"Элемент должен быть выбран")
+                else addText(type.next().find(".select2-selection"),"Елемент має бути вибрано")
                 type.next().find(".select2-selection").css("border", "1px solid #ff0000");
-                return;
+                isValidated = false;
             }
 
             if (!validatePhoneNumber(phone)) {
-                return;
+                isValidated = false;
             }
 
-            if (realtor.val() === null) {
-                showToast("Елемент має бути вибрано", "danger");
-                realtor.next().find(".select2-selection").css("border", "1px solid #ff0000");
-                return;
+            if (validSelect2(realtor)) {
+                isValidated = false;
             }
 
             if (!validString('1', '1000', comment)) {
-                return;
+                isValidated = false;
             }
 
             var surname = $("#surname")
@@ -825,66 +825,66 @@
 
             surname.css("border-color", "");
             if (!validString("3", "50", surname)) {
-                return;
+                isValidated = false;
             }
             name.css("border-color", "");
             if (!validString("3", "50", name)) {
-                return;
+                returnisValidated = false;
             }
             middleName.css("border-color", "");
             if (!validString("3", "50", middleName)) {
-                return;
+                isValidated = false;
             }
             phone.css("border-color", "");
             if (!validatePhoneNumber(phone)) {
-                return;
+                isValidated = false;
             }
             email.css("border-color", "");
             if (!validateEmail(email)) {
-                return;
+                isValidated = false;
             }
             realtor.next().find(".select2-selection").css("border", "");
             if (realtor.val() === null) {
-                showToast("Елемент має бути вибрано", "danger")
+                addText(realtor.next().find(".select2-selection"),"Елемент має бути вибрано")
                 $("#realtorSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
-                return;
+                isValidated = false;
             }
             informationSourceSelect2.next().find(".select2-selection").css("border", "");
             if (informationSourceSelect2.val() == null) {
-                showToast("Елемент має бути вибрано", "danger")
+                addText(informationSourceSelect2.next().find(".select2-selection"), "Елемент має бути вибрано")
                 $("#informationSourceSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
-                return;
+                isValidated = false;
             }
             passport.css("border-color", "")
             var regex = /^[A-Za-z]{2}\d{4}$/;
             if (!regex.test(passport.val().replace(/\s/g, ''))) {
-                showToast("Серія паспорта повина бути в такому форматі: XX 1234", "danger")
+                addText(passport,"Серія паспорта повина бути в такому форматі: XX 1234")
                 passport.css("border-color", "#ff0000")
-                return;
+                isValidated = false;
             }
             birthdate.css("border-color", "")
             if (!validateDate(birthdate)) {
-                return;
+                isValidated = false;
             }
             lastVisit.css("border-color", "")
             if (!validateDate(lastVisit)) {
-                return;
+                isValidated = false;
             }
             comment.css("border-color", "")
             if (!validString("5", "300", comment)) {
-                return;
+                isValidated = false
             }
             files.css("border-color", "")
             if (files[0].files.length <= 0 && !ID) {
-                showToast("Файл повинен бути вибраний", "danger")
+                addText(files, "Файл повинен бути вибраний")
                 files.css("border-color", "#ff0000")
-                return;
+                isValidated = false
             } else {
                 Array.from(files[0].files).forEach(function (file) {
                     if (!validateOneFile(file, ['.pdf'])) {
                         files.css("border-color", "#ff0000")
                         document.getElementById("#files").value = ''
-                        return;
+                        isValidated = false
                     }
                 });
             }
@@ -892,10 +892,10 @@
 
             var inputs = $('.for-note');
             for (var i = 0; i < inputs.length; i += 3) {
-                if (!validString("3", "300", $(inputs[i + 1]))) return
+                if (!validString("3", "300", $(inputs[i + 1]))) isValidated = false
             }
 
-
+            if(!isValidated)return
             let formData = new FormData();
             formData.append("surname", surname.val());
             formData.append("name", name.val());

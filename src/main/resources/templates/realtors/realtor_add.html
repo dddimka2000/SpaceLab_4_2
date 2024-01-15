@@ -55,7 +55,7 @@
                                 <div class="row mb-3">
                                     <div class="col-6">
                                         <img id="previewImage" class="d-block w-px-auto h-px-300 rounded"
-                                             src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
+                                             th:src="@{/img/default.png}"
                                              style="width: 50%; height: 200px">
                                         <br>
                                         <input type="file" class="form-control fileInput" accept=".jpg, .jpeg, .png"
@@ -322,7 +322,7 @@
                     },
                 });
             } else
-                $('#previewImage').attr('src', 'http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg');
+                $('#previewImage').attr('src', '[[@{/img/default.png}]]');
             $('.for-select').select2({
                 placeholder: translateValue('виберіть_обєкт'),
                 language: languageForSelect2,
@@ -511,27 +511,26 @@
 
         function sendForm() {
             cleanInputs()
+            var isValidated = true
             if (!getLastDigitFromPath() && !validateOneFile($('.fileInput').get(0).files[0], ['.jpg', '.jpeg', '.png'])) {
                 $('.fileInput').css('border-color', '#ff0000')
-                return;
+                isValidated = false
             }
-            if (!validateNumber(1, 99999, $("#code"))) return
-
-            if (!validSelect2($("#branchSelect2"))) return
-            if (!validString(3, 50, $("#surname"))) return
-            if (!validString(3, 50, $("#name"))) return
-            if (!validString(3, 50, $("#middleName"))) return
-            if (!validString(3, 50, $("#surnameUK"))) return
-            if (!validString(3, 50, $("#nameUK"))) return
-            if (!validString(3, 50, $("#middleNameUK"))) return
-            if (!validString(3, 50, $("#surnameEN"))) return
-            if (!validString(3, 50, $("#nameEN"))) return
-            if (!validString(3, 50, $("#middleNameEN"))) return
-
-
-            if (!validateDate($("#dateOfPurchase"))) return
-            if (!validateEmail($("#email"))) return
-            if (!validString(3, 50, $("#middleName"))) return
+            if (!validateNumber(1, 99999, $("#code"))) isValidated = false
+            if (!validSelect2($("#branchSelect2"))) isValidated = false
+            if (!validString(3, 50, $("#surname"))) isValidated = false
+            if (!validString(3, 50, $("#name"))) isValidated = false
+            if (!validString(3, 50, $("#middleName"))) isValidated = false
+            if (!validString(3, 50, $("#surnameUK"))) isValidated = false
+            if (!validString(3, 50, $("#nameUK"))) isValidated = false
+            if (!validString(3, 50, $("#middleNameUK"))) isValidated = false
+            if (!validString(3, 50, $("#surnameEN"))) isValidated = false
+            if (!validString(3, 50, $("#nameEN"))) isValidated = false
+            if (!validString(3, 50, $("#middleNameEN"))) isValidated = false
+            if (!validateDate($("#dateOfPurchase"))) isValidated = false
+            if (!validateEmail($("#email"))) isValidated = false
+            if (!validString(3, 50, $("#middleName"))) isValidated = false
+            if(!validAllNumberInput())isValidated = false
 
 
             const phoneContainer = document.getElementById("phones");
@@ -542,28 +541,28 @@
 
             if (id.value === "" && (password.value === "" || password.value.length < 8 || password.value.length > 50)) {
                 password.style.borderColor = '#ff0000'
-                showToast("Пароль повинен бути вказаний і містити більше 8 і менше 50 символів", 'danger')
-                return
+                addText("Пароль повинен бути вказаний і містити більше 8 і менше 50 символів")
+                isValidated = false
             }
             if (id.value !== "" && password.value !== "" && password.value.length < 8 || password.value.length > 50) {
                 password.style.borderColor = '#ff0000'
-                showToast("Пароль повинен містити більше 8 і менше 50 символів", 'danger')
-                return
+                addText(password, "Пароль повинен містити більше 8 і менше 50 символів")
+                isValidated = false
             }
-            if (password.value !== password2.value) {
+            if (password.value !== password2.value && isValidated) {
                 password.style.borderColor = '#ff0000'
                 password2.style.borderColor = '#ff0000'
-                showToast("Паролі не співпалають", 'danger')
-                return
+                addText("Паролі не співпалають")
+                isValidated = false
             }
             if (inputsAndSelects.length < 1) {
                 showToast("Повинен бути вказаний хоть один номер телефону", 'danger')
-                return
+                isValidated = false
             }
             var index = 0;
             for (let i = 0; i < inputsAndSelects.length; i += 3) {
                 if (!validatePhoneNumber($(inputsAndSelects[i + 1]))) {
-                    return
+                    isValidated = false
                 }
                 inputsAndSelects[i].name = "contacts[" + index + "].id"
                 inputsAndSelects[i + 1].name = "contacts[" + index + "].phone"
@@ -572,13 +571,13 @@
             var feedbacks = document.getElementsByClassName('for-feedback');
             for (let i = 0; i < feedbacks.length; i += 4) {
                 if (!validString(3, 50, $(feedbacks[i + 1]))) {
-                    return
+                    isValidated = false
                 }
                 if (!validatePhoneNumber($(feedbacks[i + 2]))) {
-                    return
+                    isValidated = false
                 }
                 if (!validString(3, 300, $(feedbacks[i + 3]))) {
-                    return
+                    isValidated = false
                 }
             }
             for (let i = 0; i < feedbacks.length; i += 4) {
@@ -595,6 +594,7 @@
                     },
                 });
             }
+            if(!isValidated)return
             if ($("#code").val() != realtor.code) {
                 var ajaxRequest = $.ajax({
                     type: "GET",
@@ -603,7 +603,7 @@
 
                 ajaxRequest.done(function (count) {
                     if (count > 0) {
-                        showToast("Такий код належить іншому ріелтору", "danger")
+                        addText($("#code"), "Такий код належить іншому ріелтору")
                         $("#code").css("border", "1px solid #ff0000")
                         return
                     } else {

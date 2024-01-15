@@ -163,7 +163,7 @@
                                            name="codeBranch">
                                 </div>
                                 <div class="col-1">
-                                    <span>—</span>
+                                    —
                                 </div>
                                 <div class="col-3">
                                     <input class="form-control onlyNumber" id="codeStaff" name="codeStaff"
@@ -478,6 +478,7 @@
         let contextPathURL =/*[[@{/}]]*/'';
 
         function checkAddress() {
+            cleanInputs()
             let streetUkr = $("#streetUkr").val();
             let url = contextPathURL + 'checkStreet';
             $.ajax({
@@ -505,8 +506,8 @@
         }
     </script>
     <script>
-
         function checkPhone(button) {
+            cleanInputs()
             validatePhoneNumberWithAjax($('#telephone')).then(result => {
                 if (result) {
                     showToast("Телефон коректний", "success");
@@ -514,7 +515,6 @@
             }).catch(error => {
             })
         }
-
         function deleteFile(button, url) {
             $('#confirmationModal').modal('show');
 
@@ -543,7 +543,6 @@
                 $('.confirm-delete').off('click');
             });
         }
-
         function downloadFileFrom(url) {
             $.ajax({
                 type: "GET",
@@ -572,8 +571,8 @@
                 }
             });
         }
-
         function validAllInput(formData) {
+            var isValidated = true
             cleanInputs()
             var houseNumber = $("#houseNumber")
             var region = $("#region")
@@ -715,82 +714,84 @@
             var carpentryType = $("#carpentryType");
             var frontDoorType = $("#frontDoorType");
 
-            if (!validateNumber(0, 9999, houseNumber)) return false
-            if (!validSelect2(region)) return false
-            if (!validSelect2(city)) return false
-            if (!validSelect2(district)) return false
-            if (!validString("5", "300", street)) return false
-            if (!validString("5", "300", streetUkr)) return false
-            if (!validString("5", "300", streetEng)) return false
-            if (!validSelect2(zone)) return false
-            if (!validString("5", "70", ownerName)) return false
-            if (!validatePhoneNumber(ownerPhone)) return false
-            if (!validateDate(boughtDate)) return false
-            if (!validSelect2(ownershipType)) return false
-            if (!validString("3", "1000", notes)) return false
+            if (!validateNumber(0, 9999, houseNumber)) isValidated = false
+            if (!validSelect2(region)) isValidated = false
+            if (!validSelect2(city)) isValidated = false
+            if (!validSelect2(district)) isValidated = false
+            if (!validString("5", "300", street)) isValidated = false
+            if (!validString("5", "300", streetUkr)) isValidated = false
+            if (!validString("5", "300", streetEng)) isValidated = false
+            if (!validString("1", "80", landmark)) isValidated = false
+            if (!validSelect2(zone)) isValidated = false
+            if (!validString("5", "70", ownerName)) isValidated = false
+            if (!validatePhoneNumber(ownerPhone)) isValidated = false
+            if (!validateDate(boughtDate)) isValidated = false
+            if (!validSelect2(ownershipType)) isValidated = false
+            if (!validString("3", "1000", notes)) isValidated = false
             if (cadastralNumber.val().length !== 11) {
                 cadastralNumber.css("border", "1px solid #ff0000");
-                showToast("Кадастровий номер не коректний", "danger")
-                return false
+                addText(cadastralNumber,"Кадастровий номер не коректний")
+                isValidated = false
             }
-            if (!validString("3", "1000", plotDescription)) return false
-            if (!getLastDigitFromPath(window.location.pathname) && !validateFile('housesFiles', [".pdf"])) return false
-            if (!validString("3", "1000", administrationComment)) return false
-            if (!validSelect2(publicationStatus)) return false
+            if (!validString("3", "1000", plotDescription)) isValidated = false
+            if (!getLastDigitFromPath(window.location.pathname) && !validateFile('housesFiles', [".pdf"])) isValidated = false
+            if (!validString("3", "1000", administrationComment)) isValidated = false
+            if (!validSelect2(publicationStatus)) isValidated = false
             if (codeObject.val().replace(/\s/g, '').length !== 8) {
                 codeObject.css("border", "1px solid #ff0000")
-                showToast("Код об'єкта має містити 8 символів", "danger")
-                return false
+                addText(codeObject,"Код об'єкта має містити 8 символів")
+                isValidated = false
             }
-            if (!validateNumber(1, 1000000, codeBranch)) return false
-            if (!validString("0", "500", landmark)) return false
-            if (!validateNumber(20000, 999999, price)) return false
-            if (!validSelect2(propertyHouseType)) return false
-            if (!validateNumber(3, 10000, plotAreaTotal)) return false
-            if (!validateNumber(3, 10000, plotAreaFree)) return false
-            if (!validSelect2(landOwnershipPresent)) return false
-            if (!validSelect2(plotPurposeType)) return false
-            if (!validateNumber(1, 1000, houseQuantity)) return false
-            if (!validateNumber(1, 10000, floorQuantity)) return false
-            if (!validateNumber(1, 10000, roomQuantity)) return false
-            if (!validateNumber(1, 10000, bedroomQuantity)) return false
-            if (!validateNumber(1, 10, roomMeters)) return false
-            if (!validateNumber(3, 10000, areaTotal)) return false
-            if (!validateNumber(3, 10000, areaLiving)) return false
-            if (!validateNumber(3, 10000, areaKitchen)) return false
-            if (!validateDate(lastContactDate)) return false
-            if (!validateDate(vnpExpirationDate)) return false
-            if (!validString("1", "300", informationSource)) return false
-            if (!validString("1", "5000", descriptionUk)) return false
-            if (!validString("1", "5000", descriptionRu)) return false
-            if (!validString("1", "5000", descriptionEn)) return false
-            if (!validString("1", "500", advertisementHeadlineUk)) return false
-            if (!validString("1", "500", advertisementHeadlineRu)) return false
-            if (!validString("1", "500", advertisementHeadlineEn)) return false
-            if (!validString("1", "5000", advertisementTextUk)) return false
-            if (!validString("1", "5000", advertisementTextRu)) return false
-            if (!validString("1", "5000", advertisementTextEn)) return false
+            if(!validAllNumberInput())isValidated = false
+            if (!validateNumber(1, 1000000, codeBranch)) isValidated = false
+            if (!validateNumber(1, 1000000, codeStaff)) isValidated = false
+            if (!validateNumber(20000, 999999, price)) isValidated = false
+            if (!validSelect2(propertyHouseType)) isValidated = false
+            if (!validateNumber(3, 10000, plotAreaTotal)) isValidated = false
+            if (!validateNumber(3, 10000, plotAreaFree)) isValidated = false
+            if (!validSelect2(landOwnershipPresent)) isValidated = false
+            if (!validSelect2(plotPurposeType)) isValidated = false
+            if (!validateNumber(1, 1000, houseQuantity)) isValidated = false
+            if (!validateNumber(1, 10000, floorQuantity)) isValidated = false
+            if (!validateNumber(1, 10000, roomQuantity)) isValidated = false
+            if (!validateNumber(1, 10000, bedroomQuantity)) isValidated = false
+            if (!validateNumber(1, 10, roomMeters)) isValidated = false
+            if (!validateNumber(3, 10000, areaTotal)) isValidated = false
+            if (!validateNumber(3, 10000, areaLiving)) isValidated = false
+            if (!validateNumber(3, 10000, areaKitchen)) isValidated = false
+            if (!validateDate(lastContactDate)) isValidated = false
+            if (!validateDate(vnpExpirationDate)) isValidated = false
+            if (!validString("1", "300", informationSource)) isValidated = false
+            if (!validString("1", "5000", descriptionUk)) isValidated = false
+            if (!validString("1", "5000", descriptionRu)) isValidated = false
+            if (!validString("1", "5000", descriptionEn)) isValidated = false
+            if (!validString("1", "500", advertisementHeadlineUk)) isValidated = false
+            if (!validString("1", "500", advertisementHeadlineRu)) isValidated = false
+            if (!validString("1", "500", advertisementHeadlineEn)) isValidated = false
+            if (!validString("1", "5000", advertisementTextUk)) isValidated = false
+            if (!validString("1", "5000", advertisementTextRu)) isValidated = false
+            if (!validString("1", "5000", advertisementTextEn)) isValidated = false
             if (!getLastDigitFromPath(window.location.pathname) && allUploadedFiles.length <= 0) {
                 showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
-                return false
+                isValidated = false
             }
-            if (!validString("1", "100", wallMaterial)) return false
-            if (!validString("1", "100", wallMaterialUkr)) return false
-            if (!validString("1", "100", wallMaterialEng)) return false
-            if (!validSelect2(stateInterior)) return false
-            if (!validSelect2(stateHouse)) return false
-            if (!validSelect2(kitchenType)) return false
-            if (!validSelect2(bathroomType)) return false
-            if (!validSelect2(gasType)) return false
-            if (!validSelect2(waterType)) return false
-            if (!validSelect2(sewageType)) return false
-            if (!validSelect2(heatingType)) return false
-            if (!validSelect2(ladderType)) return false
-            if (!validSelect2(roofType)) return false
-            if (!validSelect2(floorType)) return false
-            if (!validSelect2(windowType)) return false
-            if (!validSelect2(carpentryType)) return false
-            if (!validSelect2(frontDoorType)) return false
+            if (!validString("1", "100", wallMaterial)) isValidated = false
+            if (!validString("1", "100", wallMaterialUkr)) isValidated = false
+            if (!validString("1", "100", wallMaterialEng)) isValidated = false
+            if (!validSelect2(stateInterior)) isValidated = false
+            if (!validSelect2(stateHouse)) isValidated = false
+            if (!validSelect2(kitchenType)) isValidated = false
+            if (!validSelect2(bathroomType)) isValidated = false
+            if (!validSelect2(gasType)) isValidated = false
+            if (!validSelect2(waterType)) isValidated = false
+            if (!validSelect2(sewageType)) isValidated = false
+            if (!validSelect2(heatingType)) isValidated = false
+            if (!validSelect2(ladderType)) isValidated = false
+            if (!validSelect2(roofType)) isValidated = false
+            if (!validSelect2(floorType)) isValidated = false
+            if (!validSelect2(windowType)) isValidated = false
+            if (!validSelect2(carpentryType)) isValidated = false
+            if (!validSelect2(frontDoorType)) isValidated = false
 
             formData.append("wallMaterial", wallMaterial.val());
             formData.append("wallMaterialUkr", wallMaterialUkr.val());
@@ -809,10 +810,9 @@
             formData.append("windowType", windowType.val());
             formData.append("carpentryType", carpentryType.val());
             formData.append("frontDoorType", frontDoorType.val());
-
-            return true
+            countError = 0
+            return isValidated
         }
-
         function sendForm() {
             let formData = new FormData();
             if (!validAllInput(formData)) return
@@ -825,11 +825,11 @@
                 success: function (realtor) {
                     if (realtor == '') {
                         scrollToElement(staffCode)
-                        showToast("Користувача за таким кодом не знайдено", "danger")
+                        addText(staffCode, "Користувача за таким кодом не знайдено")
                         staffCode.css("border", "1px solid #ff0000");
                     } else if (realtor.branch.code.toString() !== branchCode.val().toString()) {
                         scrollToElement(branchCode)
-                        showToast("Ріелтор не належить вказаному філіалу", "danger")
+                        addText(branchCode, "Ріелтор не належить вказаному філіалу")
                         branchCode.css("border", "1px solid #ff0000");
                     } else {
                         validatePhoneNumberWithAjax($('#telephone')).then(result => {
@@ -840,7 +840,7 @@
                                     data: {code: $("#codeObject").val()},
                                     success: function (response) {
                                         if(response && !getLastDigitFromPath(window.location.pathname)){
-                                            showToast("Об'єкт з таким кодом вже існує", "danger")
+                                            addText($("#codeObject"),"Об'єкт з таким кодом вже існує")
                                             $("#codeObject").css("border", "1px solid #ff0000")
                                             scrollToElement($("#codeObject"))
                                         }
@@ -869,7 +869,6 @@
                 }
             })
         }
-
         $(document).ready(function () {
             $('#landOwnershipPresent').select2({
                 placeholder: translateValue('виберіть_обєкт'),
@@ -1020,7 +1019,6 @@
             });
             changeLanguageNav(languageSecondExample)
         })
-
         function addressSelect2(house) {
             if (house) {
                 $("#district").removeAttr("disabled");
@@ -1101,7 +1099,6 @@
                 })
             });
         }
-
         const previewTemplate = `<div class="dz-preview dz-file-preview">
 <div class="dz-details">
   <div class="dz-thumbnail">
@@ -1206,7 +1203,6 @@
                 }
             });
         }
-
         function updateDropzoneMaxFiles() {
             const newMaxFiles = (15 - oldImagesArray.length);
             myDropzone.options.maxFiles = newMaxFiles;
