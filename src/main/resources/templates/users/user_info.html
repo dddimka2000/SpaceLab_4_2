@@ -6,70 +6,71 @@
         layout:decorate="~{layout.html}"
 >
 <head>
-    <title>Content page</title>
+    <title data-translate="карточка_користувача"></title>
 </head>
 
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold">Пользователь</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item"><a href="#" data-translate="users">Пользователи</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="user">Пользователь</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
-
-        <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-end">
-                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info " data-translate="edit">Редактировать</a>
-                </div>
-                <hr>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold">Пользователь</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item"><a href="#" data-translate="users">Пользователи</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="user">Пользователь</li>
+                    </ol>
+                </nav>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-5">
-                        <img id="previewImage" style="width: 100%; height: auto; margin-bottom: 10px;">
+            <hr style="margin-top: -5px">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-end">
+                        <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info " data-translate="edit">Редактировать</a>
                     </div>
-                    <div class="col-3">
-                    </div>
+                    <hr>
                 </div>
-                <table class="table table-bordered table-striped table-view">
-                    <tbody>
-                    <tr>
-                        <td><b data-translate="user">Пользователь</b></td>
-                        <td th:text="${user.name}"></td>
-                    </tr>
-                    <tr>
-                        <td><b data-translate="role">Роль</b></td>
-                        <td th:text="${user.roles}"></td>
-                    </tr>
-                    <tr>
-                        <td><b data-translate="phone">Телефон</b></td>
-                        <td th:text="${user.phone}"></td>
-                    </tr>
-                    <tr>
-                        <td><b>Email</b></td>
-                        <td th:text="${user.email}"></td>
-                    </tr>
-                    <tr>
-                        <td><b data-translate="branches">Філіали</b></td>
-                        <td>
-                            <a th:each="branch : ${user.branches}" th:href="@{/branches/{id}(id=${branch.id})}"
-                               th:text="${branch.name}" style="display: inline; margin-right: 20px"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-5">
+                            <img id="previewImage" style="width: 100%; height: auto; margin-bottom: 10px;">
+                        </div>
+                        <div class="col-3">
+                        </div>
+                    </div>
+                    <table class="table table-bordered table-striped table-view">
+                        <tbody>
+                        <tr>
+                            <td><b data-translate="user">Пользователь</b></td>
+                            <td th:text="${user.name}"></td>
+                        </tr>
+                        <tr>
+                            <td><b data-translate="role">Роль</b></td>
+                            <td th:text="${user.roles}"></td>
+                        </tr>
+                        <tr>
+                            <td><b data-translate="phone">Телефон</b></td>
+                            <td th:text="${user.phone}"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Email</b></td>
+                            <td th:text="${user.email}"></td>
+                        </tr>
+                        <tr>
+                            <td><b data-translate="branches">Філіали</b></td>
+                            <td>
+                                <a th:each="branch : ${user.branches}" th:href="@{/branches/{id}(id=${branch.id})}"
+                                   th:text="${branch.name}" style="display: inline; margin-right: 20px"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
     </div>
     <script>
         $(document).ready(function () {
@@ -77,18 +78,18 @@
             $.ajax({
                 url: '[[@{/users/get/id/}]]' + getLastDigitFromPath(window.location.pathname),
                 success: function (user) {
-                    if(user.img)
-                    $.ajax({
-                        type: "GET",
-                        url: '[[@{/users/get/url}]]',
-                        data: {
-                            url: user.img
-                        },
-                        success: function (url) {
-                            console.log(url)
-                            $('#previewImage').attr('src', url);
-                        },
-                    });
+                    if (user.img)
+                        $.ajax({
+                            type: "GET",
+                            url: '[[@{/users/get/url}]]',
+                            data: {
+                                url: user.img
+                            },
+                            success: function (url) {
+                                console.log(url)
+                                $('#previewImage').attr('src', url);
+                            },
+                        });
                     else $('#previewImage').attr('src', 'http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg');
                 }
             })

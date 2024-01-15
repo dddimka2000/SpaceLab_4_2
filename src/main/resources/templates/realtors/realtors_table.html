@@ -6,7 +6,7 @@
         layout:decorate="~{layout.html}"
 >
 <head>
-    <title>Content page</title>
+    <title data-translate="ріелтори"></title>
     <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
     <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
 </head>
@@ -14,73 +14,77 @@
 <body>
 
 <section layout:fragment="content">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="realtors">Риелторы</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="realtors">Риелторы</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
-        <div style="width: 100%; display: flex; justify-content: flex-end">
-            <a th:href="@{/realtors/add}" class="btn btn-success mb-1" data-translate="addRealtor">Добавить риелтора</a>
-        </div>
-
-        <div class="card border">
-            <div class="card-header border">
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-default" id="clean-filter" data-translate="clear">Очистить</button>
-                </div>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="realtors">Риелторы</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="realtors">Риелторы</li>
+                    </ol>
+                </nav>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="realtorsTable" class="table table-bordered table-hover table-striped linkedRow">
-                        <thead>
-                        <tr>
-                            <th data-translate="branch">Филиал</th>
-                            <th style="min-width: 100px" data-translate="code">Код</th>
-                            <th style="min-width: 160px" data-translate="fullName">ФИО</th>
-                            <th style="min-width: 160px" data-translate="phone">Телефон</th>
-                            <th>Email</th>
-                            <th style="min-width: 160px" data-translate="dateOfBirth">Дата рождения</th>
-                            <th style="min-width: 140px"></th>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control for-filter">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control flatpickr-datetime for-filter " id="datepicker">
-                            </td>
-                            <td>
-                            </td>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
+            <hr style="margin-top: -5px">
+            <div style="width: 100%; display: flex; justify-content: flex-end">
+                <a th:href="@{/realtors/add}" class="btn btn-success mb-1" data-translate="addRealtor">Добавить
+                    риелтора</a>
             </div>
-            <div class="card-footer">
-                <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
-                    id="pagination_container">
-                </ul>
+
+            <div class="card border">
+                <div class="card-header border">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-default" id="clean-filter" data-translate="clear">Очистить</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="realtorsTable" class="table table-bordered table-hover table-striped linkedRow">
+                            <thead>
+                            <tr>
+                                <th data-translate="branch">Филиал</th>
+                                <th style="min-width: 100px" data-translate="code">Код</th>
+                                <th style="min-width: 160px" data-translate="fullName">ФИО</th>
+                                <th style="min-width: 160px" data-translate="phone">Телефон</th>
+                                <th>Email</th>
+                                <th style="min-width: 160px" data-translate="dateOfBirth">Дата рождения</th>
+                                <th style="min-width: 140px"></th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control for-filter">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control flatpickr-datetime for-filter "
+                                           id="datepicker">
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                        id="pagination_container">
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

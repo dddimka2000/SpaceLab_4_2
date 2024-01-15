@@ -5,7 +5,7 @@
         layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>Content page</title>
+    <title data-translate="менеджер_комерційної_нерухомості"></title>
 </head>
 <body>
 <section layout:fragment="content">
@@ -523,7 +523,6 @@
 
         function checkAddress() {
             let streetUkr = $("#streetUkr").val();
-            console.log(streetUkr);
             let url = contextPathURL + 'checkStreet';
             $.ajax({
                 type: "GET",
@@ -703,6 +702,8 @@
                 addressSelect2()
             }
             $('#landOwnershipPresent').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
             addressSelect2()
@@ -1108,8 +1109,9 @@
                 forSelect2(house.address.city, house.address.city, "#city", "/getCity/" + house.address.region)
             } else {
                 $("#region").select2({
+                    placeholder: translateValue('виберіть_обєкт'),
+                    language: languageForSelect2,
                     minimumResultsForSearch: -1,
-                    placeholder: "Елемент",
                     ajax: {
                         url: '[[@{/enum/region}]]',
                         dataType: 'json',
@@ -1135,8 +1137,9 @@
                 $("#district").prop("disabled", true);
 
                 $("#city").select2({
+                    placeholder: translateValue('виберіть_обєкт'),
+                    language: languageForSelect2,
                     minimumResultsForSearch: -1,
-                    placeholder: "Елемент",
                     ajax: {
                         url: '[[@{/getCity/}]]' + element,
                         dataType: 'json',
@@ -1158,8 +1161,9 @@
                 $("#district").empty();
                 $("#district").removeAttr("disabled");
                 $("#district").select2({
+                    placeholder: translateValue('виберіть_обєкт'),
+                    language: languageForSelect2,
                     minimumResultsForSearch: -1,
-                    placeholder: "Елемент",
                     ajax: {
                         url: '[[@{/getDistrict/}]]' + element,
                         dataType: 'json',

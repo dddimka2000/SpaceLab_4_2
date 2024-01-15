@@ -25,7 +25,8 @@ async function translateAllSelect2() {
 
 function branchSelect2(id, text) {
     $('#branchSelect2').select2({
-        // placeholder: "Філіал",
+        placeholder: translateValue('виберіть_обєкт'),
+        language: languageForSelect2,
         ajax: {
             url: contextPath + '/branches/for/select',
             dataType: 'json',
@@ -61,6 +62,8 @@ function branchSelect2(id, text) {
 
 function realtorSelect2(id, text) {
     $('#realtorSelect2').select2({
+        placeholder: translateValue('виберіть_обєкт'),
+        language: languageForSelect2,
         ajax: {
             url: contextPath + '/realtors/for/select',
             dataType: 'json',
@@ -97,6 +100,8 @@ function realtorSelect2(id, text) {
 
 function roleSelect2(text, id) {
     $('#roleSelect2').select2({
+        placeholder: translateValue('виберіть_обєкт'),
+        language: languageForSelect2,
         minimumResultsForSearch: -1,
         ajax: {
             url: contextPath + '/enum/role',
@@ -124,8 +129,9 @@ function informationSourceSelect2(text, id) {
     var url = '/enum/informationSource'
 
     $(selectName).select2({
+        placeholder: translateValue('виберіть_обєкт'),
+        language: languageForSelect2,
         minimumResultsForSearch: -1,
-        // placeholder: "Адмін",
         ajax: {
             url: contextPath + url,
             dataType: 'json',
@@ -154,6 +160,8 @@ function forSelect2(id, text, selectName, url) {
             success: function (newTranslations) {
                 translationsSecondExample = newTranslations;
                 $(selectName).select2({
+                    placeholder: translateValue('виберіть_обєкт'),
+                    language: languageForSelect2,
                     minimumResultsForSearch: -1,
                     ajax: {
                         url: contextPath + url,
@@ -180,8 +188,9 @@ function forSelect2(id, text, selectName, url) {
         })
     } else {
         $(selectName).select2({
+            placeholder: translateValue('виберіть_обєкт'),
+            language: languageForSelect2,
             minimumResultsForSearch: -1,
-            // placeholder: "Елемент",
             ajax: {
                 url: contextPath + url,
                 dataType: 'json',
@@ -207,9 +216,9 @@ function forSelect2(id, text, selectName, url) {
 }
 
 function forSelect2WithSearch(id, text, selectName, url, name) {
-
     $(selectName).select2({
-        // placeholder: "element",
+        placeholder: translateValue('виберіть_обєкт'),
+        language: languageForSelect2,
         ajax: {
             url: contextPath + url,
             dataType: 'json',

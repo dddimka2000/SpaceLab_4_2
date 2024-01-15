@@ -9,6 +9,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="">
+    <title data-translate="менеджер_вториної_нерухомості"></title>
     <link rel="icon" type="image/x-icon"
           th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -27,8 +28,6 @@
     <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
-    <!--    <script th:src="@{/js/config.js}"></script>-->
-    <!--    <script th:src="@{/vendor/js/template-customizer.js}"></script>-->
     <script th:src="@{/vendor/js/helpers.js}"></script>
     <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
@@ -37,7 +36,7 @@
         .notification {
             position: fixed;
             top: 90px;
-            right: 40px; /* Расстояние справа */
+            right: 40px;
             padding: 10px;
             border: 1px solid #ccc;
             text-align: center;
@@ -62,9 +61,7 @@
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                        <li class="breadcrumb-item" data-translate="secondary_real_estate"><a
-                                th:href="@{/secondary_objects}" data-translate="edit_secondary_real_estate"
-                        >Вторичная недвижимость</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/secondary_objects}" data-translate="edit_secondary_real_estate">Вторичная недвижимость</a></li>
                         <li class="breadcrumb-item active" aria-current="page"
                             th:href="@{/secondary_objects/create}" data-translate="create_secondary_real_estate">
                             Создание вторичной недвижимости
@@ -985,6 +982,8 @@
             let elementObjectBuilder = /*[[${elementObjectBuilder}]]*/ '';
 
             $('#branchSelect3').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
                 ajax: {
                     url: contextPath + 'builder_objects/for/select',
                     dataType: 'json',
