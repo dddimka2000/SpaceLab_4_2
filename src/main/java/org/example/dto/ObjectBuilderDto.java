@@ -56,11 +56,11 @@ public class ObjectBuilderDto {
     private String promotionNameEng;
     @Size(min = 1, max = 31, message = "(Укр)Название акции быть от 2 до 30 символов.")
     private String promotionNameUkr;
-    @NotNull(message = "Файлы не могут быть пусты")
+    @NotNull(message = "Файлы не могут быть пусты (шахматка, условия рассрочки, файл с ценами)")
     private MultipartFile chessboardFile;
-    @NotNull(message = "Файлы не могут быть пусты")
+    @NotNull(message = "Файлы не могут быть пусты (шахматка, условия рассрочки, файл с ценами)")
     private MultipartFile installmentTerms;
-    @NotNull(message = "Файлы не могут быть пусты")
+    @NotNull(message = "Файлы не могут быть пусты (шахматка, условия рассрочки, файл с ценами)")
     private MultipartFile prices;
 
     @Size(min = 1, max = 5000, message = "(Ру)Описание должно быть от 2 до 4999 символов.")
