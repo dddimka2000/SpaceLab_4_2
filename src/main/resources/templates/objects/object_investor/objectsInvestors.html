@@ -539,7 +539,7 @@
                             }
 
                             var cell2 = newRow.insertCell(1);
-                            cell2.innerHTML = object.objectCode;
+                            cell2.innerHTML =` <a href="` + contextPath + `investor_objects/card/` + object.id + `">`+object.objectCode+`</a>`;
 
                             var cell3 = newRow.insertCell(2);
                             cell3.innerHTML = object.address.district;
@@ -591,7 +591,7 @@
                             cell14.innerHTML = `
                                         <div class="btn-group" role="group" aria-label="Basic example">
 
-                       <a href="` + contextPath + `investor_objects/card/` + object.id + `">
+                       <a href="` + contextPath + `investor_objects/edit/` + object.id + `">
                                                 <button class="btn btn-default btn-sm float-right"
                                                         title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
                                             </a>

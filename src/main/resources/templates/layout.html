@@ -29,7 +29,7 @@
             href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
             rel="stylesheet"
     />
-
+    <link rel="stylesheet" th:href="@{/vendor/libs/spinkit/spinkit.css}" />
     <!-- Icons -->
     <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
     <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
@@ -49,44 +49,11 @@
     <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
     <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
+    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
     <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
     <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
     <script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
     <script th:src="@{/vendor/libs/cleavejs/cleave-phone.js}"></script>
-    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
-    <style>
-        .notification {
-            position: fixed;
-            top: 90px;
-            right: 40px; /* Расстояние справа */
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .notification.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-    </style>
-    <script>
-        function showNotification(bigTextMessage, message, isSuccess) {
-            const notification = document.getElementById("notification");
-            const notificationMessage = document.getElementById("notification-message");
-
-            var element = document.getElementById("text_notification");
-            element.textContent = bigTextMessage;
-
-            notificationMessage.textContent = message;
-            notification.classList.remove("hidden");
-            notification.classList.toggle("alert-success", isSuccess);
-            notification.classList.toggle("alert-warning", !isSuccess);
-            setTimeout(() => {
-                notification.classList.add("hidden");
-            }, 5000);
-        }
-    </script>
 
     <!-- Page CSS -->
 
@@ -107,20 +74,37 @@
           class="template-customizer-core-css">
     <link th:href="@{/vendor/css/rtl/theme-default.css}"
           class="template-customizer-theme-css">
+    <script th:src="@{/vendor/libs/block-ui/block-ui.js}"></script>
+    <style>
+        .notification {
+            position: fixed;
+            top: 90px;
+            right: 40px; /* Расстояние справа */
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+            transition: opacity 0.5s ease-in-out;
+        }
 
+        .notification.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
 </head>
-<body>
-<div id="spinner" style=" display: flex; align-items: center; justify-content: center;height: 100vh;">
+<body id="full_body">
+<div id="spinner" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
     <div style="text-align: center;">
         <div class="spinner-border spinner-border text-primary" role="status"
-             style="height:400px; width: 400px">
+             style="height: 10vw; width: 10vw; max-height: 400px; max-width: 400px;">
             <span class="visually-hidden">Loading...</span>
         </div>
         <br>
         <br>
-        <h1 style="height:400px; width: 400px; text-align: center;">Loading...</h1>
+        <h1 style="font-size: 3vw; max-height: 400px; max-width: 400px; text-align: center;">Loading...</h1>
     </div>
 </div>
+
 
 <div id="content" style="display: none;" class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
@@ -131,7 +115,7 @@
         <div class="layout-page">
             <nav layout:insert="~{navbar_layout :: navbar}"></nav>
 
-            <div class="content-wrapper">
+            <div class="content-wrapper" >
                 <section layout:fragment="content">
 
 
@@ -233,25 +217,42 @@
 
 <script th:src="@{/vendor/js/menu.js}"></script>
 <!-- endbuild -->
-<script>
-    function modalForLogoutModal() {
-        $('#logoutModal').modal("show")
-    }
-</script>
 <!-- Vendors JS -->
 
 <!-- Main JS -->
 <script th:src="@{/js/main.js}"></script>
 <script>
-    window.onload = function () {
-        var spinner = document.getElementById('spinner');
-        setTimeout(function () {
-            spinner.style.display = 'none';
-            spinner.remove();
-            document.getElementById('content').style.display = 'block';
-        }, 1300);
-    };
+window.onload = function () {
+var spinner = document.getElementById('spinner');
+setTimeout(function () {
+spinner.style.display = 'none';
+spinner.remove();
+document.getElementById('content').style.display = 'block';
+}, 1300);
+};
+</script>
+<script>
+    function modalForLogoutModal() {
+        $('#logoutModal').modal("show")
+    }
 </script>
 
+<script>
+    function showNotification(bigTextMessage, message, isSuccess) {
+        const notification = document.getElementById("notification");
+        const notificationMessage = document.getElementById("notification-message");
+
+        var element = document.getElementById("text_notification");
+        element.textContent = bigTextMessage;
+
+        notificationMessage.textContent = message;
+        notification.classList.remove("hidden");
+        notification.classList.toggle("alert-success", isSuccess);
+        notification.classList.toggle("alert-warning", !isSuccess);
+        setTimeout(() => {
+            notification.classList.add("hidden");
+        }, 5000);
+    }
+</script>
 </body>
 </html>

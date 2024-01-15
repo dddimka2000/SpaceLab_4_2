@@ -334,8 +334,6 @@ function scrollToElement($element) {
 
 function validateInput(input) {
     var inputValue = $(input).val();
-    if (inputValue <= 0) {
-        showToast("Number < 0",'danger');
-        $(input).val("");
-    }
+    var numericValue = inputValue.replace(/\D/g, '');
+    $(input).val(numericValue);
 }

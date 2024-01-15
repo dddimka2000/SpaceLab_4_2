@@ -52,7 +52,7 @@
 
     <main>
         <div class="content-wrapper">
-            <div class="container-fluid">
+            <div class="container-fluid" id="card-block">
                 <br>
                 <div class="d-flex justify-content-between">
                     <h4 class="fw-bold" th:text="${objectBuilder.getName()}"></h4>
@@ -522,6 +522,8 @@
         </div>
     </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
+    <script th:src="@{/vendor/libs/block-ui/block-ui.js}"></script>
+
     <script th:inline="javascript">
         let langOld = "ru";
 
@@ -601,6 +603,17 @@
 
 
         function sendForm() {
+            $("#full_body").block({
+                message: '<div class="spinner-border text-primary" role="status"></div>',
+                css: {
+                    backgroundColor: "transparent",
+                    border: "0"
+                },
+                overlayCSS: {
+                    backgroundColor: "#000",
+                    opacity: 0.25
+                }
+            })
             let formData = new FormData();
             formData.append("nameObject", $("#nameObject").val());
             formData.append("nameObjectEng", $("#nameObjectEu").val());
@@ -723,9 +736,12 @@
                     contentType: false,
                     processData: false,
                     success: function () {
+                        $("#full_body").unblock();
                         showNotification("Объект сохранен!", "", true);
                     },
                     error: function (xhr, status, error) {
+                        $("#full_body").unblock();
+
                         console.log(error)
                         var errors = JSON.parse(xhr.responseText);
                         errors.forEach(function (error) {
