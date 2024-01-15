@@ -54,19 +54,22 @@
     <div class="content-wrapper">
         <div class="container-fluid">
             <br>
-            <div class="d-flex justify-content-between">
-                <h4 class="fw-bold" data-translate="newObject">Новый объект</h4>
+            <div class="d-flex justify-content-between flex-sm-row">
+                <h4 class="fw-bold mb-2 mb-sm-0"  data-translate="newObject">Новый объект</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                    <ol class="breadcrumb">
+                    <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
-                        <li class="breadcrumb-item"><a th:href="@{/builder_objects}" data-translate="breadcrumb.builder_objects">Объекты от строителей</a></li>
-                        <li class="breadcrumb-item active"data-translate="builder_object_creation" aria-current="page" th:href="@{/builder_objects/create}" >
+                        <li class="breadcrumb-item"><a th:href="@{/builder_objects}"
+                                                       data-translate="breadcrumb.builder_objects">Объекты от
+                            строителей</a></li>
+                        <li class="breadcrumb-item active" data-translate="builder_object_creation" aria-current="page"
+                            th:href="@{/builder_objects/create}">
                             Создание объекта от строителя
                         </li>
                     </ol>
                 </nav>
             </div>
-            <hr style="margin-top: -5px">
+            <hr style="margin: 5px">
             <br>
             <ul class="nav nav-pills mb-3" role="tablist">
                 <li class="nav-item">
@@ -90,64 +93,67 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-home"
-                            type="button" role="tab" aria-controls="pills-home" aria-selected="true" data-translate="main">Основное
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true"
+                            data-translate="main">Основное
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-profile"
-                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false"data-translate="gallery">Галерея
+                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false"
+                            data-translate="gallery">Галерея
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-contact"
-                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false" data-translate="layout">Планировки
+                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false"
+                            data-translate="layout">Планировки
                     </button>
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-3">
                             <div style="display:block;" class="ruContent nameContent">
                                 <h6 data-translate="title">Название</h6>
                                 <input type="text" class="form-control" name="nameObject" id="nameObject"
-                                       data-translate-placeholder="enter_title"   placeholder="Введите название объекта">
+                                       data-translate-placeholder="enter_title" placeholder="Введите название объекта">
                             </div>
                             <div style="display:none;" class="euContent nameContent">
                                 <h6 data-translate="title">Название</h6>
                                 <input type="text" class="form-control" name="nameObjectEu" id="nameObjectEu"
-                                       data-translate-placeholder="enter_title"  placeholder="Input name">
+                                       data-translate-placeholder="enter_title" placeholder="Input name">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <h6 data-translate="title">Название</h6>
                                 <input type="text" class="form-control" name="nameObjectUkr" id="nameObjectUkr"
-                                       data-translate-placeholder="enter_title"  placeholder="Введіть назву об'єкта">
+                                       data-translate-placeholder="enter_title" placeholder="Введіть назву об'єкта">
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-sm-6 col-lg-3">
                             <h6 data-translate="region_district">Обл.район</h6>
-                            <select class="select2 form-select form-select select2find"  name="region"
+                            <select class="select2 form-select form-select select2find" name="region"
                                     id="region">
                                 <option selected disabled></option>
                                 <script th:inline="javascript">
                                     var selectRegionOptions = /*[[${selectRegion}]]*/ [];
                                     for (var i = 0; i < selectRegionOptions.length; i++) {
                                         var entity = selectRegionOptions[i];
-                                        document.write('<option value="' + entity + '" data-translate="'+entity.replace(' ','_')+'">' + entity + '</option>');
+                                        document.write('<option value="' + entity + '" data-translate="' + entity.replace(' ', '_') + '">' + entity + '</option>');
                                     }
                                     refreshAllTranslate()
                                 </script>
                             </select>
 
                         </div>
-                        <div class="col-3">
+                        <div class="col-sm-6 col-lg-3">
                             <h6 data-translate="city">Нас.пункт</h6>
                             <select class="select2 form-select form-select select2find" name="city" disabled>
                             </select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-sm-6 col-lg-3">
                             <h6 data-translate="district">Район</h6>
                             <select class="select2 form-select form-select select2find" name="district" disabled>
                                 <option selected disabled value=""></option>
@@ -156,7 +162,7 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-3">
                             <h6 data-translate="topzone">Топозона</h6>
                             <select class="select2 form-select form-select select2find" name="topozone">
                                 <option value="" selected></option>
@@ -164,13 +170,13 @@
                                     var selectRegionOptions = /*[[${selectTopozone}]]*/ [];
                                     for (var i = 0; i < selectRegionOptions.length; i++) {
                                         var entity = selectRegionOptions[i];
-                                        document.write('<option value="' + entity + '" data-translate="'+entity.replace(' ','_')+'">' + entity + '</option>');
+                                        document.write('<option value="' + entity + '" data-translate="' + entity.replace(' ', '_') + '">' + entity + '</option>');
                                     }
                                     refreshAllTranslate()
                                 </script>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-3">
                             <div style="display:block;" class="ruContent nameContent">
                                 <h6 data-translate="street">Улица</h6>
                                 <input class="form-control" type="text" name="street" id="street"
@@ -187,26 +193,26 @@
                                        placeholder="Введите улицу">
                             </div>
                         </div>
-                        <div class="col-8"></div>
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-2">
                             <h6 data-translate="house_number">Номер дома</h6>
                             <input class="form-control" type="number" name="houseNumber"
                                    placeholder="Введите номер дома" data-translate-placeholder="enter_house_number">
                         </div>
-                        <div class="col-2">
-                            <h6  data-translate="section_building">Секция/Корпус</h6>
+                        <div class="col-sm-6 col-lg-2">
+                            <h6 data-translate="section_building">Секция/Корпус</h6>
                             <input class="form-control" type="number" name="section"
-                                  data-translate-placeholder="enter_section_building" placeholder="Введите секцию/корпус">
+                                   data-translate-placeholder="enter_section_building"
+                                   placeholder="Введите секцию/корпус">
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-2">
                             <h6 data-translate="number_of_floors">Этажность</h6>
                             <input class="form-control" type="number" name="floorQuantity"
-                                 data-translate-placeholder="enter_floor_count"  placeholder="Введите кол-во этажей">
+                                   data-translate-placeholder="enter_floor_count" placeholder="Введите кол-во этажей">
                         </div>
-                        <div class="col-3">
+                        <div class="col-sm-6 col-lg-3">
                             <h6 data-translate="construction_company">Строительная компания</h6>
                             <select class="select2 form-select form-select select2find" name="nameCompany">
                                 <option selected disabled></option>
@@ -215,9 +221,10 @@
                                 <option value="3">Three</option>
                             </select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-sm-6 col-lg-3">
                             <h6 data-translate="completion_date">Срок сдачи</h6>
-                            <select id="buildStatus" class="select2 form-select form-select select2find" name="buildStatus">
+                            <select id="buildStatus" class="select2 form-select form-select select2find"
+                                    name="buildStatus">
                                 <option selected disabled></option>
                                 <option th:each="status : ${propertyBuildStatus}"
                                         th:value="${status}"
@@ -232,7 +239,7 @@
                            placeholder="+380*********">
                     <br>
                     <h6 data-translate="checkerboard">Шахматка</h6>
-                    <input type="file" class="form-control" name="chessboard" id="chessboard" accept=".pdf" >
+                    <input type="file" class="form-control" name="chessboard" id="chessboard" accept=".pdf">
                     <br>
                     <h6 data-translate="installment_conditions">Условия рассрочки</h6>
                     <input type="file" class="form-control" name="installmentTerms" id="installmentTerms" accept=".pdf">
@@ -249,45 +256,53 @@
                     <div style="display:none;" class="euContent nameContent">
                         <h3 data-translate="description">Описание</h3>
                         <textarea class="form-control" style="width: 100%; height: 300px" name="descriptionObjectEu"
-                                  data-translate-placeholder="enter_description" placeholder="Введите описание"></textarea>
+                                  data-translate-placeholder="enter_description"
+                                  placeholder="Введите описание"></textarea>
                     </div>
                     <div style="display:none;" class="ukrContent nameContent">
                         <h3 data-translate="description">Описание</h3>
                         <textarea class="form-control" style="width: 100%; height: 300px" name="descriptionObjectUkr"
-                                  data-translate-placeholder="enter_description"  placeholder="Введите описание"></textarea>
+                                  data-translate-placeholder="enter_description"
+                                  placeholder="Введите описание"></textarea>
                     </div>
 
                     <br>
                     <div style="display:block;" class="ruContent nameContent">
                         <h1 data-translate="promotions">Акция</h1>
-                        <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionName" id="promotionName" class="form-control"
+                        <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionName"
+                               id="promotionName" class="form-control"
                                placeholder="Введите название акции">
                     </div>
                     <div style="display:none;" class="euContent nameContent">
                         <h1 data-translate="promotions">Акция</h1>
-                        <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionNameEu" id="promotionNameEu" class="form-control"
+                        <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionNameEu"
+                               id="promotionNameEu" class="form-control"
                                placeholder="Введите название акции">
                     </div>
                     <div style="display:none;" class="ukrContent nameContent">
                         <h1 data-translate="promotions">Акция</h1>
-                        <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionNameUkr" id="promotionNameUkr" class="form-control"
+                        <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionNameUkr"
+                               id="promotionNameUkr" class="form-control"
                                placeholder="Введите название акции">
                     </div>
                     <br>
                     <div style="display:block;" class="ruContent nameContent">
-                        <h3  data-translate="description">Описание</h3>
+                        <h3 data-translate="description">Описание</h3>
                         <textarea style="width: 100%; height: 300px" name="descriptionPromotion"
-                                  data-translate-placeholder="enter_description"     class="form-control" placeholder="Введите описание акции"></textarea>
+                                  data-translate-placeholder="enter_description" class="form-control"
+                                  placeholder="Введите описание акции"></textarea>
                     </div>
                     <div style="display:none;" class="euContent nameContent">
-                        <h3  data-translate="description">Описание</h3>
+                        <h3 data-translate="description">Описание</h3>
                         <textarea style="width: 100%; height: 300px" name="descriptionPromotionEu"
-                                  data-translate-placeholder="enter_description"  class="form-control" placeholder="Введите описание акции"></textarea>
+                                  data-translate-placeholder="enter_description" class="form-control"
+                                  placeholder="Введите описание акции"></textarea>
                     </div>
                     <div style="display:none;" class="ukrContent nameContent">
-                        <h3  data-translate="description">Описание</h3>
+                        <h3 data-translate="description">Описание</h3>
                         <textarea style="width: 100%; height: 300px" name="descriptionPromotionUkr"
-                                  data-translate-placeholder="enter_description" class="form-control" placeholder="Введите описание акции"></textarea>
+                                  data-translate-placeholder="enter_description" class="form-control"
+                                  placeholder="Введите описание акции"></textarea>
                     </div>
 
                     <br>
@@ -323,67 +338,69 @@
                         <div class="card" id="card1" style="padding: 20px; margin-top: 20px;">
                             <div style="display:block;" class="ruContent nameContent">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-lg-6">
                                         <h6 data-translate="title">Название</h6>
                                     </div>
-                                    <div class="col-6" style="text-align: right">
+                                    <div class="col-sm-12 col-lg-6" style="text-align: right">
                                     </div>
                                 </div>
-                                <input class="form-control col-md-6" type="text" id="nameLayout1"
-                                       placeholder="Введите название"  data-translate-placeholder="title">
+                                <input class="form-control col-sm-12 col-lg-6" type="text" id="nameLayout1"
+                                       placeholder="Введите название" data-translate-placeholder="title">
                             </div>
                             <div style="display:none;" class="euContent nameContent">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-lg-6">
                                         <h6 data-translate="title">Название</h6>
                                     </div>
-                                    <div class="col-6" style="text-align: right"  >
+                                    <div class="col-sm-12 col-lg-6" style="text-align: right">
                                     </div>
                                 </div>
-                                <input class="form-control col-md-6" type="text" id="nameLayoutEu1"
+                                <input class="form-control col-sm-12 col-lg-6" type="text" id="nameLayoutEu1"
                                        placeholder="Введите название" data-translate-placeholder="enter_title">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-12 col-lg-6">
                                         <h6 data-translate="title">Название</h6>
                                     </div>
-                                    <div class="col-6" style="text-align: right">
+                                    <div class="col-sm-12 col-lg-6" style="text-align: right">
                                     </div>
                                 </div>
-                                <input class="form-control col-md-6" type="text" id="nameLayoutUkr1"
-                                       placeholder="Введите название"  data-translate-placeholder="title">
+                                <input class="form-control col-sm-12 col-lg-6" type="text" id="nameLayoutUkr1"
+                                       placeholder="Введите название" data-translate-placeholder="title">
                             </div>
 
 
                             <br>
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
-                                    <input data-translate-placeholder="enter_price" class="form-control" type="number" id="priceLayout1"
+                                    <input data-translate-placeholder="enter_price" class="form-control" type="number"
+                                           id="priceLayout1"
                                            placeholder="Введите цену">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="rooms">Комнат</h6>
                                     <input class="form-control" type="number" id="roomsLayout1"
                                            data-translate-placeholder="enter_rooms" placeholder="Введите кол-во комнат">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaTotalLayout1"
-                                           data-translate-placeholder="enter_total_area" placeholder="Введите общую площадь">
+                                           data-translate-placeholder="enter_total_area"
+                                           placeholder="Введите общую площадь">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-3">
                                     <h6 data-translate="enter_living_area">S жилая (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaLivingLayout1"
-                                          data-translate-placeholder="S_living_area_sqm" placeholder="Введите жилую площадь">
+                                           data-translate-placeholder="S_living_area_sqm"
+                                           placeholder="Введите жилую площадь">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-3">
                                     <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaKitchenLayout1"
-                                          data-translate-placeholder="enter_kitchen_area" placeholder="Введите площадь кухни">
-                                </div>
-                                <div class="col-2">
+                                           data-translate-placeholder="enter_kitchen_area"
+                                           placeholder="Введите площадь кухни">
                                 </div>
                             </div>
                             <br>
@@ -400,7 +417,7 @@
                             <div style="display:none;" class="euContent nameContent">
                                 <h6 data-translate="description">Описание</h6>
                                 <input class="form-control" type="text" id="descriptionLayoutEu1"
-                                       data-translate-placeholder="enter_description"  placeholder="Введите описание">
+                                       data-translate-placeholder="enter_description" placeholder="Введите описание">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <h6 data-translate="description">Описание</h6>
@@ -410,19 +427,19 @@
 
                             <br>
                             <div class="row" style="text-align: center">
-                                <div class="col-4">
+                                <div class="col-sm-6 col-lg-4">
                                     <img id="previewImage1" style="justify-content: center">
-                                    <input type="file" class="form-control" id="inputImage1"  accept=".jpg, .jpeg, .png"
+                                    <input type="file" class="form-control" id="inputImage1" accept=".jpg, .jpeg, .png"
                                            onchange="updatePreviewImage(this, 'previewImage1')" style="margin-top: 5px">
                                 </div>
-                                <div class="col-4">
+                                <div class="col-sm-6 col-lg-4">
                                     <img id="previewImage2" style="justify-content: center">
-                                    <input type="file" class="form-control" id="inputImage2"  accept=".jpg, .jpeg, .png"
+                                    <input type="file" class="form-control" id="inputImage2" accept=".jpg, .jpeg, .png"
                                            onchange="updatePreviewImage(this, 'previewImage2')" style="margin-top: 5px">
                                 </div>
-                                <div class="col-4">
+                                <div class="col-sm-6 col-lg-4">
                                     <img id="previewImage3">
-                                    <input type="file" class="form-control" id="inputImage3"  accept=".jpg, .jpeg, .png"
+                                    <input type="file" class="form-control" id="inputImage3" accept=".jpg, .jpeg, .png"
                                            onchange="updatePreviewImage(this, 'previewImage3')" style="margin-top: 5px">
                                 </div>
                             </div>
@@ -435,7 +452,7 @@
                 </div>
             </div>
             <div style="text-align: right; margin: 20px">
-<!--                <button class="btn btn-submit">Отмена</button>-->
+                <!--                <button class="btn btn-submit">Отмена</button>-->
                 <span>
                 <button data-translate="save" class="btn btn-success" hx-trigger="click" onclick="sendForm()">
                 Сохранить </button>
@@ -580,7 +597,7 @@
                     url: url,
                     method: "POST",
                     data: formData,
-                    headers: { 'X-XSRF-TOKEN': [[${_csrf.token}]] },
+                    headers: {'X-XSRF-TOKEN': [[${_csrf.token}]]},
                     contentType: false,
                     processData: false,
                     success: function () {
@@ -609,7 +626,7 @@
                     reader.onload = function (e) {
                         $('#' + imgId).removeAttr('hidden');
                         $('#' + imgId).attr('src', e.target.result);
-                        $('#' + imgId).addClass('d-block w-px-300 h-px-300 rounded');
+                        $('#' + imgId).addClass('d-block w-px-250 h-px-250 rounded mx-auto');
                         if (imgId > imgMaxId) {
                             imgMaxId = imgId;
                         }
@@ -639,10 +656,10 @@
                 text += ' <div style="display:none;" class="ruContent nameContent">\n';
             }
             text += ` <div class="row">
-               <div class="col-6">
+                                              <div class="col-sm-6 col-lg-6">
                 <h6 data-translate="title">Название</h6>
            </div>
-                 <div class="col-6" style="text-align: right">
+                 <div class="col-sm-6 col-lg-6" style="text-align: right">
                             <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
                                      width="24"
@@ -670,10 +687,10 @@
                 text += '<div style="display:none;" class="euContent nameContent">';
             }
             text += ` <div class="row">
-               <div class="col-6">
+               <div class="col-sm-6 col-lg-6">
                 <h6 data-translate="title">Название</h6>
            </div>
-                 <div class="col-6" style="text-align: right">
+                 <div class="col-sm-6 col-lg-6" style="text-align: right">
                             <button class="btn btn-danger" onClick="deleteLayout(` + imgMaxId + `)" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
                                      width="24"
@@ -701,7 +718,7 @@
                 text += '<div style="display:none;" class="ukrContent nameContent">';
             }
             text += ` <div class="row">
-               <div class="col-6">
+               <div class="col-sm-6 col-lg-6">
                 <h6 data-translate="title">Название</h6>
            </div>
 
@@ -730,33 +747,32 @@
             newCard.innerHTML += `
                         <br>
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
                                     <input class="form-control" type="number" id="priceLayout` + imgMaxId + `"
                                            placeholder="Введите цену" data-translate-placeholder="enter_price">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="rooms">Комнат</h6>
                                     <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `"
                                            placeholder="Введите кол-во комнат" data-translate-placeholder="enter_rooms">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `"
                                            placeholder="Введите общую площадь" data-translate-placeholder="enter_total_area">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-3">
                                     <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `"
                                            placeholder="Введите жилую площадь" data-translate-placeholder="enter_living_area">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-3">
                                     <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `"
                                            placeholder="Введите площадь кухни" data-translate-placeholder="enter_kitchen_area">
                                 </div>
-                                <div class="col-2">
-                                </div>
+
                             </div>
                             <br>
                                 <div class="form-check form-check-inline">
@@ -806,7 +822,7 @@
             newCard.innerHTML += `
                                         <br>
                                             <div class="row" style="text-align: center">
-                                                <div class="col-4">
+                                                <div class="col-sm-6 col-lg-4">
                                                     <img id="previewImage` + (imgMaxId) + `"
                                                          style="justify-content: center">
                                                         <input type="file" class="form-control"  accept=".jpg, .jpeg, .png"
@@ -814,7 +830,7 @@
                                                                onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
                                                                style="margin-top: 5px">
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-sm-6 col-lg-4">
                                                     <img id="previewImage` + (imgMaxId + 1) + `"
                                                          style="justify-content: center">
                                                         <input type="file" class="form-control"  accept=".jpg, .jpeg, .png"
@@ -822,7 +838,7 @@
                                                                onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
                                                                style="margin-top: 5px">
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-sm-6 col-lg-4">
                                                     <img id="previewImage` + (imgMaxId + 2) + `">
                                                         <input type="file" class="form-control"  accept=".jpg, .jpeg, .png"
                                                                id="inputImage` + (imgMaxId + 2) + `"
@@ -846,7 +862,7 @@
             console.log(selectedLanguage)
             if (selectedLanguage == undefined) {
                 document.cookie = "selectedLanguage=ru; path=/";
-                 selectedLanguage = "ru";
+                selectedLanguage = "ru";
             }
             changeLanguageNav(selectedLanguage);
 

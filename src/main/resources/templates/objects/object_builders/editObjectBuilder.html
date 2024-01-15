@@ -54,22 +54,19 @@
         <div class="content-wrapper">
             <div class="container-fluid" id="card-block">
                 <br>
-                <div class="d-flex justify-content-between">
-                    <h4 class="fw-bold" th:text="${objectBuilder.getName()}"></h4>
+                <div class="d-flex flex-column flex-sm-row justify-content-between">
+                    <h4 class="fw-bold mb-2 mb-sm-0" th:text="${objectBuilder.getName()}"></h4>
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a>
-                            </li>
-                            <li class="breadcrumb-item"><a
-                                    th:href="@{/builder_objects}" data-translate="breadcrumb.builder_objects">Объекты от строителей</a></li>
-                            <li class="breadcrumb-item active" aria-current="page" data-translate="edit_builder_object">
-                                Редакция объекта строителя
-                            </li>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/builder_objects}" data-translate="breadcrumb.builder_objects">Объекты от строителей</a></li>
+                            <li class="breadcrumb-item active" aria-current="page" data-translate="edit_builder_object">Редакция объекта строителя</li>
                         </ol>
                     </nav>
                 </div>
-                <hr style="margin-top: -5px">
+
+                <hr style="margin: 5px">
                 <br>
                 <ul class="nav nav-pills mb-3" role="tablist">
                     <li class="nav-item">
@@ -116,7 +113,7 @@
                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
                          aria-labelledby="pills-home-tab">
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <div style="display:block;" class="ruContent nameContent">
                                     <h6 data-translate="title">Название</h6>
                                     <input type="text" class="form-control" name="nameObject" id="nameObject"
@@ -134,7 +131,7 @@
                                            data-translate-placeholder="enter_description" th:value="${objectBuilder.getNameUkraine()}">
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <h6 data-translate="region_district">Обл.район</h6>
                                 <select class="select2 form-select form-select select2find" name="region" id="region">
                                     <option selected></option>
@@ -155,7 +152,7 @@
 
                                 </select>
                             </div>
-                            <div class="col-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <h6 data-translate="city">Нас.пункт</h6>
                                 <select class="select2 form-select form-select select2find" name="city">
                                     <option selected></option>
@@ -165,7 +162,7 @@
                                             th:selected="${objectBuilder.getAddress().getCity() == entity}"></option>
                                 </select>
                             </div>
-                            <div class="col-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <h6 data-translate="district">Район</h6>
                                 <select class="select2 form-select form-select select2find" name="district">
                                     <option selected value=""></option>
@@ -174,7 +171,7 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <h6 data-translate="topzone">Топозона</h6>
                                 <select class="select2 form-select form-select select2find" name="topozone">
                                     <option value="" selected></option>
@@ -191,7 +188,7 @@
                                     </script>
                                 </select>
                             </div>
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <div style="display:block;" class="ruContent nameContent">
                                     <h6 data-translate="street">Улица</h6>
                                     <input class="form-control" type="text" name="street" id="street"
@@ -215,24 +212,24 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <h6 data-translate="house_number">Номер дома</h6>
                                 <input class="form-control" type="number" name="houseNumber"
                                        th:value="${objectBuilder.getAddress().getHouseNumber()}"
                                        data-translate-placeholder="enter_house_number" placeholder="Введите номер дома">
                             </div>
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <h6 data-translate="section_building">Секция/Корпус</h6>
                                 <input class="form-control" type="number" name="section"
                                        th:value="${objectBuilder.getAddress().getSection()}"
                                       data-translate-placeholder="enter_section_building" placeholder="Введите секцию/корпус">
                             </div>
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <h6 data-translate="number_of_floors">Этажность</h6>
                                 <input class="form-control" type="number" name="floorQuantity"
                                       data-translate-placeholder="enter_floor_count" th:value="${objectBuilder.getFloorQuantity()}" placeholder="Введите этажность">
                             </div>
-                            <div class="col-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <h6 data-translate="construction_company">Строительная компания</h6>
                                 <select class="select2 form-select form-select select2find" name="nameCompany">
                                     <option th:selected="${objectBuilder.getNameCompany() == ''}" value=""></option>
@@ -244,7 +241,7 @@
                                     </option>
                                 </select>
                             </div>
-                            <div class="col-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <h6 data-translate="completion_date">Срок сдачи</h6>
                                 <select id="buildStatus" class="select2 form-select form-select select2find" name="buildStatus">
                                     <option></option>
@@ -401,40 +398,38 @@
 
                                 <br>
                                 <div class="row">
-                                    <div class="col-2">
+                                    <div class="col-sm-6 col-lg-2">
                                         <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
                                         <input class="form-control" type="number" id="priceLayout1"
                                                th:value="${layouts.get(0).getPrice()}" placeholder="Введите цену">
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-sm-6 col-lg-2">
                                         <h6 data-translate="rooms">Комнат</h6>
                                         <input class="form-control" type="number" id="roomsLayout1"
                                                th:value="${layouts.get(0).getRoomQuantity()}"
                                                data-translate-placeholder="enter_rooms"
                                                placeholder="Введите кол-во комнат">
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-sm-6 col-lg-2">
                                         <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaTotalLayout1"
                                                th:value="${layouts.get(0).getAreaTotal()}"
                                                data-translate-placeholder="enter_total_area"
                                                placeholder="Введите общую площадь">
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-sm-6 col-lg-3">
                                         <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaLivingLayout1"
                                                th:value="${layouts.get(0).getAreaLiving()}"
                                                data-translate-placeholder="enter_living_area"
                                                placeholder="Введите жилую площадь">
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-sm-6 col-lg-3">
                                         <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaKitchenLayout1"
                                                th:value="${layouts.get(0).getAreaKitchen()}"
                                                data-translate-placeholder="enter_kitchen_area"
                                                placeholder="Введите площадь кухни">
-                                    </div>
-                                    <div class="col-2">
                                     </div>
                                 </div>
                                 <br>
@@ -470,25 +465,25 @@
                                 </div>
                                 <br>
                                 <div class="row" style="text-align: center">
-                                    <div class="col-4">
+                                    <div class="col-sm-6 col-lg-4">
                                         <img id="previewImage1" style="justify-content: center"
                                              th:src="'data:image/jpeg;base64, ' + ${img1.get(0)}"
-                                             class="d-block w-px-300 h-px-300 rounded">
+                                             class="d-block w-px-250 h-px-250 mx-auto rounded">
                                         <input type="file" class="form-control" id="inputImage1"
                                                onchange="updatePreviewImage(this, 'previewImage1')"
                                                style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-sm-6 col-lg-4">
                                         <img id="previewImage2" style="justify-content: center"
                                              th:src="'data:image/jpeg;base64, ' + ${img2.get(0)}"
-                                             class="d-block w-px-300 h-px-300 rounded">
+                                             class="d-block w-px-250 h-px-250 mx-auto rounded">
                                         <input type="file" class="form-control" id="inputImage2"
                                                onchange="updatePreviewImage(this, 'previewImage2')"
                                                style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-sm-6 col-lg-4">
                                         <img id="previewImage3" th:src="'data:image/jpeg;base64, ' + ${img3.get(0)}"
-                                             class="d-block w-px-300 h-px-300 rounded">
+                                             class="d-block w-px-250 h-px-250 mx-auto rounded">
                                         <input type="file" class="form-control" id="inputImage3"
                                                onchange="updatePreviewImage(this, 'previewImage3')"
                                                style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
@@ -763,7 +758,7 @@
                     reader.onload = function (e) {
                         $('#' + imgId).removeAttr('hidden');
                         $('#' + imgId).attr('src', e.target.result);
-                        $('#' + imgId).addClass('d-block w-px-300 h-px-300 rounded');
+                        $('#' + imgId).addClass('d-block w-px-250 h-px-250 mx-auto rounded');
                         if (imgId > imgMaxId) {
                             imgMaxId = imgId;
                         }
@@ -884,33 +879,32 @@
             newCard.innerHTML += `
                         <br>
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
                                     <input class="form-control" type="number" id="priceLayout` + imgMaxId + `"
                                            placeholder="Введите цену" data-translate-placeholder="enter_price">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="rooms">Комнат</h6>
                                     <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `"
                                            placeholder="Введите кол-во комнат" data-translate-placeholder="enter_rooms">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `"
                                            placeholder="Введите общую площадь" data-translate-placeholder="enter_total_area">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-3">
                                     <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `"
                                            placeholder="Введите жилую площадь" data-translate-placeholder="enter_living_area">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-3">
                                     <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `"
                                            placeholder="Введите площадь кухни" data-translate-placeholder="enter_kitchen_area">
                                 </div>
-                                <div class="col-2">
-                                </div>
+
                             </div>
                             <br>
                                 <div class="form-check form-check-inline">
@@ -957,7 +951,7 @@
             newCard.innerHTML += `
                                         <br>
                                             <div class="row" style="text-align: center">
-                                                <div class="col-4">
+                                                <div class="col-sm-6 col-lg-4">
                                                     <img id="previewImage` + (imgMaxId) + `"
                                                          style="justify-content: center">
                                                         <input type="file" class="form-control"
@@ -965,7 +959,7 @@
                                                                onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
                                                                style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-sm-6 col-lg-4">
                                                     <img id="previewImage` + (imgMaxId + 1) + `"
                                                          style="justify-content: center">
                                                         <input type="file" class="form-control"
@@ -973,7 +967,7 @@
                                                                onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
                                                                style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-sm-6 col-lg-4">
                                                     <img id="previewImage` + (imgMaxId + 2) + `">
                                                         <input type="file" class="form-control"
                                                                id="inputImage` + (imgMaxId + 2) + `"
@@ -1219,28 +1213,27 @@
 
                 <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-2">
                             <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
                             <input data-translate-placeholder="enter_price" class="form-control" type="number" id="priceLayout` + imgMaxId + `" value="` + layouts[i].price + `">
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-2">
                             <h6 data-translate="rooms">Комнат</h6>
                             <input data-translate-placeholder="enter_rooms" class="form-control" type="number" id="roomsLayout` + imgMaxId + `" value="` + layouts[i].roomQuantity + `">
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-2">
                             <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                             <input data-translate-placeholder="enter_total_area" class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `" value="` + layouts[i].areaTotal + `">
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-3">
                             <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                             <input data-translate-placeholder="enter_living_area" class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `" value="` + layouts[i].areaLiving + `">
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-3">
                             <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                             <input data-translate-placeholder="enter_kitchen_area" class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `" value="` + layouts[i].areaKitchen + `">
                         </div>
-                        <div class="col-2">
-                        </div>
+
                     </div>
                     <br>
                         <div class="form-check form-check-inline">
@@ -1268,20 +1261,20 @@
                             </div>
                                  <br>
                                     <div class="row" style="text-align: center">
-                                        <div class="col-4">
-                                            <img id="previewImage` + (imgMaxId) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img1Thymeleaf[i] + `" class="d-block w-px-300 h-px-300 rounded">
+                                        <div class="col-sm-6 col-lg-4">
+                                            <img id="previewImage` + (imgMaxId) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img1Thymeleaf[i] + `" class="d-block w-px-250 h-px-250 mx-auto rounded">
                                                 <input  type="file" class="form-control" id="inputImage` + (imgMaxId) + `"
                                                        onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
                                                        style="margin-top: 5px">
                                         </div>
-                                        <div class="col-4">
-                                            <img id="previewImage` + (imgMaxId + 1) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img2Thymeleaf[i] + `" class="d-block w-px-300 h-px-300 rounded">
+                                        <div class="col-sm-6 col-lg-4">
+                                            <img id="previewImage` + (imgMaxId + 1) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img2Thymeleaf[i] + `" class="d-block w-px-250 h-px-250 mx-auto rounded">
                                                 <input type="file" class="form-control" id="inputImage` + (imgMaxId + 1) + `"
                                                        onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
                                                        style="margin-top: 5px">
                                         </div>
-                                        <div class="col-4">
-                                            <img id="previewImage` + (imgMaxId + 2) + `" src="data:image/jpeg;base64, ` + img3Thymeleaf[i] + `" class="d-block w-px-300 h-px-300 rounded">
+                                        <div class="col-sm-6 col-lg-4">
+                                            <img id="previewImage` + (imgMaxId + 2) + `" src="data:image/jpeg;base64, ` + img3Thymeleaf[i] + `" class="d-block w-px-250 h-px-250 mx-auto rounded">
                                                 <input type="file" class="form-control" id="inputImage` + (imgMaxId + 2) + `"
                                                        onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 2) + `')"
                                                        style="margin-top: 5px">
