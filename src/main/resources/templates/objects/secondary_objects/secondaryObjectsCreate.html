@@ -656,6 +656,7 @@
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
     <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
     <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+    <script th:src="@{/vendor/libs/block-ui/block-ui.js}"></script>
 
     <script th:inline="javascript">
         $(document).ready(function () {
@@ -695,6 +696,17 @@
 
 
         function sendForm() {
+            $("#full_body").block({
+                message: '<div style="display: flex; align-items: center; justify-content: center; height: 100vh;"><div class="pinner-border spinner-border text-primary" role="status" style="height: 10vw; width: 10vw; max-height: 400px; max-width: 400px;"></div></div>',
+                css: {
+                    backgroundColor: "transparent",
+                    border: "0"
+                },
+                overlayCSS: {
+                    backgroundColor: "#000",
+                    opacity: 0.5
+                }
+            })
             let formData = new FormData();
             var address = {
                 region: $("#region").val(),
@@ -827,9 +839,11 @@
                 contentType: false,
                 processData: false,
                 success: function () {
+                    $("#full_body").unblock();
                     showNotification("Объект сохранен!", "", true);
                 },
                 error: function (xhr, status, error) {
+                    $("#full_body").unblock();
                     if (xhr.status === 400) {
                         var errors = JSON.parse(xhr.responseText);
                         errors.forEach(function (error) {

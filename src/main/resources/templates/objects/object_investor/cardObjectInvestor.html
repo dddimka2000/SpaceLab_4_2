@@ -57,15 +57,15 @@
                         </ol>
                     </nav>
                 </div>
-                <hr style="margin-top: -5px">
+                <hr style="margin: 5px">
                 <br>
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-5">
+                            <div class="col-sm-6 col-lg-6">
                                 <h3 data-translate="view_object">Просмотр объекта</h3>
                             </div>
-                            <div class="col-7" style="text-align: right;">
+                            <div class="col-sm-6 col-lg-6" style="text-align: right;">
                                 <div class="btn-group">
                                     <a href="#" onclick="checkModalWindow()" class="btn btn-submit" data-translate="searchBuyer">Поиск покупателя</a>
                                     <a th:href="@{/investor_objects/edit/{id}(id=${id})}">
@@ -78,11 +78,11 @@
                     <hr class="my-0">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-6" style="text-align: center">
+                            <div class="col-sm-6 col-lg-6" style="text-align: center">
                                 <a th:href="'data:image/jpeg;base64, ' + ${base64Image}"
                                    data-lightbox="checkerboard"><img
                                         th:src="'data:image/jpeg;base64, ' + ${base64Image}" alt="Photo"
-                                        class="d-block w-px-400 h-px-300 rounded"></a>
+                                        class="d-block w-100 h-100 rounded"></a>
                             </div>
                         </div>
                         <br><br>

@@ -63,7 +63,8 @@
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
                         <li class="breadcrumb-item"><a th:href="@{/investor_objects}" data-translate="investor_objects">Объекты
                             от инвесторов</a></li>
-                        <li data-translate="edit_investor_object" class="breadcrumb-item active" aria-current="page" th:href="@{/investor_objects/create}">
+                        <li data-translate="edit_investor_object" class="breadcrumb-item active" aria-current="page"
+                            th:href="@{/investor_objects/create}">
                             Редакция объекта от инвестора
                         </li>
                     </ol>
@@ -93,19 +94,22 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-home"
-                            type="button" role="tab" aria-controls="pills-home" aria-selected="true" data-translate="address_section">Адрессная часть
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true"
+                            data-translate="address_section">Адрессная часть
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-profile"
-                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false" data-translate="main_section">Основное
+                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false"
+                            data-translate="main_section">Основное
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-contact"
-                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false"  data-translate="gallery">Галерея
+                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false"
+                            data-translate="gallery">Галерея
                     </button>
                 </li>
             </ul>
@@ -113,7 +117,7 @@
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <div class="row">
 
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="region_district">Обл.район</h6>
                             <select class="select2 form-select form-select select2find" name="region"
                                     id="region">
@@ -133,12 +137,12 @@
                             </select>
 
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="city">Нас.пункт</h6>
                             <select class="select2 form-select form-select select2find" name="city" disabled>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="district">Район</h6>
                             <select class="select2 form-select form-select select2find" name="district" disabled>
                                 <option selected value="" disabled></option>
@@ -146,7 +150,7 @@
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
                             </select></div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <div style="display:block;" class="ruContent nameContent">
                                 <h6 data-translate="street">Улица</h6>
                                 <input class="form-control" type="text" name="street" id="street"
@@ -166,7 +170,7 @@
                                        th:value="${element.getAddress().getStreetUkr()}">
                             </div>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="topzone">Топозона</h6>
                             <select class="select2 form-select form-select select2find" name="topozone">
                                 <option value="" selected></option>
@@ -180,23 +184,23 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="house_number">Номер дома</h6>
                             <input class="form-control" type="number" name="houseNumber"
                                    data-translate-placeholder="enter_house_number" placeholder="Введите номер дома"
                                    th:value="${element.getAddress().getHouseNumber()}">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="section_building">Секция/Корпус</h6>
                             <input class="form-control" type="number" name="section"
                                    placeholder="Введите секцию/корпус" th:value="${element.getAddress().getSection()}">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="apartment_number">Номер квартиры</h6>
                             <input type="text" class="form-control" name="apartmentNumber" id="apartmentNumber"
                                    placeholder="Введите номер квартиры" th:value="${element.getApartmentNumber()}">
                         </div>
-                        <div class="col-3" style="display: flex;align-items: end">
+                        <div class="col-lg-3 col-sm-6" style="display: flex;align-items: end">
                             <button class="btn btn-info" onclick="checkNumber()" data-translate="check_phone_number">
                                 Проверить номер телефона
                             </button>
@@ -204,7 +208,7 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <div style="display:block;" class="ruContent nameContent">
                                 <h6 data-translate="owner_name">ФИО владельца </h6>
                                 <input class="form-control" type="text" name="owner"
@@ -224,19 +228,19 @@
                                        th:value="${element.getOwnerNameUkr()}">
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="phone">Телефон</h6>
                             <input type="tel" name="telephone" id="telephone" class="form-control"
                                    data-translate-placeholder="enter_phone_number" placeholder="Введите номер телефона"
                                    th:value="${element.getOwnerPhone()}">
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="acquisition_date">Дата приобретения</h6>
-                            <input class="form-control flatpickr-datetime" type="text"   placeholder="YYYY/MM/DD"
+                            <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="boughtDate" name="boughtDate"
-                                    th:value="${element.getBoughtDate()}">
+                                   th:value="${element.getBoughtDate()}">
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="ownership_rights">Право собственности</h6>
                             <select class="select2 form-select form-select select2find" name="ownership">
                                 <option th:each="status : ${ownershipType}"
@@ -248,11 +252,13 @@
                     </div>
                     <br>
                     <h6 data-translate="important_notes">Важные заметки</h6>
-                    <input data-translate-placeholder="enter_notes" class="form-control" type="text" id="notes" placeholder="Введите заметки"
+                    <input data-translate-placeholder="enter_notes" class="form-control" type="text" id="notes"
+                           placeholder="Введите заметки"
                            th:value="${element.getNotes()}">
                     <br>
                     <h6 data-translate="attach_files">Прикрепить файлы</h6>
-                    <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()" accept=".pdf">
+                    <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()"
+                           accept=".pdf">
                     <br>
                     <div id="fileList">
 
@@ -260,84 +266,76 @@
                     <br>
                     <h3 data-translate="admin_comment">Комментарий администратора</h3>
                     <textarea class="form-control" style="width: 100%; height: 300px"
-                             data-translate-placeholder="enter_comment" name="comment" placeholder="Введите комментарий"
+                              data-translate-placeholder="enter_comment" name="comment"
+                              placeholder="Введите комментарий"
                               th:text="${element.getAdministrationComment()}"></textarea>
                     <br>
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="publication_status">Статус публикации</h6>
                             <select class="select2 form-select form-select select2find" id="publicationStatus">
                                 <option selected disabled></option>
                                 <option th:each="status : ${publicationStatus}"
                                         th:value="${status}"
-                                        th:text="${status}"  th:data-translate="${status}"
+                                        th:text="${status}" th:data-translate="${status}"
                                         th:selected="${element.getPublicationStatus() == status}"></option>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="object_code">Код объекта</h6>
                             <input class="form-control" type="text" id="codeObject" placeholder="100-101-102"
                                    name="codeObject" th:value="${element.getObjectCode()}">
                         </div>
-                        <div class="col-5">
-                            <div class="row">
-                                <div class="col-3" style="text-align: right">
+                        <div class="col-lg-2 col-sm-6">
+                            <div style="display:flex;  justify-content: space-between">
+                                <span>
                                     <h6 data-translate="branch_code">Код филиала</h6>
-                                </div>
-                                <div class="col-1">
-                                    <h6>— </h6>
-                                </div>
-                                <div class="col-4">
-                                    <h6 data-translate="employee_code"> код сотрудника</h6>
-                                </div>
+                                </span>
+                                <span><h6 data-translate="employee_code"> код сотрудника</h6></span>
                             </div>
-                            <div class="row" style="display:flex; align-items: center">
-                                <div class="col-3" style="text-align: right">
-                                    <input class="form-control" type="number" id="codeBranch" placeholder="5"
-                                           name="codeBranch" th:value="${element.getBranchCode != null ? element.getBranchCode() : ''}">
-                                </div>
-                                <div class="col-1">
-                                    <span><h6>—</h6></span>
-                                </div>
-                                <div class="col-3">
-                                    <input class="form-control" type="number" id="codeStaff" name="codeStaff"
-                                           placeholder="5" th:value="${element.realtor != null ? element.realtor.id : ''}" >
-
-                                </div>
+                            <div style="display:flex; justify-content: space-between">
+                                <input class="form-control" type="number" id="codeBranch" placeholder="5"
+                                       name="codeBranch"
+                                       th:value="${element.getBranchCode != null ? element.getBranchCode() : ''}">
+                                <span >—</span>
+                                <input class="form-control" type="number" id="codeStaff" name="codeStaff"
+                                       placeholder="5"
+                                       th:value="${element.realtor != null ? element.realtor.id : ''}">
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="RC">ЖК</h6>
                             <select id="branchSelect3" class="select2 form-select form-select"
                                     name="residentialComplex">
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="landmark">Ориентир</h6>
-                            <input class="form-control" type="text" id="reference_point" data-translate-placeholder="enter_landmark" placeholder="Введите ориентир"
+                            <input class="form-control" type="text" id="reference_point"
+                                   data-translate-placeholder="enter_landmark" placeholder="Введите ориентир"
                                    th:value="${element.getLandmark()}">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="number_of_floors">Этажность</h6>
                             <input class="form-control" type="number" name="floorQuantity"
                                    placeholder="5" th:value="${element.getFloorQuantity()}">
                         </div>
-                        <div class="col-2">
-                            <h6  data-translate="floor">Этаж</h6>
+                        <div class="col-lg-2 col-sm-6">
+                            <h6 data-translate="floor">Этаж</h6>
                             <input class="form-control" type="number" name="floor" placeholder="4"
                                    th:value="${element.getFloor()}">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="rooms">Комнат</h6>
                             <input class="form-control" type="number" id="rooms" placeholder="4"
                                    th:value="${element.getRoomQuantity()}">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                         </div>
                     </div>
                     <br>
@@ -346,7 +344,7 @@
                            th:value="${element.getPrice()}">
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="completion_date">Срок сдачи</h6>
                             <select id="buildStatus" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -357,7 +355,7 @@
                                 ></option>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="house_completion_year">Год срока сдачи дома</h6>
                             <input type="number" class="form-control" placeholder="2025"
                                    id="yearBuilding" th:value="${element.getBuildFinishDate}">
@@ -365,56 +363,60 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaTotal"
                                    placeholder="200" th:value="${element.getAreaTotal()}">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaLiving"
                                    placeholder="100" th:value="${element.getAreaLiving()}">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaKitchen"
                                    placeholder="50" th:value="${element.getAreaKitchen()}">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="room_square">Метраж комнат</h6>
                             <input class="form-control" type="text" id="footageOfRooms"
                                    placeholder="10+10+10" th:value="${element.getRoomMeters()}">
 
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="ceiling_height(m)">Высота потолка (м)</h6>
                             <input class="form-control" type="number" step="0.01" id="myNumberInput"
-                                 data-translate-placeholder="enter_ceiling_height"  placeholder="Введите высоту потолка" th:value="${element.getHeightCeiling()}">
+                                   data-translate-placeholder="enter_ceiling_height"
+                                   placeholder="Введите высоту потолка" th:value="${element.getHeightCeiling()}">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                         </div>
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="wall_material">Материал стен</h6>
                             <div style="display:block;" class="ruContent nameContent">
                                 <input class="form-control" type="text" id="wall_material"
-                                       data-translate-placeholder="enter_wall_material"  placeholder="Введите материал стен" th:value="${element.getWallMaterial()}">
+                                       data-translate-placeholder="enter_wall_material"
+                                       placeholder="Введите материал стен" th:value="${element.getWallMaterial()}">
                             </div>
                             <div style="display:none;" class="euContent nameContent">
                                 <input class="form-control" type="text" id="wall_materialEn"
-                                       data-translate-placeholder="enter_wall_material"   placeholder="Введите материал стен" th:value="${element.getWallMaterialEng()}">
+                                       data-translate-placeholder="enter_wall_material"
+                                       placeholder="Введите материал стен" th:value="${element.getWallMaterialEng()}">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <input class="form-control" type="text" id="wall_materialUkr"
-                                       data-translate-placeholder="enter_wall_material"    placeholder="Введите материал стен" th:value="${element.getWallMaterialUkr()}">
+                                       data-translate-placeholder="enter_wall_material"
+                                       placeholder="Введите материал стен" th:value="${element.getWallMaterialUkr()}">
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="kitchen">Кухня</h6>
                             <select id="kitchen" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -423,7 +425,7 @@
                                         th:text="${status}" th:data-translate="${status}"
                                         th:selected="${element.getKitchenType() == status}"></option>
                             </select></div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="bathroom">Санузел</h6>
                             <select id="bathroom" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -433,7 +435,7 @@
                                         th:selected="${element.getBathroomType() == status}"></option>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="balcony_loggia">Балкон/лоджия</h6>
                             <select id="balcony" class="select2 form-select form-select select2find" name="balconyType">
                                 <option selected disabled></option>
@@ -443,7 +445,7 @@
                                         th:selected="${element.getBalconyType() == status}"></option>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="window_view">Вид из окон</h6>
                             <select id="viewWindow" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -456,16 +458,17 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="stove_type">Кухонная плита</h6>
-                            <select class="select2 form-select form-select select2find" name="kitchenStoveType" id="kitchenStove">
+                            <select class="select2 form-select form-select select2find" name="kitchenStoveType"
+                                    id="kitchenStove">
                                 <option selected disabled></option>
                                 <option th:each="status : ${kitchenStoveType}"
                                         th:value="${status}"
                                         th:text="${status}" th:data-translate="${status}"
                                         th:selected="${element.getKitchenStoveType() == status}"></option>
                             </select></div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="heating">Отопление
                             </h6>
                             <select id="heating" class="select2 form-select form-select select2find">
@@ -481,9 +484,9 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="last_contact_date">Дата последнего контакта</h6>
-                            <input class="form-control flatpickr-datetime"    placeholder="YYYY/MM/DD"
+                            <input class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="dateLastContact" name="dateLastContact"
                                    th:value="${element.getLastContactDate()}">
                         </div>
@@ -492,50 +495,51 @@
                                    th:checked="${element.getVnp}">
                             <span class="checkmark" data-translate="VNP"> ВНП</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="VNP_until_date">Дата внп до</h6>
                             <input class="form-control flatpickr-datetime"
                                    placeholder="YYYY/MM/DD" type="text"
                                    aria-describedby="defaultFormControlHelp" id="dateVNP" name="dateVnp"
                                    th:value="${element.getVnpExpirationDate()}">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="information_source">Источник информации</h6>
                             <input type="text" class="form-control" id="sourceInformation"
-                              data-translate-placeholder="enter_information_source"     placeholder="Введите источник информации" th:value="${element.informationSource}">
+                                   data-translate-placeholder="enter_information_source"
+                                   placeholder="Введите источник информации" th:value="${element.informationSource}">
                         </div>
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="tor"
                                    th:checked="${element.bargain}">
                             <span class="checkmark" data-translate="negotiable">Торг</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="exclusive"
                                    th:checked="${element.exclusive}">
                             <span class="checkmark" data-translate="exclusive">Ексклюзив</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="urgently"
                                    th:checked="${element.urgent}">
                             <span class="checkmark" data-translate="urgent">Срочно</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="free"
                                    th:checked="${element.free}">
                             <span class="checkmark" data-translate="free">Свободная</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="objectOpen"
                                    th:checked="${element.open}">
                             <span class="checkmark" data-translate="object_open">Объект открыт</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="fromIntermediary"
                                    th:checked="${element.intermediary}">
-                            <span class="checkmark" data-translate="FROM_INTERMEDIARY" >От посредника</span>
+                            <span class="checkmark" data-translate="FROM_INTERMEDIARY">От посредника</span>
                         </div>
                     </div>
                     <br>
@@ -543,17 +547,20 @@
                     <div style="display:block;" class="ruContent nameContent">
                         <textarea class="form-control" style="width: 100%; height: 300px"
                                   name="descriptionObject" placeholder="Введите описание"
-                                  data-translate-placeholder="enter_description"       th:text="${element.description}"></textarea>
+                                  data-translate-placeholder="enter_description"
+                                  th:text="${element.description}"></textarea>
                     </div>
                     <div style="display:none;" class="euContent nameContent">
                         <textarea class="form-control" style="width: 100%; height: 300px"
                                   name="descriptionObjectEu" placeholder="Введите описание"
-                                  data-translate-placeholder="enter_description"        th:text="${element.descriptionEn}"></textarea>
+                                  data-translate-placeholder="enter_description"
+                                  th:text="${element.descriptionEn}"></textarea>
                     </div>
                     <div style="display:none;" class="ukrContent nameContent">
                          <textarea class="form-control" style="width: 100%; height: 300px"
                                    name="descriptionObjectUkr" placeholder="Введите описание"
-                                   data-translate-placeholder="enter_description"        th:text="${element.descriptionUk}"></textarea>
+                                   data-translate-placeholder="enter_description"
+                                   th:text="${element.descriptionUk}"></textarea>
                     </div>
                     <h6 data-translate="advertising_title">Рекламный заголовок</h6>
                     <div style="display:block;" class="ruContent nameContent">
@@ -586,7 +593,8 @@
                                   th:text="${element.advertisementTextUk}"></textarea>
                     </div>
                     <br>
-                    <input class="form-check-input" type="checkbox" value="true" name="statusPromotion" th:checked="${element.advertisementEnabled}"><span
+                    <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"
+                           th:checked="${element.advertisementEnabled}"><span
                         class="checkmark" data-translate="advertise">Рекламировать</span>
 
                 </div>
@@ -608,7 +616,7 @@
 
             </div>
             <div style="text-align: right; margin: 20px">
-<!--                <button class="btn btn-submit" >Отмена</button>-->
+                <!--                <button class="btn btn-submit" >Отмена</button>-->
                 <span>
                 <button data-translate="save" class="btn btn-success" hx-trigger="click" onclick="sendForm()">
                 Сохранить </button>
@@ -629,6 +637,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
     <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
     <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
+    <script th:src="@{/vendor/libs/block-ui/block-ui.js}"></script>
 
     <script th:inline="javascript">
         $(document).ready(function () {
@@ -664,6 +673,17 @@
         }
 
         function sendForm() {
+            $("#full_body").block({
+                message: '<div style="display: flex; align-items: center; justify-content: center; height: 100vh;"><div class="pinner-border spinner-border text-primary" role="status" style="height: 10vw; width: 10vw; max-height: 400px; max-width: 400px;"></div></div>',
+                css: {
+                    backgroundColor: "transparent",
+                    border: "0"
+                },
+                overlayCSS: {
+                    backgroundColor: "#000",
+                    opacity: 0.5
+                }
+            })
             let formData = new FormData();
             var address = {
                 region: $("#region").val(),
@@ -682,13 +702,13 @@
                 }
             }
 
-            formData.append("buildFinishDate",  $("#yearBuilding").val());
+            formData.append("buildFinishDate", $("#yearBuilding").val());
             formData.append("apartmentNumber", $('[name="apartmentNumber"]').val());
             formData.append("ownerName", $('[name="owner"]').val());
             formData.append("ownerNameEng", $('[name="ownerEu"]').val());
             formData.append("ownerNameUkr", $('[name="ownerUkr"]').val());
             formData.append("ownerPhone", $('[name="telephone"]').val());
-            formData.append("boughtDate",$('[name="boughtDate"]').val());
+            formData.append("boughtDate", $('[name="boughtDate"]').val());
             console.log(($('[name="boughtDate"]').val()))
             console.log($('[name="boughtDate"]').val())
             let indexFilesMap = 0;
@@ -789,13 +809,15 @@
                 url: url,
                 method: "POST",
                 data: formData,
-                headers: { 'X-XSRF-TOKEN': [[${_csrf.token}]] },
+                headers: {'X-XSRF-TOKEN': [[${_csrf.token}]]},
                 contentType: false,
                 processData: false,
                 success: function () {
+                    $("#full_body").unblock();
                     showNotification("Объект сохранен!", "", true);
                 },
                 error: function (xhr, status, error) {
+                    $("#full_body").unblock();
                     if (xhr.status === 400) {
                         let errors = JSON.parse(xhr.responseText);
                         errors.forEach(function (error) {
@@ -1029,7 +1051,7 @@
                             let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option value="' + category + '" data-translate="' + category.replaceAll(" ","_") + '">' + category + '</option>';
+                                    selectionItem += '<option value="' + category + '" data-translate="' + category.replaceAll(" ", "_") + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
@@ -1074,7 +1096,7 @@
                             let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option  data-translate="' + category.replaceAll(" ","_") + '" value="' + category + '">' + category + '</option>';
+                                    selectionItem += '<option  data-translate="' + category.replaceAll(" ", "_") + '" value="' + category + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
