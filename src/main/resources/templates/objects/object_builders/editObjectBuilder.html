@@ -75,17 +75,17 @@
                 <br>
                 <ul class="nav nav-pills mb-3" role="tablist">
                     <li class="nav-item">
-                        <button class="nav-link active" type="button" aria-selected="true" data-toggle="tab" role="tab"
+                        <button  id="ruLangSave" class="nav-link active" type="button" aria-selected="true" data-toggle="tab" role="tab"
                                 data-bs-toggle="pill" onclick="changeInput('ru')">Ру
                         </button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                        <button  id="euLangSave" class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
                                 data-bs-toggle="pill" onclick="changeInput('eu')">Eng
                         </button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                        <button  id="ukrLangSave" class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
                                 data-bs-toggle="pill" onclick="changeInput('ukr')">Укр
                         </button>
                     </li>
@@ -800,6 +800,7 @@
                 formData.append("files[]", file);
                 i++;
             }
+            formData.append("oldFiles", oldImagesArray);
 
             let contextPath =/*[[@{/}]]*/'';
             let idThymeleaf =/*[[${id}]]*/'';
@@ -826,22 +827,48 @@
                 processData: false,
                 success: function () {
                     $("#full_body").unblock();
-                    showToast("Объект сохранен!", "success");
+                    showToastWithTranslate("saveObj", "success");
                 },
                 error: function (xhr, status, error) {
                     $("#full_body").unblock();
-
-                    console.log(error)
                     var errors = JSON.parse(xhr.responseText);
+                    let nameObject = $("#nameObject");
+                    let nameObjectEng = $("#nameObjectEu");
+                    let nameObjectUkr = $("#nameObjectUkr");
                     errors.forEach(function (error) {
-                        console.log("Ошибка: " + error);
-                        showToast(error,"danger");
+                        console.log(error);
+                        changeInputValue = 0;
+                        if (error === "(Ру)Объект новостроя с таким именем уже существует") {
+                            showErrorName(nameObject);
+                            if (changeInputValue == 0) {
+                                changeInputValue = changeInputValue + 1;
+                                $("#ruLangSave").css("border", "1px solid #ff0000");
+                                console.log("ru click")
+                            }
+                        } else if (error === "(Англ)Объект новостроя с таким именем уже существует") {
+                            showErrorName(nameObjectEng)
+                            if (changeInputValue == 0) {
+                                changeInputValue = changeInputValue + 1;
+                                $("#euLangSave").css("border", "1px solid #ff0000");
+                                console.log("eu click")
+                            }
+                        } else if (error === "(Укр)Объект новостроя с таким именем уже существует") {
+                            showErrorName(nameObjectUkr)
+                            if (changeInputValue == 0) {
+                                changeInputValue = changeInputValue + 1;
+                                $("#ukrLangSave").css("border", "1px solid #ff0000");
+                                console.log("ukr click")
+                            }
+                        } else {
+                            showToast(error, "danger");
+                        }
                     });
                 }
             })
 
         }
 
+        let changeInputValue = 0;
         let imgMaxId = 4;
 
         function updatePreviewImage(input, imgId) {
@@ -860,7 +887,7 @@
                     reader.readAsDataURL(file);
                 } else {
                     input.value = '';
-                    showNotification("Warning!", "Только изображения", false)
+                    showToastWithTranslate("show_img_message", "danger")
                 }
             }
         }

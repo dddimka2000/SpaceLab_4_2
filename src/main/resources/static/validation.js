@@ -138,7 +138,7 @@ function validateNumber(min, max, number) {
 
 function cleanInputs() {
     $('.text-for-validating').remove()
-    var elements = document.querySelectorAll('input, select, textarea');
+    var elements = document.querySelectorAll('input, select, textarea, button');
     for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
         element.style.borderColor = '';
@@ -246,7 +246,6 @@ function validateEmail(input) {
     }
     return result
 }
-
 function validateDate(input) {
     var regex = /^\d{4}\/\d{2}\/\d{2}$/;
     if (!regex.test(input.val())) {
@@ -311,6 +310,7 @@ function activateListItem(element) {
         $button.addClass('active');
     }
 }
+
 function scrollToElement($element) {
     if(countError !== 0)return
     countError++
@@ -364,4 +364,16 @@ function validDataFromResponse(errors){
         }
     }
     countError=0
+}
+function showErrorName(input) {
+    scrollToElement(input)
+    if (languageSecondExample == 'eng') {
+        addText(input, "This name is already in use");
+    } else if (languageSecondExample == 'ru') {
+        addText(input, "Данное имя уже используется");
+    } else {
+        addText(input, "Це ім'я вже використовується");
+    }
+    input.css("border", "1px solid #ff0000");
+    return false;
 }

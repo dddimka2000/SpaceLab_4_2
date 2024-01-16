@@ -12,6 +12,7 @@ import org.example.entity.BuilderObject;
 import org.example.entity.ImagesForObject;
 import org.example.entity.property.type.TypeObject;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,12 +32,16 @@ import java.util.stream.Collectors;
 public class MinioService {
 
     private final MinioClient minioClient;
+    private final
+    ImagesForObjectService imagesForObjectService;
     private final String bucketName = "project.4.2";
     private final String imagesBucketName = "images";
     private final String filesBucketName = "files";
 
-    public MinioService(MinioClient minioClient) {
+
+    public MinioService(MinioClient minioClient, ImagesForObjectService imagesForObjectService) {
         this.minioClient = minioClient;
+        this.imagesForObjectService = imagesForObjectService;
     }
 
     public void putMultipartFile(MultipartFile multipartFile, String directory, String nameFile) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
@@ -134,7 +139,6 @@ public class MinioService {
         log.info("MinioService-putFile successfully");
         return name;
     }
-
     public List<String> putImagesList(List<MultipartFile> files) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info("MinioService-putFiles start");
         List<String> names=new ArrayList<>();
@@ -146,6 +150,7 @@ public class MinioService {
         log.info("MinioService-putFiles successfully");
         return names;
     }
+
     public List<String> putFileList(List<MultipartFile> files) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info("MinioService-putFiles start");
         List<String> names=new ArrayList<>();
@@ -162,7 +167,6 @@ public class MinioService {
     public String getUrl(String fileName) {
         return "data:image/jpeg;base64, " + Base64.getEncoder().encodeToString(getPhoto(fileName, "images"));
     }
-
     public long getObjectSize(String objectName) throws ErrorResponseException, InsufficientDataException, InternalException, InvalidKeyException, InvalidResponseException, NoSuchAlgorithmException, ServerException, XmlParserException, IOException {
         log.info("MinioService-getObjectSize start");
 
@@ -193,7 +197,7 @@ public class MinioService {
             }
         });
     }
-    public <T> void saveFilesInMinIO(BuilderObject builderObject, List<MultipartFile> files, @ModelAttribute @Valid T objectBuilderDto, String imagesBucketName, ImagesForObjectService imagesForObjectService) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public <T> void saveFilesInMinIO(BuilderObject builderObject, List<MultipartFile> files, @ModelAttribute @Valid T objectBuilderDto, String imagesBucketName) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         String uuidFile;
         String resultFilename;
         for (MultipartFile file : files) {
@@ -205,7 +209,6 @@ public class MinioService {
             resultFilename = uuidFile + "." + file.getOriginalFilename();
             putMultipartFile(file, imagesBucketName, resultFilename);
             imagesForObject.setPath(resultFilename);
-
             imagesForObjectService.save(imagesForObject);
         }
     }
