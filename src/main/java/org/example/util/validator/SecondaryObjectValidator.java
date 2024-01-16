@@ -53,7 +53,7 @@ public class SecondaryObjectValidator implements Validator {
         PropertySecondaryObjectDTO entity = (PropertySecondaryObjectDTO) target;
         Realtor realtor = new Realtor();
         try {
-            realtor = realtorService.getById(entity.getEmployeeCode());
+            realtor = realtorService.getByCode(entity.getEmployeeCode());
         } catch (EntityNotFoundException | NullPointerException ex) {
             errors.rejectValue("employeeCode", "", "Кода данного сотрудника не существует");
         }
@@ -95,7 +95,7 @@ public class SecondaryObjectValidator implements Validator {
         PropertySecondaryObjectDTO entity = (PropertySecondaryObjectDTO) target;
         Realtor realtor = new Realtor();
         try {
-            realtor = realtorService.getById(entity.getEmployeeCode());
+            realtor = realtorService.getByCode(entity.getEmployeeCode());
         } catch (EntityNotFoundException ex) {
             errors.rejectValue("employeeCode", "", "Кода данного сотрудника не существует");
         }

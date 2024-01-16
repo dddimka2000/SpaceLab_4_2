@@ -302,7 +302,7 @@
                                 <span >—</span>
                                 <input class="form-control" type="number" id="codeStaff" name="codeStaff"
                                        placeholder="5"
-                                       th:value="${element.realtor != null ? element.realtor.id : ''}">
+                                       th:value="${element.getRealtor() != null ? element.getRealtor().getCode() : ''}">
                             </div>
                         </div>
                     </div>
@@ -732,7 +732,6 @@
             formData.append("publicationStatus", $("#publicationStatus").val());
             formData.append("objectCode", $('[name="codeObject"]').val());
             formData.append("branchCode", $('[name="codeBranch"]').val());
-            formData.append("employeeCode", $('[name="codeStaff"]').val());
             formData.append("ownershipType", $('[name="ownership"]').val());
             formData.append("landmark", $("#reference_point").val());
             formData.append("residentialComplexId", $('[name="residentialComplex"]').val());

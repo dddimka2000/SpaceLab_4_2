@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -108,7 +109,13 @@ public class RealtorServiceImpl {
     public Realtor getByCode(Integer staffCode) {
         log.info("RealtorServiceImpl-getByCode start");
         Realtor result = realtorRepository.findByCode(staffCode);
-        log.info("RealtorServiceImpl-getByCode successfully");
+        if (result == null) {
+            log.error("RealtorServiceImpl-getByCode failed: Realtor not found for code " + staffCode);
+            throw new EntityNotFoundException("Realtor not found for code " + staffCode);
+        }
+        else {
+            log.info("RealtorServiceImpl-getByCode successfully");
+        }
         return result;
     }
 }
