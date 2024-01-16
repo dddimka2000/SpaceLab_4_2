@@ -52,24 +52,26 @@
 
     <main>
         <div class="content-wrapper">
-            <div class="container-fluid">
+            <div class="container-fluid" id="card-block">
                 <br>
-                <div class="d-flex justify-content-between">
-                    <h4 class="fw-bold" th:text="${objectBuilder.getName()}"></h4>
+                <div class="d-flex flex-column flex-sm-row justify-content-between">
+                    <h4 class="fw-bold mb-2 mb-sm-0" th:text="${objectBuilder.getName()}"></h4>
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
-                        <ol class="breadcrumb">
+                        <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a>
                             </li>
-                            <li class="breadcrumb-item"><a
-                                    th:href="@{/builder_objects}" data-translate="breadcrumb.builder_objects">Объекты от строителей</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/builder_objects}"
+                                                           data-translate="breadcrumb.builder_objects">Объекты от
+                                строителей</a></li>
                             <li class="breadcrumb-item active" aria-current="page" data-translate="edit_builder_object">
                                 Редакция объекта строителя
                             </li>
                         </ol>
                     </nav>
                 </div>
-                <hr style="margin-top: -5px">
+
+                <hr style="margin: 5px">
                 <br>
                 <ul class="nav nav-pills mb-3" role="tablist">
                     <li class="nav-item">
@@ -79,7 +81,7 @@
                     </li>
                     <li class="nav-item">
                         <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
-                                data-bs-toggle="pill" onclick="changeInput('eu')">Eu
+                                data-bs-toggle="pill" onclick="changeInput('eu')">Eng
                         </button>
                     </li>
                     <li class="nav-item">
@@ -116,25 +118,28 @@
                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
                          aria-labelledby="pills-home-tab">
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <div style="display:block;" class="ruContent nameContent">
                                     <h6 data-translate="title">Название</h6>
                                     <input type="text" class="form-control" name="nameObject" id="nameObject"
-                                          data-translate-placeholder="enter_description" placeholder="Введите название объекта" th:value="${objectBuilder.getName()}">
+                                           data-translate-placeholder="enter_description"
+                                           placeholder="Введите название объекта" th:value="${objectBuilder.getName()}">
                                 </div>
                                 <div style="display:none;" class="euContent nameContent">
                                     <h6 data-translate="title">Название</h6>
                                     <input type="text" class="form-control" name="nameObjectEu" id="nameObjectEu"
-                                           data-translate-placeholder="enter_description"  placeholder="Input name" th:value="${objectBuilder.getNameEnglish()}">
+                                           data-translate-placeholder="enter_description" placeholder="Input name"
+                                           th:value="${objectBuilder.getNameEnglish()}">
                                 </div>
                                 <div style="display:none;" class="ukrContent nameContent">
                                     <h6 data-translate="title">Название</h6>
                                     <input type="text" class="form-control" name="nameObjectUkr" id="nameObjectUkr"
                                            placeholder="Введіть назву об'єкта"
-                                           data-translate-placeholder="enter_description" th:value="${objectBuilder.getNameUkraine()}">
+                                           data-translate-placeholder="enter_description"
+                                           th:value="${objectBuilder.getNameUkraine()}">
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <h6 data-translate="region_district">Обл.район</h6>
                                 <select class="select2 form-select form-select select2find" name="region" id="region">
                                     <option selected></option>
@@ -155,7 +160,7 @@
 
                                 </select>
                             </div>
-                            <div class="col-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <h6 data-translate="city">Нас.пункт</h6>
                                 <select class="select2 form-select form-select select2find" name="city">
                                     <option selected></option>
@@ -165,7 +170,7 @@
                                             th:selected="${objectBuilder.getAddress().getCity() == entity}"></option>
                                 </select>
                             </div>
-                            <div class="col-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <h6 data-translate="district">Район</h6>
                                 <select class="select2 form-select form-select select2find" name="district">
                                     <option selected value=""></option>
@@ -174,7 +179,7 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <h6 data-translate="topzone">Топозона</h6>
                                 <select class="select2 form-select form-select select2find" name="topozone">
                                     <option value="" selected></option>
@@ -191,7 +196,7 @@
                                     </script>
                                 </select>
                             </div>
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <div style="display:block;" class="ruContent nameContent">
                                     <h6 data-translate="street">Улица</h6>
                                     <input class="form-control" type="text" name="street" id="street"
@@ -215,24 +220,26 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <h6 data-translate="house_number">Номер дома</h6>
                                 <input class="form-control" type="number" name="houseNumber"
                                        th:value="${objectBuilder.getAddress().getHouseNumber()}"
                                        data-translate-placeholder="enter_house_number" placeholder="Введите номер дома">
                             </div>
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <h6 data-translate="section_building">Секция/Корпус</h6>
                                 <input class="form-control" type="number" name="section"
                                        th:value="${objectBuilder.getAddress().getSection()}"
-                                      data-translate-placeholder="enter_section_building" placeholder="Введите секцию/корпус">
+                                       data-translate-placeholder="enter_section_building"
+                                       placeholder="Введите секцию/корпус">
                             </div>
-                            <div class="col-2">
+                            <div class="col-sm-6 col-lg-2">
                                 <h6 data-translate="number_of_floors">Этажность</h6>
                                 <input class="form-control" type="number" name="floorQuantity"
-                                      data-translate-placeholder="enter_floor_count" th:value="${objectBuilder.getFloorQuantity()}" placeholder="Введите этажность">
+                                       data-translate-placeholder="enter_floor_count"
+                                       th:value="${objectBuilder.getFloorQuantity()}" placeholder="Введите этажность">
                             </div>
-                            <div class="col-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <h6 data-translate="construction_company">Строительная компания</h6>
                                 <select class="select2 form-select form-select select2find" name="nameCompany">
                                     <option th:selected="${objectBuilder.getNameCompany() == ''}" value=""></option>
@@ -244,9 +251,10 @@
                                     </option>
                                 </select>
                             </div>
-                            <div class="col-3">
+                            <div class="col-sm-6 col-lg-3">
                                 <h6 data-translate="completion_date">Срок сдачи</h6>
-                                <select id="buildStatus" class="select2 form-select form-select select2find" name="buildStatus">
+                                <select id="buildStatus" class="select2 form-select form-select select2find"
+                                        name="buildStatus">
                                     <option></option>
                                     <option th:each="status : ${propertyBuildStatus}"
                                             th:value="${status}"
@@ -259,13 +267,14 @@
                         <br>
                         <h6 data-translate="">Телефон</h6>
                         <input type="tel" name="telephone" id="telephone" class="form-control"
-                               th:value="${objectBuilder.getPhone()}"  placeholder="+380*********">
+                               th:value="${objectBuilder.getPhone()}" placeholder="+380*********">
                         <br>
                         <h6 data-translate="checkerboard">Шахматка</h6>
                         <input type="file" class="form-control" name="chessboard" id="chessboard" accept=".pdf">
                         <br>
                         <h6 data-translate="installment_conditions">Условия рассрочки</h6>
-                        <input type="file" class="form-control" name="installmentTerms" id="installmentTerms" accept=".pdf">
+                        <input type="file" class="form-control" name="installmentTerms" id="installmentTerms"
+                               accept=".pdf">
                         <br>
                         <h6 data-translate="price_file">Файл с ценами</h6>
                         <input type="file" class="form-control" name="prices" id="prices" accept=".pdf">
@@ -276,40 +285,46 @@
                                 <textarea class="form-control" style="width: 100%; height: 300px"
                                           name="descriptionObject"
                                           placeholder="Введите описание"
-                                          data-translate-placeholder="enter_description"   th:text="${objectBuilder.getDescription_builder()}"></textarea>
+                                          data-translate-placeholder="enter_description"
+                                          th:text="${objectBuilder.getDescription_builder()}"></textarea>
                             </div>
                             <div style="display:none;" class="euContent nameContent">
                                 <h3 data-translate="description">Описание</h3>
                                 <textarea class="form-control" style="width: 100%; height: 300px"
                                           name="descriptionObjectEu"
                                           placeholder="Введите описание"
-                                          data-translate-placeholder="enter_description"   th:text="${objectBuilder.getDescription_builderEng()}"></textarea>
+                                          data-translate-placeholder="enter_description"
+                                          th:text="${objectBuilder.getDescription_builderEng()}"></textarea>
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <h3 data-translate="description">Описание</h3>
                                 <textarea class="form-control" style="width: 100%; height: 300px"
                                           name="descriptionObjectUkr"
                                           placeholder="Введите описание"
-                                          data-translate-placeholder="enter_description"  th:text="${objectBuilder.getDescription_builderUkr()}"></textarea>
+                                          data-translate-placeholder="enter_description"
+                                          th:text="${objectBuilder.getDescription_builderUkr()}"></textarea>
                             </div>
                         </div>
                         <br>
                         <div>
                             <div style="display:block;" class="ruContent nameContent">
                                 <h1 data-translate="promotions">Акция</h1>
-                                <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionName" id="promotionName" class="form-control"
+                                <input data-translate-placeholder="enter_promotion_title" type="text"
+                                       name="promotionName" id="promotionName" class="form-control"
                                        placeholder="Введите название акции"
                                        th:value="${objectBuilder.getPromotion().getName()}">
                             </div>
                             <div style="display:none;" class="euContent nameContent">
                                 <h1 data-translate="promotions">Акция</h1>
-                                <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionNameEu" id="promotionNameEu" class="form-control"
+                                <input data-translate-placeholder="enter_promotion_title" type="text"
+                                       name="promotionNameEu" id="promotionNameEu" class="form-control"
                                        placeholder="Введите название акции"
                                        th:value="${objectBuilder.getPromotion().getNameEng()}">
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <h1 data-translate="promotions">Акция</h1>
-                                <input data-translate-placeholder="enter_promotion_title" type="text" name="promotionNameUkr" id="promotionNameUkr" class="form-control"
+                                <input data-translate-placeholder="enter_promotion_title" type="text"
+                                       name="promotionNameUkr" id="promotionNameUkr" class="form-control"
                                        placeholder="Введите название акции"
                                        th:value="${objectBuilder.getPromotion().getNameUkr()}">
                             </div>
@@ -320,19 +335,22 @@
                                 <h3 data-translate="description">Описание</h3>
                                 <textarea style="width: 100%; height: 300px" name="descriptionPromotion"
                                           class="form-control" placeholder="Введите описание акции"
-                                          data-translate-placeholder="enter_description" th:text="${objectBuilder.getPromotion().getDescription()}"></textarea>
+                                          data-translate-placeholder="enter_description"
+                                          th:text="${objectBuilder.getPromotion().getDescription()}"></textarea>
                             </div>
                             <div style="display:none;" class="euContent nameContent">
                                 <h3 data-translate="description">Описание</h3>
                                 <textarea style="width: 100%; height: 300px" name="descriptionPromotionEu"
                                           class="form-control" placeholder="Введите описание акции"
-                                          data-translate-placeholder="enter_description"  th:text="${objectBuilder.getPromotion().getDescriptionEng()}"></textarea>
+                                          data-translate-placeholder="enter_description"
+                                          th:text="${objectBuilder.getPromotion().getDescriptionEng()}"></textarea>
                             </div>
                             <div style="display:none;" class="ukrContent nameContent">
                                 <h3 data-translate="description">Описание</h3>
                                 <textarea style="width: 100%; height: 300px" name="descriptionPromotionUkr"
                                           class="form-control" placeholder="Введите описание акции"
-                                          data-translate-placeholder="enter_description"  th:text="${objectBuilder.getPromotion().getDescriptionUkr()}"></textarea>
+                                          data-translate-placeholder="enter_description"
+                                          th:text="${objectBuilder.getPromotion().getDescriptionUkr()}"></textarea>
                             </div>
                         </div>
 
@@ -401,40 +419,38 @@
 
                                 <br>
                                 <div class="row">
-                                    <div class="col-2">
+                                    <div class="col-sm-6 col-lg-2">
                                         <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
                                         <input class="form-control" type="number" id="priceLayout1"
                                                th:value="${layouts.get(0).getPrice()}" placeholder="Введите цену">
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-sm-6 col-lg-2">
                                         <h6 data-translate="rooms">Комнат</h6>
                                         <input class="form-control" type="number" id="roomsLayout1"
                                                th:value="${layouts.get(0).getRoomQuantity()}"
                                                data-translate-placeholder="enter_rooms"
                                                placeholder="Введите кол-во комнат">
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-sm-6 col-lg-2">
                                         <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaTotalLayout1"
                                                th:value="${layouts.get(0).getAreaTotal()}"
                                                data-translate-placeholder="enter_total_area"
                                                placeholder="Введите общую площадь">
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-sm-6 col-lg-3">
                                         <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaLivingLayout1"
                                                th:value="${layouts.get(0).getAreaLiving()}"
                                                data-translate-placeholder="enter_living_area"
                                                placeholder="Введите жилую площадь">
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-sm-6 col-lg-3">
                                         <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                                         <input class="form-control" type="number" id="areaKitchenLayout1"
                                                th:value="${layouts.get(0).getAreaKitchen()}"
                                                data-translate-placeholder="enter_kitchen_area"
                                                placeholder="Введите площадь кухни">
-                                    </div>
-                                    <div class="col-2">
                                     </div>
                                 </div>
                                 <br>
@@ -470,28 +486,28 @@
                                 </div>
                                 <br>
                                 <div class="row" style="text-align: center">
-                                    <div class="col-4">
+                                    <div class="col-sm-6 col-lg-4">
                                         <img id="previewImage1" style="justify-content: center"
                                              th:src="'data:image/jpeg;base64, ' + ${img1.get(0)}"
-                                             class="d-block w-px-300 h-px-300 rounded">
+                                             class="d-block w-px-250 h-px-250 mx-auto rounded">
                                         <input type="file" class="form-control" id="inputImage1"
                                                onchange="updatePreviewImage(this, 'previewImage1')"
-                                               style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
+                                               style="margin-top: 5px" accept=".jpg, .jpeg, .png">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-sm-6 col-lg-4">
                                         <img id="previewImage2" style="justify-content: center"
                                              th:src="'data:image/jpeg;base64, ' + ${img2.get(0)}"
-                                             class="d-block w-px-300 h-px-300 rounded">
+                                             class="d-block w-px-250 h-px-250 mx-auto rounded">
                                         <input type="file" class="form-control" id="inputImage2"
                                                onchange="updatePreviewImage(this, 'previewImage2')"
-                                               style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
+                                               style="margin-top: 5px" accept=".jpg, .jpeg, .png">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-sm-6 col-lg-4">
                                         <img id="previewImage3" th:src="'data:image/jpeg;base64, ' + ${img3.get(0)}"
-                                             class="d-block w-px-300 h-px-300 rounded">
+                                             class="d-block w-px-250 h-px-250 mx-auto rounded">
                                         <input type="file" class="form-control" id="inputImage3"
                                                onchange="updatePreviewImage(this, 'previewImage3')"
-                                               style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
+                                               style="margin-top: 5px" accept=".jpg, .jpeg, .png">
                                     </div>
                                 </div>
                             </div>
@@ -503,7 +519,7 @@
                     </div>
                 </div>
                 <div style="text-align: right; margin: 20px">
-<!--                    <button class="btn btn-submit">Отмена</button>-->
+                    <!--                    <button class="btn btn-submit">Отмена</button>-->
                     <span>
                 <button data-translate="save" class="btn btn-success" hx-trigger="click" onclick="sendForm()">
                 Сохранить </button>
@@ -515,17 +531,15 @@
     </main>
     <div class="alert alert-warning notification  d-flex align-items-center hidden" role="alert"
          id="notification">
-        <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5.94118 10.7474V20.7444C5.94118 21.0758 5.81103 21.3936 5.57937 21.628C5.3477 21.8623 5.0335 21.994 4.70588 21.994H2.23529C1.90767 21.994 1.59347 21.8623 1.36181 21.628C1.13015 21.3936 1 21.0758 1 20.7444V11.997C1 11.6656 1.13015 11.3477 1.36181 11.1134C1.59347 10.879 1.90767 10.7474 2.23529 10.7474H5.94118ZM5.94118 10.7474C7.25166 10.7474 8.50847 10.2207 9.43512 9.28334C10.3618 8.34594 10.8824 7.07456 10.8824 5.74887V4.49925C10.8824 3.83641 11.1426 3.20071 11.606 2.73201C12.0693 2.26331 12.6977 2 13.3529 2C14.0082 2 14.6366 2.26331 15.0999 2.73201C15.5632 3.20071 15.8235 3.83641 15.8235 4.49925V10.7474H19.5294C20.1847 10.7474 20.8131 11.0107 21.2764 11.4794C21.7397 11.9481 22 12.5838 22 13.2466L20.7647 19.4947C20.5871 20.2613 20.25 20.9196 19.8045 21.3704C19.3589 21.8211 18.8288 22.04 18.2941 21.994H9.64706C8.6642 21.994 7.72159 21.599 7.0266 20.896C6.33162 20.1929 5.94118 19.2394 5.94118 18.2451"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round"/>
-        </svg>
+
         <strong id="text_notification"></strong>
         <div>
             <span id="notification-message"></span>
         </div>
     </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
+    <script th:src="@{/vendor/libs/block-ui/block-ui.js}"></script>
+
     <script th:inline="javascript">
         let langOld = "ru";
 
@@ -533,7 +547,6 @@
             $(".nameContent").css("display", "none")
             $("." + lang + "Content").css("display", "block");
             langOld = lang.toString();
-            console.log(langOld)
         }
 
         const previewTemplate = `<div class="dz-preview dz-file-preview">
@@ -569,14 +582,11 @@
             addRemoveLinks: true,
             maxFiles: 15,
             success: function (file, response) {
-                console.log("Файл загружен: " + file.name);
-                console.log("Ответ сервера: " + response);
                 const imageElement = file.previewElement.querySelector("img[data-dz-thumbnail]");
                 imageElement.src = file.dataURL;
             }
         })
         myDropzone.on('success', function (file, response) {
-            console.log('Файл успешно загружен:', file.name);
             if (oldImagesArray.includes(file.name)) {
                 uploadedFiles.set("wrr2142" + file.name, file);
             } else {
@@ -584,27 +594,122 @@
             }
         });
         myDropzone.on('removedfile', function (file) {
-            console.log('Файл был удален:', file.name);
             if (uploadedFiles.has(file.name)) {
                 uploadedFiles.delete(file.name);
             } else {
-                console.log('Файл не найден в uploadedFiles Map.');
                 oldImagesArray = oldImagesArray.filter(function (item) {
                     return item !== file.name;
                 });
-                console.log(oldImagesArray);
             }
             updateDropzoneMaxFiles()
         });
         myDropzone.on("addedfile", function (file) {
-            console.log("Начало загрузки файла: " + file.name);
         });
         myDropzone.on('queuecomplete', function () {
-            console.log('Загрузка всех файлов завершена.');
         });
 
+        function validAllInput() {
+            let isValidated = true
+            cleanInputs();
+            var nameObject = $("#nameObject");
+            var nameObjectEng = $("#nameObjectEu");
+            var nameObjectUkr = $("#nameObjectUkr");
+
+            var region = $("#region");
+            var street = $("#street");
+            var streetUkr = $("#streetUkr");
+            var streetEng = $("#streetEu");
+
+            var district = $('[name="district"]');
+            var city = $('[name="city"]');
+            var topozone = $('[name="topozone"]');
+            var promotionName = $("#promotionName");
+            var promotionNameEng = $("#promotionNameEu");
+            var promotionNameUkr = $("#promotionNameUkr");
+
+            var houseNumber = $('[name="houseNumber"]');
+            var section = $('[name="section"]');
+            var floorQuantity = $('[name="floorQuantity"]');
+            var nameCompany = $('[name="nameCompany"]');
+            var buildStatus = $('[name="buildStatus"]');
+            var telephone = $('[name="telephone"]');
+            var description = $('[name="descriptionObject"]');
+            var descriptionUkr = $('[name="descriptionObjectUkr"]');
+            var descriptionEng = $('[name="descriptionObjectEu"]');
+            var descriptionPromotion = $('[name="descriptionPromotion"]');
+            var descriptionPromotionEng = $('[name="descriptionPromotionEu"]');
+            var descriptionPromotionUkr = $('[name="descriptionPromotionUkr"]');
+
+            if (!validString("1", "31", nameObject)) isValidated = false;
+            if (!validString("1", "31", nameObjectEng)) isValidated = false
+            if (!validString("1", "31", nameObjectUkr)) isValidated = false
+            if (!validSelect2(region)) isValidated = false
+            if (!validSelect2(city)) isValidated = false
+            if (!validSelect2(district)) isValidated = false
+            if (!validString("1", "31", street)) isValidated = false
+            if (!validString("1", "31", streetUkr)) isValidated = false
+            if (!validString("1", "31", streetEng)) isValidated = false
+            if (!validSelect2(topozone)) isValidated = false
+            if (!validString("1", "31", promotionName)) isValidated = false
+            if (!validString("1", "31", promotionNameEng)) isValidated = false
+            if (!validString("1", "31", promotionNameUkr)) isValidated = false
+            if (!validateNumber(0, 9999, houseNumber)) isValidated = false;
+            if (!validateNumber(0, 9999, section)) isValidated = false;
+            if (!validateNumber(0, 201, floorQuantity)) isValidated = false;
+            if (!validSelect2(nameCompany)) isValidated = false
+            if (!validSelect2(buildStatus)) isValidated = false
+            if (!validatePhoneNumber(telephone)) isValidated = false
+            if (!validString("1", "5000", description)) isValidated = false
+            if (!validString("1", "5000", descriptionUkr)) isValidated = false
+            if (!validString("1", "5000", descriptionEng)) isValidated = false
+            if (!validString("1", "5000", descriptionPromotion)) isValidated = false
+            if (!validString("1", "5000", descriptionPromotionEng)) isValidated = false
+            if (!validString("1", "5000", descriptionPromotionUkr)) isValidated = false
+
+            layoutArray.forEach(function (element) {
+                if (!validString("1", "31", $("#nameLayout" + element))) isValidated = false;
+                if (!validString("1", "31", $("#nameLayoutEu" + element))) isValidated = false;
+                if (!validString("1", "31", $("#nameLayoutUkr" + element))) isValidated = false;
+                if (!validateNumber(1, 100000001, $("#priceLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 1000, $("#roomsLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 100000, $("#areaTotalLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 100000, $("#areaLivingLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 100000, $("#areaKitchenLayout" + element))) isValidated = false;
+                console.log(isValidated)
+                if (!validString("1", "700", $("#descriptionLayout" + element))) isValidated = false;
+                if (!validString("1", "700", $("#descriptionLayoutEu" + element))) isValidated = false;
+                if (!validString("1", "700", $("#descriptionLayoutUkr" + element))) isValidated = false;
+                console.log(isValidated)
+
+                if (!$("#previewImage" + element).attr("src")) {
+                    if (!validateFile('inputImage' + element, ['.jpeg', '.jpg', '.png'])) isValidated = false
+                }
+                if (!$("#previewImage" + (element + 1)).attr("src")) {
+                    if (!validateFile('inputImage' + (element + 1), ['.jpeg', '.jpg', '.png'])) isValidated = false
+                }
+                if (!$("#previewImage" + (element + 2)).attr("src")) {
+                    if (!validateFile('inputImage' + (element + 2), ['.jpeg', '.jpg', '.png'])) isValidated = false
+                }
+                console.log(isValidated)
+
+            })
+            countError = 0;
+            console.log(isValidated)
+            return isValidated
+        }
 
         function sendForm() {
+            $("#full_body").block({
+                message: '<div style="display: flex; align-items: center; justify-content: center; height: 100vh;"><div class="pinner-border spinner-border text-primary" role="status" style="height: 10vw; width: 10vw; max-height: 400px; max-width: 400px;"></div></div>',
+                css: {
+                    backgroundColor: "transparent",
+                    border: "0"
+                },
+                overlayCSS: {
+                    backgroundColor: "#000",
+                    opacity: 0.5
+                }
+            })
             let formData = new FormData();
             formData.append("nameObject", $("#nameObject").val());
             formData.append("nameObjectEng", $("#nameObjectEu").val());
@@ -643,14 +748,8 @@
             formData.append("descriptionPromotionUkr", $('[name="descriptionPromotionUkr"]').val());
 
             formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
-            console.log("1" + $('[name="descriptionPromotion"]').val());
-            console.log("2" + $('[name="descriptionObject"]').val())
             let index = 0;
-            let checkErrors = true;
-            console.log(oldImagesArray);
-            formData.append("oldFiles", oldImagesArray);
             layoutArray.forEach(function (element) {
-                console.log(element);
                 let layoutData = {
                     nameLayout: $("#nameLayout" + element).val(),
                     nameLayoutEng: $("#nameLayoutEu" + element).val(),
@@ -665,8 +764,6 @@
                     descriptionLayoutEng: $("#descriptionLayoutEu" + element).val(),
                     descriptionLayoutUkr: $("#descriptionLayoutUkr" + element).val()
                 }
-                console.log(element);
-                console.log($("#descriptionLayoutUkr" + element).val());
 
                 let inputImage1 = $("#inputImage" + element).prop('files');
                 if (inputImage1.length > 0) {
@@ -692,11 +789,9 @@
                 for (let key in layoutData) {
                     formData.append(`layoutDTOList[${index}].${key}`, layoutData[key]);
                 }
-                console.log(layoutData)
                 index = index + 1;
             });
 
-            console.log(uploadedFiles);
             let i = 1;
             for (let [fileName, file] of uploadedFiles) {
                 if (i > (15 - oldImagesArray.length)) {
@@ -705,7 +800,6 @@
                 formData.append("files[]", file);
                 i++;
             }
-            console.log(formData.get("files[]"))
 
             let contextPath =/*[[@{/}]]*/'';
             let idThymeleaf =/*[[${id}]]*/'';
@@ -718,27 +812,34 @@
             //         break;
             //     }
             // }
-            if (checkErrors) {
-                $.ajax({
-                    url: url,
-                    method: "POST",
-                    data: formData,
-                    headers: { 'X-XSRF-TOKEN': [[${_csrf.token}]] },
-                    contentType: false,
-                    processData: false,
-                    success: function () {
-                        showNotification("Объект сохранен!", "", true);
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error)
-                        var errors = JSON.parse(xhr.responseText);
-                        errors.forEach(function (error) {
-                            console.log("Ошибка: " + error);
-                            showNotification("Ошибка!", error, false);
-                        });
-                    }
-                })
+            if (!validAllInput()) {
+                $("#full_body").unblock();
+                console.log("errors")
+                return
             }
+            $.ajax({
+                url: url,
+                method: "POST",
+                data: formData,
+                headers: {'X-XSRF-TOKEN': [[${_csrf.token}]]},
+                contentType: false,
+                processData: false,
+                success: function () {
+                    $("#full_body").unblock();
+                    showToast("Объект сохранен!", "success");
+                },
+                error: function (xhr, status, error) {
+                    $("#full_body").unblock();
+
+                    console.log(error)
+                    var errors = JSON.parse(xhr.responseText);
+                    errors.forEach(function (error) {
+                        console.log("Ошибка: " + error);
+                        showToast(error,"danger");
+                    });
+                }
+            })
+
         }
 
         let imgMaxId = 4;
@@ -751,7 +852,7 @@
                     reader.onload = function (e) {
                         $('#' + imgId).removeAttr('hidden');
                         $('#' + imgId).attr('src', e.target.result);
-                        $('#' + imgId).addClass('d-block w-px-300 h-px-300 rounded');
+                        $('#' + imgId).addClass('d-block w-px-250 h-px-250 mx-auto rounded');
                         if (imgId > imgMaxId) {
                             imgMaxId = imgId;
                         }
@@ -872,33 +973,32 @@
             newCard.innerHTML += `
                         <br>
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
                                     <input class="form-control" type="number" id="priceLayout` + imgMaxId + `"
                                            placeholder="Введите цену" data-translate-placeholder="enter_price">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="rooms">Комнат</h6>
                                     <input class="form-control" type="number" id="roomsLayout` + imgMaxId + `"
                                            placeholder="Введите кол-во комнат" data-translate-placeholder="enter_rooms">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-2">
                                     <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `"
                                            placeholder="Введите общую площадь" data-translate-placeholder="enter_total_area">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-3">
                                     <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `"
                                            placeholder="Введите жилую площадь" data-translate-placeholder="enter_living_area">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-sm-6 col-lg-3">
                                     <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                                     <input class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `"
                                            placeholder="Введите площадь кухни" data-translate-placeholder="enter_kitchen_area">
                                 </div>
-                                <div class="col-2">
-                                </div>
+
                             </div>
                             <br>
                                 <div class="form-check form-check-inline">
@@ -915,7 +1015,7 @@
             } else {
                 text += ' <div style="display:none;" class="ruContent nameContent">\n';
             }
-            text += `<input class="form-control" type="text" id="descriptionLayout`+imgMaxId+`"
+            text += `<input class="form-control" type="text" id="descriptionLayout` + imgMaxId + `"
                                            placeholder="Введите описание" data-translate-placeholder="enter_description"></div>`
             newCard.innerHTML += text
 
@@ -926,7 +1026,7 @@
             } else {
                 text += '<div style="display:none;" class="ukrContent nameContent">';
             }
-            text += `<input class="form-control" type="text" id="descriptionLayoutUkr`+imgMaxId +`"
+            text += `<input class="form-control" type="text" id="descriptionLayoutUkr` + imgMaxId + `"
                                            placeholder="Введите описание" data-translate-placeholder="enter_description"></div>`
             newCard.innerHTML += text
 
@@ -945,7 +1045,7 @@
             newCard.innerHTML += `
                                         <br>
                                             <div class="row" style="text-align: center">
-                                                <div class="col-4">
+                                                <div class="col-sm-6 col-lg-4">
                                                     <img id="previewImage` + (imgMaxId) + `"
                                                          style="justify-content: center">
                                                         <input type="file" class="form-control"
@@ -953,7 +1053,7 @@
                                                                onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
                                                                style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-sm-6 col-lg-4">
                                                     <img id="previewImage` + (imgMaxId + 1) + `"
                                                          style="justify-content: center">
                                                         <input type="file" class="form-control"
@@ -961,7 +1061,7 @@
                                                                onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
                                                                style="margin-top: 5px"  accept=".jpg, .jpeg, .png">
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-sm-6 col-lg-4">
                                                     <img id="previewImage` + (imgMaxId + 2) + `">
                                                         <input type="file" class="form-control"
                                                                id="inputImage` + (imgMaxId + 2) + `"
@@ -972,7 +1072,6 @@
                                             `
             cardContainer.appendChild(newCard);
 
-            console.log("Добавление Layout");
 
             imgMaxId = imgMaxId + 3;
             let allCookies = document.cookie;
@@ -983,7 +1082,6 @@
                 cookies[cookie[0]] = cookie[1];
             }
             let selectedLanguage = cookies["selectedLanguage"];
-            console.log(selectedLanguage)
             if (selectedLanguage == undefined) {
                 document.cookie = "selectedLanguage=ru; path=/";
                 selectedLanguage = "ru";
@@ -1004,9 +1102,7 @@
 
 // Получите массив всех файлов, загруженных с Dropzone
             var uploadedFiles1 = myDropzone.getAcceptedFiles();
-            console.log(uploadedFiles1)
-            console.log(uploadedFiles)
-            console.log(oldImagesArray)
+
         }
 
         // Настройки
@@ -1030,7 +1126,6 @@
                 method: "GET",
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
                     if (Array.isArray(data)) {
                         const container = $('[name="city"]');
                         if (container.is(':disabled')) {
@@ -1042,7 +1137,6 @@
                             data.forEach(function (category) {
                                 selectionItem += '<option data-translate="' + category.replace(" ", "_") + '" value="' + category + '"';
                                 if (category === checkObjectCity) {
-                                    console.log("Успех")
                                     selectionItem += ' selected '
                                 }
                                 selectionItem += '>' + category + '</option>';
@@ -1062,7 +1156,6 @@
                 method: "GET",
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
                     if (Array.isArray(data)) {
                         const container = $('[name="district"]');
                         if (container.is(':disabled')) {
@@ -1073,7 +1166,6 @@
                         if (data.length > 0) {
                             data.forEach(function (category) {
                                 selectionItem += '<option data-translate="' + category.replace(" ", "_") + '"value="' + category + '"';
-                                console.log(category)
                                 if (category === checkObjectDistrict) {
                                     selectionItem += ' selected '
                                 }
@@ -1110,7 +1202,6 @@
             // console.log(myDropzone);
             let layouts = /*[[${layouts}]]*/ '';
             let sizeLayouts = layouts.length;
-            console.log(layouts);
             let q = 1;
             layouts.forEach(function () {
                 if (q != 1) {
@@ -1122,7 +1213,6 @@
             if (sizeLayouts > 1) {
                 for (let i = 0; i <= (layouts.length - 1); i++) {
                     if (i > 0) {
-                        console.log(layouts[i].name)
 
                         let cardContainer = document.getElementById('card-container');
                         let newCard = document.createElement('div');
@@ -1207,28 +1297,27 @@
 
                 <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-2">
                             <h6 data-translate="price_per_sqm">Цена от (м.кв)</h6>
                             <input data-translate-placeholder="enter_price" class="form-control" type="number" id="priceLayout` + imgMaxId + `" value="` + layouts[i].price + `">
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-2">
                             <h6 data-translate="rooms">Комнат</h6>
                             <input data-translate-placeholder="enter_rooms" class="form-control" type="number" id="roomsLayout` + imgMaxId + `" value="` + layouts[i].roomQuantity + `">
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-2">
                             <h6 data-translate="S_total_area_sqm">S общая (м.кв.)*</h6>
                             <input data-translate-placeholder="enter_total_area" class="form-control" type="number" id="areaTotalLayout` + imgMaxId + `" value="` + layouts[i].areaTotal + `">
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-3">
                             <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                             <input data-translate-placeholder="enter_living_area" class="form-control" type="number" id="areaLivingLayout` + imgMaxId + `" value="` + layouts[i].areaLiving + `">
                         </div>
-                        <div class="col-2">
+                        <div class="col-sm-6 col-lg-3">
                             <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                             <input data-translate-placeholder="enter_kitchen_area" class="form-control" type="number" id="areaKitchenLayout` + imgMaxId + `" value="` + layouts[i].areaKitchen + `">
                         </div>
-                        <div class="col-2">
-                        </div>
+
                     </div>
                     <br>
                         <div class="form-check form-check-inline">
@@ -1256,20 +1345,20 @@
                             </div>
                                  <br>
                                     <div class="row" style="text-align: center">
-                                        <div class="col-4">
-                                            <img id="previewImage` + (imgMaxId) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img1Thymeleaf[i] + `" class="d-block w-px-300 h-px-300 rounded">
+                                        <div class="col-sm-6 col-lg-4">
+                                            <img id="previewImage` + (imgMaxId) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img1Thymeleaf[i] + `" class="d-block w-px-250 h-px-250 mx-auto rounded">
                                                 <input  type="file" class="form-control" id="inputImage` + (imgMaxId) + `"
                                                        onChange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')"
                                                        style="margin-top: 5px">
                                         </div>
-                                        <div class="col-4">
-                                            <img id="previewImage` + (imgMaxId + 1) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img2Thymeleaf[i] + `" class="d-block w-px-300 h-px-300 rounded">
+                                        <div class="col-sm-6 col-lg-4">
+                                            <img id="previewImage` + (imgMaxId + 1) + `" style="justify-content: center" src="data:image/jpeg;base64, ` + img2Thymeleaf[i] + `" class="d-block w-px-250 h-px-250 mx-auto rounded">
                                                 <input type="file" class="form-control" id="inputImage` + (imgMaxId + 1) + `"
                                                        onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 1) + `')"
                                                        style="margin-top: 5px">
                                         </div>
-                                        <div class="col-4">
-                                            <img id="previewImage` + (imgMaxId + 2) + `" src="data:image/jpeg;base64, ` + img3Thymeleaf[i] + `" class="d-block w-px-300 h-px-300 rounded">
+                                        <div class="col-sm-6 col-lg-4">
+                                            <img id="previewImage` + (imgMaxId + 2) + `" src="data:image/jpeg;base64, ` + img3Thymeleaf[i] + `" class="d-block w-px-250 h-px-250 mx-auto rounded">
                                                 <input type="file" class="form-control" id="inputImage` + (imgMaxId + 2) + `"
                                                        onChange="updatePreviewImage(this, 'previewImage` + (imgMaxId + 2) + `')"
                                                        style="margin-top: 5px">
@@ -1277,7 +1366,6 @@
                                     </div>  `
                         newCard.innerHTML = textHtml;
                         cardContainer.appendChild(newCard);
-                        console.log("Добавление Layout");
 
                         imgMaxId = imgMaxId + 3;
                         let allCookies = document.cookie;
@@ -1302,10 +1390,8 @@
 
         $('[name="city"]').change(function () {
             let selectedValue = $(this).val();
-            console.log(selectedValue)
             let contextPath = /*[[@{/}]]*/ '';
             let url = contextPath.toString() + "getDistrict/" + selectedValue.toString();
-            console.log(url)
             if (selectedValue.toString() == "") {
                 const container2 = $('[name="district"]');
                 container2.empty();
@@ -1329,7 +1415,7 @@
                             let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option value="' + category + '" data-translate="' + category.replaceAll(" ","_") + '">' + category + '</option>';
+                                    selectionItem += '<option value="' + category + '" data-translate="' + category.replaceAll(" ", "_") + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);
@@ -1345,10 +1431,8 @@
         });
         $("#region").change(function () {
             let selectedValue = $(this).val();
-            console.log(selectedValue)
             let contextPath = /*[[@{/}]]*/ '';
             let url = contextPath.toString() + "getCity/" + selectedValue.toString();
-            console.log(url)
             if (selectedValue.toString() == "") {
                 const container = $('[name="city"]');
                 container.empty();
@@ -1375,7 +1459,7 @@
                             let selectionItem = '<option disabled selected value=""></option> ';
                             if (data.length > 0) {
                                 data.forEach(function (category) {
-                                    selectionItem += '<option  data-translate="' + category.replaceAll(" ","_") + '" value="' + category + '">' + category + '</option>';
+                                    selectionItem += '<option  data-translate="' + category.replaceAll(" ", "_") + '" value="' + category + '">' + category + '</option>';
                                 });
                             }
                             container.append(selectionItem);

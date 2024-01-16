@@ -17976,7 +17976,7 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
 }
 
 .layout-container {
-  min-height: 98vh;
+  min-height: 100vh;
 }
 
 .layout-wrapper,

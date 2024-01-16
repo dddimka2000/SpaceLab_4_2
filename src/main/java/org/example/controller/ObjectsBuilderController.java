@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,8 +115,11 @@ public class ObjectsBuilderController {
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException
             , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         objectBuilderValidator.validate(objectBuilderDto, bindingResult);
+        Map<String, String> errorsMap = new HashMap<>();
+
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
+            bindingResult.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsMap);
         }
         BuilderObject builderObject = ObjectBuilderMapper.INSTANCE.toEntity(objectBuilderDto);
         objectBuilderService.saveCreate(objectBuilderDto, builderObject);
@@ -217,7 +221,7 @@ public class ObjectsBuilderController {
         }
         BuilderObject builderObject = objectBuilderService.findById(id).get();
         ObjectBuilderMapper.INSTANCE.toEntity(builderObject, objectBuilderDtoEdit);
-       objectBuilderService.saveEdit(objectBuilderDtoEdit, builderObject,id);
+        objectBuilderService.saveEdit(objectBuilderDtoEdit, builderObject, id);
         return ResponseEntity.ok().body("ok");
     }
 
@@ -297,6 +301,7 @@ public class ObjectsBuilderController {
         Page<BuilderObject> searchResults = objectBuilderService.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
         return searchResults;
     }
+
 //    @PostMapping("/generate-excel")
 //    public ResponseEntity<?> generateExcel(HttpServletResponse response, @RequestBody ArrayList<ObjectBuilderDtoSearch> objectBuilderDTOSearchList) throws IOException {
 //        log.info(objectBuilderDTOSearchList);

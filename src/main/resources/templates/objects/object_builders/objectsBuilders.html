@@ -5,53 +5,7 @@
         layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="icon" type="image/x-icon"
-          th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
     <title data-translate="обєкти_від_будівельників"></title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js"
-            type="text/javascript"></script>
-    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
-    <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
-    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
-    <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
-    <script th:src="@{/js/config.js}"></script>
-    <script th:src="@{/vendor/js/template-customizer.js}"></script>
-    <script th:src="@{/vendor/js/helpers.js}"></script>
-    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
-    <style>
-        .notification {
-            position: fixed;
-            top: 90px;
-            right: 40px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .notification.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        tr.disabled {
-            pointer-events: none;
-        }
-
-    </style>
     <style>
         @media print {
             body * {
@@ -62,7 +16,8 @@
                 visibility: visible;
 
             }
-            #branchTable .btn-group *{
+
+            #branchTable .btn-group * {
                 visibility: hidden;
                 display: none;
             }
@@ -87,23 +42,20 @@
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
-                            <li class="breadcrumb-item active" aria-current="page" data-translate="breadcrumb.builder_objects">Объекты от строителей</li>
+                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page"
+                                data-translate="breadcrumb.builder_objects">Объекты от строителей
+                            </li>
                         </ol>
                     </nav>
                 </div>
                 <hr style="margin-top: -5px">
-                <div class="row">
-                    <div class="col-md-8"></div>
-                    <div class="col-md-1">
-                        <button class="btn btn-submit" id="printButton" data-translate="print">Распечатать</button>
-                    </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-2">
-                        <a th:href="@{/builder_objects/create}">
-                            <button class="btn btn-submit" data-translate="builder_object_add">Добавить объект</button>
-                        </a>
-                    </div>
+                <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
+                    <button class="btn btn-submit" id="printButton" data-translate="print" style="margin: 20px">Распечатать</button>
+                    <a th:href="@{/builder_objects/create}" style="margin: 20px">
+                        <button class="btn btn-submit" data-translate="builder_object_add">Добавить объект</button>
+                    </a>
                 </div>
                 <br>
 
@@ -113,30 +65,30 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                        <table class="invoice-list-table table border-top"
-                               id="branchTable">
-                            <thead>
-                            <tr style="text-align: center">
-                                <th data-translate="title">Название</th>
-                                <th data-translate="district">Район</th>
-                                <th data-translate="topzone">Топозона</th>
-                                <th data-translate="street">Улица</th>
-                                <th data-translate="number_of_floors">Этажность</th>
-                                <th data-translate="price_from">Цена от</th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="form-control for-filter"></td>
-                                <td><input type="text" class="form-control for-filter"></td>
-                                <td><input type="text" class="form-control for-filter"></td>
-                                <td><input type="text" class="form-control for-filter"></td>
-                                <td><input type="number" class="form-control for-filter"></td>
-                                <td><input type="number" class="form-control for-filter"></td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                            <table class="invoice-list-table table border-top"
+                                   id="branchTable">
+                                <thead>
+                                <tr style="text-align: center">
+                                    <th data-translate="title">Название</th>
+                                    <th data-translate="district">Район</th>
+                                    <th data-translate="topzone">Топозона</th>
+                                    <th data-translate="street">Улица</th>
+                                    <th data-translate="number_of_floors">Этажность</th>
+                                    <th data-translate="price_from">Цена от</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" class="form-control for-filter"></td>
+                                    <td><input type="text" class="form-control for-filter"></td>
+                                    <td><input type="text" class="form-control for-filter"></td>
+                                    <td><input type="text" class="form-control for-filter"></td>
+                                    <td><input type="number" min="0" oninput="validateInput(this)" class="form-control for-filter"></td>
+                                    <td><input type="number" min="0" oninput="validateInput(this)" class="form-control for-filter"></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                         <br>
                         <div class="row" id="pagination_container">
@@ -159,17 +111,20 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel" data-translate="confirmDeletionBuilderObject">Вы точно хотите удалить объект от
+                            <h5 class="modal-title" id="exampleModalLabel"
+                                data-translate="confirmDeletionBuilderObject">Вы точно хотите удалить объект от
                                 строителя?</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelBtn" data-translate="cancel">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelBtn"
+                                        data-translate="cancel">
                                     Отмена
                                 </button>
-                                <button type="button" class="btn btn-primary" id="okBtn" data-translate="yes">Да</button>
+                                <button type="button" class="btn btn-primary" id="okBtn" data-translate="yes">Да
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -177,11 +132,7 @@
             </div>
             <div class="alert alert-warning notification  d-flex align-items-center hidden" role="alert"
                  id="notification">
-                <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5.94118 10.7474V20.7444C5.94118 21.0758 5.81103 21.3936 5.57937 21.628C5.3477 21.8623 5.0335 21.994 4.70588 21.994H2.23529C1.90767 21.994 1.59347 21.8623 1.36181 21.628C1.13015 21.3936 1 21.0758 1 20.7444V11.997C1 11.6656 1.13015 11.3477 1.36181 11.1134C1.59347 10.879 1.90767 10.7474 2.23529 10.7474H5.94118ZM5.94118 10.7474C7.25166 10.7474 8.50847 10.2207 9.43512 9.28334C10.3618 8.34594 10.8824 7.07456 10.8824 5.74887V4.49925C10.8824 3.83641 11.1426 3.20071 11.606 2.73201C12.0693 2.26331 12.6977 2 13.3529 2C14.0082 2 14.6366 2.26331 15.0999 2.73201C15.5632 3.20071 15.8235 3.83641 15.8235 4.49925V10.7474H19.5294C20.1847 10.7474 20.8131 11.0107 21.2764 11.4794C21.7397 11.9481 22 12.5838 22 13.2466L20.7647 19.4947C20.5871 20.2613 20.25 20.9196 19.8045 21.3704C19.3589 21.8211 18.8288 22.04 18.2941 21.994H9.64706C8.6642 21.994 7.72159 21.599 7.0266 20.896C6.33162 20.1929 5.94118 19.2394 5.94118 18.2451"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                </svg>
+
                 <strong id="text_notification"></strong>
                 <div>
                     <span id="notification-message"></span>
@@ -196,57 +147,6 @@
         let dtoArray = new Map();
         document.getElementById("printButton").addEventListener("click", function () {
                 window.print();
-
-                //
-                // var rows = branchTable.find('tbody').find('tr');
-                // var data = [];
-                // rows.each(function () {
-                //     var rowData = {
-                //         name: '',
-                //         district: '',
-                //         street: '',
-                //         topozone: '',
-                //         floorQuantity: 0,
-                //         minPrice: 0
-                //     };
-                //     var tds = $(this).find('td');
-                //     rowData.name = tds.eq(0).text();
-                //     rowData.district = tds.eq(1).text();
-                //     rowData.topozone = tds.eq(2).text();
-                //     rowData.street = tds.eq(3).text();
-                //     rowData.floorQuantity = parseInt(tds.eq(4).text());
-                //     rowData.minPrice = parseInt(tds.eq(5).text());
-                //     data.push(rowData);
-                // });
-                // let contextPath =/*[[@{/}]]*/'';
-                // let url = contextPath.toString() + "builder_objects/generate-excel";
-                // $.ajax({
-                //     url: url,
-                //     method: "POST",
-                //     contentType: 'application/json',
-                //     data: JSON.stringify(data), // Преобразуйте данные в формат JSON
-                //     xhrFields: {
-                //         responseType: 'blob'
-                //     }, success: function (data) {
-                //         var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                //         var blobUrl = window.URL.createObjectURL(blob);
-                //         // Открываем новую вкладку с Excel-файлом
-                //         var newTab = window.open(blobUrl, '_blank');
-                //         // var link = document.createElement('a');
-                //         // link.href = window.URL.createObjectURL(blob);
-                //         // link.printLink = filename || 'example.xlsx';
-                //         // document.body.appendChild(link);
-                //         // console.log(link)
-                //         // console.log(link.href)
-                //         // var newTab = window.open(link.href, '_blank');
-                //         // newTab.onload = function() {
-                //         //     newTab.print();
-                //         // };
-                //     },
-                //     error: function (xhr, status, error) {
-                //         console.log(error)
-                //     }
-                // })
             }
         )
 
@@ -291,8 +191,7 @@
                     for (var object of builderObjects.content) {
                         var newRow = tbody.insertRow();
                         var cell1 = newRow.insertCell(0);
-                        cell1.innerHTML = object.name;
-
+                        cell1.innerHTML = `<a href="` + contextPath + `builder_objects/card/` + object.id + `">`+object.name+`</a>`;
                         var cell2 = newRow.insertCell(1);
                         cell2.innerHTML = object.address.district;
 
@@ -317,7 +216,7 @@
                         var cell7 = newRow.insertCell(6);
                         cell7.innerHTML = `
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                       <a href="` + contextPath + `builder_objects/card/` + object.id + `">
+                       <a href="` + contextPath + `builder_objects/edit/` + object.id + `">
                                                 <button class="btn btn-default btn-sm float-right"
                                                         title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
                                             </a>
@@ -335,9 +234,6 @@
                 },
             });
         }
-
-
-        // Удаление-начало
         $('#clean-filter').click(function () {
             let filterElements = $('.for-filter');
             filterElements.each(function () {
@@ -360,12 +256,12 @@
             $.ajax({
                 url: url,
                 method: "DELETE",
-                headers: { 'X-XSRF-TOKEN': [[${_csrf.token}]] },
+                headers: {'X-XSRF-TOKEN': [[${_csrf.token}]]},
                 success: function (response) {
                     $("#elementTable" + elementDelete).empty();
                     $("#cancelBtn").click();
                     console.log(response);
-                    showNotification("Warn! ", response, false);
+                    showToastWithTranslate(response, "danger");
                     getPageWithFilter(0);
                 },
                 error: function (context) {
@@ -373,8 +269,6 @@
                 }
             })
         });
-        // Удаление-конец
-        // Показ сообщения
         function showNotification(bigTextMessage, message, isSuccess) {
             const notification = document.getElementById("notification");
             const notificationMessage = document.getElementById("notification-message");

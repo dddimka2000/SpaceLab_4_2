@@ -47,7 +47,7 @@ public class PropertySecondaryObjectService {
         this.objectBuilderService = objectBuilderService;
     }
     public void saveEdit(PropertySecondaryObject propertySecondaryObject,  PropertySecondaryObjectDTO propertySecondaryObjectDTO)throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        Realtor realtor = realtorService.getById(propertySecondaryObjectDTO.getEmployeeCode());
+        Realtor realtor = realtorService.getByCode(propertySecondaryObjectDTO.getEmployeeCode());
         minioService.streamFiles(propertySecondaryObject.getFiles(), propertySecondaryObjectDTO.getOldFiles(), minioService, filesBucketName, propertySecondaryObject.getPictures(), propertySecondaryObjectDTO.getOldPictures(), imagesBucketName, propertySecondaryObjectDTO, propertySecondaryObject);
         ObjectSecondaryMapper.INSTANCE.toOldEntity(propertySecondaryObject, propertySecondaryObjectDTO);
         propertySecondaryObject.setRealtor(realtor);
@@ -73,7 +73,7 @@ public class PropertySecondaryObjectService {
     }
     public void saveCreate(PropertySecondaryObject propertySecondaryObject,  PropertySecondaryObjectDTO propertySecondaryObjectDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info("PropertyInvestorObject-create start");
-        Realtor realtor = realtorService.getById(propertySecondaryObjectDTO.getEmployeeCode());
+        Realtor realtor = realtorService.getByCode(propertySecondaryObjectDTO.getEmployeeCode());
         propertySecondaryObject.setRealtor(realtor);
         List<String> nameFiles = new ArrayList<>();
         for (MultipartFile multipartFile : propertySecondaryObjectDTO.getFiles()) {

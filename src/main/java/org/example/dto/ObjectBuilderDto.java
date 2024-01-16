@@ -34,11 +34,11 @@ public class ObjectBuilderDto {
     private String topozone;
     @NotNull(message = "Заполните номер дома")
     @Min(value = 0, message = "Введите корректный номер дома")
-    @Max(value = 2001, message = "Введите корректный номер дома")
+    @Max(value = 9999, message = "Введите корректный номер дома")
     private Integer houseNumber;
     @NotNull(message = "Заполните номер секции")
     @Min(value = 0, message = "Введите корректный номер секции")
-    @Max(value = 2001, message = "Введите корректный номер секции")
+    @Max(value = 9999, message = "Введите корректный номер секции")
     private Integer section;
     @NotNull(message = "Заполните этажность")
     @Min(value = 0, message = "Введите корректный номер этажа")
@@ -56,11 +56,11 @@ public class ObjectBuilderDto {
     private String promotionNameEng;
     @Size(min = 1, max = 31, message = "(Укр)Название акции быть от 2 до 30 символов.")
     private String promotionNameUkr;
-    @NotNull(message = "Файлы не могут быть пусты")
+    @NotNull(message = "Файлы не могут быть пусты (шахматка, условия рассрочки, файл с ценами)")
     private MultipartFile chessboardFile;
-    @NotNull(message = "Файлы не могут быть пусты")
+    @NotNull(message = "Файлы не могут быть пусты (шахматка, условия рассрочки, файл с ценами)")
     private MultipartFile installmentTerms;
-    @NotNull(message = "Файлы не могут быть пусты")
+    @NotNull(message = "Файлы не могут быть пусты (шахматка, условия рассрочки, файл с ценами)")
     private MultipartFile prices;
 
     @Size(min = 1, max = 5000, message = "(Ру)Описание должно быть от 2 до 4999 символов.")
