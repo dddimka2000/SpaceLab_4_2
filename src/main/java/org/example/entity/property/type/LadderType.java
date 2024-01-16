@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum LadderType {
-    CONCRETE("Конкретная"), BEST("Лучшая");
+    CONCRETE("Конкретная"), BEST_LADDER("Лучшая");
     private final String status;
 }

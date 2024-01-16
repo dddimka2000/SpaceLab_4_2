@@ -164,7 +164,7 @@
                                     <span data-translate="branch_and_staff_code">Код филиала — Код сотрудника</span>
                                 </div>
                             </div>
-                            <div class="row" style="display:flex; align-items: center">
+                            <div class="row">
                                 <div class="col-3" style="text-align: right">
                                     <input class="form-control onlyNumber" id="branchCode" placeholder="Код филиала"
                                            name="codeBranch">
@@ -541,7 +541,14 @@
                 },
                 error: function (xhr, textStatus, error) {
                     if (xhr.status === 400) {
-                        showToast(xhr.responseText, "danger", 3000);
+                        $("#streetUkr").css("border", "1px solid #ff0000")
+                        if (languageSecondExample == 'eng') {
+                            addText(input, "The street is not correct");
+                        } else if (languageSecondExample == 'ru') {
+                            addText(input, "Улица не корректна");
+                        } else {
+                            addText(input, "Вулиця не коректна");
+                        }
                     }
                     console.log(error);
                 }
@@ -790,6 +797,7 @@
         }
     </script>
     <script>
+        var hadImage = false
         function deleteFile(button, url) {
             $('#confirmationModal').modal('show');
 
@@ -889,7 +897,7 @@
             var notes = $("#notes");
             if (!validString("1", "990", notes)) isValidated = false
             var cadastralNumber = $("#cadastralNumber");
-            if (!validString("9", "9", cadastralNumber)) isValidated = false
+            if (!validString("3", "12", cadastralNumber)) isValidated = false
             var plotDescription = $("#plotDescription");
             if (!validString("1", "100", plotDescription)) isValidated = false
             var files = $("#files");
@@ -899,7 +907,7 @@
             var publicationStatus = $("#publicationStatus");
             if (!validSelect2(publicationStatus)) isValidated = false
             var objectCode = $("#objectCode");
-            if (!validString("8", "8", objectCode)) isValidated = false
+            if (!validString("3", "10", objectCode)) isValidated = false
             var branchCode = $("#branchCode");
             if (!validateNumber(1, 1000000, branchCode)) isValidated = false
             var staffCode = $("#staffCode");
@@ -932,7 +940,7 @@
             var areaUseful = $("#areaUseful");
             if (!validateNumber(1, 1000000, areaUseful)) isValidated = false
             var roomMeters = $("#roomMeters");
-            if (!validString("4", "4", roomMeters)) isValidated = false
+            if (!validString("2", "6", roomMeters)) isValidated = false
             var heightCeiling = $("#heightCeiling");
             if (!validateNumber(1, 10, heightCeiling)) isValidated = false
             var plotAreaTotal = $("#plotAreaTotal");
@@ -1006,11 +1014,9 @@
             if (!validString("1", "300", advertisementHeadlineEn)) isValidated = false
             var advertisementTextEn = $("#advertisementTextEn");
             if (!validString("1", "990", advertisementTextEn)) isValidated = false
-            var pictures = myDropzone.getAcceptedFiles();
-            pictures.forEach(function (file) {
-                formData.append('pictures', file)
-            })
-            if (!getLastDigitFromPath(window.location.pathname)  &&  pictures.length <= 0) {
+            var pictures = myDropzone.getAcceptedFiles()
+            if (pictures.length <= 0  &&  !hadImage) {
+                activateListItem('#pills-contact-tab')
                 showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
                 isValidated = false
             }
@@ -1276,6 +1282,7 @@
                 url: "[[@{/commercial/getPicture/}]]" + getLastDigitFromPath(window.location.pathname),
                 method: "GET",
                 success: function (files) {
+                    if(files)hadImage = true
                     files.forEach(function (file) {
                         var mockFile = {
                             name: removeBeforeFirstDot(file.originUrl),

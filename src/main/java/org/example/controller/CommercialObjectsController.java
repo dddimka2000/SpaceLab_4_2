@@ -74,7 +74,7 @@ public class CommercialObjectsController {
         commercialService.add(commercialInfoDto, commercialMaterialAndAreaDto, commercialAddressDto);
         return ResponseEntity.ok().body(Collections.singletonMap("status", "saveObj"));
     }
-    @PostMapping("/get/all")
+    @GetMapping("/get/all")
     @ResponseBody
     public Page<PropertyCommercialObject> getAll(@ModelAttribute ObjectForFilterDto objectForFilterDto) {
         return commercialService.getAll(objectForFilterDto);

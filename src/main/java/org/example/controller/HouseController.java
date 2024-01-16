@@ -76,7 +76,7 @@ public class HouseController {
     }
 
 
-    @PostMapping("/get/all")
+    @GetMapping("/get/all")
     @ResponseBody
     public Page<PropertyHouseObject> getAll(@ModelAttribute ObjectForFilterDto objectForFilterDto) {
         return housesService.getAll(objectForFilterDto);

@@ -131,7 +131,12 @@
                     var table = document.getElementById("realtorsTable");
                     var tbody = table.querySelector("tbody");
                     $('#realtorsTable tbody').empty();
-
+                    if(realtors.content.length == 0){
+                        table.insertAdjacentHTML('afterend', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                    }
+                    else {
+                        $('#empty-block').remove()
+                    }
                     for (var realtor of realtors.content) {
                         var newRow = tbody.insertRow();
                         var realtorId = realtor.id;

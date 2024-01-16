@@ -120,7 +120,12 @@
                     var table = document.getElementById("usersTable");
                     var tbody = table.querySelector("tbody");
                     $('#usersTable tbody').empty();
-
+                    if(users.content.length == 0){
+                        table.insertAdjacentHTML('afterend', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                    }
+                    else {
+                        $('#empty-block').remove()
+                    }
                     for (var user of users.content) {
                         var newRow = tbody.insertRow();
                         var userId = user.id;

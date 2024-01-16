@@ -152,8 +152,8 @@ function cleanInputs() {
 
 function validString(minLength, maxLength, inputString) {
     try {
-        var length = inputString.val().replace(/\s/g, '').length
-        var result = length >= minLength && length <= maxLength
+        var length = inputString.val().length
+        var result = length >= minLength && length <= maxLength && inputString.val().replace(/\s/g, '').length >= minLength
     } catch (e) {
         result = false
     }

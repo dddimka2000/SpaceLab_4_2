@@ -97,16 +97,19 @@
                 if(language == "ru"){
                     element.flatpickr({
                         dateFormat: "Y/m/d",
+                        maxDate: new Date(),
                         locale: "ru"
                     });
                 }else if(language == "ukr"){
                     element.flatpickr({
                         dateFormat: "Y/m/d",
+                        maxDate: new Date(),
                         locale: "uk"
                     });
                 }else {
                     element.flatpickr({
                         dateFormat: "Y/m/d",
+                        maxDate: new Date()
                     });
                 }
             });

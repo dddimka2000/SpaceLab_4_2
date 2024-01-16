@@ -57,17 +57,17 @@
                                 <div data-translate="floor"></div>
 
                                 <div style="display: flex">
-                                    <input class="form-control" id="floorMin">
+                                    <input class="form-control for-filter onlyNumber" id="floorMin">
                                     <div class="mt-2">&mdash;</div>
-                                    <input class="form-control" id="floorMax">
+                                    <input class="form-control for-filter onlyNumber" id="floorMax">
                                 </div>
                             </div>
                             <div class="col">
                                 <div data-translate="price"></div>
                                 <div style="display: flex">
-                                    <input class="form-control" id="priceMin">
+                                    <input class="form-control for-filter onlyNumber" id="priceMin">
                                     <div class="mt-2">&mdash;</div>
-                                    <input class="form-control" id="priceMax">
+                                    <input class="form-control for-filter onlyNumber" id="priceMax">
                                 </div>
                             </div>
                         </div>
@@ -75,17 +75,17 @@
                             <div class="col">
                                 <div data-translate="plotArea"></div>
                                 <div style="display: flex">
-                                    <input class="form-control" id="plotAreaMin">
+                                    <input class="form-control for-filter onlyNumber" id="plotAreaMin">
                                     <div class="mt-2">&mdash;</div>
-                                    <input class="form-control" id="plotAreaMax">
+                                    <input class="form-control for-filter onlyNumber" id="plotAreaMax">
                                 </div>
                             </div>
                             <div class="col">
                                 <div data-translate="S_area_sqm"></div>
                                 <div style="display: flex">
-                                    <input class="form-control" id="houseAreaMin">
+                                    <input class="form-control for-filter onlyNumber" id="houseAreaMin">
                                     <div class="mt-2">&mdash;</div>
-                                    <input class="form-control" id="houseAreaMax">
+                                    <input class="form-control for-filter onlyNumber" id="houseAreaMax">
                                 </div>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                 <div class="row mt-1">
                     <div class="col-4">
                         <div data-translate="street"></div>
-                        <input class="form-control" id="street">
+                        <input class="form-control for-filter" id="street">
                     </div>
                     <div class="col-3">
                         <div data-translate="contact_date"></div>
@@ -182,7 +182,7 @@
                             type: "Get",
                             url: '[[@{/commercial/getById/}]]' + checkbox.value,
                             success: function (house) {
-                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floor + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + house.realtorName + `</td><td style="border: 1px solid black;">` + house.administrationComment + `</td>`)
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floor + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor?house.realtor.name:null) + `</td>`)
                                 resolve();
                             },
                             error: function () {
@@ -190,7 +190,7 @@
                             }
                         });
                     });
-                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Район</th><th style="border: 1px solid black;">Топозона</th><th style="border: 1px solid black;">Улиця</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th><th style="border: 1px solid black;">Примітка</th></tr>';
+                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Район</th><th style="border: 1px solid black;">Топозона</th><th style="border: 1px solid black;">Улиця</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th></tr>';
                     ajaxPromises.push(promise);
                 });
             }else {
@@ -200,7 +200,7 @@
                             type: "Get",
                             url: '[[@{/commercial/getById/}]]' + checkbox.value,
                             success: function (house) {
-                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floor + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + house.realtorName + `</td><td style="border: 1px solid black;">` + house.administrationComment + `</td>`)
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floor + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor?house.realtor.name:null) + `</td>`)
                                 resolve();
                             },
                             error: function () {
@@ -208,7 +208,7 @@
                             }
                         });
                     });
-                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th><th style="border: 1px solid black;">Примітка</th></tr>';
+                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th></tr>';
                     ajaxPromises.push(promise);
                 })
             }
@@ -225,34 +225,38 @@
 
         function getPageWithFilter(page) {
             this.page = page
-            let formData = new FormData();
-            formData.append('page', page)
-            formData.append('district', $('#district').val())
-            if ($('.roomNumbers:checked').val()) formData.append('numberRooms', $('.roomNumbers:checked').val())
-            else formData.append('numberRooms', 0)
-            formData.append('minFloor', $('#floorMin').val())
-            formData.append('maxFloor', $('#floorMax').val())
-            formData.append('minPrice', $('#priceMin').val())
-            formData.append('maxPrice', $('#priceMax').val())
-            formData.append('topozone', $('#topzone').val())
-            formData.append('plotAreaMin', $('#plotAreaMin').val())
-            formData.append('plotAreaMax', $('#plotAreaMax').val())
-            formData.append('minArea', $('#houseAreaMin').val())
-            formData.append('maxArea', $('#houseAreaMax').val())
-            formData.append('street', $('#street').val())
-            var lastVisitDate = new Date()
-            if ($('#lastContactDate').val()) formData.append('lastContactDate', lastVisitDate.toISOString().split('T')[0])
+            var data = {
+                page: page,
+                district: $('#district').val(),
+                numberRooms: $('.roomNumbers:checked').val() || 0,
+                minFloor: $('#floorMin').val(),
+                maxFloor: $('#floorMax').val(),
+                minPrice: $('#priceMin').val(),
+                maxPrice: $('#priceMax').val(),
+                topozone: $('#topzone').val(),
+                plotAreaMin: $('#plotAreaMin').val(),
+                plotAreaMax: $('#plotAreaMax').val(),
+                minArea: $('#houseAreaMin').val(),
+                maxArea: $('#houseAreaMax').val(),
+                street: $('#street').val(),
+                lastContactDate: $('#lastContactDate').val() ? new Date().toISOString().split('T')[0] : null
+            };
             $.ajax({
-                type: "Post",
+                type: "get",
                 url: '[[@{/commercial/get/all}]]',
-                data: formData,
-                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
-                contentType: false,
-                processData: false,
+                data: data,
                 success: function (houses) {
                     var table = document.getElementById("houseTable");
                     var tbody = table.querySelector("tbody");
                     $('#houseTable tbody').empty();
+                    if(houses.content.length == 0){
+                        table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                        table.style.display = "none";
+                    }
+                    else {
+                        $('#empty-block').remove()
+                        table.style.display = 'block'
+                    }
 
                     for (var house of houses.content) {
                         var newRow = tbody.insertRow();
@@ -297,15 +301,15 @@
                         cell9.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
 
                         var cell10 = newRow.insertCell(10);
-                        cell10.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1">Да</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'
+                        cell10.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1" data-translate="Yes">'+translateValue('Yes')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">'+translateValue('no')+'</span>'
                         cell10.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
 
                         var cell11 = newRow.insertCell(11);
-                        cell11.innerHTML = house.publicationStatus == 'PUBLISHED' ? '<span class="badge bg-label-success me-1">Опубликовано</span>' : '<span class="badge bg-label-danger me-1">Модерация</span>'
+                        cell11.innerHTML = house.publicationStatus == 'PUBLISHED' ? '<span class="badge bg-label-success me-1" data-translate="PUBLISHED">'+translateValue('PUBLISHED')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="Модерация">'+translateValue('Модерация')+'</span>'
                         cell11.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
 
                         var cell12 = newRow.insertCell(12);
-                        cell12.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1">Есть</span>' : '<span class="badge bg-label-danger me-1">Нет</span>'
+                        cell12.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1" data-translate="Есть">'+translateValue('Есть')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">'+translateValue('no')+'</span>'
                         cell12.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
 
                         var cell13 = newRow.insertCell(13);

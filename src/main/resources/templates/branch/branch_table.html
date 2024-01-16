@@ -106,7 +106,12 @@
                     var table = document.getElementById("branchTable");
                     var tbody = table.querySelector("tbody");
                     $('#branchTable tbody').empty();
-
+                    if(branches.content.length == 0){
+                        table.insertAdjacentHTML('afterend', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                    }
+                    else {
+                        $('#empty-block').remove()
+                    }
                     for (var branche of branches.content) {
 
 

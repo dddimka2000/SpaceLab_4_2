@@ -157,7 +157,7 @@
                                     <span data-translate="branch_and_staff_code">Код филиала — Код сотрудника</span>
                                 </div>
                             </div>
-                            <div class="row" style="display:flex; align-items: center">
+                            <div class="row">
                                 <div class="col-3" style="text-align: right">
                                     <input class="form-control onlyNumber" id="codeBranch" placeholder="Код филиала"
                                            name="codeBranch">
@@ -489,16 +489,23 @@
                 },
                 success: function (response, textStatus, xhr) {
                     if (xhr.status === 200) {
-                        showToast(response, "success");
+                        addText($("#streetUkr"),response);
                     } else if (xhr.status === 400) {
-                        showToast(response, "danger");
+                        addText($("#streetUkr"),response+"adsf1");
                     } else {
                         console.log("Необработанный статус ответа:", xhr.status);
                     }
                 },
                 error: function (xhr, textStatus, error) {
                     if (xhr.status === 400) {
-                        showToast(xhr.responseText, "danger");
+                        $("#streetUkr").css("border", "1px solid #ff0000")
+                        if (languageSecondExample == 'eng') {
+                            addText(input, "The street is not correct");
+                        } else if (languageSecondExample == 'ru') {
+                            addText(input, "Улица не корректна");
+                        } else {
+                            addText(input, "Вулиця не коректна");
+                        }
                     }
                     console.log(error);
                 }
@@ -506,6 +513,7 @@
         }
     </script>
     <script>
+        var hadImage = false
         function checkPhone(button) {
             cleanInputs()
             validatePhoneNumberWithAjax($('#telephone')).then(result => {
@@ -718,12 +726,12 @@
             if (!validSelect2(region)) isValidated = false
             if (!validSelect2(city)) isValidated = false
             if (!validSelect2(district)) isValidated = false
-            if (!validString("5", "200", street)) isValidated = false
-            if (!validString("5", "200", streetUkr)) isValidated = false
-            if (!validString("5", "200", streetEng)) isValidated = false
+            if (!validString("1", "200", street)) isValidated = false
+            if (!validString("1", "200", streetUkr)) isValidated = false
+            if (!validString("1", "200", streetEng)) isValidated = false
             if (!validString("1", "80", landmark)) isValidated = false
             if (!validSelect2(zone)) isValidated = false
-            if (!validString("5", "70", ownerName)) isValidated = false
+            if (!validString("1", "70", ownerName)) isValidated = false
             if (!validatePhoneNumber(ownerPhone)) isValidated = false
             if (!validateDate(boughtDate)) isValidated = false
             if (!validSelect2(ownershipType)) isValidated = false
@@ -771,7 +779,8 @@
             if (!validString("1", "5000", advertisementTextUk)) isValidated = false
             if (!validString("1", "5000", advertisementTextRu)) isValidated = false
             if (!validString("1", "5000", advertisementTextEn)) isValidated = false
-            if (!getLastDigitFromPath(window.location.pathname) && allUploadedFiles.length <= 0) {
+            if (allUploadedFiles.length <= 0  &&  !hadImage) {
+                activateListItem('#pills-contact-tab')
                 showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
                 isValidated = false
             }
@@ -814,6 +823,8 @@
             return isValidated
         }
         function sendForm() {
+            console.log($('#codeObject').val().length)
+
             let formData = new FormData();
             if (!validAllInput(formData)) return
             var branchCode = $("#codeBranch");
@@ -1191,6 +1202,7 @@
                 url: "[[@{/houses/getPicture/}]]" + getLastDigitFromPath(window.location.pathname),
                 method: "GET",
                 success: function (files) {
+                    if(files)hadImage=true
                     files.forEach(function (file) {
                         var mockFile = {
                             name: removeBeforeFirstDot(file.originUrl),
