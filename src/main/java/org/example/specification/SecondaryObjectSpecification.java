@@ -58,7 +58,10 @@ public class SecondaryObjectSpecification implements Specification<PropertySecon
 
         }
         if (numberRooms != null) {
-            predicates.add(criteriaBuilder.equal(root.get("roomQuantity"), numberRooms));
+            if(numberRooms == 4)
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("roomQuantity"), numberRooms));
+            else
+                predicates.add(criteriaBuilder.equal(root.get("roomQuantity"), numberRooms));
         }
         if (minFloor != null) {
             predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("floor"), minFloor));

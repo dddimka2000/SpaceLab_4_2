@@ -107,7 +107,6 @@ public class ObjectBuilderValidator implements Validator {
                     errors.rejectValue("files", "image.size.invalid", "Файл не должен превышать 5 МБ.");
                 }
             }
-            log.info("success photos - 2 page");
             if (isValidFile(entity.getPrices())) {
                 errors.rejectValue("chessboardFile", "image.format.invalid", "Неподдерживаемый формат файла с ценами. Пожалуйста, выберите Pdf, Exel или Документ Microsoft Word.");
             }

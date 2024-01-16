@@ -297,6 +297,7 @@ public class ObjectsBuilderController {
         Page<BuilderObject> searchResults = objectBuilderService.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
         return searchResults;
     }
+
 //    @PostMapping("/generate-excel")
 //    public ResponseEntity<?> generateExcel(HttpServletResponse response, @RequestBody ArrayList<ObjectBuilderDtoSearch> objectBuilderDTOSearchList) throws IOException {
 //        log.info(objectBuilderDTOSearchList);

@@ -66,6 +66,7 @@ public class PropertyInvestorObjectService {
             propertyInvestorObjectDTO.setOldFiles(new ArrayList<>());
         }
         minioService.streamFiles(propertyInvestorObject.getFiles(), propertyInvestorObjectDTO.getOldFiles(), minioService, filesBucketName, propertyInvestorObject.getPictures(), propertyInvestorObjectDTO.getOldPictures(), imagesBucketName, propertyInvestorObjectDTO, propertyInvestorObject);
+        log.info(propertyInvestorObjectDTO.getEmployeeCode());
         Realtor realtor = realtorService.getByCode(propertyInvestorObjectDTO.getEmployeeCode());
         propertyInvestorObject.setRealtor(realtor);
         ObjectInvestorMapper.INSTANCE.toOldEntity(propertyInvestorObject, propertyInvestorObjectDTO);
