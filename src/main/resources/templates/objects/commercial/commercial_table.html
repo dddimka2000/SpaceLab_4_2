@@ -249,12 +249,12 @@
                     var table = document.getElementById("houseTable");
                     var tbody = table.querySelector("tbody");
                     $('#houseTable tbody').empty();
+                    $('#empty-block').remove()
                     if(houses.content.length == 0){
                         table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
                         table.style.display = "none";
                     }
                     else {
-                        $('#empty-block').remove()
                         table.style.display = 'block'
                     }
 

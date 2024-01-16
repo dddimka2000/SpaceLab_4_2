@@ -131,12 +131,9 @@
                     var table = document.getElementById("buyerTable");
                     var tbody = table.querySelector("tbody");
                     $('#buyerTable tbody').empty();
-                    if(buyers.content.length == 0){
-                        table.insertAdjacentHTML('afterend', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
-                    }
-                    else {
-                        $('#empty-block').remove()
-                    }
+                    $('#empty-block').remove()
+                    if(buyers.content.length == 0)
+                        table.insertAdjacentHTML('afterend', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>')
                     for (var buyer of buyers.content) {
                         var newRow = tbody.insertRow();
                         buyerId = buyer.id;
