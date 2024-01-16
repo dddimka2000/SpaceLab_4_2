@@ -34,11 +34,11 @@ public class ObjectBuilderDto {
     private String topozone;
     @NotNull(message = "Заполните номер дома")
     @Min(value = 0, message = "Введите корректный номер дома")
-    @Max(value = 2001, message = "Введите корректный номер дома")
+    @Max(value = 9999, message = "Введите корректный номер дома")
     private Integer houseNumber;
     @NotNull(message = "Заполните номер секции")
     @Min(value = 0, message = "Введите корректный номер секции")
-    @Max(value = 2001, message = "Введите корректный номер секции")
+    @Max(value = 9999, message = "Введите корректный номер секции")
     private Integer section;
     @NotNull(message = "Заполните этажность")
     @Min(value = 0, message = "Введите корректный номер этажа")

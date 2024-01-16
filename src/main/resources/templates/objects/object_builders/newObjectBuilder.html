@@ -55,7 +55,7 @@
         <div class="container-fluid">
             <br>
             <div class="d-flex justify-content-between flex-sm-row">
-                <h4 class="fw-bold mb-2 mb-sm-0"  data-translate="newObject">Новый объект</h4>
+                <h4 class="fw-bold mb-2 mb-sm-0" data-translate="newObject">Новый объект</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
@@ -532,7 +532,6 @@
 
             formData.append("statusPromotion", $('[name="statusPromotion"]').prop('checked'));
             let index = 0;
-            let checkErrors = true;
 
             layoutArray.forEach(function (element) {
                 console.log(element);
@@ -581,39 +580,120 @@
                 i++;
             }
             console.log(formData.get("files[]"))
-
             let contextPath =/*[[@{/}]]*/'';
             let url = contextPath.toString() + "builder_objects/create";
-            // for (let pair of formData.entries()) {
-            //     let value = pair[1];
-            //     if (value === "" || value === null || value === undefined || !value) {
-            //         showNotification("Warning!", "Пожалуйста, заполните все данные. ", false);
-            //         checkErrors = false;
-            //         break;
-            //     }
-            // }
-            if (checkErrors) {
-                $.ajax({
-                    url: url,
-                    method: "POST",
-                    data: formData,
-                    headers: {'X-XSRF-TOKEN': [[${_csrf.token}]]},
-                    contentType: false,
-                    processData: false,
-                    success: function () {
-                        $("#full_body").unblock();
-                        showNotification("Объект сохранен!", "", true);
-                    },
-                    error: function (xhr, status, error) {
-                        $("#full_body").unblock();
-                        var errors = JSON.parse(xhr.responseText);
-                        errors.forEach(function (error) {
-                            console.log("Ошибка: " + error);
-                            showNotification("Ошибка!", error, false);
-                        });
-                    }
-                })
+            if (!validAllInput(formData)) {
+                $("#full_body").unblock();
+                return
             }
+            $.ajax({
+                url: url,
+                method: "POST",
+                data: formData,
+                headers: {'X-XSRF-TOKEN': [[${_csrf.token}]]},
+                contentType: false,
+                processData: false,
+                success: function () {
+                    $("#full_body").unblock();
+                    showNotification("Объект сохранен!", "", true);
+                },
+                error: function (xhr, status, error) {
+                    $("#full_body").unblock();
+                    console.error(xhr.responseText);
+                    try {
+                        var errorsArray = JSON.parse(xhr.responseText);
+                        console.log(errorsArray);
+                        errorsArray.forEach(function (error) {
+                            console.log(error.field + ": " + error.message);
+                        });
+                    } catch (e) {
+                        console.error("Не удалось распарсить JSON:", e);
+                    }
+                }
+            })
+
+        }
+
+        function validAllInput(formData) {
+            let isValidated = true
+            cleanInputs();
+            var nameObject = $("#nameObject");
+            var nameObjectEng = $("#nameObjectEu");
+            var nameObjectUkr = $("#nameObjectUkr");
+
+            var region = $("#region");
+            var street = $("#street");
+            var streetUkr = $("#streetUkr");
+            var streetEng = $("#streetEu");
+
+            var district = $('[name="district"]');
+            var city = $('[name="city"]');
+            var topozone = $('[name="topozone"]');
+            var promotionName = $("#promotionName");
+            var promotionNameEng = $("#promotionNameEu");
+            var promotionNameUkr = $("#promotionNameUkr");
+
+            var houseNumber = $('[name="houseNumber"]');
+            var section = $('[name="section"]');
+            var floorQuantity = $('[name="floorQuantity"]');
+            var nameCompany = $('[name="nameCompany"]');
+            var buildStatus = $('[name="buildStatus"]');
+            var telephone = $('[name="telephone"]');
+            var description = $('[name="descriptionObject"]');
+            var descriptionUkr = $('[name="descriptionObjectUkr"]');
+            var descriptionEng = $('[name="descriptionObjectEu"]');
+            var descriptionPromotion = $('[name="descriptionPromotion"]');
+            var descriptionPromotionEng = $('[name="descriptionPromotionEu"]');
+            var descriptionPromotionUkr = $('[name="descriptionPromotionUkr"]');
+
+            if (!validString("1", "31", nameObject)) isValidated = false;
+            if (!validString("1", "31", nameObjectEng)) isValidated = false
+            if (!validString("1", "31", nameObjectUkr)) isValidated = false
+            if (!validSelect2(region)) isValidated = false
+            if (!validSelect2(city)) isValidated = false
+            if (!validSelect2(district)) isValidated = false
+            if (!validString("5", "200", street)) isValidated = false
+            if (!validString("5", "200", streetUkr)) isValidated = false
+            if (!validString("5", "200", streetEng)) isValidated = false
+            if (!validSelect2(topozone)) isValidated = false
+            if (!validString("1", "31", promotionName)) isValidated = false
+            if (!validString("1", "31", promotionNameEng)) isValidated = false
+            if (!validString("1", "31", promotionNameUkr)) isValidated = false
+            if (!validateNumber(0, 9999, houseNumber)) isValidated = false;
+            if (!validateNumber(0, 9999, section)) isValidated = false;
+            if (!validateNumber(0, 201, floorQuantity)) isValidated = false;
+            if (!validSelect2(nameCompany)) isValidated = false
+            if (!validSelect2(buildStatus)) isValidated = false
+            if (!validatePhoneNumber(telephone)) isValidated = false
+            if (!validateFile('chessboard', ['.pdf'])) isValidated = false
+            if (!validateFile('installmentTerms', ['.pdf'])) isValidated = false
+            if (!validateFile('prices', ['.pdf'])) isValidated = false
+            if (!validString("1", "5000", description)) isValidated = false
+            if (!validString("1", "5000", descriptionUkr)) isValidated = false
+            if (!validString("1", "5000", descriptionEng)) isValidated = false
+            if (!validString("1", "5000", descriptionPromotion)) isValidated = false
+            if (!validString("1", "5000", descriptionPromotionEng)) isValidated = false
+            if (!validString("1", "5000", descriptionPromotionUkr)) isValidated = false
+
+            layoutArray.forEach(function (element) {
+                if (!validString("1", "31", $("#nameLayout" + element))) isValidated = false;
+                if (!validString("1", "31", $("#nameLayoutEu" + element))) isValidated = false;
+                if (!validString("1", "31", $("#nameLayoutUkr" + element))) isValidated = false;
+                if (!validateNumber(1, 100000001,  $("#priceLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 1000,  $("#roomsLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 100000,  $("#areaTotalLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 100000,  $("#areaLivingLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 100000,  $("#areaKitchenLayout" + element))) isValidated = false;
+                if (!validString("1", "700", $("#descriptionLayout" + element))) isValidated = false;
+                if (!validString("1", "700", $("#descriptionLayoutEu" + element))) isValidated = false;
+                if (!validString("1", "700", $("#descriptionLayoutUkr" + element))) isValidated = false;
+
+                if (!validateFile('inputImage'+ element, ['.jpeg','.jpg','.png'])) isValidated = false
+                if (!validateFile('inputImage'+ (element+1), ['.jpeg','.jpg','.png'])) isValidated = false
+                if (!validateFile('inputImage'+(element+2), ['.jpeg','.jpg','.png'])) isValidated = false
+
+            })
+            return isValidated
         }
 
         let imgMaxId = 4;
