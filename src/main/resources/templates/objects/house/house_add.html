@@ -149,7 +149,7 @@
                         </div>
                         <div class="col-3">
                             <span data-translate="code_object">Код объекта</span>
-                            <input class="form-control" type="text" id="codeObject" placeholder="XX XXXX XX">
+                            <input class="form-control onlyNumber" type="text" id="codeObject" placeholder="XX XXXX XX">
                         </div>
                         <div class="col-5">
                             <div class="row">
@@ -718,9 +718,9 @@
             if (!validSelect2(region)) isValidated = false
             if (!validSelect2(city)) isValidated = false
             if (!validSelect2(district)) isValidated = false
-            if (!validString("5", "300", street)) isValidated = false
-            if (!validString("5", "300", streetUkr)) isValidated = false
-            if (!validString("5", "300", streetEng)) isValidated = false
+            if (!validString("5", "200", street)) isValidated = false
+            if (!validString("5", "200", streetUkr)) isValidated = false
+            if (!validString("5", "200", streetEng)) isValidated = false
             if (!validString("1", "80", landmark)) isValidated = false
             if (!validSelect2(zone)) isValidated = false
             if (!validString("5", "70", ownerName)) isValidated = false
@@ -853,10 +853,14 @@
                                                 contentType: false,
                                                 processData: false,
                                                 success: function (response) {
-                                                    showToast(response, "success")
+                                                    showToast(response.status, "success")
                                                 },
-                                                error: function (error) {
-                                                    console.error('Помилка відправки файлів на сервер:', error);
+                                                error: function (xhr, status, error) {
+                                                    if (xhr.status === 400) {
+                                                        validDataFromResponse(xhr.responseJSON)
+                                                    } else {
+                                                        console.error('Помилка відправки файлів на сервер:', error);
+                                                    }
                                                 }
                                             })
                                         }

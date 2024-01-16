@@ -497,10 +497,14 @@
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    showToast(response, "success");
+                    showToast(response.status, "success");
                 },
-                error: function (error) {
-                    console.error('Помилка відправки файлів на сервер:', error);
+                error: function (xhr, status, error) {
+                    if (xhr.status === 400) {
+                        validDataFromResponse(xhr.responseJSON)
+                    } else {
+                        console.error('Помилка відправки файлів на сервер:', error);
+                    }
                 }
             });
         }

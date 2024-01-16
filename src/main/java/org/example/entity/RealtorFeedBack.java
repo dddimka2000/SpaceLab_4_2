@@ -17,6 +17,8 @@ public class RealtorFeedBack {
     private String name;
     private String phone;
     private String email;
+    @Lob
+    @Column(length = 3000)
     private String description;
 
     public RealtorFeedBack(Integer id, String name, String phone, String description) {

@@ -19,6 +19,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,8 +34,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 @RequestMapping("/realtors")
@@ -76,13 +76,14 @@ public class RealtorController {
         return modelAndView;
     }
     @PostMapping("/add")
-    public ResponseEntity<String> addPage(@ModelAttribute @Valid RealtorDto realtorDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        if(bindingResult.hasErrors()){
-            FieldError fieldError = bindingResult.getFieldErrors().get(0);
-            return ResponseEntity.ok().body("ERROR(" + fieldError.getField() + "): " + fieldError.getDefaultMessage());
+    public ResponseEntity<Map<String, String>> addPage(@ModelAttribute @Valid RealtorDto realtorDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        Map<String, String> errorsMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            bindingResult.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsMap);
         }
         realtorService.add(realtorDto);
-        return ResponseEntity.ok().body("saveObj");
+        return ResponseEntity.ok().body(Collections.singletonMap("status", "saveObj"));
     }
     @GetMapping("/delete/{id}")
     @ResponseBody

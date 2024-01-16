@@ -11,6 +11,7 @@ import org.example.util.validator.BranchValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/branches")
@@ -56,14 +60,15 @@ public class BranchController {
         return new ModelAndView("redirect:/branches");
     }
     @PostMapping("/create")
-    public ResponseEntity<String> createPage(@ModelAttribute @Valid BranchDto branchDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<Map<String, String>> createPage(@ModelAttribute @Valid BranchDto branchDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         branchValidator.validate(branchDto, bindingResult);
+        Map<String, String> errorsMap = new HashMap<>();
         if (bindingResult.hasErrors()) {
-            FieldError fieldError = bindingResult.getFieldErrors().get(0);
-            return ResponseEntity.ok().body("ERROR(" + fieldError.getField() + "): " + fieldError.getDefaultMessage());
+            bindingResult.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsMap);
         }
         branchServiceImpl.add(branchDto);
-        return ResponseEntity.ok().body("saveObj");
+        return ResponseEntity.ok().body(Collections.singletonMap("status", "saveObj"));
     }
 
 

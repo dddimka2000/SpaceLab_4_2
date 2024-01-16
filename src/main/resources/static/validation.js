@@ -338,17 +338,30 @@ function validAllNumberInput(){
     var isValid = true
     for (var i = 0; i < elements.length; i++) {
         var inputValue = $(elements[i]).val();
-        var containsOnlyNumbers = /^\d+$/.test(inputValue);
+        var containsOnlyNumbers = /^\d+$/.test(inputValue.replace(/\s/g, ''));
         if (!containsOnlyNumbers) {
+            scrollToElement($(elements[i]))
+            $(elements[i]).css("border-color", "#ff0000")
             if (languageSecondExample == 'eng') {
-                addText(inputValue, "Must be a number");
+                addText($(elements[i]), "Must be a number");
             } else if (languageSecondExample == 'ru') {
-                addText(inputValue, "Должно быть числом");
+                addText($(elements[i]), "Должно быть числом");
             } else {
-                addText(inputValue, "Має бути числом");
+                addText($(elements[i]), "Має бути числом");
             }
             isValid = false
         }
     }
     return isValid
+}
+function validDataFromResponse(errors){
+    for (var fieldName in errors) {
+        if (errors.hasOwnProperty(fieldName)) {
+            var errorMessage = errors[fieldName];
+            scrollToElement($('#' + fieldName.toString()));
+            addText($('#'+fieldName.toString()), errorMessage)
+            $('#'+fieldName.toString()).css("border", "1px solid #ff0000")
+        }
+    }
+    countError=0
 }

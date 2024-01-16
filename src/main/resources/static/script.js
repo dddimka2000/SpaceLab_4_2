@@ -2,7 +2,6 @@ var contextPath = "/minions-dd/admin"
 
 
 function showToast(message, type) {
-    if(message.includes("ERROR"))type="danger"
     let toastContainer = document.querySelector('.position-fixed.top-0.end-0.p-3');
 
     if (!toastContainer) {

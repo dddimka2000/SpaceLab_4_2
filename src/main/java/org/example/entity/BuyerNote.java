@@ -21,6 +21,8 @@ public class BuyerNote {
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate date;
 
+    @Lob
+    @Column(length = 3000)
     private String comment;
 
     @ManyToOne

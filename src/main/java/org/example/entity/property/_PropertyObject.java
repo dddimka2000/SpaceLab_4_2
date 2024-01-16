@@ -42,6 +42,8 @@ public class _PropertyObject {
     private LocalDate boughtDate;
 
     private OwnershipType ownershipType;
+    @Lob
+    @Column(length = 3000)
     private String notes;
 
     private PropertyBuildStatus buildStatus;
@@ -69,12 +71,19 @@ public class _PropertyObject {
     private LocalDate vnpExpirationDate;
     private String informationSource;
 
+    @Lob
+    @Column(length = 3000)
     private String descriptionUk, advertisementHeadlineUk, advertisementTextUk;
+    @Lob
+    @Column(length = 3000)
     private String description, advertisementHeadline, advertisementText;
+    @Lob
+    @Column(length = 3000)
     private String descriptionEn, advertisementHeadlineEn, advertisementTextEn;
 
     private Boolean advertisementEnabled;
 
+    @Column(length = 3000)
     private String administrationComment;
 
     @ElementCollection

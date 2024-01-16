@@ -1,23 +1,25 @@
 package org.example.controller;
 
 import io.minio.errors.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.BuyerPersonalDataDto;
 import org.example.entity.*;
 import org.example.entity.property.type.TypeObjectForUrl;
 import org.example.service.*;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -59,20 +61,30 @@ public class BuyerController {
 
     @PostMapping("/add")
     @ResponseBody
-    public Integer add(@ModelAttribute BuyerPersonalDataDto buyerPersonalDataDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public Integer add(@ModelAttribute @Valid BuyerPersonalDataDto buyerPersonalDataDto) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         return buyerService.addPersonalData(buyerPersonalDataDto);
     }
 
     @PostMapping("/add/application")
-    public ResponseEntity<String> addApplication(@ModelAttribute BuyerApplication buyerApplication) {
+    public ResponseEntity<Map<String, String>> addApplication(@ModelAttribute @Valid BuyerApplication buyerApplication, BindingResult bindingResult) {
+        Map<String, String> errorsMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            bindingResult.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsMap);
+        }
         buyerService.addApplication(buyerApplication);
-        return ResponseEntity.ok().body("saveObj");
+        return ResponseEntity.ok().body(Collections.singletonMap("status", "saveObj"));
     }
 
     @PostMapping("/add/note")
-    public ResponseEntity<String> addNote(@ModelAttribute BuyerNote buyerNote) {
+    public ResponseEntity<Map<String, String>> addNote(@ModelAttribute @Valid BuyerNote buyerNote, BindingResult bindingResult) {
+        Map<String, String> errorsMap = new HashMap<>();
+        if (bindingResult.hasErrors()) {
+            bindingResult.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsMap);
+        }
         buyerService.addNote(buyerNote);
-        return ResponseEntity.ok().body("saveObj");
+        return ResponseEntity.ok().body(Collections.singletonMap("status", "saveObj"));
     }
 
     @GetMapping("/delete/note/{id}")

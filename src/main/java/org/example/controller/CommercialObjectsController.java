@@ -13,6 +13,7 @@ import org.example.entity.property.PropertyHouseObject;
 import org.example.service.CommercialServiceImpl;
 import org.example.service.MinioService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/commercial")
@@ -50,14 +50,29 @@ public class CommercialObjectsController {
         return new ModelAndView("objects/commercial/commercial_add");
     }
     @PostMapping("/add")
-    public ResponseEntity<String> add(@Valid @ModelAttribute CommercialInfoDto commercialInfoDto, BindingResult bindingResult1,
-                                      @Valid @ModelAttribute CommercialMaterialAndAreaDto commercialMaterialAndAreaDto, BindingResult bindingResult2,
-                                      @Valid @ModelAttribute CommercialAddressDto commercialAddressDto, BindingResult bindingResult3) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        if(bindingResult1.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult1.getAllErrors().get(0).getObjectName()+"): "+bindingResult1.getAllErrors().get(0).getDefaultMessage());
-        if(bindingResult2.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult2.getAllErrors().get(0).getObjectName()+"): "+bindingResult2.getAllErrors().get(0).getDefaultMessage());
-        if(bindingResult3.hasErrors())return ResponseEntity.ok().body("ERROR("+bindingResult3.getAllErrors().get(0).getObjectName()+"): "+bindingResult3.getAllErrors().get(0).getDefaultMessage());
+    public ResponseEntity<Map<String, String>> add(@Valid @ModelAttribute CommercialInfoDto commercialInfoDto, BindingResult bindingResult1,
+                                                   @Valid @ModelAttribute CommercialMaterialAndAreaDto commercialMaterialAndAreaDto, BindingResult bindingResult2,
+                                                   @Valid @ModelAttribute CommercialAddressDto commercialAddressDto, BindingResult bindingResult3) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        Map<String, String> errorsMap = new HashMap<>();
+
+        if (bindingResult1.hasErrors()) {
+            bindingResult1.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
+        }
+
+        if (bindingResult2.hasErrors()) {
+            bindingResult2.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
+        }
+
+        if (bindingResult3.hasErrors()) {
+            bindingResult3.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
+        }
+
+        if (!errorsMap.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsMap);
+        }
+
         commercialService.add(commercialInfoDto, commercialMaterialAndAreaDto, commercialAddressDto);
-        return ResponseEntity.ok().body("saveObj");
+        return ResponseEntity.ok().body(Collections.singletonMap("status", "saveObj"));
     }
     @PostMapping("/get/all")
     @ResponseBody

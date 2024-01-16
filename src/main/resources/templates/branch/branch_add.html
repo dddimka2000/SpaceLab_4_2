@@ -125,7 +125,7 @@
             var email = $("#email")
             if (!validateEmail(email)) isValidated = false
             var address = $("#address")
-            if (!validString("1", "300", address)) isValidated = false
+            if (!validString("1", "100", address)) isValidated = false
             if(!validAllNumberInput())isValidated = false
             var imgPath = $("#imgPath")
             if (!getLastDigitFromPath() && !validateOneFile(imgPath.get(0).files[0], ['.jpg', '.jpeg', '.png'])) {
@@ -166,10 +166,14 @@
                         contentType: false,
                         processData: false,
                         success: function (response) {
-                            showToast(response, "success");
+                            showToast(response.status, "success");
                         },
-                        error: function (error) {
-                            console.error('Помилка відправки файлів на сервер:', error);
+                        error: function (xhr, status, error) {
+                            if (xhr.status === 400) {
+                                validDataFromResponse(xhr.responseJSON)
+                            } else {
+                                console.error('Помилка відправки файлів на сервер:', error);
+                            }
                         }
                     })
                 }

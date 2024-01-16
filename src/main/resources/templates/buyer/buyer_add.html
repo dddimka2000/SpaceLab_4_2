@@ -545,6 +545,13 @@
                     },
                     headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                     success: function (response) {
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status === 400) {
+                            validDataFromResponse(xhr.responseJSON)
+                        } else {
+                            console.error('Помилка відправки файлів на сервер:', error);
+                        }
                     }
                 })
             }
@@ -656,14 +663,14 @@
                 data: formData,
                 headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                 success: function (response) {
-                    showToast(response, "success")
+                    showToast(response.status, "success")
                 },
                 error: function (xhr, status, error) {
-                    var errors = JSON.parse(xhr.responseText);
-                    errors.forEach(function (error) {
-                        console.log("Ошибка: " + error);
-                        showNotification("Ошибка!", error, false);
-                    });
+                    if (xhr.status === 400) {
+                        validDataFromResponse(xhr.responseJSON)
+                    } else {
+                        console.error('Помилка відправки файлів на сервер:', error);
+                    }
                 }
             })
         }
@@ -701,7 +708,7 @@
                 isValidated = false
             }
 
-            if(!floorMin.val() || !floorMax.val() || floorMin.val() < 1 || floorMin.val() > 100 || floorMax.val() < 1 || floorMax.vax() > 100){
+            if(!floorMin.val() || !floorMax.val() || floorMin.val() < 1 || floorMin.val() > 100 || floorMax.val() < 1 || floorMax.val() > 100){
                 floorMin.css("border-color", "#ff0000")
                 floorMax.css("border-color", "#ff0000")
                 if (languageSecondExample == 'eng') addText($('#floorBlock'),"field must be between 1 and 100")
@@ -718,7 +725,7 @@
                 else addText($('#floorBlock'),"Поверх 'від' повинен бути менший за поверх 'до'")
                 isValidated = false
             }
-            if(!priceMin.val() || !priceMax.val() || priceMin.val() < 1000 || priceMin.val() > 10000000 || priceMax.val() < 1000 || priceMax.vax() > 10000000){
+            if(!priceMin.val() || !priceMax.val() || priceMin.val() < 1000 || priceMin.val() > 10000000 || priceMax.val() < 1000 || priceMax.val() > 10000000){
                 priceMin.css("border-color", "#ff0000")
                 priceMax.css("border-color", "#ff0000")
                 if (languageSecondExample == 'eng') addText($('#priceBlock'),"field must be between 1000 and 10000000")
@@ -734,7 +741,7 @@
                 else addText($('#priceBlock'),"Ціна 'від' повина бути менша за ціну 'до'")
                 isValidated = false
             }
-            if(!plotAreaMin.val() || !plotAreaMax.val() || plotAreaMin.val() < 1 || plotAreaMin.val() > 100000 || plotAreaMax.val() < 1 || plotAreaMax.vax() > 100000){
+            if(!plotAreaMin.val() || !plotAreaMax.val() || plotAreaMin.val() < 1 || plotAreaMin.val() > 100000 || plotAreaMax.val() < 1 || plotAreaMax.val() > 100000){
                 plotAreaMin.css("border-color", "#ff0000")
                 plotAreaMax.css("border-color", "#ff0000")
                 if (languageSecondExample == 'eng') addText($('#plotAreaBlock'),"field must be between 1 and 100000")
@@ -750,7 +757,7 @@
                 else addText($('#plotAreaBlock'),"Участок 'від' повинен бути меншим за участок 'до'")
                 isValidated = false;
             }
-            if(!houseAreaMin.val() || !houseAreaMax.val() || houseAreaMin.val() < 1 || houseAreaMin.val() > 100000 || houseAreaMax.val() < 1 || houseAreaMax.vax() > 100000){
+            if(!houseAreaMin.val() || !houseAreaMax.val() || houseAreaMin.val() < 1 || houseAreaMin.val() > 100000 || houseAreaMax.val() < 1 || houseAreaMax.val() > 100000){
                 houseAreaMin.css("border-color", "#ff0000")
                 houseAreaMax.css("border-color", "#ff0000")
                 if (languageSecondExample == 'eng') addText($('#houseAreaBlock'),"field must be between 1 and 100000")
@@ -802,7 +809,7 @@
                 isValidated = false;
             }
 
-            if (validSelect2(realtor)) {
+            if (!validSelect2(realtor)) {
                 isValidated = false;
             }
 
@@ -871,7 +878,7 @@
                 isValidated = false;
             }
             comment.css("border-color", "")
-            if (!validString("5", "300", comment)) {
+            if (! ("5", "300", comment)) {
                 isValidated = false
             }
             files.css("border-color", "")
@@ -927,11 +934,11 @@
                     saveApplication(id)
                 },
                 error: function (xhr, status, error) {
-                    var errors = JSON.parse(xhr.responseText);
-                    errors.forEach(function (error) {
-                        console.log("Ошибка: " + error);
-                        showNotification("Ошибка!", error, false);
-                    });
+                    if (xhr.status === 400) {
+                        validDataFromResponse(xhr.responseJSON)
+                    } else {
+                        console.error('Помилка відправки файлів на сервер:', error);
+                    }
                 }
             })
         }

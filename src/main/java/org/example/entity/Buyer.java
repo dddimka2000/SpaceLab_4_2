@@ -38,6 +38,8 @@ public class Buyer {
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate lastContactDate;
 
+    @Lob
+    @Column(length = 3000)
     private String comment;
 
     @ElementCollection

@@ -156,7 +156,7 @@
                         </div>
                         <div class="col-3">
                             <span data-translate="object_code">Код объекта</span>
-                            <input class="form-control" type="text" id="objectCode" placeholder="XX XXXX XX">
+                            <input class="form-control onlyNumber" type="text" id="objectCode" placeholder="XX XXXX XX">
                         </div>
                         <div class="col-5">
                             <div class="row">
@@ -761,10 +761,14 @@
                                                 contentType: false,
                                                 processData: false,
                                                 success: function (response) {
-                                                    showToast(response, "success")
+                                                    showToast(response.status, "success")
                                                 },
-                                                error: function (error) {
-                                                    console.error('Помилка відправки файлів на сервер:', error);
+                                                error: function (xhr, status, error) {
+                                                    if (xhr.status === 400) {
+                                                        validDataFromResponse(xhr.responseJSON)
+                                                    } else {
+                                                        console.error('Помилка відправки файлів на сервер:', error);
+                                                    }
                                                 }
                                             });
                                         }
@@ -854,12 +858,12 @@
             var isValidated = true
             cleanInputs()
             var streetUkr = $("#streetUkr");
-            if (!validString("1", "300", streetUkr)) isValidated = false
+            if (!validString("1", "100", streetUkr)) isValidated = false
             var street = $("#street");
-            if (!validString("1", "300", street)) isValidated = false
+            if (!validString("1", "100", street)) isValidated = false
             if(!validAllNumberInput())isValidated = false
             var streetEng = $("#streetEng");
-            if (!validString("1", "300", streetEng)) isValidated = false
+            if (!validString("1", "100", streetEng)) isValidated = false
             var zone = $("#zone");
             if (!validSelect2(zone)) isValidated = false
             var region = $("#region");
@@ -875,7 +879,7 @@
             var apartmentNumber = $("#apartmentNumber");
             if (!validateNumber(1, 100, apartmentNumber)) isValidated = false
             var ownerName = $("#ownerName");
-            if (!validString("1", "300", ownerName)) isValidated = false
+            if (!validString("1", "100", ownerName)) isValidated = false
             var ownerPhone = $("#ownerPhone");
             if (!validatePhoneNumber(ownerPhone)) isValidated = false
             var boughtDate = $("#boughtDate");
@@ -887,7 +891,7 @@
             var cadastralNumber = $("#cadastralNumber");
             if (!validString("9", "9", cadastralNumber)) isValidated = false
             var plotDescription = $("#plotDescription");
-            if (!validString("1", "990", plotDescription)) isValidated = false
+            if (!validString("1", "100", plotDescription)) isValidated = false
             var files = $("#files");
             if (!getLastDigitFromPath(window.location.pathname)  &&  !validateFile('files', [".pdf"])) isValidated = false
             var administrationComment = $("#administrationComment");
@@ -903,7 +907,7 @@
             var price = $("#price");
             if (!validateNumber(1, 100000000, price)) isValidated = false
             var landmark = $("#landmark");
-            if (!validString("1", "500", landmark)) isValidated = false
+            if (!validString("1", "100", landmark)) isValidated = false
             var builderObject = $("#builderObject");
             if (!validSelect2(builderObject)) isValidated = false
             var buildStatus = $("#buildStatus");
@@ -922,7 +926,7 @@
             var vnpExpirationDate = $("#vnpExpirationDate");
             if (!validateDate(vnpExpirationDate))isValidated = false
             var informationSource = $("#informationSource");
-            if (!validString("1", "300", informationSource)) isValidated = false
+            if (!validString("1", "100", informationSource)) isValidated = false
             var areaTotal = $("#areaTotal");
             if (!validateNumber(1, 1000000, areaTotal)) isValidated = false
             var areaUseful = $("#areaUseful");
