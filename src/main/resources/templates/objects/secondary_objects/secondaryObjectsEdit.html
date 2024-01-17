@@ -899,7 +899,7 @@
                 processData: false,
                 success: function () {
                     $("#full_body").unblock();
-                    showNotification("Объект сохранен!", "", true);
+                    showToastWithTranslate("saveObj", "success");
                 },
                 error: function (xhr, status, error) {
                     $("#full_body").unblock();

@@ -377,3 +377,27 @@ function showErrorName(input) {
     input.css("border", "1px solid #ff0000");
     return false;
 }
+function showErrorCodeBranch(input) {
+    scrollToElement(input)
+    if (languageSecondExample == 'eng') {
+        addText(input, "The branch with this code was not found");
+    } else if (languageSecondExample == 'ru') {
+        addText(input, "Филиал с данным кодом не был найден");
+    } else {
+        addText(input, "Філіал з вказаним кодом не був знайдений");
+    }
+    input.css("border", "1px solid #ff0000");
+    return false;
+}
+function showErrorCodeRealtor(input) {
+    scrollToElement(input)
+    if (languageSecondExample == 'eng') {
+        addText(input, "The code for this employee does not exist");
+    } else if (languageSecondExample == 'ru') {
+        addText(input, "Сотрудника с данным кодом не было найдено");
+    } else {
+        addText(input, "Співробітника з цим кодом не існує");
+    }
+    input.css("border", "1px solid #ff0000");
+    return false;
+}

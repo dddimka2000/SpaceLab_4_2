@@ -74,17 +74,20 @@
             <br>
             <ul class="nav nav-pills mb-3" role="tablist">
                 <li class="nav-item">
-                    <button class="nav-link active" type="button" aria-selected="true" data-toggle="tab" role="tab"
+                    <button id="ruLangSave" class="nav-link active" type="button" aria-selected="true" data-toggle="tab"
+                            role="tab"
                             data-bs-toggle="pill" onclick="changeInput('ru')">Ру
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                    <button id="euLangSave" class="nav-link" type="button" aria-selected="false" data-toggle="tab"
+                            role="tab"
                             data-bs-toggle="pill" onclick="changeInput('eu')">Eng
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                    <button id="ukrLangSave" class="nav-link" type="button" aria-selected="false" data-toggle="tab"
+                            role="tab"
                             data-bs-toggle="pill" onclick="changeInput('ukr')">Укр
                     </button>
                 </li>
@@ -99,16 +102,17 @@
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-profile"
-                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false"
+                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-contact"
+                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false"
                             data-translate="main_section">Основное
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-contact"
-                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false"
+                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-profile"
+                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false"
+
                             data-translate="gallery">Галерея
                     </button>
                 </li>
@@ -271,7 +275,7 @@
                               th:text="${element.getAdministrationComment()}"></textarea>
                     <br>
                 </div>
-                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div class="row">
                         <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="publication_status">Статус публикации</h6>
@@ -296,13 +300,17 @@
                                 <span><h6 data-translate="employee_code"> код сотрудника</h6></span>
                             </div>
                             <div style="display:flex; justify-content: space-between">
-                                <input class="form-control" type="number" id="codeBranch" placeholder="5"
-                                       name="codeBranch"
-                                       th:value="${element.getBranchCode != null ? element.getBranchCode() : ''}">
-                                <span >—</span>
-                                <input class="form-control" type="number" id="codeStaff" name="codeStaff"
-                                       placeholder="5"
-                                       th:value="${element.getRealtor() != null ? element.getRealtor().getCode() : ''}">
+                                <div>
+                                    <input class="form-control" type="number" id="codeBranch" placeholder="5"
+                                           name="codeBranch"
+                                           th:value="${element.getBranchCode != null ? element.getBranchCode() : ''}">
+                                </div>
+                                <span>—</span>
+                                <div>
+                                    <input class="form-control" type="number" id="codeStaff" name="codeStaff"
+                                           placeholder="5"
+                                           th:value="${element.getRealtor() != null ? element.getRealtor().getCode() : ''}">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -490,7 +498,7 @@
                                    aria-describedby="defaultFormControlHelp" id="dateLastContact" name="dateLastContact"
                                    th:value="${element.getLastContactDate()}">
                         </div>
-                        <div class="col-1" style="display: flex; align-items: end">
+                        <div class="col-lg-2 col-sm-6" style="display: flex; align-items: end">
                             <input class="form-check-input" type="checkbox" value="true" name="statusVNP"
                                    th:checked="${element.getVnp}">
                             <span class="checkmark" data-translate="VNP"> ВНП</span>
@@ -598,7 +606,7 @@
                         class="checkmark" data-translate="advertise">Рекламировать</span>
 
                 </div>
-                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
 
                     <div class="row">
                         <div class="col-12">
@@ -804,6 +812,10 @@
 
             let contextPath =/*[[@{/}]]*/'';
             let url = contextPath.toString() + "investor_objects/edit/" + idEntity;
+            if (!validAllInput(formData)) {
+                $("#full_body").unblock();
+                return
+            }
             $.ajax({
                 url: url,
                 method: "POST",
@@ -813,23 +825,31 @@
                 processData: false,
                 success: function () {
                     $("#full_body").unblock();
-                    showNotification("Объект сохранен!", "", true);
+                    showToastWithTranslate("saveObj", "success");
                 },
                 error: function (xhr, status, error) {
                     $("#full_body").unblock();
-                    if (xhr.status === 400) {
-                        let errors = JSON.parse(xhr.responseText);
-                        errors.forEach(function (error) {
-                            console.log("Ошибка: " + error);
-                            showNotification("Ошибка!", error, false);
-                        });
-                    } else {
-                        console.log("Другая ошибка: " + xhr.status + " - " + error);
-                        showNotification("Другая ошибка!", "Произошла ошибка на сервере", false);
-                    }
+                    errorsQuantity = 0;
+                    var errors = JSON.parse(xhr.responseText);
+                    errors.forEach(function (error) {
+                        let codeBranch = $("#codeBranch");
+                        let codeStaff = $("#codeStaff");
+                        if (error === "Кода данного сотрудника не существует") {
+                            errorsQuantity++;
+                            showErrorCodeRealtor(codeStaff);
+                        }
+                        if (error === "Филлиала с таким идом не существует") {
+                            errorsQuantity++;
+                            showErrorCodeBranch(codeBranch)
+                        }
+                        if (errorsQuantity == 0) {
+                            showToast(error, "danger");
+                        }
+                    });
                 }
             })
         }
+        let errorsQuantity = 0;
 
         var fileInput = document.getElementById("fileInput");
         var fileList = document.getElementById("fileList");
@@ -1111,6 +1131,201 @@
             }
             refreshAllTranslate()
         });
+
+        function validAllInput() {
+            let isValidated = true
+            cleanInputs();
+
+            let comment = $('[name="comment"]');
+            let region = $("#region");
+            let street = $("#street");
+            let streetEng = $("#streetEu");
+            let streetUkr = $("#streetUkr");
+            let district = $('[name="district"]')
+            let city = $('[name="city"]')
+            let topozone = $('[name="topozone"]')
+            let section = $('[name="section"]')
+            let houseNumber = $('[name="houseNumber"]')
+            let apartmentNumber = $('[name="apartmentNumber"]');
+            let buildFinishDate = $("#yearBuilding");
+
+            let ownerName = $('[name="owner"]');
+            let ownerNameEng = $('[name="ownerEu"]');
+            let ownerNameUkr = $('[name="ownerUkr"]');
+
+            let ownerPhone = $('[name="telephone"]');
+            let boughtDate = $('[name="boughtDate"]');
+
+            let administrationComment = $('[name="comment"]');
+            let publicationStatus = $("#publicationStatus");
+            let objectCode = $('[name="codeObject"]');
+            let branchCode = $('[name="codeBranch"]');
+            let employeeCode = $('[name="codeStaff"]');
+            let ownershipType = $('[name="ownership"]');
+            let landmark = $("#reference_point");
+            let residentialComplexId = $('[name="residentialComplex"]');
+            let floorQuantity = $('[name="floorQuantity"]');
+            let floor = $('[name="floor"]');
+            let roomQuantity = $("#rooms");
+            let price = $("#price");
+            let notes = $("#notes");
+
+
+            let areaTotal = $("#areaTotal");
+            let areaLiving = $("#areaLiving");
+            let areaKitchen = $("#areaKitchen");
+            let roomMeters = $("#footageOfRooms");
+
+            let heightCeiling = $("#myNumberInput");
+            let wallMaterial = $("#wall_material");
+            let wallMaterialEng = $("#wall_materialEn");
+            let wallMaterialUkr = $("#wall_materialUkr");
+
+
+            let kitchenType = $("#kitchen");
+            let buildStatus = $("#buildStatus");
+
+            let bathroomType = $("#bathroom");
+            let balconyType = $("#balcony");
+            let windowViewType = $("#viewWindow");
+            let kitchenStoveType = $("#kitchenStove");
+            let heatingType = $("#heating");
+
+            let lastContactDate = $("#dateLastContact");
+            let vnpExpirationDate = $("#dateVNP");
+
+
+            let informationSource = $("#sourceInformation");
+            let description = $('[name="descriptionObject"]');
+            let descriptionEn = $('[name="descriptionObjectEu"]');
+            let descriptionUk = $('[name="descriptionObjectUkr"]');
+
+            let advertisementHeadline = $('[name="advertisingName"]');
+            let advertisementHeadlineEn = $('[name="advertisingNameEu"]');
+            let advertisementHeadlineUk = $('[name="advertisingNameUkr"]');
+
+            let advertisementText = $('[name="advertisingText"]');
+            let advertisementTextEn = $('[name="advertisingTextEu"]');
+            let advertisementTextUk = $('[name="advertisingTextUkr"]');
+
+            if (!validSelect2(region)) isValidated = false
+            if (!validSelect2(city)) isValidated = false
+            if (!validSelect2(district)) isValidated = false
+            if (!validString("1", "31", street)) {
+                isValidated = false
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "31", streetUkr)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
+            if (!validString("1", "31", streetEng)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
+            if (!validSelect2(topozone)) isValidated = false
+            if (!validateNumber(1, 9999, houseNumber)) isValidated = false;
+            if (!validateNumber(1, 9999, section)) isValidated = false;
+            if (!validateNumber(1, 201, floorQuantity)) isValidated = false;
+            if (!validSelect2(buildStatus)) isValidated = false
+            if (!validatePhoneNumber(ownerPhone)) isValidated = false
+            if (!validString("1", "5000", description)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "5000", descriptionUk)) {
+                isValidated = false;
+                $("#ukrLangSave").click();
+            }
+            if (!validString("1", "5000", descriptionEn)) {
+                isValidated = false;
+                $("#euLangSave").click();
+            }
+            if (!validString("0", "5000", comment)) isValidated = false;
+            if (!validString("1", "31", apartmentNumber)) isValidated = false;
+            if (!validateNumber(0, 9999, buildFinishDate)) isValidated = false;
+            if (!validString("1", "31", ownerName)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "31", ownerNameEng)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "31", ownerNameUkr)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
+            if (!validateDate(boughtDate)) isValidated = false;
+            if (!validSelect2(publicationStatus)) isValidated = false
+            if (!validSelect2(ownershipType)) isValidated = false
+            if (!validateNumber(0, 9999, floor)) isValidated = false;
+            if (!validSelect2(residentialComplexId)) isValidated = false
+            if (!validateNumber(0, 9999, employeeCode)) isValidated = false;
+            if (!validateNumber(0, 9999, branchCode)) isValidated = false;
+            if (!validateNumber(0, 9999, areaTotal)) isValidated = false;
+            if (!validateNumber(0, 9999, areaLiving)) isValidated = false;
+            if (!validateNumber(0, 100000000, price)) isValidated = false;
+            if (!validateNumber(0, 9999, areaKitchen)) isValidated = false;
+            if (!validString("0", "100", roomMeters)) isValidated = false;
+            if (!validateNumber(0, 9999, heightCeiling)) isValidated = false;
+            if (!validString("1", "500", notes)) isValidated = false;
+            if (!validateDate(lastContactDate)) isValidated = false;
+            if (!validateDate(vnpExpirationDate)) isValidated = false;
+            if (!validString("1", "31", wallMaterial)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "31", wallMaterialEng)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "31", wallMaterialUkr)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
+            if (!validateNumber(0, 20, roomQuantity)) isValidated = false;
+            if (!validString("1", "15", objectCode)) isValidated = false;
+            if (!validString("0", "20000", administrationComment)) isValidated = false;
+            if (!validString("1", "100", landmark)) isValidated = false;
+            if (!validSelect2(kitchenType)) isValidated = false
+            if (!validSelect2(bathroomType)) isValidated = false
+            if (!validSelect2(balconyType)) isValidated = false
+            if (!validSelect2(windowViewType)) isValidated = false
+            if (!validSelect2(kitchenType)) isValidated = false
+            if (!validSelect2(kitchenStoveType)) isValidated = false
+            if (!validSelect2(heatingType)) isValidated = false
+            if (!validString("1", "50", advertisementHeadline)) {
+                isValidated = false
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "50", advertisementHeadlineUk)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
+            if (!validString("1", "50", advertisementHeadlineEn)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "5000", advertisementText)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "5000", advertisementTextUk)) {
+                isValidated = false;
+                $("#ukrLangSave").click();
+            }
+            if (!validString("1", "5000", advertisementTextEn)) {
+                isValidated = false;
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "500", informationSource)) isValidated = false
+
+            countError = 0;
+            console.log(isValidated)
+            return isValidated
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             let imagesDropzoneBase64 = /*[[${base64Images}]]*/ '';
             let base64ImagesSize = /*[[${base64ImagesSize}]]*/ '';

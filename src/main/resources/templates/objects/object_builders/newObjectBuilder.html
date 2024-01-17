@@ -73,17 +73,20 @@
             <br>
             <ul class="nav nav-pills mb-3" role="tablist">
                 <li class="nav-item">
-                    <button class="nav-link active" type="button" aria-selected="true" data-toggle="tab" role="tab"
+                    <button id="ruLangSave" class="nav-link active" type="button" aria-selected="true" data-toggle="tab"
+                            role="tab"
                             data-bs-toggle="pill" onclick="changeInput('ru')">Ру
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                    <button id="euLangSave" class="nav-link" type="button" aria-selected="false" data-toggle="tab"
+                            role="tab"
                             data-bs-toggle="pill" onclick="changeInput('eu')">Eng
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                    <button id="ukrLangSave" class="nav-link" type="button" aria-selected="false" data-toggle="tab"
+                            role="tab"
                             data-bs-toggle="pill" onclick="changeInput('ukr')">Укр
                     </button>
                 </li>
@@ -599,22 +602,46 @@
                 },
                 error: function (xhr, status, error) {
                     $("#full_body").unblock();
-                    console.error(xhr.responseText);
-                    try {
-                        var errorsArray = JSON.parse(xhr.responseText);
-                        console.log(errorsArray);
-                        errorsArray.forEach(function (error) {
-                            console.log(error.field + ": " + error.message);
-                        });
-                    } catch (e) {
-                        console.error("Не удалось распарсить JSON:", e);
-                    }
+                    var errors = JSON.parse(xhr.responseText);
+                    let nameObject = $("#nameObject");
+                    let nameObjectEng = $("#nameObjectEu");
+                    let nameObjectUkr = $("#nameObjectUkr");
+                    errors.forEach(function (error) {
+                        console.log(error);
+                        changeInputValue = 0;
+                        if (error === "(Ру)Объект новостроя с таким именем уже существует") {
+                            showErrorName(nameObject);
+                            if (changeInputValue == 0) {
+                                changeInputValue = changeInputValue + 1;
+                                $("#ruLangSave").click();
+                                console.log("ru click")
+                            }
+                        } else if (error === "(Англ)Объект новостроя с таким именем уже существует") {
+                            showErrorName(nameObjectEng)
+                            if (changeInputValue == 0) {
+                                changeInputValue = changeInputValue + 1;
+                                $("#euLangSave").click();
+                                console.log("eu click")
+                            }
+                        } else if (error === "(Укр)Объект новостроя с таким именем уже существует") {
+                            showErrorName(nameObjectUkr)
+                            if (changeInputValue == 0) {
+                                changeInputValue = changeInputValue + 1;
+                                $("#ukrLangSave").click();
+                                console.log("ukr click")
+                            }
+                        } else {
+                            showToast(error, "danger");
+                        }
+                    });
                 }
             })
 
         }
 
-        function validAllInput(formData) {
+        let changeInputValue = 0;
+
+        function validAllInput() {
             let isValidated = true
             cleanInputs();
             var nameObject = $("#nameObject");
@@ -646,55 +673,124 @@
             var descriptionPromotionEng = $('[name="descriptionPromotionEu"]');
             var descriptionPromotionUkr = $('[name="descriptionPromotionUkr"]');
 
-            if (!validString("1", "31", nameObject)) isValidated = false;
-            if (!validString("1", "31", nameObjectEng)) isValidated = false
-            if (!validString("1", "31", nameObjectUkr)) isValidated = false
+            if (!validString("1", "31", nameObject)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "31", nameObjectEng)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "31", nameObjectUkr)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
             if (!validSelect2(region)) isValidated = false
             if (!validSelect2(city)) isValidated = false
             if (!validSelect2(district)) isValidated = false
-            if (!validString("5", "200", street)) isValidated = false
-            if (!validString("5", "200", streetUkr)) isValidated = false
-            if (!validString("5", "200", streetEng)) isValidated = false
+            if (!validString("1", "31", street)) {
+                isValidated = false
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "31", streetUkr)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
+            if (!validString("1", "31", streetEng)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
             if (!validSelect2(topozone)) isValidated = false
-            if (!validString("1", "31", promotionName)) isValidated = false
-            if (!validString("1", "31", promotionNameEng)) isValidated = false
-            if (!validString("1", "31", promotionNameUkr)) isValidated = false
+            if (!validString("1", "31", promotionName)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "31", promotionNameEng)) {
+                isValidated = false;
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "31", promotionNameUkr)) {
+                isValidated = false;
+                $("#ukrLangSave").click();
+            }
             if (!validateNumber(0, 9999, houseNumber)) isValidated = false;
             if (!validateNumber(0, 9999, section)) isValidated = false;
             if (!validateNumber(0, 201, floorQuantity)) isValidated = false;
             if (!validSelect2(nameCompany)) isValidated = false
             if (!validSelect2(buildStatus)) isValidated = false
             if (!validatePhoneNumber(telephone)) isValidated = false
-            if (!validateFile('chessboard', ['.pdf'])) isValidated = false
-            if (!validateFile('installmentTerms', ['.pdf'])) isValidated = false
-            if (!validateFile('prices', ['.pdf'])) isValidated = false
-            if (!validString("1", "5000", description)) isValidated = false
-            if (!validString("1", "5000", descriptionUkr)) isValidated = false
-            if (!validString("1", "5000", descriptionEng)) isValidated = false
-            if (!validString("1", "5000", descriptionPromotion)) isValidated = false
-            if (!validString("1", "5000", descriptionPromotionEng)) isValidated = false
-            if (!validString("1", "5000", descriptionPromotionUkr)) isValidated = false
+            if (!validString("1", "5000", description)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "5000", descriptionUkr)) {
+                isValidated = false;
+                $("#ukrLangSave").click();
+            }
+            if (!validString("1", "5000", descriptionEng)) {
+                isValidated = false;
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "5000", descriptionPromotion)) {
+                isValidated = false
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "5000", descriptionPromotionEng)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "5000", descriptionPromotionUkr)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
 
             layoutArray.forEach(function (element) {
-                if (!validString("1", "31", $("#nameLayout" + element))) isValidated = false;
-                if (!validString("1", "31", $("#nameLayoutEu" + element))) isValidated = false;
-                if (!validString("1", "31", $("#nameLayoutUkr" + element))) isValidated = false;
-                if (!validateNumber(1, 100000001,  $("#priceLayout" + element))) isValidated = false;
-                if (!validateNumber(1, 1000,  $("#roomsLayout" + element))) isValidated = false;
-                if (!validateNumber(1, 100000,  $("#areaTotalLayout" + element))) isValidated = false;
-                if (!validateNumber(1, 100000,  $("#areaLivingLayout" + element))) isValidated = false;
-                if (!validateNumber(1, 100000,  $("#areaKitchenLayout" + element))) isValidated = false;
-                if (!validString("1", "700", $("#descriptionLayout" + element))) isValidated = false;
-                if (!validString("1", "700", $("#descriptionLayoutEu" + element))) isValidated = false;
-                if (!validString("1", "700", $("#descriptionLayoutUkr" + element))) isValidated = false;
+                if (!validString("1", "31", $("#nameLayout" + element))) {
+                    isValidated = false;
+                    $("#ruLangSave").click();
+                }
+                if (!validString("1", "31", $("#nameLayoutEu" + element))) {
+                    isValidated = false;
+                    $("#euLangSave").click();
+                }
+                if (!validString("1", "31", $("#nameLayoutUkr" + element))) {
+                    isValidated = false;
+                    $("#ukrLangSave").click();
+                }
+                if (!validateNumber(1, 100000001, $("#priceLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 1000, $("#roomsLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 100000, $("#areaTotalLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 100000, $("#areaLivingLayout" + element))) isValidated = false;
+                if (!validateNumber(1, 100000, $("#areaKitchenLayout" + element))) isValidated = false;
+                if (!validString("1", "700", $("#descriptionLayout" + element))) {
+                    isValidated = false;
+                    $("#ruLangSave").click();
+                }
+                if (!validString("1", "700", $("#descriptionLayoutEu" + element))) {
+                    isValidated = false;
+                    $("#euLangSave").click();
+                }
+                if (!validString("1", "700", $("#descriptionLayoutUkr" + element))) {
+                    isValidated = false;
+                    $("#ukrLangSave").click();
+                }
 
-                if (!validateFile('inputImage'+ element, ['.jpeg','.jpg','.png'])) isValidated = false
-                if (!validateFile('inputImage'+ (element+1), ['.jpeg','.jpg','.png'])) isValidated = false
-                if (!validateFile('inputImage'+(element+2), ['.jpeg','.jpg','.png'])) isValidated = false
+                if (!$("#previewImage" + element).attr("src")) {
+                    if (!validateFile('inputImage' + element, ['.jpeg', '.jpg', '.png'])) isValidated = false
+                }
+                if (!$("#previewImage" + (element + 1)).attr("src")) {
+                    if (!validateFile('inputImage' + (element + 1), ['.jpeg', '.jpg', '.png'])) isValidated = false
+                }
+                if (!$("#previewImage" + (element + 2)).attr("src")) {
+                    if (!validateFile('inputImage' + (element + 2), ['.jpeg', '.jpg', '.png'])) isValidated = false
+                }
 
             })
+            countError = 0;
+            console.log(isValidated)
             return isValidated
         }
+
 
         let imgMaxId = 4;
 
