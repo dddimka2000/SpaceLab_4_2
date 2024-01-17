@@ -115,11 +115,11 @@ public class ObjectsBuilderController {
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException
             , NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         objectBuilderValidator.validate(objectBuilderDto, bindingResult);
-        Map<String, String> errorsMap = new HashMap<>();
 
         if (bindingResult.hasErrors()) {
-            bindingResult.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsMap);
+            ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList()));
         }
         BuilderObject builderObject = ObjectBuilderMapper.INSTANCE.toEntity(objectBuilderDto);
         objectBuilderService.saveCreate(objectBuilderDto, builderObject);

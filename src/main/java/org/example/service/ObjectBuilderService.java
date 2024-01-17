@@ -88,11 +88,9 @@ public class ObjectBuilderService {
         builderObjectRepository.save(entity);
         log.info("ObjectBuilderService-save successfully");
     }
-    @SneakyThrows
-    public void saveEdit(ObjectBuilderDtoEdit objectBuilderDtoEdit, BuilderObject builderObject, Integer id) {
+    public void saveEdit(ObjectBuilderDtoEdit objectBuilderDtoEdit, BuilderObject builderObject, Integer id) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         String uuidFile = UUID.randomUUID().toString();
         String resultFilename;
-        //save to MinIo
         if (objectBuilderDtoEdit.getPrices() != null && objectBuilderDtoEdit.getPrices().isPresent()) {
             resultFilename = uuidFile + "." + objectBuilderDtoEdit.getPrices().get().getOriginalFilename();
             minioService.putMultipartFile(objectBuilderDtoEdit.getPrices().get(), filesBucketName, resultFilename);
@@ -113,7 +111,6 @@ public class ObjectBuilderService {
         save(builderObject);
         //Delete old Layouts
         layoutService.deleteAllByBuilderObject(builderObject);
-
         for (LayoutDTOEdit dto : objectBuilderDtoEdit.getLayoutDTOList()) {
             Layout layout = LayoutMapper.INSTANCE.toEntity(dto);
             if (dto.getImg1Layout() != null && !dto.getImg1Layout().isEmpty()) {
@@ -147,12 +144,14 @@ public class ObjectBuilderService {
             layoutService.save(layout);
         }
 
+
         List<ImagesForObject> namesImages = imagesForObjectService.findByIdObjectAndTypeObject(id, TypeObject.BY_BUILDER).stream().filter(path -> !objectBuilderDtoEdit.getOldFiles().contains(path.getPath())).collect(Collectors.toList());
         //delete old images
         namesImages.stream().forEach(s -> imagesForObjectService.deleteById(s.getIdImage()));
         //delete old images in MinIO
         namesImages.stream().forEach(s -> {
             try {
+
                 minioService.deleteImg(s.getPath(), imagesBucketName);
             } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                      InvalidResponseException | NoSuchAlgorithmException | ServerException | XmlParserException |
@@ -161,7 +160,7 @@ public class ObjectBuilderService {
             }
         });
         //save new images in MinIO, ImagesForObjectService
-        minioService.saveFilesInMinIO(builderObject, objectBuilderDtoEdit.getFiles(), objectBuilderDtoEdit, imagesBucketName, imagesForObjectService);
+        minioService.saveFilesInMinIO(builderObject, objectBuilderDtoEdit.getFiles(), objectBuilderDtoEdit, imagesBucketName);
     }
 
     @SneakyThrows
@@ -204,7 +203,7 @@ public class ObjectBuilderService {
             layoutService.save(layout);
         }
         //add pictures to MinIO
-        minioService.saveFilesInMinIO(builderObject, objectBuilderDto.getFiles(), objectBuilderDto, imagesBucketName, imagesForObjectService);
+        minioService.saveFilesInMinIO(builderObject, objectBuilderDto.getFiles(), objectBuilderDto, imagesBucketName);
         log.info("ObjectBuilderService-create successfully");
     }
 

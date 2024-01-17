@@ -65,7 +65,7 @@ public class ObjectInvestorValidator implements Validator {
         try {
             branchService.getByCode(entity.getBranchCode());
         } catch (EntityNotFoundException | NullPointerException e) {
-            errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
+            errors.rejectValue("branchCode", "", "Филиала с таким идом не существует");
         }
         if (entity.getFiles() != null && entity.getFiles().size() > 0) {
             for (MultipartFile multipartFile : entity.getFiles()) {
@@ -107,7 +107,7 @@ public class ObjectInvestorValidator implements Validator {
         try {
             branchService.getByCode(entity.getBranchCode());
         } catch (EntityNotFoundException e) {
-            errors.rejectValue("branchCode", "", "Филлиала с таким идом не существует");
+            errors.rejectValue("branchCode", "", "Филиала с таким идом не существует");
         }
         if (entity.getFiles() != null && entity.getFiles().size() > 0) {
             for (MultipartFile multipartFile : entity.getFiles()) {
@@ -128,6 +128,17 @@ public class ObjectInvestorValidator implements Validator {
                     errors.rejectValue("pictures", "image.size.invalid", "Фотография не должна превышать 5 МБ.");
                 }
             }
+        }
+        int picturesNum=0;
+        if (entity.getPictures() != null) {
+            picturesNum=entity.getPictures().size();
+        }
+        int oldPicturesNum=0;
+        if (entity.getOldPictures() != null){
+            picturesNum=entity.getOldPictures().size();
+        }
+        if(picturesNum+oldPicturesNum==0){
+            errors.rejectValue("pictures", "image.size.invalid", "Минимум 1 фото в объекте");
         }
     }
 }
