@@ -80,13 +80,13 @@ class ObjectBuilderServiceTest {
 
         // Mock MinioService interactions
 //        doNothing().when(minioService.putMultipartFile(multipartFile, anyString(), anyString()));
-        Mockito.doNothing().when(minioService).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString(), Mockito.any());
+        Mockito.doNothing().when(minioService).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString());
 
         // Call the method
         objectBuilderService.saveCreate(objectBuilderDto, builderObject);
 
         // Add assertions based on the expected behavior
-        Mockito.verify(minioService, Mockito.times(1)).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString(), Mockito.any());
+        Mockito.verify(minioService, Mockito.times(1)).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString());
         Mockito.verify(layoutService, Mockito.times(1)).save(Mockito.any());
         Mockito.verify(builderObjectRepository, Mockito.times(1)).save(Mockito.any());
     }
@@ -120,13 +120,13 @@ class ObjectBuilderServiceTest {
 
         // Mock MinioService interactions
         Mockito.doNothing().when(minioService).putMultipartFile(Mockito.any(), Mockito.anyString(), Mockito.anyString());
-        Mockito.doNothing().when(minioService).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString(), Mockito.any());
+        Mockito.doNothing().when(minioService).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString());
 
         // Call the method
         objectBuilderService.saveEdit(objectBuilderDtoEdit, builderObject, id);
 
         // Add assertions based on the expected behavior
-        Mockito.verify(minioService, Mockito.times(1)).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString(), Mockito.any());
+        Mockito.verify(minioService, Mockito.times(1)).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString());
         Mockito.verify(layoutService, Mockito.times(1)).deleteAllByBuilderObject(builderObject);
         Mockito.verify(layoutService, Mockito.times(1)).save(Mockito.any());
         Mockito.verify(imagesForObjectService, Mockito.times(1)).findByIdObjectAndTypeObject(id, TypeObject.BY_BUILDER);
