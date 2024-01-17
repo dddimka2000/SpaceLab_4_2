@@ -33,6 +33,6 @@ class LogoutControllerTest {
     void logoutPage() {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String result = logOutController.logoutPage(request, response);
-        assertEquals("redirect:/authUser?logout", result);
+        assertEquals("redirect:/auth/login", result);
     }
 }
