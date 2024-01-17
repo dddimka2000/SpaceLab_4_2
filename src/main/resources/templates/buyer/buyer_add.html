@@ -7,11 +7,6 @@
         xmlns:layout="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <title data-translate="менеджер_покупців"></title>
-    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
-    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
-    <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
-    <script th:src="@{/vendor/libs/cleavejs/cleave.js}"></script>
-    <script th:src="@{/vendor/libs/cleavejs/cleave-phone.js}"></script>
 </head>
 
 
@@ -20,6 +15,7 @@
 <section layout:fragment="content">
     <div class="content-wrapper">
         <div class="container-fluid">
+            <br>
             <div class="d-flex justify-content-between">
                 <h4 class="fw-bold" data-translate="buyer">Покупатель</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -506,6 +502,7 @@
                 if (rowElement) {
                     rowElement.remove();
                 }
+                showBlockForAllBody(true)
 
                 $.ajax({
                     type: "Get",
@@ -516,6 +513,7 @@
                     },
                     success: function (response) {
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                 });
 
@@ -664,6 +662,7 @@
                 headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                 success: function (response) {
                     showToast(response.status, "success")
+                    showBlockForAllBody(false)
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status === 400) {
@@ -901,7 +900,7 @@
             for (var i = 0; i < inputs.length; i += 3) {
                 if (!validString("3", "300", $(inputs[i + 1]))) isValidated = false
             }
-
+            countError = 0
             if(!isValidated)return
             let formData = new FormData();
             formData.append("surname", surname.val());
@@ -921,6 +920,7 @@
             for (var i = 0; i < filesElement.length; i++) {
                 formData.append("files", filesElement[i]);
             }
+            showBlockForAllBody(true)
             $.ajax({
                 url: '[[@{/buyers/add}]]',
                 method: "POST",
@@ -939,6 +939,7 @@
                     } else {
                         console.error('Помилка відправки файлів на сервер:', error);
                     }
+                    showBlockForAllBody(false)
                 }
             })
         }

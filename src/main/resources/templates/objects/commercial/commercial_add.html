@@ -97,9 +97,9 @@
                             <input type="text" class="form-control onlyNumber" id="apartmentNumber" placeholder="34">
                         </div>
                         <div class="col-6 d-flex justify-content-start">
-                            <button class="btn btn-info mt-4" style="width: auto; margin-right: 5px" onclick="checkAddress()" data-translate="check_address">Проверить адрес
+                            <button class="btn btn-info mt-4" style="width: auto; height: 40px; margin-right: 5px" onclick="checkAddress()" data-translate="check_address">Проверить адрес
                             </button>
-                            <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto" data-translate="check_phone_number">Проверить
+                            <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto; height: 40px;" data-translate="check_phone_number">Проверить
                                 номер телефона</span>
                             </button>
                         </div>
@@ -522,6 +522,8 @@
         let contextPathURL =/*[[@{/}]]*/'';
 
         function checkAddress() {
+            cleanInputs()
+            showBlockForAllBody(true)
             let streetUkr = $("#streetUkr").val();
             let url = contextPathURL + 'checkStreet';
             $.ajax({
@@ -538,18 +540,20 @@
                     } else {
                         console.log("Необработанный статус ответа:", xhr.status);
                     }
+                    showBlockForAllBody(false)
                 },
                 error: function (xhr, textStatus, error) {
                     if (xhr.status === 400) {
                         $("#streetUkr").css("border", "1px solid #ff0000")
                         if (languageSecondExample == 'eng') {
-                            addText(input, "The street is not correct");
+                            addText($("#streetUkr"), "The street is not correct");
                         } else if (languageSecondExample == 'ru') {
-                            addText(input, "Улица не корректна");
+                            addText($("#streetUkr"), "Улица не корректна");
                         } else {
-                            addText(input, "Вулиця не коректна");
+                            addText($("#streetUkr"), "Вулиця не коректна");
                         }
                     }
+                    showBlockForAllBody(false)
                     console.log(error);
                 }
             })
@@ -557,6 +561,7 @@
     </script>
     <script>
         $(document).ready(function () {
+            showBlockForAllBody(false)
             if(getLastDigitFromPath()) {
                 $.ajax({
                     type: "Get",
@@ -733,7 +738,7 @@
             if(!validAllInputs(formData))return
             var branchCode = $("#branchCode");
             var staffCode = $("#staffCode");
-
+            showBlockForAllBody(true)
             $.ajax({
                 type: 'GET',
                 url: '[[@{/realtors/getByCode/}]]' + staffCode.val(),
@@ -769,6 +774,7 @@
                                                 processData: false,
                                                 success: function (response) {
                                                     showToast(response.status, "success")
+                                                    showBlockForAllBody(false)
                                                 },
                                                 error: function (xhr, status, error) {
                                                     if (xhr.status === 400) {
@@ -776,6 +782,7 @@
                                                     } else {
                                                         console.error('Помилка відправки файлів на сервер:', error);
                                                     }
+                                                    showBlockForAllBody(false)
                                                 }
                                             });
                                         }
@@ -789,6 +796,7 @@
                 error: function (error) {
                     console.error('Помилка відправки файлів на сервер:', error);
                     reject(false);
+                    showBlockForAllBody(false)
                 }
             });
 
@@ -806,6 +814,7 @@
                 if (rowElement) {
                     rowElement.remove();
                 }
+                showBlockForAllBody(true)
                 $.ajax({
                     type: "Delete",
                     url: '[[@{/commercial/deleteFile}]]',
@@ -816,6 +825,7 @@
                     headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                     success: function (response) {
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                 });
                 $('#confirmationModal').modal('hide');
@@ -827,6 +837,7 @@
             });
         }
         function downloadFileFrom(url) {
+            showBlockForAllBody(true)
             $.ajax({
                 type: "GET",
                 url: "[[@{/users/download}]]",
@@ -848,6 +859,7 @@
                         link.download = filename;
                         link.click();
                     }
+                    showBlockForAllBody(false)
                 },
                 error: function () {
                     console.log("Помилка завантаження файлу");
@@ -855,6 +867,7 @@
             });
         }
         function checkPhone(button) {
+            cleanInputs()
             validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
                 if (result) {
                     addText($('#ownerPhone'),"Телефон коректний");
@@ -1110,6 +1123,7 @@
             for (var i = 0; i < filesElement.length; i++) {
                 formData.append("files", filesElement[i]);
             }
+            countError = 0
             return isValidated
         }
         function addressSelect2(house) {

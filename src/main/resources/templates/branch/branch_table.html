@@ -14,6 +14,7 @@
 <section layout:fragment="content">
     <div class="content-wrapper">
         <div class="container-fluid">
+            <br>
             <div class="d-flex justify-content-between">
                 <h4 class="fw-bold" data-translate="branches">Филиалы</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -119,11 +120,9 @@
                         cell1.setAttribute('onclick', 'window.location.href="[[@{/branches/}]]' + branchId + '"');
                         var cell2 = newRow.insertCell(1);
                         cell2.innerHTML = branche.name;
-                        cell2.setAttribute('onclick', 'window.location.href="[[@{/branches/}]]' + branchId + '"');
 
                         var cell3 = newRow.insertCell(2);
                         cell3.innerHTML = branche.address;
-                        cell3.setAttribute('onclick', 'window.location.href="[[@{/branches/}]]' + branchId + '"');
 
                         var cell4 = newRow.insertCell(3);
                         cell4.innerHTML = `
@@ -152,6 +151,7 @@
                 var table = document.getElementById("branchTable");
                 var row = button.parentElement.parentElement;
                 table.deleteRow(row.rowIndex);
+                showBlockForAllBody(true)
 
                 $.ajax({
                     type: "Get",
@@ -159,6 +159,7 @@
                     success: function (response) {
                         getPageWithFilter(page)
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                 })
                 $('#confirmationModal').modal('hide')

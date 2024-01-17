@@ -159,3 +159,21 @@ $(document).ready(function () {
         });
     });
 })
+
+function showBlockForAllBody(show){
+    if(show){
+        $("#full_body").block({
+            message: '<div style="display: flex; align-items: center; justify-content: center; height: 100vh;"><div class="pinner-border spinner-border text-primary" role="status" style="height: 10vw; width: 10vw; max-height: 400px; max-width: 400px;"></div></div>',
+            css: {
+                backgroundColor: "transparent",
+                border: "0"
+            },
+            overlayCSS: {
+                backgroundColor: "#000",
+                opacity: 0.5
+            }
+        })
+    }else {
+        $("#full_body").unblock();
+    }
+}

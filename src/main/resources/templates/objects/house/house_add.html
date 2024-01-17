@@ -6,7 +6,6 @@
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title data-translate="менеджер_будинку"></title>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 <section layout:fragment="content">
@@ -480,7 +479,8 @@
         function checkAddress() {
             cleanInputs()
             let streetUkr = $("#streetUkr").val();
-            let url = contextPathURL + 'checkStreet';
+            let url = contextPathURL + 'checkStreet'
+            showBlockForAllBody(true)
             $.ajax({
                 type: "GET",
                 url: url,
@@ -495,19 +495,21 @@
                     } else {
                         console.log("Необработанный статус ответа:", xhr.status);
                     }
+                    showBlockForAllBody(false)
                 },
                 error: function (xhr, textStatus, error) {
                     if (xhr.status === 400) {
                         $("#streetUkr").css("border", "1px solid #ff0000")
                         if (languageSecondExample == 'eng') {
-                            addText(input, "The street is not correct");
+                            addText($("#streetUkr"), "The street is not correct");
                         } else if (languageSecondExample == 'ru') {
-                            addText(input, "Улица не корректна");
+                            addText($("#streetUkr"), "Улица не корректна");
                         } else {
-                            addText(input, "Вулиця не коректна");
+                            addText($("#streetUkr"), "Вулиця не коректна");
                         }
                     }
                     console.log(error);
+                    showBlockForAllBody(false)
                 }
             })
         }
@@ -531,6 +533,7 @@
                 if (rowElement) {
                     rowElement.remove();
                 }
+                showBlockForAllBody(true)
                 $.ajax({
                     type: "Delete",
                     url: '[[@{/houses/deleteFile}]]',
@@ -541,6 +544,7 @@
                     headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
                     success: function (response) {
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                 });
                 $('#confirmationModal').modal('hide');
@@ -829,7 +833,7 @@
             if (!validAllInput(formData)) return
             var branchCode = $("#codeBranch");
             var staffCode = $("#codeStaff");
-
+            showBlockForAllBody(true)
             $.ajax({
                 type: 'GET',
                 url: '[[@{/realtors/getByCode/}]]' + staffCode.val(),
@@ -865,6 +869,7 @@
                                                 processData: false,
                                                 success: function (response) {
                                                     showToast(response.status, "success")
+                                                    showBlockForAllBody(false)
                                                 },
                                                 error: function (xhr, status, error) {
                                                     if (xhr.status === 400) {
@@ -872,6 +877,7 @@
                                                     } else {
                                                         console.error('Помилка відправки файлів на сервер:', error);
                                                     }
+                                                    showBlockForAllBody(false)
                                                 }
                                             })
                                         }
@@ -879,6 +885,7 @@
                                 })
                             }
                         }).catch(error => {
+                            showBlockForAllBody(false)
                         })
                     }
                 }

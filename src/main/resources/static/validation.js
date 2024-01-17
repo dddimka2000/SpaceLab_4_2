@@ -332,6 +332,7 @@ function addText(inputId, message) {
         position: { my: "left+15 center", at: "right center" }
     })
     inputId.after(icon);
+    inputId.css("border-color", "#ff0000")
 }
 function validAllNumberInput(){
     var elements = $('.onlyNumber');
