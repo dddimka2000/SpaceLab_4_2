@@ -262,12 +262,12 @@
                                         th:data-translate="${status}"></option>
                             </select>
                         </div>
-                        <div class="col-lg-2 col-sm-6">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="object_code">Код объекта</h6>
                             <input class="form-control" type="text" id="codeObject" placeholder="100-101-102"
                                    name="codeObject">
                         </div>
-                        <div class="col-lg-2 col-sm-6">
+                        <div class="col-lg-3 col-sm-6">
                             <div style="display:flex;  justify-content: space-between">
                                 <span>
                                     <h6 data-translate="branch_code">Код филиала</h6>
@@ -793,13 +793,18 @@
                     errors.forEach(function (error) {
                         let codeBranch = $("#codeBranch");
                         let codeStaff = $("#codeStaff");
+                        let codeObject = $("#codeObject");
                         if (error === "Кода данного сотрудника не существует") {
                             errorsQuantity++;
                             showErrorCodeRealtor(codeStaff);
                         }
-                        if (error === "Филлиала с таким идом не существует") {
+                        if (error === "Филиала с таким идом не существует") {
                             errorsQuantity++;
                             showErrorCodeBranch(codeBranch)
+                        }
+                        if(error=="Объект с таким кодом уже существует"){
+                            errorsQuantity++;
+                            showErrorCode(codeObject)
                         }
                         if (errorsQuantity == 0) {
                             showToast(error, "danger");
@@ -951,7 +956,7 @@
             if (!validateNumber(0, 9999, areaLiving)) isValidated = false;
             if (!validateNumber(0, 100000000, price)) isValidated = false;
             if (!validateNumber(0, 9999, areaKitchen)) isValidated = false;
-            if (!validString("0", "100", roomMeters)) isValidated = false;
+            if (!validString("1", "100", roomMeters)) isValidated = false;
             if (!validateNumber(0, 9999, heightCeiling)) isValidated = false;
             if (!validString("1", "500", notes)) isValidated = false;
             if (!validateDate(lastContactDate)) isValidated = false;
@@ -976,7 +981,6 @@
             if (!validSelect2(bathroomType)) isValidated = false
             if (!validSelect2(balconyType)) isValidated = false
             if (!validSelect2(windowViewType)) isValidated = false
-            if (!validSelect2(kitchenType)) isValidated = false
             if (!validSelect2(kitchenStoveType)) isValidated = false
             if (!validSelect2(heatingType)) isValidated = false
             if (!validString("1", "50", advertisementHeadline)) {

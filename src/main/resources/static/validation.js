@@ -401,3 +401,15 @@ function showErrorCodeRealtor(input) {
     input.css("border", "1px solid #ff0000");
     return false;
 }
+function showErrorCode(input) {
+    scrollToElement(input)
+    if (languageSecondExample == 'eng') {
+        addText(input, "The object with this code already exists");
+    } else if (languageSecondExample == 'ru') {
+        addText(input, "Объект с таким кодом уже существует");
+    } else {
+        addText(input, "Об'єкт з таким кодом вже існує");
+    }
+    input.css("border", "1px solid #ff0000");
+    return false;
+}
