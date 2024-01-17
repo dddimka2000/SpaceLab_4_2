@@ -102,7 +102,7 @@ public class CommercialObjectSpecification implements Specification<PropertyComm
             predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("lastContactDate"), lastContactDate));
         }
         if (residentialComplexId != null && residentialComplexId.size() > 0) {
-            List<Predicate> residentialComplexIdPredicates = residentialComplexId.stream().map(d -> criteriaBuilder.equal(root.get("residentialComplexId"),d))
+            List<Predicate> residentialComplexIdPredicates = residentialComplexId.stream().map(d -> criteriaBuilder.equal(root.get("builderObject").get("id"),d))
                     .collect(Collectors.toList());
             Predicate orPredicate = criteriaBuilder.or(residentialComplexIdPredicates.toArray(new Predicate[0]));
             predicates.add(orPredicate);

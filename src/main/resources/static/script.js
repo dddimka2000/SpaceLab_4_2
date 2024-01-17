@@ -32,8 +32,7 @@ function showToast(message, type) {
         toastInstance.hide();
     });
 }
-function showToastWithTranslate(message, translate, type) {
-    if(message.includes("ERROR"))type="danger"
+function showToastWithTranslate( translate, type) {
     let toastContainer = document.querySelector('.position-fixed.top-0.end-0.p-3');
 
     if (!toastContainer) {
@@ -42,15 +41,13 @@ function showToastWithTranslate(message, translate, type) {
         toastContainer.style.zIndex = '9999';
         document.body.appendChild(toastContainer);
     }
-    if(message == 'saveObj'  ||  message == 'deleteObj'  ||  message == 'editObj')
-        message = translateValue(message)
     const toast = document.createElement('div');
     toast.classList.add('toast', `bg-${type}`);
     toast.style.transform = 'translateY(0)';
     toast.innerHTML = `
         <div class="toast-body text-white">
             <button type="button" class="btn-close" style="margin-left: 93%" data-bs-dismiss="toast" aria-label="Close"></button>
-            <span data-translate=${translate} >${message}</span>
+            <span data-translate=${translate} ></span>
         </div>`;
 
     toastContainer.appendChild(toast);
@@ -63,6 +60,7 @@ function showToastWithTranslate(message, translate, type) {
     toast.querySelector('.btn-close').addEventListener('click', function () {
         toastInstance.hide();
     });
+    refreshAllTranslate();
 }
 function getLastDigitFromPath(relativePath) {
     if(!relativePath)relativePath=window.location.pathname
@@ -159,3 +157,21 @@ $(document).ready(function () {
         });
     });
 })
+
+function showBlockForAllBody(show){
+    if(show){
+        $("#full_body").block({
+            message: '<div style="display: flex; align-items: center; justify-content: center; height: 100vh;"><div class="pinner-border spinner-border text-primary" role="status" style="height: 10vw; width: 10vw; max-height: 400px; max-width: 400px;"></div></div>',
+            css: {
+                backgroundColor: "transparent",
+                border: "0"
+            },
+            overlayCSS: {
+                backgroundColor: "#000",
+                opacity: 0.5
+            }
+        })
+    }else {
+        $("#full_body").unblock();
+    }
+}

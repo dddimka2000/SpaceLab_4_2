@@ -7,7 +7,6 @@
         xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <title data-translate="питання"></title>
-    <script th:src="@{/vendor/libs/autosize/autosize.js}"></script>
 </head>
 
 <body>
@@ -15,6 +14,7 @@
 <section layout:fragment="content">
     <div class="content-wrapper">
         <div class="container-fluid">
+            <br>
             <div class="d-flex justify-content-between">
                 <h4 class="fw-bold" data-translate="questions.title">Вопроси</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -101,13 +101,14 @@
                 var table = document.getElementById("questionTable");
                 var row = button.parentElement.parentElement;
                 table.deleteRow(row.rowIndex);
-
+                showBlockForAllBody(true)
                 $.ajax({
                     type: "Get",
                     url: '[[@{/questions/delete/}]]' + id,
                     success: function (response) {
                         getPageWithFilter(page)
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                 });
 
@@ -158,7 +159,7 @@
             formData.append("phone", phone.val())
             formData.append("question", question.val())
             formData.append("answer", answer.val())
-
+            showBlockForAllBody(true)
             $.ajax({
                 url: '[[@{/questions/edit}]]',
                 method: "POST",
@@ -169,6 +170,7 @@
                 headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                 success: function (response) {
                     showToast(response, "success")
+                    showBlockForAllBody(false)
                 }
             })
         }

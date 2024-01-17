@@ -54,10 +54,11 @@ public class WebSecurityConfig {
                         {
                             try {
                                 authorize.requestMatchers("/auth/login/**","/auth/login", "/auth/registration", "/auth/process_login","/img/**","/vendor/**").permitAll()
-                                        .requestMatchers("/wrerw/**", "/personal_account").authenticated()
+                                        .requestMatchers("/wrwr/**", "/personal_account").authenticated()
                                         .anyRequest().permitAll()
                                         .and()
                                         .logout()
+                                        .logoutUrl("/logout")
                                         .logoutSuccessUrl("/auth/login")
                                         .permitAll();
                             } catch (Exception e) {

@@ -15,19 +15,22 @@
     <div>
         <div class="content-wrapper">
             <div class="container-fluid">
-        <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="buyers">Покупатели</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item"><a th:href="@{/buyers}" data-translate="buyers">Покупатели</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="buyer">Пкуратель</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
-        <div id="main-content">
-        </div>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <h4 class="fw-bold" data-translate="buyers">Покупатели</h4>
+                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
+                         class="d-flex align-items-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/buyers}" data-translate="buyers">Покупатели</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page" data-translate="buyer">Пкуратель</li>
+                        </ol>
+                    </nav>
+                </div>
+                <hr style="margin-top: -5px">
+                <div id="main-content">
+                </div>
             </div>
         </div>
     </div>
@@ -37,7 +40,7 @@
                 url: '[[@{/buyers/getById/}]]' + getLastDigitFromPath(window.location.pathname),
                 success: function (buyer) {
                     var districts = ''
-                    if(buyer.application) {
+                    if (buyer.application) {
                         for (var i = 0; i < buyer.application.districts.length; i++) {
                             districts += buyer.application.districts[i] + ',  '
                         }
@@ -46,11 +49,11 @@
                             topzones += buyer.application.topzones[i] + ',  '
                         }
                     }
-                    if(buyer.application)
-                    var element = `
+                    if (buyer.application)
+                        var element = `
                     <tr>
                                 <td data-translate="RC">ЖК</td>
-                                <td>` + (buyer.application && buyer.application.builderObject?buyer.application.builderObject.name:'') + `</td>
+                                <td>` + (buyer.application && buyer.application.builderObject ? buyer.application.builderObject.name : '') + `</td>
                             </tr>
                             <tr>
                                 <td data-translate="propertyType">Вид недвижемости</td>
@@ -86,7 +89,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 data-translate="INFORMATION">Информация
-                        <a href="[[@{/buyers/edit/}]]`+buyer.id+`" class="float-end btn btn-primary" data-translate="edit">Редактировать</a>
+                        <a href="[[@{/buyers/edit/}]]` + buyer.id + `" class="float-end btn btn-primary" data-translate="edit">Редактировать</a>
                         </h3>
                     </div>
                     <div class="card-body">
@@ -97,7 +100,7 @@
                             </tr>
                             <tr>
                                 <td data-translate="phone">Телефон</td>
-                                <td>` + buyer.phone+ `</td>
+                                <td>` + buyer.phone + `</td>
                             </tr>
                             <tr>
                                 <td>Email</td>
@@ -105,18 +108,18 @@
                             </tr>
                             <tr>
                                 <td data-translate="branch">Филиал</td>
-                                <td>` + (buyer.realtor?buyer.realtor.branch.name:'') + `</td>
+                                <td>` + (buyer.realtor ? buyer.realtor.branch.name : '') + `</td>
                             </tr>
                             <tr>
                                 <td data-translate="realtor">Риелтор</td>
-                                <td>` + (buyer.realtor?buyer.realtor.name:'') + `</td>
+                                <td>` + (buyer.realtor ? buyer.realtor.name : '') + `</td>
                             </tr>
                         </table>
                     </div>
                 </div>
                 <div class="card mt-4">
                     <div class="card-body">
-                        `+ (buyer.comment || '') +`
+                        ` + (buyer.comment || '') + `
                     </div>
                 </div>
                 <div class="card mt-4">
@@ -133,13 +136,13 @@
                                 <td data-translate="topzone">Топзона</td>
                                 <td>` + (topzones || '') + `</td>
                             </tr>
-                            `+ (element||'') +`
+                            ` + (element || '') + `
                         </table>
                     </div>
                 </div>
                 `
                     refreshAllTranslate();
-                    },
+                },
                 error: function (error) {
                     console.log(error);
                 }

@@ -75,17 +75,20 @@
 
             <ul class="nav nav-pills mb-3" role="tablist">
                 <li class="nav-item">
-                    <button class="nav-link active" type="button" aria-selected="true" data-toggle="tab" role="tab"
+                    <button id="ruLangSave" class="nav-link active" type="button" aria-selected="true" data-toggle="tab"
+                            role="tab"
                             data-bs-toggle="pill" onclick="changeInput('ru')">Ру
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                    <button id="euLangSave" class="nav-link" type="button" aria-selected="false" data-toggle="tab"
+                            role="tab"
                             data-bs-toggle="pill" onclick="changeInput('eu')">Eng
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"
+                    <button id="ukrLangSave" class="nav-link" type="button" aria-selected="false" data-toggle="tab"
+                            role="tab"
                             data-bs-toggle="pill" onclick="changeInput('ukr')">Укр
                     </button>
                 </li>
@@ -100,16 +103,17 @@
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-profile"
-                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false"
+                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-contact"
+                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false"
                             data-translate="main_section">Основное
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-contact"
-                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false"
+                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-profile"
+                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false"
+
                             data-translate="gallery">Галерея
                     </button>
                 </li>
@@ -118,7 +122,7 @@
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                     <div class="row">
 
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="region_district">Обл.район</h6>
                             <select class="select2 form-select form-select select2find"  name="region"
                                     id="region">
@@ -134,13 +138,13 @@
                             </select>
 
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="city">Нас.пункт</h6>
                             <select class="select2 form-select form-select select2find" name="city" disabled>
                                 <option selected disabled value=""></option>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="district">Район</h6>
                             <select class="select2 form-select form-select select2find" name="district" disabled>
                                 <option selected disabled value=""></option>
@@ -149,7 +153,7 @@
                                 <option value="3">Three</option>
                             </select></div>
 
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <div style="display:block;" class="ruContent nameContent">
                                 <h6 data-translate="street">Улица</h6>
                                 <input class="form-control" type="text" name="street" id="street"
@@ -166,7 +170,7 @@
                                        data-translate-placeholder="enter_street"  placeholder="Введите улицу">
                             </div>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="topzone">Топозона</h6>
                             <select class="select2 form-select form-select select2find" name="topozone">
                                 <option value="" disabled></option>
@@ -178,29 +182,29 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="house_number">Номер дома</h6>
                             <input class="form-control" type="number" name="houseNumber"
                                    placeholder="10A">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="section_building">Секция/Корпус</h6>
                             <input class="form-control" type="number" name="section"
                                    placeholder="5">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="apartment_number">Номер квартиры</h6>
                             <input type="text" class="form-control" name="apartmentNumber" id="apartmentNumber"
                                    placeholder="87">
                         </div>
-                        <div class="col-3" style="display: flex;align-items: end">
+                        <div class="col-lg-3 col-sm-6" style="display: flex;align-items: end">
                             <button class="btn btn-info" onclick="checkNumber()" data-translate="check_phone_number">
                                 Проверить номер телефона</button>
                         </div>
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <div style="display:block;" class="ruContent nameContent">
                                 <h6 data-translate="owner_name">ФИО владельца </h6>
                                 <input class="form-control" type="text" name="owner"
@@ -218,18 +222,18 @@
                             </div>
 
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="phone" >Телефон</h6>
                             <input type="tel" name="telephone" id="telephone" class="form-control"
                                 data-translate-placeholder="enter_phone_number"   placeholder="Введите номер телефона">
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="acquisition_date">Дата приобретения</h6>
                             <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="boughtDate" name="boughtDate"
                                    value="">
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="ownership_rights">Право собственности</h6>
                             <select class="select2 form-select form-select select2find" name="ownership">
                                 <option th:each="status : ${ownershipType}"
@@ -254,9 +258,9 @@
                               data-translate-placeholder="enter_comment"     name="comment" placeholder="Введите комментарий"></textarea>
                     <br>
                 </div>
-                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="publication_status">Статус публикации</h6>
                             <select class="select2 form-select form-select select2find" id="publicationStatus">
                                 <option selected disabled></option>
@@ -267,64 +271,58 @@
 
 
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="object_code">Код объекта</h6>
                             <input class="form-control" type="text" id="codeObject" placeholder="100-101-102"
                                    name="codeObject">
                         </div>
-                        <div class="col-5">
-                            <div class="row">
-                                <div class="col-3" style="text-align: right">
+                        <div class="col-lg-3 col-sm-6">
+                            <div style="display:flex;  justify-content: space-between">
+                                <span>
                                     <h6 data-translate="branch_code">Код филиала</h6>
-                                </div>
-                                <div class="col-1">
-                                    <h6>—</h6>
-                                </div>
-                                <div class="col-4">
-                                    <h6 data-translate="employee_code"> код сотрудника</h6>
-                                </div>
+                                </span>
+                                <span><h6 data-translate="employee_code"> код сотрудника</h6></span>
                             </div>
-                            <div class="row" style="display:flex; align-items: center">
-                                <div class="col-3" style="text-align: right">
+                            <div style="display:flex; justify-content: space-between">
+                                <div>
                                     <input class="form-control" type="number" id="codeBranch" placeholder="5"
                                            name="codeBranch">
                                 </div>
-                                <div class="col-1">
-                                    <span><h6>—</h6></span>
-                                </div>
-                                <div class="col-3">
+                                <span>—</span>
+                                <div>
                                     <input class="form-control" type="number" id="codeStaff" name="codeStaff"
                                            placeholder="5">
                                 </div>
                             </div>
                         </div>
+
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="RC">ЖК</h6>
                             <select id="branchSelect3" class="select2 form-select form-select"
                                     name="residentialComplex">
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="landmark">Ориентир</h6>
                             <input data-translate-placeholder="enter_landmark" class="form-control" type="text" id="reference_point" placeholder="Введите ориентир">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="number_of_floors">Этажность</h6>
                             <input class="form-control" type="number" name="floorQuantity"
                                   placeholder="5">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="floor">Этаж</h6>
                             <input  class="form-control" type="number" name="floor" placeholder="5">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate-placeholder="2" data-translate="rooms">Комнат</h6>
                             <input class="form-control" type="number" id="rooms" placeholder="5">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                         </div>
                     </div>
                     <br>
@@ -332,7 +330,7 @@
                     <input data-translate-placeholder="20000" class="form-control" type="number" id="price" placeholder="20000">
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="property.type.real.estate">Тип недвижимости</h6>
                             <select id="propertySecondaryType" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -341,7 +339,7 @@
                                         th:text="${status}"></option>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="house_completion_year">Год срока сдачи дома</h6>
                             <input data-translate-placeholder="2025" type="number" class="form-control" placeholder="2025"
                                    id="yearBuilding">
@@ -349,22 +347,22 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="S_total_area_sqm" data-translate-placeholder="S_total_area_sqm">S общая (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaTotal"
                                    placeholder="50">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="S_living_area_sqm">S жилая (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaLiving"
                                    placeholder="20">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="S_kitchen_area_sqm">S кухни (м.кв.)*</h6>
                             <input class="form-control" type="number" id="areaKitchen"
                                    placeholder="20">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="layout">Планировка</h6>
                             <select id="layoutType" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -372,13 +370,13 @@
                                         th:value="${status}"
                                         th:text="${status}"></option>
                             </select></div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="room_square">Метраж комнат</h6>
                             <input class="form-control" type="text" id="footageOfRooms"
                                    placeholder="10+10+10">
 
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="ceiling_height(m)">Высота потолка (м)</h6>
                             <input class="form-control" type="number" step="0.01" id="myNumberInput"
                                    placeholder="4,2">
@@ -387,7 +385,7 @@
 
                     <br>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="wall_material">Материал стен</h6>
 
                             <div style="display:block;" class="ruContent nameContent">
@@ -403,7 +401,7 @@
                                        data-translate-placeholder="enter_wall_material"   placeholder="Введите материал стен">
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="apartment_design">Проект квартиры</h6>
                             <select id="houseProjectType" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -415,7 +413,7 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="kitchen">Кухня</h6>
                             <select id="kitchen" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -423,7 +421,7 @@
                                         th:value="${status}"
                                         th:text="${status}"  th:data-translate="${status}"></option>
                             </select></div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="bathroom">Санузел</h6>
                             <select id="bathroom" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -432,7 +430,7 @@
                                         th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="balcony_loggia">Балкон/лоджия</h6>
                             <select id="balcony" class="select2 form-select form-select select2find" name="balconyType">
                                 <option selected disabled></option>
@@ -441,7 +439,7 @@
                                         th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="window_view">Вид из окон</h6>
                             <select id="viewWindow" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -453,7 +451,7 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="stove_type">Кухонная плита</h6>
                             <select class="select2 form-select form-select select2find" name="kitchenStoveType" id="kitchenStove">
                                 <option selected disabled></option>
@@ -461,7 +459,7 @@
                                         th:value="${status}"
                                         th:text="${status}"  th:data-translate="${status}"></option>
                             </select></div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="heating">Отопление
                             </h6>
                             <select id="heating" class="select2 form-select form-select select2find">
@@ -471,7 +469,7 @@
                                         th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="stairs">Лестница</h6>
                             <select id="ladderType" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -483,7 +481,7 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="floorDoor">Пол</h6>
                             <select class="select2 form-select form-select select2find" name="floorType" id="floorType">
                                 <option selected disabled></option>
@@ -491,7 +489,7 @@
                                         th:value="${status}"
                                         th:text="${status}"  th:data-translate="${status}"></option>
                             </select></div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="window.type">Тип окон</h6>
                             <select id="windowType" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -500,7 +498,7 @@
                                         th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="carpentry">Столярка</h6>
                             <select id="carpentryType" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -509,7 +507,7 @@
                                         th:text="${status}"  th:data-translate="${status}"></option>
                             </select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="front.door">Входная дверь</h6>
                             <select id="frontDoorType" class="select2 form-select form-select select2find">
                                 <option selected disabled></option>
@@ -522,23 +520,23 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="last_contact_date">Дата последнего контакта</h6>
                             <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="dateLastContact" name="dateLastContact"
                                    value="">
                         </div>
-                        <div class="col-1" style="display: flex; align-items: end">
+                        <div class="col-lg-1 col-sm-6" style="display: flex; align-items: end">
                             <input class="form-check-input" type="checkbox" value="true" name="statusVNP">
                             <span class="checkmark" data-translate="VNP"> ВНП</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="VNP_until_date">Дата внп до</h6>
                             <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
                                    aria-describedby="defaultFormControlHelp" id="dateVNP" name="dateVnp"
                                    value="">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="information_source">Источник информации</h6>
                             <input type="text" class="form-control" id="sourceInformation"
                                  data-translate-placeholder="enter_information_source"  placeholder="Введите источник информации">
@@ -546,27 +544,27 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="tor">
                             <span class="checkmark" data-translate="negotiable">Торг</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="exclusive">
                             <span class="checkmark" data-translate="exclusive">Ексклюзив</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="urgently">
                             <span class="checkmark" data-translate="urgent">Срочно</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="free">
                             <span class="checkmark" data-translate="free">Свободная</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="objectOpen">
                             <span class="checkmark" data-translate="object_open">Объект открыт</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2 col-sm-6">
                             <input class="form-check-input" type="checkbox" value="true" name="fromIntermediary">
                             <span class="checkmark" data-translate="FROM_INTERMEDIARY">От посредника</span>
                         </div>
@@ -620,7 +618,7 @@
                     <input class="form-check-input" type="checkbox" value="true" name="statusPromotion"><span
                         class="checkmark"  data-translate="advertise">Рекламировать</span>
                 </div>
-                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
 
                     <div class="row">
                         <div class="col-12">
@@ -831,6 +829,10 @@
 
             let contextPath =/*[[@{/}]]*/'';
             let url = contextPath.toString() + "secondary_objects/create";
+            if (!validAllInput(formData)) {
+                $("#full_body").unblock();
+                return
+            }
             $.ajax({
                 url: url,
                 method: "POST",
@@ -840,23 +842,243 @@
                 processData: false,
                 success: function () {
                     $("#full_body").unblock();
-                    showNotification("Объект сохранен!", "", true);
+                    showToastWithTranslate("saveObj", "success");
                 },
                 error: function (xhr, status, error) {
                     $("#full_body").unblock();
-                    if (xhr.status === 400) {
-                        var errors = JSON.parse(xhr.responseText);
-                        errors.forEach(function (error) {
-                            console.log("Ошибка: " + error);
-                            showNotification("Ошибка!", error, false);
-                        });
-                    } else {
-                        console.log("Другая ошибка: " + xhr.status + " - " + error);
-                        showNotification("Другая ошибка!", "Произошла ошибка на сервере", false);
-                    }
+                    errorsQuantity = 0;
+                    var errors = JSON.parse(xhr.responseText);
+                    errors.forEach(function (error) {
+                        let codeBranch = $("#codeBranch");
+                        let codeStaff = $("#codeStaff");
+                        let codeObject = $("#codeObject");
+                        if (error === "Кода данного сотрудника не существует") {
+                            errorsQuantity++;
+                            showErrorCodeRealtor(codeStaff);
+                        }
+                        if (error === "Филиала с таким идом не существует") {
+                            errorsQuantity++;
+                            showErrorCodeBranch(codeBranch)
+                        }
+                        if(error=="Объект с таким кодом уже существует"){
+                            errorsQuantity++;
+                            showErrorCode(codeObject)
+                        }
+                        if (errorsQuantity == 0) {
+                            showToast(error, "danger");
+                        }
+                    });
                 }
             })
 
+        }
+        let errorsQuantity = 0;
+
+        function validAllInput() {
+            let isValidated = true
+            cleanInputs();
+
+            let comment = $('[name="comment"]');
+            let region = $("#region");
+            let street = $("#street");
+            let streetEng = $("#streetEu");
+            let streetUkr = $("#streetUkr");
+            let district = $('[name="district"]')
+            let city = $('[name="city"]')
+            let topozone = $('[name="topozone"]')
+            let section = $('[name="section"]')
+            let houseNumber = $('[name="houseNumber"]')
+            let apartmentNumber = $('[name="apartmentNumber"]');
+            let buildFinishDate = $("#yearBuilding");
+
+            let ownerName = $('[name="owner"]');
+            let ownerNameEng = $('[name="ownerEu"]');
+            let ownerNameUkr = $('[name="ownerUkr"]');
+
+            let ownerPhone = $('[name="telephone"]');
+            let boughtDate = $('[name="boughtDate"]');
+
+            let administrationComment = $('[name="comment"]');
+            let publicationStatus = $("#publicationStatus");
+            let objectCode = $('[name="codeObject"]');
+            let branchCode = $('[name="codeBranch"]');
+            let employeeCode = $('[name="codeStaff"]');
+            let ownershipType = $('[name="ownership"]');
+            let landmark = $("#reference_point");
+            let residentialComplexId = $('[name="residentialComplex"]');
+            let floorQuantity = $('[name="floorQuantity"]');
+            let floor = $('[name="floor"]');
+            let roomQuantity = $("#rooms");
+            let price = $("#price");
+            let notes = $("#notes");
+            let layoutType = $("#layoutType")
+            let ladderType = $("#ladderType")
+            let floorType = $("#floorType")
+            let windowType = $("#windowType")
+            let carpentryType = $("#carpentryType")
+            let frontDoorType = $("#frontDoorType")
+
+
+            let areaTotal = $("#areaTotal");
+            let areaLiving = $("#areaLiving");
+            let areaKitchen = $("#areaKitchen");
+            let roomMeters = $("#footageOfRooms");
+
+            let heightCeiling = $("#myNumberInput");
+            let wallMaterial = $("#wall_material");
+            let wallMaterialEng = $("#wall_materialEn");
+            let wallMaterialUkr = $("#wall_materialUkr");
+
+
+            let kitchenType = $("#kitchen");
+            let buildStatus = $("#propertySecondaryType");
+
+            let bathroomType = $("#bathroom");
+            let balconyType = $("#balcony");
+            let windowViewType = $("#viewWindow");
+            let kitchenStoveType = $("#kitchenStove");
+            let heatingType = $("#heating");
+
+            let lastContactDate = $("#dateLastContact");
+            let vnpExpirationDate = $("#dateVNP");
+            let houseProjectType = $("#houseProjectType");
+
+
+            let informationSource = $("#sourceInformation");
+            let description = $('[name="descriptionObject"]');
+            let descriptionEn = $('[name="descriptionObjectEu"]');
+            let descriptionUk = $('[name="descriptionObjectUkr"]');
+
+            let advertisementHeadline = $('[name="advertisingName"]');
+            let advertisementHeadlineEn = $('[name="advertisingNameEu"]');
+            let advertisementHeadlineUk = $('[name="advertisingNameUkr"]');
+
+            let advertisementText = $('[name="advertisingText"]');
+            let advertisementTextEn = $('[name="advertisingTextEu"]');
+            let advertisementTextUk = $('[name="advertisingTextUkr"]');
+
+            if (!validSelect2(region)) isValidated = false
+            if (!validSelect2(city)) isValidated = false
+            if (!validSelect2(district)) isValidated = false
+            if (!validString("1", "31", street)) {
+                isValidated = false
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "31", streetUkr)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
+            if (!validString("1", "31", streetEng)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
+            if (!validSelect2(topozone)) isValidated = false
+            if (!validateNumber(1, 9999, houseNumber)) isValidated = false;
+            if (!validateNumber(1, 9999, section)) isValidated = false;
+            if (!validateNumber(1, 201, floorQuantity)) isValidated = false;
+            if (!validSelect2(buildStatus)) isValidated = false
+            if (!validSelect2(houseProjectType)) isValidated = false
+            if (!validatePhoneNumber(ownerPhone)) isValidated = false
+            if (!validString("1", "5000", description)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "5000", descriptionUk)) {
+                isValidated = false;
+                $("#ukrLangSave").click();
+            }
+            if (!validString("1", "5000", descriptionEn)) {
+                isValidated = false;
+                $("#euLangSave").click();
+            }
+            if (!validString("0", "5000", comment)) isValidated = false;
+            if (!validString("1", "31", apartmentNumber)) isValidated = false;
+            if (!validateNumber(0, 9999, buildFinishDate)) isValidated = false;
+            if (!validString("1", "31", ownerName)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "31", ownerNameEng)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "31", ownerNameUkr)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
+            if (!validateDate(boughtDate)) isValidated = false;
+            if (!validSelect2(publicationStatus)) isValidated = false
+            if (!validSelect2(ownershipType)) isValidated = false
+            if (!validateNumber(0, 9999, floor)) isValidated = false;
+            if (!validSelect2(residentialComplexId)) isValidated = false
+            if (!validateNumber(0, 9999, employeeCode)) isValidated = false;
+            if (!validateNumber(0, 9999, branchCode)) isValidated = false;
+            if (!validateNumber(0, 9999, areaTotal)) isValidated = false;
+            if (!validateNumber(0, 9999, areaLiving)) isValidated = false;
+            if (!validateNumber(0, 100000000, price)) isValidated = false;
+            if (!validateNumber(0, 9999, areaKitchen)) isValidated = false;
+            if (!validString("1", "100", roomMeters)) isValidated = false;
+            if (!validateNumber(0, 9999, heightCeiling)) isValidated = false;
+            if (!validString("1", "500", notes)) isValidated = false;
+            if (!validateDate(lastContactDate)) isValidated = false;
+            if (!validateDate(vnpExpirationDate)) isValidated = false;
+            if (!validSelect2(layoutType)) isValidated = false
+            if (!validSelect2(ladderType)) isValidated = false
+            if (!validSelect2(floorType)) isValidated = false
+            if (!validSelect2(windowType)) isValidated = false
+            if (!validSelect2(carpentryType)) isValidated = false
+            if (!validSelect2(frontDoorType)) isValidated = false
+            if (!validString("1", "31", wallMaterial)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "31", wallMaterialEng)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "31", wallMaterialUkr)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
+            if (!validateNumber(0, 20, roomQuantity)) isValidated = false;
+            if (!validString("1", "15", objectCode)) isValidated = false;
+            if (!validString("0", "20000", administrationComment)) isValidated = false;
+            if (!validString("1", "100", landmark)) isValidated = false;
+            if (!validSelect2(kitchenType)) isValidated = false
+            if (!validSelect2(bathroomType)) isValidated = false
+            if (!validSelect2(balconyType)) isValidated = false
+            if (!validSelect2(windowViewType)) isValidated = false
+            if (!validSelect2(kitchenStoveType)) isValidated = false
+            if (!validSelect2(heatingType)) isValidated = false
+            if (!validString("1", "50", advertisementHeadline)) {
+                isValidated = false
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "50", advertisementHeadlineUk)) {
+                isValidated = false
+                $("#ukrLangSave").click();
+            }
+            if (!validString("1", "50", advertisementHeadlineEn)) {
+                isValidated = false
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "5000", advertisementText)) {
+                isValidated = false;
+                $("#ruLangSave").click();
+            }
+            if (!validString("1", "5000", advertisementTextUk)) {
+                isValidated = false;
+                $("#ukrLangSave").click();
+            }
+            if (!validString("1", "5000", advertisementTextEn)) {
+                isValidated = false;
+                $("#euLangSave").click();
+            }
+            if (!validString("1", "500", informationSource)) isValidated = false
+
+            countError = 0;
+            console.log(isValidated)
+            return isValidated
         }
 
         var fileInput = document.getElementById("fileInput");

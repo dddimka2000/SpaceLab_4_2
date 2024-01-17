@@ -138,7 +138,7 @@ function validateNumber(min, max, number) {
 
 function cleanInputs() {
     $('.text-for-validating').remove()
-    var elements = document.querySelectorAll('input, select, textarea');
+    var elements = document.querySelectorAll('input, select, textarea, button');
     for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
         element.style.borderColor = '';
@@ -246,7 +246,6 @@ function validateEmail(input) {
     }
     return result
 }
-
 function validateDate(input) {
     var regex = /^\d{4}\/\d{2}\/\d{2}$/;
     if (!regex.test(input.val())) {
@@ -311,6 +310,7 @@ function activateListItem(element) {
         $button.addClass('active');
     }
 }
+
 function scrollToElement($element) {
     if(countError !== 0)return
     countError++
@@ -332,6 +332,7 @@ function addText(inputId, message) {
         position: { my: "left+15 center", at: "right center" }
     })
     inputId.after(icon);
+    inputId.css("border-color", "#ff0000")
 }
 function validAllNumberInput(){
     var elements = $('.onlyNumber');
@@ -364,4 +365,52 @@ function validDataFromResponse(errors){
         }
     }
     countError=0
+}
+function showErrorName(input) {
+    scrollToElement(input)
+    if (languageSecondExample == 'eng') {
+        addText(input, "This name is already in use");
+    } else if (languageSecondExample == 'ru') {
+        addText(input, "Данное имя уже используется");
+    } else {
+        addText(input, "Це ім'я вже використовується");
+    }
+    input.css("border", "1px solid #ff0000");
+    return false;
+}
+function showErrorCodeBranch(input) {
+    scrollToElement(input)
+    if (languageSecondExample == 'eng') {
+        addText(input, "The branch with this code was not found");
+    } else if (languageSecondExample == 'ru') {
+        addText(input, "Филиал с данным кодом не был найден");
+    } else {
+        addText(input, "Філіал з вказаним кодом не був знайдений");
+    }
+    input.css("border", "1px solid #ff0000");
+    return false;
+}
+function showErrorCodeRealtor(input) {
+    scrollToElement(input)
+    if (languageSecondExample == 'eng') {
+        addText(input, "The code for this employee does not exist");
+    } else if (languageSecondExample == 'ru') {
+        addText(input, "Сотрудника с данным кодом не было найдено");
+    } else {
+        addText(input, "Співробітника з цим кодом не існує");
+    }
+    input.css("border", "1px solid #ff0000");
+    return false;
+}
+function showErrorCode(input) {
+    scrollToElement(input)
+    if (languageSecondExample == 'eng') {
+        addText(input, "The object with this code already exists");
+    } else if (languageSecondExample == 'ru') {
+        addText(input, "Объект с таким кодом уже существует");
+    } else {
+        addText(input, "Об'єкт з таким кодом вже існує");
+    }
+    input.css("border", "1px solid #ff0000");
+    return false;
 }

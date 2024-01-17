@@ -14,6 +14,7 @@
 <section layout:fragment="content">
     <div class="content-wrapper">
         <div class="container-fluid">
+            <br>
             <div class="d-flex justify-content-between">
                 <h4 class="fw-bold" data-translate="newUser">Новый пользователь</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -149,7 +150,7 @@
                 if (parentRowElement) {
                     parentRowElement.remove();
                 }
-
+                showBlockForAllBody(true)
                 $.ajax({
                     type: "Get",
                     url: '[[@{/users/delete/review}]]',
@@ -158,6 +159,7 @@
                     },
                     success: function (response) {
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                 });
 
@@ -207,7 +209,7 @@
                 if (rowElement) {
                     rowElement.remove();
                 }
-
+                showBlockForAllBody(true)
                 $.ajax({
                     type: "Get",
                     url: '[[@{/users/delete/file}]]',
@@ -217,6 +219,7 @@
                     },
                     success: function (response) {
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                 });
 
@@ -417,39 +420,38 @@
             var email = $("#email").val();
             var password = $("#password").val();
             var confirmPassword = $("#confirmPassword").val();
-
-
+            var isValidated = true
             $("#branchSelect2Multiple").next().find(".select2-selection").css("border", "");
             if (branches.length === 0) {
                 showToast("Елемент має бути вибрано", "danger")
                 $("#branchSelect2Multiple").next().find(".select2-selection").css("border", "1px solid #ff0000");
-                return;
+                isValidated = false;
             }
             $("#roleSelect2").next().find(".select2-selection").css("border", "");
             if (role == null) {
                 showToast("Елемент має бути вибрано", "danger")
                 $("#roleSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
-                return;
+                isValidated = false;
             }
             $("#name").css("border-color", "");
             if (!validString("3", "50", $("#name"))) {
-                return;
+                isValidated = false
             }
             $("#surname").css("border-color", "");
             if (!validString("3", "50", $("#surname"))) {
-                return;
+                isValidated = false
             }
             $("#middleName").css("border-color", "");
             if (!validString("3", "50", $("#middleName"))) {
-                return;
+                isValidated = false
             }
             $("#phone").css("border-color", "");
             if (!validatePhoneNumber($("#phone"))) {
-                return;
+                isValidated = false
             }
             $("#email").css("border-color", "");
             if (!validateEmail($("#email"))) {
-                return;
+                isValidated = false
             }
             let formData = new FormData();
 
@@ -458,17 +460,17 @@
                 if (img === undefined) {
                     showToast("Фото повино бути завантажене", "danger")
                     $("#img").css("border-color", "#ff0000");
-                    return;
+                    isValidated = false
                 }
                 $("#password").css("border-color", "");
                 if (!validString(8, 50, $("#password"))) {
-                    return;
+                    isValidated = false
                 }
                 $("#confirmPassword").css("border-color", "");
                 if (!validString(8, 50, $("#password"))) {
                     $("#password").css("border-color", "#ff0000");
                     $("#confirmPassword").css("border-color", "#ff0000");
-                    return;
+                    isValidated = false
                 }
                 formData.append("password", password)
                 formData.append("confirmPassword", confirmPassword)
@@ -483,23 +485,25 @@
 
                     reviews[i + 1].style.borderColor = '';
                     if (!validString(8, 50, reviews[i + 1])) {
-                        return;
+                        isValidated = false;
                     }
                     reviews[i + 2].style.borderColor = '';
                     if (!validatePhoneNumber(reviews[i + 2])) {
-                        return;
+                        isValidated = false;
                     }
                     reviews[i + 3].style.borderColor = '';
                     if (!validString(10, 1000, reviews[i + 3])) {
-                        return;
+                        isValidated = false;
                     }
 
+                    countError = 0
+                    if(!isValidated)return
                     reviewForm.append("id", reviews[i].value)
                     reviewForm.append("name", reviews[i + 1].value)
                     reviewForm.append("phone", reviews[i + 2].value)
                     reviewForm.append("content", reviews[i + 3].value)
                     reviewForm.append("user", userId)
-
+                    showBlockForAllBody(true)
                     $.ajax({
                         url: '[[@{/users/save/review}]]',
                         method: "POST",
@@ -510,6 +514,7 @@
                         headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                         success: function (response) {
                             showToast(response, "success")
+                            showBlockForAllBody(false)
                         },
                         error: function (xhr, status, error) {
                             var errors = JSON.parse(xhr.responseText);
@@ -517,11 +522,13 @@
                                 console.log("Ошибка: " + error);
                                 showNotification("Ошибка!", error, false);
                             });
+                            showBlockForAllBody(false)
                         }
                     })
                 }
             }
-
+            countError = 0
+            if(!isValidated)return
             formData.append("name", name)
             formData.append("email", email)
             formData.append("branches", branches)
@@ -530,7 +537,7 @@
             formData.append("middleName", middleName)
             formData.append("phone", phone)
 
-
+            showBlockForAllBody(true)
             $.ajax({
                 url: '[[@{/users/add}]]',
                 method: "POST",
@@ -541,6 +548,7 @@
                 headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                 success: function (response) {
                     showToast(response, "success")
+                    showBlockForAllBody(false)
                 },
                 error: function (xhr, status, error) {
                     var errors = JSON.parse(xhr.responseText);
@@ -548,6 +556,7 @@
                         console.log("Ошибка: " + error);
                         showNotification("Ошибка!", error, false);
                     });
+                    showBlockForAllBody(false)
                 }
             })
         }

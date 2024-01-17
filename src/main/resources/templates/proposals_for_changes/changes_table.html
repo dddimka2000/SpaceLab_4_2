@@ -14,6 +14,7 @@
 <section layout:fragment="content">
     <div class="content-wrapper">
         <div class="container-fluid">
+            <br>
             <div class="d-flex justify-content-between">
                 <h4 class="fw-bold" data-translate="Changes">Изменения</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -82,13 +83,14 @@
                 var table = document.getElementById("offersTable");
                 var row = button.parentElement.parentElement;
                 table.deleteRow(row.rowIndex);
-
+                showBlockForAllBody(true)
                 $.ajax({
                     type: "Get",
                     url: '[[@{/proposals_for_changes/delete/}]]' + id,
                     success: function (response) {
                         getPageWithFilter(page)
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                 });
 

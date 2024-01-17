@@ -7,8 +7,6 @@
 >
 <head>
     <title data-translate="ріелтори"></title>
-    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
-    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
 </head>
 
 <body>
@@ -16,6 +14,7 @@
 <section layout:fragment="content">
     <div class="content-wrapper">
         <div class="container-fluid">
+            <br>
             <div class="d-flex justify-content-between">
                 <h4 class="fw-bold" data-translate="realtors">Риелторы</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -139,7 +138,6 @@
                         var realtorId = realtor.id;
                         var cell1 = newRow.insertCell(0);
                         if (realtor.branch != null) cell1.innerHTML = realtor.branch.id;
-                        cell1.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
 
                         var cell2 = newRow.insertCell(1);
                         cell2.innerHTML = realtor.code;
@@ -148,7 +146,6 @@
 
                         var cell3 = newRow.insertCell(2);
                         cell3.innerHTML = realtor.surname + "\n" + realtor.name + "\n" + realtor.middleName;
-                        cell3.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
 
                         var cell4 = newRow.insertCell(3);
                         if (realtor.contacts != null) {
@@ -158,13 +155,10 @@
                             }
 
                         }
-                        cell4.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
                         var cell5 = newRow.insertCell(4);
                         cell5.innerHTML = realtor.email
-                        cell5.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
                         var cell6 = newRow.insertCell(5);
                         cell6.innerHTML = realtor.birthdate
-                        cell6.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
 
                         var cell7 = newRow.insertCell(6);
                         cell7.innerHTML = `
@@ -184,13 +178,15 @@
                 var button = document.getElementById(realtorId);
                 var table = document.getElementById("realtorsTable");
                 var row = button.parentElement.parentElement;
-                table.deleteRow(row.rowIndex);
+                table.deleteRow(row.rowIndex)
+                showBlockForAllBody(true)
                 $.ajax({
                     type: "Get",
                     url: '[[@{/realtors/delete/}]]' + realtorId,
                     success: function (response) {
                         getPageWithFilter(page)
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                 });
                 $('#confirmationModal').modal('hide');

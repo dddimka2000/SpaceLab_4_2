@@ -14,6 +14,7 @@
 <section layout:fragment="content">
     <div class="content-wrapper">
         <div class="container-fluid">
+            <br>
             <div class="d-flex justify-content-between">
                 <h4 class="fw-bold" data-translate="newBranch">Новый филиал</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -158,6 +159,7 @@
         function save(form) {
             validatePhoneNumberWithAjax($('#telephone')).then(result => {
                 if (result) {
+                    showBlockForAllBody(true)
                     $.ajax({
                         type: 'POST',
                         url: '[[@{/branches/create}]]',
@@ -167,6 +169,7 @@
                         processData: false,
                         success: function (response) {
                             showToast(response.status, "success");
+                            showBlockForAllBody(false)
                         },
                         error: function (xhr, status, error) {
                             if (xhr.status === 400) {
@@ -174,6 +177,7 @@
                             } else {
                                 console.error('Помилка відправки файлів на сервер:', error);
                             }
+                            showBlockForAllBody(false)
                         }
                     })
                 }

@@ -14,6 +14,7 @@
 <section layout:fragment="content">
     <div class="content-wrapper">
         <div class="container-fluid">
+            <br>
             <div class="d-flex justify-content-between">
             <h4 class="fw-bold" data-translate="COMMERCIAL">Комерческая недвижемось</h4>
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -239,8 +240,13 @@
                 minArea: $('#houseAreaMin').val(),
                 maxArea: $('#houseAreaMax').val(),
                 street: $('#street').val(),
-                lastContactDate: $('#lastContactDate').val() ? new Date().toISOString().split('T')[0] : null
+                builderObject: $('#buildObject').val()
             };
+            var lastVisitDate = new Date();
+            if ($('#lastContactDate').val()) {
+                lastVisitDate.setDate(lastVisitDate.getDate() - $('#lastContactDate').val())
+                data.lastContactDate = lastVisitDate.toISOString().split('T')[0];
+            }
             $.ajax({
                 type: "get",
                 url: '[[@{/commercial/get/all}]]',
@@ -266,51 +272,39 @@
 
                         var cell1 = newRow.insertCell(1);
                         cell1.innerHTML = house.objectCode;
-                        cell1.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
 
                         var cell2 = newRow.insertCell(2);
                         if (house.address) cell2.innerHTML = house.address.district;
-                        cell2.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
 
                         var cell3 = newRow.insertCell(3);
                         if (house.address) cell3.innerHTML = house.address.zone;
-                        cell3.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
 
                         var cell4 = newRow.insertCell(4);
                         if (house.address) cell4.innerHTML = house.address.street;
-                        cell4.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
 
                         var cell5 = newRow.insertCell(5);
                         cell5.innerHTML = house.roomQuantity;
-                        cell5.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
 
                         var cell6 = newRow.insertCell(6);
                         cell6.innerHTML = house.floor;
-                        cell6.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
 
                         var cell7 = newRow.insertCell(7);
                         cell7.innerHTML = house.floorQuantity;
-                        cell7.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
 
                         var cell8 = newRow.insertCell(8);
                         cell8.innerHTML = house.areaTotal;
-                        cell8.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
 
                         var cell9 = newRow.insertCell(9);
                         cell9.innerHTML = house.price;
-                        cell9.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
 
                         var cell10 = newRow.insertCell(10);
                         cell10.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1" data-translate="Yes">'+translateValue('Yes')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">'+translateValue('no')+'</span>'
-                        cell10.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
 
                         var cell11 = newRow.insertCell(11);
                         cell11.innerHTML = house.publicationStatus == 'PUBLISHED' ? '<span class="badge bg-label-success me-1" data-translate="PUBLISHED">'+translateValue('PUBLISHED')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="Модерация">'+translateValue('Модерация')+'</span>'
-                        cell11.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
 
                         var cell12 = newRow.insertCell(12);
                         cell12.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1" data-translate="Есть">'+translateValue('Есть')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">'+translateValue('no')+'</span>'
-                        cell12.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"')
 
                         var cell13 = newRow.insertCell(13);
                         cell13.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint" value="` + house.id + `">`
@@ -333,7 +327,7 @@
                 var table = document.getElementById("houseTable");
                 var row = button.parentElement.parentElement;
                 table.deleteRow(row.rowIndex);
-
+                showBlockForAllBody(true)
                 $.ajax({
                     type: "delete",
                     url: '[[@{/commercial/delete/}]]' + houseId,
@@ -341,6 +335,7 @@
                     success: function (response) {
                         getPageWithFilter(page)
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                 });
 

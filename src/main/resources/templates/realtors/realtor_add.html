@@ -7,8 +7,6 @@
         xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <title data-translate="менеджер_ріелторів"></title>
-    <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
-    <script th:src="@{/vendor/libs/flatpickr/flatpickr.js}"></script>
 </head>
 
 <body>
@@ -16,6 +14,7 @@
 <section layout:fragment="content">
     <div class="content-wrapper">
         <div class="container-fluid">
+            <br>
             <div class="d-flex justify-content-between">
                 <h4 class="fw-bold" data-translate="newRealtor">Новый риелтор</h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
@@ -439,6 +438,7 @@
                 if (rowElement) {
                     rowElement.remove();
                 }
+                showBlockForAllBody(true)
                 $.ajax({
                     url: '[[@{/realtors/delete}]]',
                     type: "GET",
@@ -448,9 +448,11 @@
                     },
                     success: function (response) {
                         showToast(response, "success")
+                        showBlockForAllBody(false)
                     },
                     error: function (error) {
-                        console.error("Помилка видалення файлу", error);
+                        console.error("Помилка видалення файлу", error)
+                        showBlockForAllBody(false)
                     }
                 });
                 $('#confirmationModal').modal('hide');
@@ -489,6 +491,7 @@
         }
 
         function save(form) {
+            showBlockForAllBody(true)
             $.ajax({
                 type: 'POST',
                 url: '[[@{/realtors/add}]]',
@@ -498,6 +501,7 @@
                 processData: false,
                 success: function (response) {
                     showToast(response.status, "success");
+                    showBlockForAllBody(false)
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status === 400) {
@@ -505,6 +509,7 @@
                     } else {
                         console.error('Помилка відправки файлів на сервер:', error);
                     }
+                    showBlockForAllBody(false)
                 }
             });
         }
@@ -598,6 +603,7 @@
                     },
                 });
             }
+            countError = 0
             if(!isValidated)return
             if ($("#code").val() != realtor.code) {
                 var ajaxRequest = $.ajax({
