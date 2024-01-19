@@ -355,7 +355,7 @@
             var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
 
             if (selectedCheckboxes.length === 0) {
-                showNotification("Выберите хотя бы один чекбокс для печати.", "", false);
+                showNotification("Потом переделаю печать", "", false);
                 return;
             }
 
@@ -422,8 +422,7 @@
                 success: function (response) {
                     $("#elementTable" + elementDelete).empty();
                     $("#cancelBtn").click();
-                    console.log(response);
-                    showNotification("Warn! ", response, false);
+                    showToastWithTranslate("deleteObj","danger");
                     getPageWithFilter(0);
                 },
                 error: function (context) {

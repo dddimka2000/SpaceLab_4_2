@@ -639,9 +639,9 @@
             var regExp = /^\+380(31|32|33|34|35|36|38|39|41|43|44|45|46|20|89|94|92|91|67|68|96|97|98|70|90|91|67|68|96|97|98|70|87|89|50|66|95|99)\d{7}$/;
             console.log(checkNumber)
             if (regExp.test(checkNumber)) {
-                showNotification("Номер корректный", "", true)
+                showToastWithTranslate("error_number", "danger")
             } else {
-                showNotification("Такого номера не существует", "", false)
+                showToastWithTranslate("correct_number", "danger")
             }
         }
 
@@ -1081,7 +1081,7 @@
                         fileMap.set(numListener, selectedFile);
                         numFile++;
                     } else {
-                        showNotification("Выберите файл формата .xlsx или .pdf.", "", false);
+                        showToastWithTranslate("show_file_message","danger");
                     }
                 }
             }

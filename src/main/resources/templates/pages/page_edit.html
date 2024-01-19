@@ -56,46 +56,46 @@
                     <hr>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
+                    <div>
+                        <div>
                             <label data-translate="title">Название</label><span>(Ру)</span>
                             <input type="text" class="form-control" name="" id="namePage" th:value="${page.getName()}">
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div>
                         <label data-translate="CONTENT">Контент</label>
-                        <div class="col-6">
+                        <div>
                             <div id="editor" th:utext="${page.getContent()}">
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 100px">
-                        <div class="col-6">
-                            <label data-translate="title">Название</label> <span>(Eng)</span>
+                    <div style="margin-top: 100px">
+                        <div>
+                            <label data-translate="title">Название</label><span>(Eng)</span>
                             <input type="text" class="form-control" name="" id="namePageEng"
                                    th:value="${page.getNameEng()}">
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div>
                         <label data-translate="CONTENT">Контент</label>
-                        <div class="col-6">
+                        <div>
                             <div id="editor2" th:utext="${page.getContentEng()}">
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 100px">
-                        <div class="col-6">
+                    <div style="margin-top: 100px">
+                        <div>
                             <label data-translate="title">Название</label><span>(Укр)</span>
                             <input type="text" class="form-control" name="" id="namePageUkr"
                                    th:value="${page.getNameUkr()}">
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div>
                         <label data-translate="CONTENT">Контент</label>
-                        <div class="col-6">
+                        <div>
                             <div id="editor3" th:utext="${page.getContentUkr()}">
                             </div>
                         </div>
@@ -111,7 +111,6 @@
         </div>
     </div>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
     <script>
         var quill = new Quill('#editor', {
             theme: 'snow'
@@ -123,9 +122,33 @@
             theme: 'snow'
         });
     </script>
-
+    <script th:src="@{/vendor/libs/block-ui/block-ui.js}"></script>
     <script th:inline="javascript">
+        function validAllInput() {
+            let isValidated = true
+            cleanInputs();
+            if (!validString("1", "45", $("#namePageUkr"))) isValidated = false
+            if (!validString("1", "45", $("#namePageUkr"))) isValidated = false
+            if (!validString("1", "45", $("#namePageUkr"))) isValidated = false
+            if (!validQuill("1", "10000", $("#editor").find(".ql-editor"))) isValidated = false
+            if (!validQuill("1", "10000", $("#editor2").find(".ql-editor"))) isValidated = false
+            if (!validQuill("1", "10000", $("#editor3").find(".ql-editor"))) isValidated = false
+
+            return isValidated;
+        }
+
         function save() {
+            $("#full_body").block({
+                message: '<div style="display: flex; align-items: center; justify-content: center; height: 100vh;"><div class="pinner-border spinner-border text-primary" role="status" style="height: 10vw; width: 10vw; max-height: 400px; max-width: 400px;"></div></div>',
+                css: {
+                    backgroundColor: "transparent",
+                    border: "0"
+                },
+                overlayCSS: {
+                    backgroundColor: "#000",
+                    opacity: 0.5
+                }
+            })
             console.log($("#editor2").find(".ql-editor").html())
             let name = $("#namePage")
             let formData = new FormData();
@@ -138,25 +161,24 @@
             let contextPath =/*[[@{/}]]*/'';
             let idThymeleaf =/*[[${id}]]*/'';
             let url = contextPath.toString() + "pages/edit/" + idThymeleaf;
+            if (!validAllInput(formData)) {
+                $("#full_body").unblock();
+                return
+            }
             $.ajax({
                 url: url,
                 method: "POST",
                 contentType: false,
                 processData: false,
                 data: formData,
-                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
+                headers: {'X-XSRF-TOKEN': [[${_csrf.token}]]},
                 success: function () {
-                    showNotification("Объект сохранен!", "", true);
+                    showToastWithTranslate("save_something","success");
+                    $("#full_body").unblock();
                 },
                 error: function (xhr, status, error) {
-                    console.log(error)
-                    if (xhr.responseText != null) {
-                        var errors = JSON.parse(xhr.responseText);
-                        errors.forEach(function (error) {
-                            console.log("Ошибка: " + error);
-                            showNotification("Ошибка!", error, false);
-                        });
-                    }
+                    $("#full_body").unblock();
+                    console.log(error);
                 }
             })
         }

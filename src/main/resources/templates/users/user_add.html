@@ -368,7 +368,7 @@
                         var errors = JSON.parse(xhr.responseText);
                         errors.forEach(function (error) {
                             console.log("Ошибка: " + error);
-                            showNotification("Ошибка!", error, false);
+                            showToast(error, "danger");
                         });
                     }
                 })
@@ -515,7 +515,7 @@
                             var errors = JSON.parse(xhr.responseText);
                             errors.forEach(function (error) {
                                 console.log("Ошибка: " + error);
-                                showNotification("Ошибка!", error, false);
+                                showToast(error, "danger");
                             });
                         }
                     })
@@ -546,7 +546,7 @@
                     var errors = JSON.parse(xhr.responseText);
                     errors.forEach(function (error) {
                         console.log("Ошибка: " + error);
-                        showNotification("Ошибка!", error, false);
+                        showToast(error, "danger");
                     });
                 }
             })

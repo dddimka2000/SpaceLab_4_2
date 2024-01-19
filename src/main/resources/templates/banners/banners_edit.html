@@ -7,22 +7,6 @@
         xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title data-translate="менеджер_банерів"></title>
-    <style>
-        .notification {
-            position: fixed;
-            top: 90px;
-            right: 40px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .notification.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-    </style>
 </head>
 <body>
 
@@ -309,21 +293,7 @@
             $(textCard).remove();
         }
 
-        function showNotification(bigTextMessage, message, isSuccess) {
-            const notification = document.getElementById("notification");
-            const notificationMessage = document.getElementById("notification-message");
 
-            var element = document.getElementById("text_notification");
-            element.textContent = bigTextMessage;
-
-            notificationMessage.textContent = message;
-            notification.classList.remove("hidden");
-            notification.classList.toggle("alert-success", isSuccess);
-            notification.classList.toggle("alert-warning", !isSuccess);
-            setTimeout(() => {
-                notification.classList.add("hidden");
-            }, 5000);
-        }
     </script>
 </section>
 </body>
