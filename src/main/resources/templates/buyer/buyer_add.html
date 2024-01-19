@@ -779,7 +779,6 @@
                 builderObjects.next().find(".select2-selection").css("border", "1px solid #ff0000")
                 isValidated = false;
             }
-            if(!validAllNumberInput())isValidated = false
             if (status.val() === null) {
                 if (languageSecondExample == 'eng') addText(status.next().find(".select2-selection"),"The item must be selected")
                 else if (languageSecondExample == 'ru')addText(status.next().find(".select2-selection"),"Элемент должен быть выбран")
@@ -830,15 +829,15 @@
             var comment = $("#comment")
 
             surname.css("border-color", "");
-            if (!validString("3", "50", surname)) {
+            if (!validString("1", "50", surname)) {
                 isValidated = false;
             }
             name.css("border-color", "");
-            if (!validString("3", "50", name)) {
+            if (!validString("1", "50", name)) {
                 returnisValidated = false;
             }
             middleName.css("border-color", "");
-            if (!validString("3", "50", middleName)) {
+            if (!validString("1", "50", middleName)) {
                 isValidated = false;
             }
             phone.css("border-color", "");
@@ -851,20 +850,26 @@
             }
             realtor.next().find(".select2-selection").css("border", "");
             if (realtor.val() === null) {
-                addText(realtor.next().find(".select2-selection"),"Елемент має бути вибрано")
+                if (languageSecondExample == 'eng') addText(realtor.next().find(".select2-selection"),"The item must be selected")
+                else if (languageSecondExample == 'ru')addText(realtor.next().find(".select2-selection"),"Элемент должен быть выбран")
+                else addText(realtor.next().find(".select2-selection"),"Елемент має бути вибрано")
                 $("#realtorSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
                 isValidated = false;
             }
             informationSourceSelect2.next().find(".select2-selection").css("border", "");
             if (informationSourceSelect2.val() == null) {
-                addText(informationSourceSelect2.next().find(".select2-selection"), "Елемент має бути вибрано")
+                if (languageSecondExample == 'eng') addText(informationSourceSelect2.next().find(".select2-selection"),"The item must be selected")
+                else if (languageSecondExample == 'ru')addText(informationSourceSelect2.next().find(".select2-selection"),"Элемент должен быть выбран")
+                else addText(informationSourceSelect2.next().find(".select2-selection"),"Елемент має бути вибрано")
                 $("#informationSourceSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
                 isValidated = false;
             }
             passport.css("border-color", "")
             var regex = /^[A-Za-z]{2}\d{4}$/;
             if (!regex.test(passport.val().replace(/\s/g, ''))) {
-                addText(passport,"Серія паспорта повина бути в такому форматі: XX 1234")
+                if (languageSecondExample == 'eng') addText(passport,"The passport series must be in the following format: XX 1234")
+                else if (languageSecondExample == 'ru')addText(passport,"Серия паспорта должна быть в следующем формате: XX 1234")
+                else addText(passport,"Серія паспорта повина бути в такому форматі: XX 1234")
                 passport.css("border-color", "#ff0000")
                 isValidated = false;
             }
@@ -882,7 +887,9 @@
             }
             files.css("border-color", "")
             if (files[0].files.length <= 0 && !ID) {
-                addText(files, "Файл повинен бути вибраний")
+                if (languageSecondExample == 'eng') addText(files,"The file must be selected")
+                else if (languageSecondExample == 'ru')addText(files,"Файл должен быть выбран")
+                else addText(files,"Файл повинен бути вибраний")
                 files.css("border-color", "#ff0000")
                 isValidated = false
             } else {
@@ -898,9 +905,10 @@
 
             var inputs = $('.for-note');
             for (var i = 0; i < inputs.length; i += 3) {
-                if (!validString("3", "300", $(inputs[i + 1]))) isValidated = false
+                if (!validString("1", "300", $(inputs[i + 1]))) isValidated = false
             }
             countError = 0
+            if(isValidated  &&  !validAllNumberInput())isValidated = false
             if(!isValidated)return
             let formData = new FormData();
             formData.append("surname", surname.val());

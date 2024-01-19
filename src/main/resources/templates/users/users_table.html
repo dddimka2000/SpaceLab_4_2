@@ -50,7 +50,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="text" class="form-control for-filter">
+                                    <select id="roleSelect2" class="form-select for-filter"></select>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control for-filter">
@@ -91,6 +91,7 @@
     </div>
     <script>
         $(document).ready(function () {
+            roleSelect2()
             getPageWithFilter(0)
         });
         $('.for-filter').on('input', function () {
@@ -129,7 +130,7 @@
                         var userId = user.id;
 
                         var cell1 = newRow.insertCell(0);
-                        cell1.innerHTML = user.roles;
+                        cell1.innerHTML = translateByOriginName(user.roles)
 
                         var cell2 = newRow.insertCell(1);
                         cell2.innerHTML = user.surname;
@@ -155,6 +156,7 @@
                         <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + userId + `);" title='Удалить'><i class='fa fa-trash'></i></button>
                         <a class='btn btn-default btn-sm float-right' href='[[@{/users/edit/}]]` + userId + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
                     }
+
                     $('#pagination_container').empty();
                     if (users.totalPages > 1) updatePagination(page, users.totalPages, 'pagination_container')
                 },

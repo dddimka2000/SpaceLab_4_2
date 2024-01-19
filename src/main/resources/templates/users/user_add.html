@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label" data-translate="phone">Телефон</label>
-                                    <input type="tel" class="form-control" id="phone"/>
+                                    <input type="tel" class="form-control phone" id="phone"/>
                                 </div>
                             </div>
                             <div class="row">
@@ -250,7 +250,7 @@
                         var blockForFile = $("#block-for-file");
 
                         var row = $("<div class='row'></div>");
-                        var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>Скачать файл</a></div>");
+                        var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>"+removeBeforeFirstDot(url)+"</a></div>");
                         col1.on("click", function () {
                             downloadFileFrom(url);
                         });
@@ -281,7 +281,7 @@
                         $("#middleName").val(user.middleName)
                         $("#phone").val(user.phone)
                         $("#email").val(user.email)
-                        roleSelect2(user.roles, user.roles)
+                        roleSelect2(translateByOriginName(user.roles), user.roles)
                         if (user.img)
                             $.ajax({
                                 type: "GET",
@@ -332,7 +332,7 @@
                                 var newFileBlock = document.createElement("div");
                                 newFileBlock.innerHTML = `
                         <div class="row">
-                            <div class="col-2"><a href="#" class="text-decoration-none" onclick="downloadFileFrom('` + file + `')">Скачать файл</a></div>
+                            <div class="col-2"><a href="#" class="text-decoration-none" onclick="downloadFileFrom('` + file + `')">`+removeBeforeFirstDot(file)+`</a></div>
                             <div class="col"><a href="#" class="text-decoration-none" onclick="deleteFile(this,'` + file + `')">х удалить</a></div>
                         </div>`
                                 fileBlock.appendChild(newFileBlock)
@@ -410,6 +410,7 @@
         })
 
         function sendForm() {
+            cleanInputs()
             var img = $("#img").prop("files")[0];
             var branches = $("#branchSelect2Multiple").val();
             var role = $("#roleSelect2").val();
@@ -423,26 +424,37 @@
             var isValidated = true
             $("#branchSelect2Multiple").next().find(".select2-selection").css("border", "");
             if (branches.length === 0) {
-                showToast("Елемент має бути вибрано", "danger")
+                if (languageSecondExample == 'eng')
+                    addText($("#branchSelect2Multiple").next().find(".select2-selection"), "The element must be selected");
+                else if (languageSecondExample == 'ru')
+                    addText($("#branchSelect2Multiple").next().find(".select2-selection"), "Элемент должен быть выбран");
+                else
+                    addText($("#branchSelect2Multiple").next().find(".select2-selection"), "Елемент має бути вибраний");
+
                 $("#branchSelect2Multiple").next().find(".select2-selection").css("border", "1px solid #ff0000");
                 isValidated = false;
             }
-            $("#roleSelect2").next().find(".select2-selection").css("border", "");
             if (role == null) {
-                showToast("Елемент має бути вибрано", "danger")
+                if (languageSecondExample == 'eng')
+                    addText($("#roleSelect2").next().find(".select2-selection"), "The element must be selected");
+                else if (languageSecondExample == 'ru')
+                    addText($("#roleSelect2").next().find(".select2-selection"), "Элемент должен быть выбран");
+                else
+                    addText($("#roleSelect2").next().find(".select2-selection"), "Елемент має бути вибраний");
+
                 $("#roleSelect2").next().find(".select2-selection").css("border", "1px solid #ff0000");
                 isValidated = false;
             }
             $("#name").css("border-color", "");
-            if (!validString("3", "50", $("#name"))) {
+            if (!validString("1", "50", $("#name"))) {
                 isValidated = false
             }
             $("#surname").css("border-color", "");
-            if (!validString("3", "50", $("#surname"))) {
+            if (!validString("1", "50", $("#surname"))) {
                 isValidated = false
             }
             $("#middleName").css("border-color", "");
-            if (!validString("3", "50", $("#middleName"))) {
+            if (!validString("1", "50", $("#middleName"))) {
                 isValidated = false
             }
             $("#phone").css("border-color", "");
@@ -458,18 +470,13 @@
             if (getLastDigitFromPath(window.location.pathname) == null) {
                 $("#img").css("border-color", "");
                 if (img === undefined) {
-                    showToast("Фото повино бути завантажене", "danger")
+                    if (languageSecondExample == 'eng')
+                        addText($("#img"), "The photo must be uploaded");
+                    else if (languageSecondExample == 'ru')
+                        addText($("#img"), "Фото должно быть загружено");
+                    else
+                        addText($("#img"), "Фото повинно бути завантажене");
                     $("#img").css("border-color", "#ff0000");
-                    isValidated = false
-                }
-                $("#password").css("border-color", "");
-                if (!validString(8, 50, $("#password"))) {
-                    isValidated = false
-                }
-                $("#confirmPassword").css("border-color", "");
-                if (!validString(8, 50, $("#password"))) {
-                    $("#password").css("border-color", "#ff0000");
-                    $("#confirmPassword").css("border-color", "#ff0000");
                     isValidated = false
                 }
                 formData.append("password", password)
@@ -484,7 +491,7 @@
                     let reviewForm = new FormData();
 
                     reviews[i + 1].style.borderColor = '';
-                    if (!validString(8, 50, reviews[i + 1])) {
+                    if (!validString(1, 50, reviews[i + 1])) {
                         isValidated = false;
                     }
                     reviews[i + 2].style.borderColor = '';
@@ -492,7 +499,7 @@
                         isValidated = false;
                     }
                     reviews[i + 3].style.borderColor = '';
-                    if (!validString(10, 1000, reviews[i + 3])) {
+                    if (!validString(1, 1000, reviews[i + 3])) {
                         isValidated = false;
                     }
 
@@ -528,6 +535,42 @@
                 }
             }
             countError = 0
+
+            if (getLastDigitFromPath()==null && ($("#password").val() === "" || $("#password").val().length < 8 || $("#password").val().length > 50)) {
+                $("#password").css('borderColor', '#ff0000')
+                $("#confirmPassword").css('borderColor', '#ff0000')
+                if (languageSecondExample == 'eng')
+                    addText($("#password"), "The password must be between 8 and 50 characters long")
+                else if (languageSecondExample == 'ru')
+                    addText($("#password"), "Пароль должен быть от 8 до 50 символов")
+                else
+                    addText($("#password"), "Пароль повинен бути від 8 до 50 символів")
+                isValidated = false
+            }
+            if (getLastDigitFromPath() != null && $("#password").val() !== "" && $("#password").val().length < 8 || $("#password").val().length > 50) {
+                $("#password").css('borderColor', '#ff0000')
+                $("#confirmPassword").css('borderColor', '#ff0000')
+                if (languageSecondExample == 'eng')
+                    addText($("#password"), "The password must be between 8 and 50 characters long")
+                else if (languageSecondExample == 'ru')
+                    addText($("#password"), "Пароль должен быть от 8 до 50 символов")
+                else
+                    addText($("#password"), "Пароль повинен бути від 8 до 50 символів")
+                isValidated = false
+            }
+            if ($("#password").val() !== $("#confirmPassword").val() && isValidated) {
+                $("#password").css('borderColor', '#ff0000')
+                $("#confirmPassword").css('borderColor', '#ff0000')
+                if (languageSecondExample == 'eng')
+                    addText($("#password"), "Passwords do not match");
+                else if (languageSecondExample == 'ru')
+                    addText($("#password"), "Пароли не совпадают");
+                else
+                    addText($("#password"), "Паролі не співпадають");
+                isValidated = false
+            }
+
+            if(isValidated  &&  !validAllNumberInput())isValidated = false
             if(!isValidated)return
             formData.append("name", name)
             formData.append("email", email)

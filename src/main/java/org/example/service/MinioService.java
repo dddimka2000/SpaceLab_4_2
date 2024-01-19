@@ -122,8 +122,7 @@ public class MinioService {
     public String putImage(MultipartFile image) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info("MinioService-putImage start");
 
-        String extension = image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf(".") + 1);
-        String name = UUID.randomUUID() + "." + extension;
+        String name = UUID.randomUUID() + "." + image.getOriginalFilename();
         putMultipartFile(image, imagesBucketName, name);
 
         log.info("MinioService-putImage successfully");

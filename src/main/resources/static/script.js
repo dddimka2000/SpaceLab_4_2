@@ -2,6 +2,12 @@ var contextPath = "/minions-dd/admin"
 
 
 function showToast(message, type) {
+
+    if (message.includes("ERROR:")) {
+        message = message.replace("ERROR:", "");
+        type='danger'
+    }
+
     let toastContainer = document.querySelector('.position-fixed.top-0.end-0.p-3');
 
     if (!toastContainer) {
@@ -12,6 +18,8 @@ function showToast(message, type) {
     }
     if(message == 'saveObj'  ||  message == 'deleteObj'  ||  message == 'editObj')
         message = translateValue(message)
+
+
     const toast = document.createElement('div');
     toast.classList.add('toast', `bg-${type}`);
     toast.style.transform = 'translateY(0)';
