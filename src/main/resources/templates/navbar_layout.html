@@ -114,6 +114,9 @@
                 }
             });
         }
+        function translateByOriginName(key){
+            return translationsSecondExample[languageSecondExample][key];
+        }
         function translateValue(key) {
             if (!translationsSecondExample)
                 $.ajax({

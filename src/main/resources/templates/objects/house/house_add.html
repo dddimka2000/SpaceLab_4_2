@@ -123,7 +123,7 @@
                     <input class="form-control" id="note" type="text" placeholder="Введите заметки">
                     <br>
                     <span data-translate="cadastral_number">Кадастровий номер участка</span>
-                    <input class="form-control" id="cadastralNumber" type="text" style="width: 40%"
+                    <input class="form-control onlyNumber" id="cadastralNumber" type="text" style="width: 40%"
                            placeholder="XXX XXX XXX">
                     <br>
                     <span data-translate="idea_plot">Назначение участка</span>
@@ -491,7 +491,7 @@
                     if (xhr.status === 200) {
                         addText($("#streetUkr"),response);
                     } else if (xhr.status === 400) {
-                        addText($("#streetUkr"),response+"adsf1");
+                        addText($("#streetUkr"),response);
                     } else {
                         console.log("Необработанный статус ответа:", xhr.status);
                     }
@@ -739,22 +739,21 @@
             if (!validatePhoneNumber(ownerPhone)) isValidated = false
             if (!validateDate(boughtDate)) isValidated = false
             if (!validSelect2(ownershipType)) isValidated = false
-            if (!validString("3", "1000", notes)) isValidated = false
+            if (!validString("1", "1000", notes)) isValidated = false
             if (cadastralNumber.val().length !== 11) {
-                cadastralNumber.css("border", "1px solid #ff0000");
-                addText(cadastralNumber,"Кадастровий номер не коректний")
+                cadastralNumber.css("border", "1px solid #ff0000")
+                if (languageSecondExample == 'eng') addText(cadastralNumber,"The cadastral number is incorrect")
+                else if (languageSecondExample == 'ru')addText(cadastralNumber,"Кадастровый номер не корректен")
+                else addText(cadastralNumber,"Кадастровий номер не коректний")
+
                 isValidated = false
             }
-            if (!validString("3", "1000", plotDescription)) isValidated = false
+
+            if (!validString("1", "10", codeObject)) isValidated = false
+            if (!validString("1", "1000", plotDescription)) isValidated = false
             if (!getLastDigitFromPath(window.location.pathname) && !validateFile('housesFiles', [".pdf"])) isValidated = false
-            if (!validString("3", "1000", administrationComment)) isValidated = false
+            if (!validString("1", "1000", administrationComment)) isValidated = false
             if (!validSelect2(publicationStatus)) isValidated = false
-            if (codeObject.val().replace(/\s/g, '').length !== 8) {
-                codeObject.css("border", "1px solid #ff0000")
-                addText(codeObject,"Код об'єкта має містити 8 символів")
-                isValidated = false
-            }
-            if(!validAllNumberInput())isValidated = false
             if (!validateNumber(1, 1000000, codeBranch)) isValidated = false
             if (!validateNumber(1, 1000000, codeStaff)) isValidated = false
             if (!validateNumber(20000, 999999, price)) isValidated = false
@@ -824,11 +823,10 @@
             formData.append("carpentryType", carpentryType.val());
             formData.append("frontDoorType", frontDoorType.val());
             countError = 0
+            if(isValidated  &&  !validAllNumberInput())isValidated = false
             return isValidated
         }
         function sendForm() {
-            console.log($('#codeObject').val().length)
-
             let formData = new FormData();
             if (!validAllInput(formData)) return
             var branchCode = $("#codeBranch");
@@ -855,7 +853,9 @@
                                     data: {code: $("#codeObject").val()},
                                     success: function (response) {
                                         if(response && !getLastDigitFromPath(window.location.pathname)){
-                                            addText($("#codeObject"),"Об'єкт з таким кодом вже існує")
+                                            if (languageSecondExample == 'eng') addText($("#codeObject"),"The file must be selected")
+                                            else if (languageSecondExample == 'ru')addText($("#codeObject"),"Файл должен быть выбран")
+                                            else addText($("#codeObject"),"Файл повинен бути вибраний")
                                             $("#codeObject").css("border", "1px solid #ff0000")
                                             scrollToElement($("#codeObject"))
                                         }
@@ -1023,15 +1023,6 @@
 
                 addressSelect2()
             }
-            new Cleave("#cadastralNumber", {
-                blocks: [3, 3, 3],
-                numericOnly: true
-            })
-            new Cleave("#codeObject", {
-                blocks: [2, 4, 2],
-                numericOnly: true
-            })
-
             var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
 
             flatpickrDateTimes.forEach(function (element) {

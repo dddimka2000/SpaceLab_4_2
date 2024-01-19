@@ -127,7 +127,6 @@
             if (!validateEmail(email)) isValidated = false
             var address = $("#address")
             if (!validString("1", "100", address)) isValidated = false
-            if(!validAllNumberInput())isValidated = false
             var imgPath = $("#imgPath")
             if (!getLastDigitFromPath() && !validateOneFile(imgPath.get(0).files[0], ['.jpg', '.jpeg', '.png'])) {
                 if (languageSecondExample == 'eng') addText($('#imgPath'),'No file selected')
@@ -137,6 +136,7 @@
                 isValidated = false
             }
             countError = 0
+            if(isValidated  &&  !validAllNumberInput())isValidated = false
             if(!isValidated)return
             if (code.val() != branch.code) {
                 var ajaxRequest = $.ajax({
@@ -146,7 +146,13 @@
 
                 ajaxRequest.done(function (count) {
                     if (count > 0) {
-                        showToast("Такий код належить іншому філіалу", "danger")
+                        if (languageSecondExample == 'eng') {
+                            addText($("#code"), "This code belongs to another branch");
+                        } else if (languageSecondExample == 'ru') {
+                            addText($("#code"), "Такой код принадлежит другому филиалу");
+                        } else {
+                            addText($("#code"), "Такий код належить іншому філіалу");
+                        }
                         code.css("border", "1px solid #ff0000")
                         return
                     } else {

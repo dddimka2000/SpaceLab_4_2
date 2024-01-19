@@ -160,11 +160,11 @@ function validString(minLength, maxLength, inputString) {
     if (!result) {
         scrollToElement(inputString)
         if (languageSecondExample == 'eng') {
-            addText(inputString, `The field must contain between ${minLength} and ${maxLength} characters`);
+            addText(inputString, `The field must contain to ${maxLength} characters`);
         } else if (languageSecondExample == 'ru') {
-            addText(inputString, `Поле должно содержать от ${minLength} до ${maxLength} символов`);
+            addText(inputString, `Поле должно содержать до ${maxLength} символов`);
         } else {
-            addText(inputString, `Поле повино містити від ${minLength} до ${maxLength} символів`);
+            addText(inputString, `Поле повино містити до ${maxLength} символів`);
         }
         inputString.css("border", "1px solid #ff0000");
     }
@@ -353,6 +353,7 @@ function validAllNumberInput(){
             isValid = false
         }
     }
+    removeSpaces()
     return isValid
 }
 function validDataFromResponse(errors){
@@ -414,3 +415,13 @@ function showErrorCode(input) {
     input.css("border", "1px solid #ff0000");
     return false;
 }
+
+function removeSpaces() {
+    var inputs = document.querySelectorAll("input[type='text'], textarea");
+    inputs.forEach(function(element) {
+        var elementValue = element.value;
+        var trimmedValue = elementValue.trim();
+        element.value = trimmedValue;
+    });
+}
+
