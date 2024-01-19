@@ -32,7 +32,6 @@ public class BannerValidator implements Validator {
         AtomicInteger num = new AtomicInteger(0);
         try {
             bannerDto.getSlides().stream().forEach(s -> {
-                //queue
                 int elementToRemove = s.getQueue();
                 int index = list.indexOf(elementToRemove);
                 if (index != -1) {
@@ -47,10 +46,9 @@ public class BannerValidator implements Validator {
                 if (s.getQueue() > size) {
                     errors.rejectValue("slides[" + num.get() + "].queue", "", "Очередь вышла за рамки");
                 }
-                //photo
                 if (s.getImgPath() == null) {
                     if (s.getOldImgPath() == null) {
-                        errors.rejectValue("slides[" + num.get() + "].imgPath", "", "Отсутсвует фото у слайда");
+                        errors.rejectValue("slides[" + num.get() + "].imgPath", "", "Отсутствует фото у слайда");
                     }
                 }
 
