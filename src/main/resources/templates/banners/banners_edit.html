@@ -34,29 +34,31 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
                     <li class="breadcrumb-item"><a th:href="@{/banners}" data-translate="banners">Баннеры</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="BANNER.TITLE">Название баннера</li>
+                    <li class="breadcrumb-item active" aria-current="page" data-translate="BANNER.TITLE">Название
+                        баннера
+                    </li>
                 </ol>
             </nav>
             <hr style="margin-top: -5px">
-<!--            <br>-->
-<!--            <ul class="nav nav-pills mb-3" role="tablist">-->
-<!--                <li class="nav-item">-->
-<!--                    <button class="nav-link active" type="button" aria-selected="true" data-toggle="tab" role="tab"-->
-<!--                            data-bs-toggle="pill" onclick="changeInput('ru')">Ру-->
-<!--                    </button>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"-->
-<!--                            data-bs-toggle="pill" onclick="changeInput('eu')">Eng-->
-<!--                    </button>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"-->
-<!--                            data-bs-toggle="pill" onclick="changeInput('ukr')">Укр-->
-<!--                    </button>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--            <br>-->
+            <!--            <br>-->
+            <!--            <ul class="nav nav-pills mb-3" role="tablist">-->
+            <!--                <li class="nav-item">-->
+            <!--                    <button class="nav-link active" type="button" aria-selected="true" data-toggle="tab" role="tab"-->
+            <!--                            data-bs-toggle="pill" onclick="changeInput('ru')">Ру-->
+            <!--                    </button>-->
+            <!--                </li>-->
+            <!--                <li class="nav-item">-->
+            <!--                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"-->
+            <!--                            data-bs-toggle="pill" onclick="changeInput('eu')">Eng-->
+            <!--                    </button>-->
+            <!--                </li>-->
+            <!--                <li class="nav-item">-->
+            <!--                    <button class="nav-link" type="button" aria-selected="false" data-toggle="tab" role="tab"-->
+            <!--                            data-bs-toggle="pill" onclick="changeInput('ukr')">Укр-->
+            <!--                    </button>-->
+            <!--                </li>-->
+            <!--            </ul>-->
+            <!--            <br>-->
             <div class="card">
                 <div class="card-header">
                     <h2 data-translate="INFORMATION">Информация</h2>
@@ -64,7 +66,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-lg-6 col-sm-6">
                             <label data-translate="title">Название</label>
                             <input type="text" class="form-control" id="nameBanners" th:value="${banner.nameBanners}">
                             <br>
@@ -100,6 +102,7 @@
             </div>
         </div>
     </div>
+    <script th:src="@{/vendor/libs/block-ui/block-ui.js}"></script>
     <script th:inline="javascript">
         let langOld = "ru";
 
@@ -125,7 +128,40 @@
             });
         })
 
+        function validAllInput() {
+            let isValidated = true
+            cleanInputs();
+            if (layoutArray.length > 0) {
+                layoutArray.forEach(function (element) {
+                    if (!validString("1", "33", $("#nameSlide" + element))) {
+                        isValidated = false;
+                    }
+                    if (!validateNumber("1", "20", $("#quantitySlide" + element))) {
+                        isValidated = false;
+                    }
+                    if (!$("#previewImage" + element).attr("src")) {
+                        if (!validateFile('file' + element, ['.jpeg', '.jpg', '.png'])) isValidated = false
+                    }
+                })
+            }
+            if (!validString("1", "33", $("#nameBanners"))) {
+                isValidated = false;
+            }
+            return isValidated;
+        }
+
         function sendForm() {
+            $("#full_body").block({
+                message: '<div style="display: flex; align-items: center; justify-content: center; height: 100vh;"><div class="pinner-border spinner-border text-primary" role="status" style="height: 10vw; width: 10vw; max-height: 400px; max-width: 400px;"></div></div>',
+                css: {
+                    backgroundColor: "transparent",
+                    border: "0"
+                },
+                overlayCSS: {
+                    backgroundColor: "#000",
+                    opacity: 0.5
+                }
+            })
             let formData = new FormData();
             console.log(layoutArray)
             let index = 0;
@@ -154,33 +190,63 @@
                 let contextPath =/*[[@{/}]]*/'';
                 let idThymeleaf =/*[[${idModel}]]*/'';
                 let url = contextPath.toString() + "banners/" + idThymeleaf;
+                if (!validAllInput()) {
+                    $("#full_body").unblock();
+                    console.log("errors")
+                    return
+                }
                 $.ajax({
                     url: url,
                     method: "POST",
                     contentType: false,
                     processData: false,
                     data: formData,
-                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                    headers: {'X-XSRF-TOKEN': [[${_csrf.token}]]},
                     success: function () {
-                        showNotification("Объект сохранен!", "", true);
+                        showToastWithTranslate("saveObj", "success");
+                        $("#full_body").unblock();
                     },
                     error: function (xhr, status, error) {
-                        console.log(error)
-                        if (xhr.responseText != null) {
-                            var errors = JSON.parse(xhr.responseText);
-                            errors.forEach(function (error) {
-                                console.log("Ошибка: " + error);
-                                showNotification("Ошибка!", error, false);
-                            });
-                        }
+                        $("#full_body").unblock();
+                        var errors = JSON.parse(xhr.responseText);
+                        errors.forEach(function (error) {
+                            console.log(error);
+                            changeInputValue = 0;
+                            if (error === "Один из элементов в очереди повторяется больше 1 раза") {
+                                showToastWithTranslate("REPEATED_ELEMENT", "danger");
+                                if (layoutArray.length > 0) {
+                                    layoutArray.forEach(function (element) {
+                                        let input = $("#quantitySlide" + element);
+                                        input.css("border", "1px solid #ff0000");
+                                    })
+                                }
+                                changeInputValue = changeInputValue + 1;
+                            }
+                            if (error === "Очередь вышла за рамки") {
+                                showToastWithTranslate("QUEUE_EXCEEDED", "danger");
+                                if (layoutArray.length > 0) {
+                                    layoutArray.forEach(function (element) {
+                                        let input = $("#quantitySlide" + element);
+                                        input.css("border", "1px solid #ff0000");
+                                    })
+                                }
+                                changeInputValue = changeInputValue + 1;
+                            }
+                            if (changeInputValue == 0) {
+                                showToast(error, "danger");
+                            }
+                        });
                     }
                 })
             } else {
-                showNotification("Заполните хотя бы 1 слайд", "", false)
+                showToastWithTranslate("error_one_slide", "danger");
+                $("#full_body").unblock();
             }
 
 
         }
+
+        let changeInputValue = 0;
 
         function updatePreviewImage(input, imgId) {
             if (input.files && input.files[0]) {
@@ -190,7 +256,7 @@
                     reader.onload = function (e) {
                         $('#' + imgId).removeAttr('hidden');
                         $('#' + imgId).attr('src', e.target.result);
-                        $('#' + imgId).addClass('d-block w-px-300 h-px-300 rounded');
+                        $('#' + imgId).addClass('d-block w-100 h-80 rounded');
                         if (imgId > imgMaxId) {
                             imgMaxId = imgId;
                         }
@@ -198,7 +264,7 @@
                     reader.readAsDataURL(file);
                 } else {
                     input.value = '';
-                    showNotification("Warning!", "Только изображения", false)
+                    showToastWithTranslate("show_img_message", "danger");
                 }
             }
         }
@@ -214,25 +280,24 @@
             newCard.style.marginTop = '20px';
             newCard.id = 'card' + imgMaxId;
             layoutArray.push(imgMaxId);
-            newCard.innerHTML = `  <div class="col-3">
+            newCard.innerHTML = `  <div class="col-lg-3 col-sm-6">
                             <img id="previewImage` + imgMaxId + `" style=" max-width: 100%; height: auto; margin-bottom: 5px">
                             <br>
                             <input type="file" class="form-control" name="file" id="file` + imgMaxId + `"
                                    onchange="updatePreviewImage(this, 'previewImage` + imgMaxId + `')">
                         </div>
-                        <div class="col-7">
+                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
                             <label data-translate="title">Название</label>
                             <input type="text" class="form-control" id="nameSlide` + imgMaxId + `">
                             <label data-translate="ORDER">Порядок</label>
                             <input type="number" class="form-control"  id="quantitySlide` + imgMaxId + `">
                         </div>
-                        <div class="col-2 position-relative">
-                            <button class="btn btn-info waves-effect waves-light position-absolute" onclick="deleteLayout(` + imgMaxId + `)" style="top: 0; right: 0; width: 40px">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="display: flex; justify-content: end; height: 40px; padding: 5px">
+                            <button class="btn btn-info waves-effect waves-light position-absolute" onclick="deleteLayout(` + imgMaxId + `)" style="width: 40px;">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>`
             cardContainer.appendChild(newCard);
-            console.log("Добавление слайда");
             imgMaxId++;
         }
 
@@ -242,8 +307,6 @@
                 return item !== imgId;
             });
             $(textCard).remove();
-            showNotification("Warning!", "Слайд удален", false)
-            console.log("Удаление Layout");
         }
 
         function showNotification(bigTextMessage, message, isSuccess) {

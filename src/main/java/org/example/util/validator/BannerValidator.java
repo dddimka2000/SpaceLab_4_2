@@ -50,7 +50,7 @@ public class BannerValidator implements Validator {
                 //photo
                 if (s.getImgPath() == null) {
                     if (s.getOldImgPath() == null) {
-                        errors.rejectValue("slides[" + num.get() + "].imgPath", "", "Отсутсвует фото у слайда");
+                        errors.rejectValue("slides[" + num.get() + "].imgPath", "", "Отсутствует фото у слайда");
                     }
                 }
 
