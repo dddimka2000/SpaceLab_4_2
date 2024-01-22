@@ -66,7 +66,7 @@
                                     <input type="text" class="form-control for-filter">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control flatpickr-datetime for-filter "
+                                    <input type="text" class="form-control flatpickr-datetime-for-filter for-filter "
                                            id="datepicker">
                                 </td>
                                 <td>
@@ -91,12 +91,27 @@
     <script>
         var page;
         $(document).ready(function () {
-            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
+            var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime-for-filter");
 
             flatpickrDateTimes.forEach(function (element) {
-                element.flatpickr({
-                    dateFormat: "Y-m-d"
-                });
+                if(languageSecondExample == "ru"){
+                    element.flatpickr({
+                        dateFormat: "Y-m-d",
+                        maxDate: new Date(),
+                        locale: "ru"
+                    });
+                }else if(languageSecondExample == "ukr"){
+                    element.flatpickr({
+                        dateFormat: "Y-m-d",
+                        maxDate: new Date(),
+                        locale: "uk"
+                    });
+                }else {
+                    element.flatpickr({
+                        dateFormat: "Y-m-d",
+                        maxDate: new Date()
+                    });
+                }
             });
             getPageWithFilter(0)
         });
@@ -140,9 +155,7 @@
                         if (realtor.branch != null) cell1.innerHTML = realtor.branch.id;
 
                         var cell2 = newRow.insertCell(1);
-                        cell2.innerHTML = realtor.code;
-                        cell2.setAttribute('onclick', 'window.location.href="[[@{/realtors/}]]' + realtorId + '"');
-
+                        cell2.innerHTML = `<a href="[[@{/realtors/${realtorId}}]]">${realtor.code}</a>`
 
                         var cell3 = newRow.insertCell(2);
                         cell3.innerHTML = realtor.surname + "\n" + realtor.name + "\n" + realtor.middleName;

@@ -425,3 +425,34 @@ function removeSpaces() {
     });
 }
 
+function validateAllFile(fileInputs, allowedExtensions, imageId) {
+    fileInputs.each(function() {
+        const fileInput = $(this);
+        const file = fileInput[0].files[0];
+
+        if (!file) {
+            addText(fileInput, 'No file selected');
+            fileInput.val('');
+            return false;
+        }
+
+        if (file.size > 20 * 1024 * 1024) {
+            addText(fileInput, 'File size exceeds 20MB');
+            fileInput.val('');
+            return false;
+        }
+
+        const fileExtension = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2);
+        const lowerCaseExtension = `.${fileExtension.toLowerCase()}`;
+
+        if (!allowedExtensions.includes(lowerCaseExtension)) {
+            addText(fileInput,`Unsupported file type. Supported types: ${allowedExtensions.join(', ')}`)
+            fileInput.val('');
+            return false;
+        }
+        if (imageId != null && imageId.length > 1) {
+            previewImage(event, imageId);
+        }
+        return true;
+    });
+}

@@ -16,7 +16,6 @@ public class UserDto {
     private Integer id;
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Некоректний email")
     private String email;
-    @Size(min = 8, max = 50, message = "Поле повино містити від 8 до 50 символів")
     private String password;
     private String confirmPassword;
     @NotNull(message = "Ролі повині бути вибрані")

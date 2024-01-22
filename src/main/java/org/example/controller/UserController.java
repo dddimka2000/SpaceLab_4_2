@@ -58,6 +58,8 @@ public class UserController {
     @PostMapping("/add")
     public ResponseEntity<String> add(@ModelAttribute @Valid UserDto userDto, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         if(bindingResult.hasErrors()) return ResponseEntity.ok().body(bindingResult.getAllErrors().toString());
+        if(userDto.getId() == 1)
+            return ResponseEntity.ok().body("ERROR: Це головний адмін його не можна редагувати");
         userService.add(userDto);
         return ResponseEntity.ok().body("Користувача успішно збережено");
     }

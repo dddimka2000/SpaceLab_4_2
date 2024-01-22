@@ -65,8 +65,7 @@ public class RealtorServiceImpl {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
         Page<Realtor> result = realtorRepository.findAll(Specification.where(RealtorSpecification.branchContains(branchId))
                 .and(RealtorSpecification.codeContains(code)).and(RealtorSpecification.phoneContains(phone)).and(RealtorSpecification.birthdateContains(birthdate))
-                .and((RealtorSpecification.nameContains(fullName).or(RealtorSpecification.surnameContains(fullName))
-                        .or(RealtorSpecification.middlenameContains(fullName)).and(RealtorSpecification.emailContains(email)))), pageable);
+                .and(RealtorSpecification.fullNameContains(fullName)).and(RealtorSpecification.emailContains(email)), pageable);
 
         log.info("RealtorServiceImpl-getAll successfully");
         return result;

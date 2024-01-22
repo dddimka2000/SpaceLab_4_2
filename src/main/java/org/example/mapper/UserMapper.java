@@ -19,12 +19,14 @@ import java.util.Objects;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     @Mappings({
-            @Mapping(target = "img", ignore = true)
+            @Mapping(target = "img", ignore = true),
+            @Mapping(target = "password", ignore = true)
     })
     UserEntity toEntity(UserDto userDto);
     default UserEntity toEntity(UserDto userDto, MinioService minioService) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         UserEntity user = toEntity(userDto);
         user.setImg(minioService.putImage(userDto.getImg()));
+        if(userDto.getPassword() != null)user.setPassword(user.getPassword());
         return user;
     }
     @Mappings({

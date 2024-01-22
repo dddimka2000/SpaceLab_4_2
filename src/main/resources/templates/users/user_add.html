@@ -479,7 +479,6 @@
                     $("#img").css("border-color", "#ff0000");
                     isValidated = false
                 }
-                formData.append("password", password)
                 formData.append("confirmPassword", confirmPassword)
                 formData.append("img", img)
             } else {
@@ -569,7 +568,6 @@
                     addText($("#password"), "Паролі не співпадають");
                 isValidated = false
             }
-
             if(isValidated  &&  !validAllNumberInput())isValidated = false
             if(!isValidated)return
             formData.append("name", name)
@@ -579,6 +577,7 @@
             formData.append("surname", surname)
             formData.append("middleName", middleName)
             formData.append("phone", phone)
+            if(password != null) formData.append('password', password)
 
             showBlockForAllBody(true)
             $.ajax({

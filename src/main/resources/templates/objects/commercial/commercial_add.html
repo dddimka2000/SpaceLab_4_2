@@ -18,7 +18,8 @@
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
-                        <li class="breadcrumb-item"><a th:href="@{/commercial}" data-translate="COMMERCIAL">Комерческая</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/commercial}"
+                                                       data-translate="COMMERCIAL">Комерческая</a></li>
                         <li class="breadcrumb-item active" aria-current="page" data-translate="new_object">
                             Новый объект
                         </li>
@@ -31,19 +32,22 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-home"
-                            type="button" role="tab" aria-controls="pills-home" aria-selected="true" data-translate="address_section">Адрессная часть
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true"
+                            data-translate="address_section">Адрессная часть
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-profile"
-                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false" data-translate="main_section">Основное
+                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false"
+                            data-translate="main_section">Основное
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-contact"
-                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false" data-translate="gallery">Галерея
+                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false"
+                            data-translate="gallery">Галерея
                     </button>
                 </li>
             </ul>
@@ -97,9 +101,11 @@
                             <input type="text" class="form-control onlyNumber" id="apartmentNumber" placeholder="34">
                         </div>
                         <div class="col-6 d-flex justify-content-start">
-                            <button class="btn btn-info mt-4" style="width: auto; height: 40px; margin-right: 5px" onclick="checkAddress()" data-translate="check_address">Проверить адрес
+                            <button class="btn btn-info mt-4" style="width: auto; height: 40px; margin-right: 5px"
+                                    onclick="checkAddress()" data-translate="check_address">Проверить адрес
                             </button>
-                            <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto; height: 40px;" data-translate="check_phone_number">Проверить
+                            <button class="btn btn-info mt-4" onclick="checkPhone(this)"
+                                    style="width: auto; height: 40px;" data-translate="check_phone_number">Проверить
                                 номер телефона</span>
                             </button>
                         </div>
@@ -138,7 +144,7 @@
                     <input class="form-control" id="plotDescription" type="text" placeholder="Введите заметки">
                     <br>
                     <span data-translate="houses_files">Прикрепить файлы</span>
-                    <input type="file" id="files" accept=".pdf" class="form-control" style="width: 40%" multiple>
+                    <input type="file" id="files" accept=".pdf" class="form-control" style="width: 40%" onchange="validateAllFile($(this), ['.pdf', '.xlsx'])" multiple>
                     <br>
                     <div id="block-for-file">
                     </div>
@@ -237,8 +243,8 @@
                         </div>
                         <div class="col-3">
                             <span data-translate="informationSource">Источник информации</span>
-                                <input type="text" class="form-control" id="informationSource"
-                                       placeholder="Введите источник информации">
+                            <input type="text" class="form-control" id="informationSource"
+                                   placeholder="Введите источник информации">
                         </div>
                     </div>
                     <br/>
@@ -562,7 +568,7 @@
     <script>
         $(document).ready(function () {
             showBlockForAllBody(false)
-            if(getLastDigitFromPath()) {
+            if (getLastDigitFromPath()) {
                 $.ajax({
                     type: "Get",
                     url: '[[@{/commercial/getById/}]]' + getLastDigitFromPath(),
@@ -582,8 +588,8 @@
                         $("#administrationComment").val(commercial.administrationComment)
 
                         $("#objectCode").val(commercial.objectCode)
-                        if(commercial.realtor){
-                            if(commercial.realtor.branch)$("#branchCode").val(commercial.realtor.branch.code)
+                        if (commercial.realtor) {
+                            if (commercial.realtor.branch) $("#branchCode").val(commercial.realtor.branch.code)
                             $("#staffCode").val(commercial.realtor.code)
                         }
                         $("#landmark").val(commercial.landmark)
@@ -635,7 +641,7 @@
 
                         forSelect2(commercial.address.zone, commercial.address.zone, "#zone", "/enum/topzone")
                         forSelect2(commercial.ownershipType, commercial.ownershipType, "#ownership", "/enum/ownership")
-                        if(commercial.builderObject)forSelect2WithSearch(commercial.builderObject.id, commercial.builderObject.name, "#builderObject", "/builder_objects/for/select")
+                        if (commercial.builderObject) forSelect2WithSearch(commercial.builderObject.id, commercial.builderObject.name, "#builderObject", "/builder_objects/for/select")
                         else forSelect2WithSearch(undefined, undefined, "#builderObject", "/builder_objects/for/select")
                         forSelect2(commercial.publicationStatus, commercial.publicationStatus, "#publicationStatus", "/enum/publicationStatus")
                         forSelect2(commercial.buildStatus, commercial.buildStatus, "#buildStatus", "/enum/buildStatus")
@@ -667,7 +673,7 @@
                         for (let file of commercial.files) {
                             var blockForFile = $("#block-for-file");
                             var row = $("<div class='row'></div>");
-                            var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>"+removeBeforeFirstDot(file)+"</a></div>");
+                            var col1 = $("<div class='col-2'><a href='#' class='text-decoration-none'>" + removeBeforeFirstDot(file) + "</a></div>");
                             col1.find('a').on("click", function () {
                                 downloadFileFrom(file);
                             });
@@ -681,8 +687,7 @@
                         }
                     }
                 })
-            }
-            else {
+            } else {
                 forSelect2(undefined, undefined, "#zone", "/enum/topzone")
                 forSelect2(undefined, undefined, "#ownership", "/enum/ownership")
                 forSelect2WithSearch(undefined, undefined, "#builderObject", "/builder_objects/for/select")
@@ -721,87 +726,36 @@
             addressSelect2()
             changeLanguageNav(languageSecondExample)
         });
+
         function sendForm() {
             var formData = new FormData();
-            if(!validAllInputs(formData))return
-            var branchCode = $("#branchCode");
-            var staffCode = $("#staffCode");
+            if (!validAllInputs(formData)) return
             showBlockForAllBody(true)
             $.ajax({
-                type: 'GET',
-                url: '[[@{/realtors/getByCode/}]]' + staffCode.val(),
-                success: function (realtor) {
-                    if (realtor == '') {
-                        scrollToElement(staffCode)
-                        if (languageSecondExample == 'eng') addText(staffCode,"No user found for this code")
-                        else if (languageSecondExample == 'ru')addText(staffCode,"Пользователя по такому коду не найдено")
-                        else addText(staffCode,"Користувача за таким кодом не знайдено")
-
-                        staffCode.css("border", "1px solid #ff0000");
-                    } else if (realtor.branch.code.toString() !== branchCode.val().toString()) {
-                        scrollToElement(branchCode)
-                        if (languageSecondExample == 'eng') addText(files,"The realtor does not belong to the specified branch")
-                        else if (languageSecondExample == 'ru')addText(files,"Риэлтор не принадлежит указанному филиалу")
-                        else addText(files,"Ріелтор не належить вказаному філіалу")
-                        branchCode.css("border", "1px solid #ff0000");
-                    } else {
-                        validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
-                            if (result) {
-                                $.ajax({
-                                    type: 'GET',
-                                    url: '[[@{/object/checkCode}]]',
-                                    data: {code: $("#objectCode").val()},
-                                    success: function (response) {
-                                        if(response && !getLastDigitFromPath(window.location.pathname)){
-                                            if (languageSecondExample == 'eng') addText($("#objectCode"),"An object with this code already exists")
-                                            else if (languageSecondExample == 'ru')addText($("#objectCode"),"Объект с таким кодом уже существует")
-                                            else addText($("#objectCode"),"Об'єкт з таким кодом вже існує")
-
-                                            $("#objectCode").css("border", "1px solid #ff0000")
-                                            scrollToElement($("#objectCode"))
-                                        }
-                                        else {
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: '[[@{/commercial/add}]]',
-                                                data: formData,
-                                                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
-                                                contentType: false,
-                                                processData: false,
-                                                success: function (response) {
-                                                    showToast(response.status, "success")
-                                                    showBlockForAllBody(false)
-                                                },
-                                                error: function (xhr, status, error) {
-                                                    if (xhr.status === 400) {
-                                                        validDataFromResponse(xhr.responseJSON)
-                                                    } else {
-                                                        console.error('Помилка відправки файлів на сервер:', error);
-                                                    }
-                                                    showBlockForAllBody(false)
-                                                }
-                                            });
-                                        }
-                                    },
-                                })
-                            }
-                        }).catch(error => {
-                        })
-                    }
+                type: 'POST',
+                url: '[[@{/commercial/add}]]',
+                data: formData,
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showToast(response.status, "success")
+                    showBlockForAllBody(false)
                 },
-                error: function (error) {
-                    console.error('Помилка відправки файлів на сервер:', error);
-                    reject(false);
+                error: function (xhr, status, error) {
+                    if (xhr.status === 400) {
+                        validDataFromResponse(xhr.responseJSON)
+                    } else {
+                        console.error('Помилка відправки файлів на сервер:', error);
+                    }
                     showBlockForAllBody(false)
                 }
-            });
-
-
-
+            })
         }
     </script>
     <script>
         var hadImage = false
+
         function deleteFile(button, url) {
             $('#confirmationModal').modal('show');
 
@@ -818,7 +772,7 @@
                         id: getLastDigitFromPath(window.location.pathname),
                         url: url,
                     },
-                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                    headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                     success: function (response) {
                         showToast(response, "success")
                         showBlockForAllBody(false)
@@ -832,6 +786,7 @@
                 $('.confirm-delete').off('click');
             });
         }
+
         function downloadFileFrom(url) {
             showBlockForAllBody(true)
             $.ajax({
@@ -862,6 +817,7 @@
                 }
             });
         }
+
         function checkPhone(button) {
             cleanInputs()
             validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
@@ -871,7 +827,8 @@
             }).catch(error => {
             })
         }
-        function validAllInputs(formData){
+
+        function validAllInputs(formData) {
             var isValidated = true
             cleanInputs()
             var streetUkr = $("#streetUkr");
@@ -909,7 +866,7 @@
             var plotDescription = $("#plotDescription");
             if (!validString("1", "100", plotDescription)) isValidated = false
             var files = $("#files");
-            if (!getLastDigitFromPath(window.location.pathname)  &&  !validateFile('files', [".pdf"])) isValidated = false
+            if (!getLastDigitFromPath(window.location.pathname) && !validateFile('files', [".pdf"])) isValidated = false
             var administrationComment = $("#administrationComment");
             if (!validString("1", "990", administrationComment)) isValidated = false
             var publicationStatus = $("#publicationStatus");
@@ -929,7 +886,7 @@
             var buildStatus = $("#buildStatus");
             if (!validSelect2(buildStatus)) isValidated = false
             var dateDeliveryHouse = $("#dateDeliveryHouse");
-            if (!validateDate(dateDeliveryHouse))isValidated = false
+            if (!validateDate(dateDeliveryHouse)) isValidated = false
             var floor = $("#floor");
             if (!validateNumber(1, 1000000, floor)) isValidated = false
             var floorQuantity = $("#floorQuantity");
@@ -940,7 +897,7 @@
             if (!validSelect2(propertyCommercialType)) isValidated = false
             var vnp = $("#vnp");
             var vnpExpirationDate = $("#vnpExpirationDate");
-            if (!validateDate(vnpExpirationDate))isValidated = false
+            if (!validateDate(vnpExpirationDate)) isValidated = false
             var informationSource = $("#informationSource");
             if (!validString("1", "100", informationSource)) isValidated = false
             var areaTotal = $("#areaTotal");
@@ -996,7 +953,7 @@
             var frontDoorType = $("#frontDoorType");
             if (!validSelect2(frontDoorType)) isValidated = false
             var lastContactDate = $("#lastContactDate");
-            if (!validateDate(lastContactDate))isValidated = false
+            if (!validateDate(lastContactDate)) isValidated = false
             var bargain = $("#bargain");
             var exclusive = $("#exclusive");
             var urgent = $("#urgent");
@@ -1023,12 +980,12 @@
             var advertisementTextEn = $("#advertisementTextEn");
             if (!validString("1", "990", advertisementTextEn)) isValidated = false
             var pictures = myDropzone.getAcceptedFiles()
-            if (pictures.length <= 0  &&  !hadImage) {
+            if (pictures.length <= 0 && !hadImage) {
                 activateListItem('#pills-contact-tab')
                 showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
                 isValidated = false
             }
-            if(getLastDigitFromPath()){
+            if (getLastDigitFromPath()) {
                 formData.append("id", getLastDigitFromPath());
             }
             formData.append("streetUkr", streetUkr.val());
@@ -1119,9 +1076,10 @@
                 formData.append("files", filesElement[i]);
             }
             countError = 0
-            if(isValidated  &&  !validAllNumberInput())isValidated = false
+            if (isValidated && !validAllNumberInput()) isValidated = false
             return isValidated
         }
+
         function addressSelect2(house) {
             if (house) {
                 $("#district").removeAttr("disabled");
@@ -1263,7 +1221,7 @@
                         data: {
                             url: file.description,
                         },
-                        headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                        headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                         success: function (response) {
                             showToast(response, "success")
                         },
@@ -1292,7 +1250,7 @@
                 url: "[[@{/commercial/getPicture/}]]" + getLastDigitFromPath(window.location.pathname),
                 method: "GET",
                 success: function (files) {
-                    if(files)hadImage = true
+                    if (files) hadImage = true
                     files.forEach(function (file) {
                         var mockFile = {
                             name: removeBeforeFirstDot(file.originUrl),

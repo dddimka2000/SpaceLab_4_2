@@ -18,7 +18,8 @@
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                        <li class="breadcrumb-item"><a th:href="@{/houses}" data-translate="houses_and_plots">Дома и участки</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/houses}" data-translate="houses_and_plots">Дома и
+                            участки</a></li>
                         <li class="breadcrumb-item active" aria-current="page" data-translate="new_object">
                             Новый объект
                         </li>
@@ -31,19 +32,22 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-home"
-                            type="button" role="tab" aria-controls="pills-home" aria-selected="true" data-translate="address_section">Адрессная часть
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true"
+                            data-translate="address_section">Адрессная часть
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-profile"
-                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false" data-translate="main_section">Основное
+                            type="button" role="tab" aria-controls="pills-profile" aria-selected="false"
+                            data-translate="main_section">Основное
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-contact"
-                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false" data-translate="gallery">Галерея
+                            type="button" role="tab" aria-controls="pills-contact" aria-selected="false"
+                            data-translate="gallery">Галерея
                     </button>
                 </li>
             </ul>
@@ -58,7 +62,7 @@
                             <span data-translate="region_district"></span>
                             <select class="form-control" id="region"> </select>
                         </div>
-                        <div class="col-2" >
+                        <div class="col-2">
                             <span data-translate="city"></span>
                             <select class="form-control" id="city" disabled></select>
                         </div>
@@ -66,11 +70,11 @@
                             <span data-translate="district"></span>
                             <select class="form-control" id="district" disabled></select>
                         </div>
-                        <div class="col-2" >
+                        <div class="col-2">
                             <span data-translate="street"></span>
                             <input class="form-control" id="street">
                         </div>
-                        <div class="col-2" >
+                        <div class="col-2">
                             <span data-translate="topzone"></span>
                             <select id="topzone"></select>
                         </div>
@@ -83,7 +87,8 @@
                             </button>
                         </div>
                         <div class="col">
-                            <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto" data-translate="check_phone_number">Проверить
+                            <button class="btn btn-info mt-4" onclick="checkPhone(this)" style="width: auto"
+                                    data-translate="check_phone_number">Проверить
                                 номер телефона
                             </button>
                         </div>
@@ -100,11 +105,11 @@
                     <div class="row">
                         <div class="col-3">
                             <span data-translate="enter_owner_name"></span>
-                            <input class="form-control" type="text" id="owner" placeholder="Введите ФИО владельца">
+                            <input class="form-control" type="text" id="ownerName" placeholder="Введите ФИО владельца">
                         </div>
                         <div class="col-3">
                             <span data-translate="enter_phone_number"></span>
-                            <input type="tel" id="telephone" class="form-control phone"
+                            <input type="tel" id="ownerPhone" class="form-control phone"
                                    placeholder="Введите номер телефона">
                         </div>
                         <div class="col-3">
@@ -130,7 +135,7 @@
                     <input class="form-control" id="ideaPlot" type="text" placeholder="Введите заметки">
                     <br>
                     <span data-translate="houses_files">Прикрепить файлы</span>
-                    <input type="file" id="housesFiles" accept=".pdf" class="form-control" style="width: 40%" multiple>
+                    <input type="file" id="housesFiles" accept=".pdf" class="form-control" style="width: 40%" onchange="validateAllFile($(this), ['.pdf', '.xlsx'])" multiple>
                     <br>
                     <div id="block-for-file">
                     </div>
@@ -148,7 +153,7 @@
                         </div>
                         <div class="col-3">
                             <span data-translate="code_object">Код объекта</span>
-                            <input class="form-control onlyNumber" type="text" id="codeObject" placeholder="XX XXXX XX">
+                            <input class="form-control onlyNumber" type="text" id="objectCode" placeholder="XX XXXX XX">
                         </div>
                         <div class="col-5">
                             <div class="row">
@@ -158,8 +163,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-3" style="text-align: right">
-                                    <input class="form-control onlyNumber" id="codeBranch" placeholder="Код филиала"
-                                           name="codeBranch">
+                                    <input class="form-control onlyNumber" id="branchCode" placeholder="Код филиала"
+                                           name="branchCode">
                                 </div>
                                 <div class="col-1">
                                     —
@@ -489,9 +494,9 @@
                 },
                 success: function (response, textStatus, xhr) {
                     if (xhr.status === 200) {
-                        addText($("#streetUkr"),response);
+                        addText($("#streetUkr"), response);
                     } else if (xhr.status === 400) {
-                        addText($("#streetUkr"),response);
+                        addText($("#streetUkr"), response);
                     } else {
                         console.log("Необработанный статус ответа:", xhr.status);
                     }
@@ -516,15 +521,17 @@
     </script>
     <script>
         var hadImage = false
+
         function checkPhone(button) {
             cleanInputs()
-            validatePhoneNumberWithAjax($('#telephone')).then(result => {
+            validatePhoneNumberWithAjax($('#ownerPhone')).then(result => {
                 if (result) {
                     showToast("Телефон коректний", "success");
                 }
             }).catch(error => {
             })
         }
+
         function deleteFile(button, url) {
             $('#confirmationModal').modal('show');
 
@@ -541,7 +548,7 @@
                         id: getLastDigitFromPath(window.location.pathname),
                         url: url,
                     },
-                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                    headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                     success: function (response) {
                         showToast(response, "success")
                         showBlockForAllBody(false)
@@ -555,6 +562,7 @@
                 $('.confirm-delete').off('click');
             });
         }
+
         function downloadFileFrom(url) {
             $.ajax({
                 type: "GET",
@@ -583,6 +591,7 @@
                 }
             });
         }
+
         function validAllInput(formData) {
             var isValidated = true
             cleanInputs()
@@ -594,8 +603,8 @@
             var streetUkr = $("#streetUkr")
             var streetEng = $("#streetEng")
             var zone = $("#topzone")
-            var ownerName = $("#owner")
-            var ownerPhone = $("#telephone")
+            var ownerName = $("#ownerName")
+            var ownerPhone = $("#ownerPhone")
             var boughtDate = $("#dateOfPurchase")
             var ownershipType = $("#ownership")
             var notes = $("#note")
@@ -626,8 +635,8 @@
             }
             formData.append("administrationComment", administrationComment.val());
             var publicationStatus = $("#publicationStatus");
-            var codeObject = $("#codeObject");
-            var codeBranch = $("#codeBranch");
+            var codeObject = $("#objectCode");
+            var codeBranch = $("#branchCode");
             var codeStaff = $("#codeStaff");
             var landmark = $("#landmark");
             var price = $("#price");
@@ -742,9 +751,9 @@
             if (!validString("1", "1000", notes)) isValidated = false
             if (cadastralNumber.val().length !== 11) {
                 cadastralNumber.css("border", "1px solid #ff0000")
-                if (languageSecondExample == 'eng') addText(cadastralNumber,"The cadastral number is incorrect")
-                else if (languageSecondExample == 'ru')addText(cadastralNumber,"Кадастровый номер не корректен")
-                else addText(cadastralNumber,"Кадастровий номер не коректний")
+                if (languageSecondExample == 'eng') addText(cadastralNumber, "The cadastral number is incorrect")
+                else if (languageSecondExample == 'ru') addText(cadastralNumber, "Кадастровый номер не корректен")
+                else addText(cadastralNumber, "Кадастровий номер не коректний")
 
                 isValidated = false
             }
@@ -782,7 +791,7 @@
             if (!validString("1", "5000", advertisementTextUk)) isValidated = false
             if (!validString("1", "5000", advertisementTextRu)) isValidated = false
             if (!validString("1", "5000", advertisementTextEn)) isValidated = false
-            if (allUploadedFiles.length <= 0  &&  !hadImage) {
+            if (allUploadedFiles.length <= 0 && !hadImage) {
                 activateListItem('#pills-contact-tab')
                 showToast("Як мінімум одне фото повино бути завантажене в дропзону", "danger")
                 isValidated = false
@@ -823,74 +832,36 @@
             formData.append("carpentryType", carpentryType.val());
             formData.append("frontDoorType", frontDoorType.val());
             countError = 0
-            if(isValidated  &&  !validAllNumberInput())isValidated = false
+            if (isValidated && !validAllNumberInput()) isValidated = false
             return isValidated
         }
+
         function sendForm() {
             let formData = new FormData();
             if (!validAllInput(formData)) return
-            var branchCode = $("#codeBranch");
-            var staffCode = $("#codeStaff");
             showBlockForAllBody(true)
             $.ajax({
-                type: 'GET',
-                url: '[[@{/realtors/getByCode/}]]' + staffCode.val(),
-                success: function (realtor) {
-                    if (realtor == '') {
-                        scrollToElement(staffCode)
-                        addText(staffCode, "Користувача за таким кодом не знайдено")
-                        staffCode.css("border", "1px solid #ff0000");
-                    } else if (realtor.branch.code.toString() !== branchCode.val().toString()) {
-                        scrollToElement(branchCode)
-                        addText(branchCode, "Ріелтор не належить вказаному філіалу")
-                        branchCode.css("border", "1px solid #ff0000");
+                type: 'POST',
+                url: '[[@{/houses/add/info}]]',
+                data: formData,
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showToast(response.status, "success")
+                    showBlockForAllBody(false)
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 400) {
+                        validDataFromResponse(xhr.responseJSON)
                     } else {
-                        validatePhoneNumberWithAjax($('#telephone')).then(result => {
-                            if (result) {
-                                $.ajax({
-                                    type: 'GET',
-                                    url: '[[@{/object/checkCode}]]',
-                                    data: {code: $("#codeObject").val()},
-                                    success: function (response) {
-                                        if(response && !getLastDigitFromPath(window.location.pathname)){
-                                            if (languageSecondExample == 'eng') addText($("#codeObject"),"The file must be selected")
-                                            else if (languageSecondExample == 'ru')addText($("#codeObject"),"Файл должен быть выбран")
-                                            else addText($("#codeObject"),"Файл повинен бути вибраний")
-                                            $("#codeObject").css("border", "1px solid #ff0000")
-                                            scrollToElement($("#codeObject"))
-                                        }
-                                        else {
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: '[[@{/houses/add/info}]]',
-                                                data: formData,
-                                                headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
-                                                contentType: false,
-                                                processData: false,
-                                                success: function (response) {
-                                                    showToast(response.status, "success")
-                                                    showBlockForAllBody(false)
-                                                },
-                                                error: function (xhr, status, error) {
-                                                    if (xhr.status === 400) {
-                                                        validDataFromResponse(xhr.responseJSON)
-                                                    } else {
-                                                        console.error('Помилка відправки файлів на сервер:', error);
-                                                    }
-                                                    showBlockForAllBody(false)
-                                                }
-                                            })
-                                        }
-                                    },
-                                })
-                            }
-                        }).catch(error => {
-                            showBlockForAllBody(false)
-                        })
+                        console.error('Помилка відправки файлів на сервер:', error);
                     }
+                    showBlockForAllBody(false)
                 }
             })
         }
+
         $(document).ready(function () {
             $('#landOwnershipPresent').select2({
                 placeholder: translateValue('виберіть_обєкт'),
@@ -907,17 +878,17 @@
                         $("#street").val(house.address.street)
                         $("#streetEng").val(house.address.streetEng)
                         $("#streetUkr").val(house.address.streetUkr)
-                        $("#owner").val(house.ownerName)
-                        $("#telephone").val(house.ownerPhone)
+                        $("#ownerName").val(house.ownerName)
+                        $("#ownerPhone").val(house.ownerPhone)
                         $("#dateOfPurchase").val(house.boughtDate.replaceAll('-', '/'))
                         $("#note").val(house.notes)
                         $("#cadastralNumber").val(house.cadastralNumber)
                         $("#ideaPlot").val(house.plotDescription)
                         $("#administrationComment").val(house.administrationComment)
 
-                        $("#codeObject").val(house.objectCode)
-                        if(house.realtor && house.realtor.branch)$("#codeBranch").val(house.realtor.branch.code)
-                        if(house.realtor)$("#codeStaff").val(house.realtor.code)
+                        $("#objectCode").val(house.objectCode)
+                        if (house.realtor && house.realtor.branch) $("#branchCode").val(house.realtor.branch.code)
+                        if (house.realtor) $("#codeStaff").val(house.realtor.code)
                         $("#landmark").val(house.landmark)
                         $("#price").val(house.price)
                         $("#plotAreaTotal").val(house.plotAreaTotal)
@@ -1032,6 +1003,7 @@
             });
             changeLanguageNav(languageSecondExample)
         })
+
         function addressSelect2(house) {
             if (house) {
                 $("#district").removeAttr("disabled");
@@ -1112,6 +1084,7 @@
                 })
             });
         }
+
         const previewTemplate = `<div class="dz-preview dz-file-preview">
 <div class="dz-details">
   <div class="dz-thumbnail">
@@ -1171,7 +1144,7 @@
                         data: {
                             url: file.description,
                         },
-                        headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                        headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                         success: function (response) {
                             showToast(response, "success")
                         },
@@ -1200,7 +1173,7 @@
                 url: "[[@{/houses/getPicture/}]]" + getLastDigitFromPath(window.location.pathname),
                 method: "GET",
                 success: function (files) {
-                    if(files)hadImage=true
+                    if (files) hadImage = true
                     files.forEach(function (file) {
                         var mockFile = {
                             name: removeBeforeFirstDot(file.originUrl),
@@ -1217,6 +1190,7 @@
                 }
             });
         }
+
         function updateDropzoneMaxFiles() {
             const newMaxFiles = (15 - oldImagesArray.length);
             myDropzone.options.maxFiles = newMaxFiles;

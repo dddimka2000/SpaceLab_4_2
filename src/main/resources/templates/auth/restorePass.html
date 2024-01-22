@@ -174,7 +174,7 @@
     });
 
     function checkCode() {
-        let contextPath =/*[[@{/auth/login/checkCode}]]*/'';
+        let contextPath =/*[[@{/auth/login/existsByCode}]]*/'';
         code = $("#username").val();
         $.ajax({
             url: contextPath,

@@ -1,12 +1,9 @@
 package org.example.specification;
 
 import jakarta.persistence.criteria.*;
-import org.example.entity.Branch;
 import org.example.entity.Realtor;
 import org.example.entity.RealtorContact;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.List;
 
 public class RealtorSpecification {
 
@@ -14,6 +11,27 @@ public class RealtorSpecification {
         if (code.isBlank() || code.isEmpty()) return (root, query, criteriaBuilder) -> null;
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(criteriaBuilder.lower(root.get("code").as(String.class)), "%" + code.toLowerCase() + "%");
+    }
+
+    public static Specification<Realtor> fullNameContains(String fullName) {
+        if (fullName.isBlank()) return (root, query, criteriaBuilder) -> null;
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.like(
+                        criteriaBuilder.concat(
+                                criteriaBuilder.concat(
+                                        criteriaBuilder.concat(
+                                                criteriaBuilder.lower(root.get("surname")),
+                                                " "
+                                        ),
+                                        criteriaBuilder.lower(root.get("name"))
+                                ),
+                                criteriaBuilder.concat(
+                                        " ",
+                                        criteriaBuilder.lower(root.get("middleName"))
+                                )
+                        ),
+                        "%" + fullName.toLowerCase() + "%"
+                );
     }
 
     public static Specification<Realtor> middlenameContains(String middlename) {

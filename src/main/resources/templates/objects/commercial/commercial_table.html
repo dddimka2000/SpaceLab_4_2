@@ -268,10 +268,10 @@
                         var newRow = tbody.insertRow();
                         var cell0 = newRow.insertCell(0);
                         cell0.appendChild(createStatusIcon(house.lastContactDate))
-                        cell0.setAttribute('onclick', 'window.location.href="[[@{/commercial/}]]' + house.id + '"');
+
 
                         var cell1 = newRow.insertCell(1);
-                        cell1.innerHTML = house.objectCode;
+                        cell1.innerHTML = `<a href="[[@{/commercial/${house.id}}]]">${house.objectCode}</a>`;
 
                         var cell2 = newRow.insertCell(2);
                         if (house.address) cell2.innerHTML = house.address.district;

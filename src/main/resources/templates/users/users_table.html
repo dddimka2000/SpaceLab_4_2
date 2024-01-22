@@ -133,17 +133,13 @@
                         cell1.innerHTML = translateByOriginName(user.roles)
 
                         var cell2 = newRow.insertCell(1);
-                        cell2.innerHTML = user.surname;
-                        cell2.setAttribute('onclick', 'window.location.href="[[@{/users/}]]' + userId + '"');
+                        cell2.innerHTML = `<a href="[[@{/users/${userId}}]]">${user.surname}</a>`
 
+                        var cell3 = newRow.insertCell(2)
+                        cell3.innerHTML = `<a href="[[@{/users/${userId}}]]">${user.surname}</a>`
 
-                        var cell3 = newRow.insertCell(2);
-                        cell3.innerHTML = user.name;
-                        cell3.setAttribute('onclick', 'window.location.href="[[@{/users/}]]' + userId + '"');
-
-                        var cell4 = newRow.insertCell(3);
-                        cell4.innerHTML = user.middleName;
-                        cell4.setAttribute('onclick', 'window.location.href="[[@{/users/}]]' + userId + '"');
+                        var cell4 = newRow.insertCell(3)
+                        cell4.innerHTML = `<a href="[[@{/users/${userId}}]]">${user.surname}</a>`
 
                         var cell5 = newRow.insertCell(4);
                         cell5.innerHTML = user.phone

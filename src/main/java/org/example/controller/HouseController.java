@@ -10,6 +10,7 @@ import org.example.dto.HouseMaterialDto;
 import org.example.entity.property.PropertyHouseObject;
 import org.example.service.HousesServiceImpl;
 import org.example.service.MinioService;
+import org.example.util.validator.HouseValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ import java.util.*;
 public class HouseController {
     private final HousesServiceImpl housesService;
     private final MinioService minioService;
+    private final HouseValidator houseValidator;
 
     @GetMapping
     public ModelAndView getAll() {
@@ -59,6 +61,7 @@ public class HouseController {
     ) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException
     {
         Map<String, String> errorsMap = new HashMap<>();
+        houseValidator.validate(infoDTO, bindingResult2);
         if (bindingResult1.hasErrors()) {
             bindingResult1.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
         }

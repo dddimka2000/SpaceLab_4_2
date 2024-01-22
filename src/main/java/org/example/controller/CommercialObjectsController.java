@@ -12,6 +12,7 @@ import org.example.entity.property.PropertyCommercialObject;
 import org.example.entity.property.PropertyHouseObject;
 import org.example.service.CommercialServiceImpl;
 import org.example.service.MinioService;
+import org.example.util.validator.CommercialValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,7 @@ import java.util.*;
 public class CommercialObjectsController {
     private final CommercialServiceImpl commercialService;
     private final MinioService minioService;
+    private final CommercialValidator commercialValidator;
     @GetMapping
     public ModelAndView index(){
         return new ModelAndView("objects/commercial/commercial_table");
@@ -54,7 +56,7 @@ public class CommercialObjectsController {
                                                    @Valid @ModelAttribute CommercialMaterialAndAreaDto commercialMaterialAndAreaDto, BindingResult bindingResult2,
                                                    @Valid @ModelAttribute CommercialAddressDto commercialAddressDto, BindingResult bindingResult3) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         Map<String, String> errorsMap = new HashMap<>();
-
+        commercialValidator.validate(commercialInfoDto, bindingResult1);
         if (bindingResult1.hasErrors()) {
             bindingResult1.getFieldErrors().forEach(error -> errorsMap.put(error.getField(), error.getDefaultMessage()));
         }

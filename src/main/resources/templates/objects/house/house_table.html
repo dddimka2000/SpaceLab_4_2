@@ -301,8 +301,7 @@
                         cell0.appendChild(createStatusIcon(house.lastContactDate))
 
                         var cell1 = newRow.insertCell(1);
-                        cell1.innerHTML = house.objectCode;
-                        cell1.setAttribute('onclick', 'window.location.href="[[@{/houses/}]]' + house.id + '"');
+                        cell1.innerHTML = `<a href="[[@{/houses/${house.id}}]]">${house.objectCode}</a>`
 
                         var cell2 = newRow.insertCell(2);
                         if (house.address) cell2.innerHTML = house.address.district;
