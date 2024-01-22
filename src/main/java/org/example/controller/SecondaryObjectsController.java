@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.InvestorObjectDtoSearch;
 import org.example.dto.PropertySecondaryObjectDTO;
+import org.example.entity.property.PropertyInvestorObject;
 import org.example.entity.property.PropertySecondaryObject;
 import org.example.mapper.ObjectSecondaryMapper;
 import org.example.service.MinioService;
@@ -66,6 +67,11 @@ public class SecondaryObjectsController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/objects/secondary_objects/secondaryObjects");
         return modelAndView;
+    }
+    @GetMapping("/getById/{id}")
+    @ResponseBody
+    public PropertySecondaryObject getById(@PathVariable Integer id) {
+        return propertySecondaryObjectService.getById(id);
     }
 
     @GetMapping("/create")

@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.InvestorObjectDtoSearch;
 import org.example.dto.PropertyInvestorObjectDTO;
+import org.example.entity.property.PropertyHouseObject;
 import org.example.entity.property.PropertyInvestorObject;
 import org.example.mapper.ObjectInvestorMapper;
 import org.example.service.MinioService;
@@ -56,6 +57,11 @@ public class ObjectsInvestorController {
         this.minioService = minioService;
         this.objectInvestorValidator = objectInvestorValidator;
         this.objectBuilderService = objectBuilderService;
+    }
+    @GetMapping("/getById/{id}")
+    @ResponseBody
+    public PropertyInvestorObject getById(@PathVariable Integer id) {
+        return propertyInvestorObjectService.getById(id);
     }
 
     @GetMapping

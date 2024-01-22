@@ -5,10 +5,7 @@
         layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <meta name="description" content="">
+
     <title data-translate="менеджер_вториної_нерухомості"></title>
 </head>
 </body>
@@ -137,7 +134,7 @@
                         </div>
                         <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="topzone">Топозона</h6>
-                            <select class="select2 form-select form-select select2find" name="topozone">
+                            <select class="select2 form-select form-select select2find" name="topozone" id="topozone">
                                 <option value="" disabled selected></option>
                                 <option th:each="entity : ${selectTopozone}"
                                         th:value="${entity}" th:data-translate="${entity}"
@@ -928,7 +925,7 @@
             let objectCode = $('[name="codeObject"]');
             let branchCode = $('[name="codeBranch"]');
             let employeeCode = $('[name="codeStaff"]');
-            let ownershipType = $('[name="ownership"]');
+            let ownershipType = $("#ownership");
             let landmark = $("#reference_point");
             let residentialComplexId = $('[name="residentialComplex"]');
             let floorQuantity = $('[name="floorQuantity"]');

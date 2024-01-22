@@ -1,6 +1,7 @@
 package org.example.service;
 
 import io.minio.errors.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.PropertyInvestorObjectDTO;
 import org.example.dto.PropertySecondaryObjectDTO;
@@ -45,6 +46,12 @@ public class PropertySecondaryObjectService {
         this.realtorService = realtorService;
         this.minioService = minioService;
         this.objectBuilderService = objectBuilderService;
+    }
+    public PropertySecondaryObject getById(Integer id) {
+        log.info("PropertySecondaryObject-getById start");
+        PropertySecondaryObject result = propertySecondaryObjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("object with an id = " + id + " was not found"));
+        log.info("PropertySecondaryObject-getById successfully");
+        return result;
     }
     public void saveEdit(PropertySecondaryObject propertySecondaryObject,  PropertySecondaryObjectDTO propertySecondaryObjectDTO)throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         Realtor realtor = realtorService.getByCode(propertySecondaryObjectDTO.getEmployeeCode());

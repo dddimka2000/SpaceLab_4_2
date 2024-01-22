@@ -1,9 +1,11 @@
 package org.example.service;
 
 import io.minio.errors.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.PropertyInvestorObjectDTO;
 import org.example.entity.Realtor;
+import org.example.entity.property.PropertyHouseObject;
 import org.example.entity.property.PropertyInvestorObject;
 import org.example.entity.property.type.PropertyOrigin;
 import org.example.mapper.ObjectInvestorMapper;
@@ -49,6 +51,12 @@ public class PropertyInvestorObjectService {
         log.info("PropertyInvestorObjectService-save start");
         propertyInvestorObjectRepository.save(entity);
         log.info("PropertyInvestorObjectService-save successfully");
+    }
+    public PropertyInvestorObject getById(Integer id) {
+        log.info("PropertyInvestorObjectService-getById start");
+        PropertyInvestorObject result = propertyInvestorObjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("object with an id = " + id + " was not found"));
+        log.info("PropertyInvestorObjectService-getById successfully");
+        return result;
     }
     public void saveCreate(PropertyInvestorObject propertyInvestorObject, PropertyInvestorObjectDTO propertyInvestorObjectDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         log.info("PropertyInvestorObjectService-create start");

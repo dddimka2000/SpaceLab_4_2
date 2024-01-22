@@ -5,9 +5,6 @@
         layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title data-translate="вторина_нерухомість"></title>
 
 </head>
@@ -31,19 +28,18 @@
                     </nav>
                 </div>
                 <hr style="margin-top: -5px">
-                <div class="row">
-                    <div class="col-md-8"></div>
-                    <div class="col-md-1">
-                        <button class="btn btn-submit" id="printButton" data-translate="print" onclick="printButton()">
-                            Распечатать
-                        </button>
+                <div style="width: 100%; display: flex; justify-content: flex-end;">
+                    <div style="display: flex;margin: 20px;align-items: center">
+                        <input type="checkbox" id="printWithAddress" class="form-check-input" data-translate="printWithAddress">
+                        <div data-translate="printWithAddress"></div>
                     </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-2">
-                        <a th:href="@{/secondary_objects/create}">
-                            <button class="btn btn-submit" data-translate="builder_object_add">Добавить объект</button>
-                        </a>
-                    </div>
+                    <button class="btn btn-submit" id="printButton" data-translate="print" onclick="printElements()"
+                            style="margin: 20px">
+                        Распечатать
+                    </button>
+                    <a th:href="@{/secondary_objects/create}" style="margin: 20px">
+                        <button class="btn btn-submit" data-translate="builder_object_add">Добавить объект</button>
+                    </a>
                 </div>
                 <br>
                 <div class="card">
@@ -296,6 +292,65 @@
     </div>
     <script th:src="@{/vendor/libs/select2/select2.js}"></script>
     <script th:src="@{/js/pagination.js}"></script>
+    <script>
+        function printElements() {
+            var bodyRows = []
+            var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
+            if (selectedCheckboxes.length === 0) {
+                showToast("Виберіть хоча б один чекбокс для друку.", "danger");
+                return;
+            }
+            var ajaxPromises = [];
+            var headerRow
+            if (document.getElementById('printWithAddress').checked) {
+                selectedCheckboxes.forEach(function (checkbox) {
+                    console.log(checkbox.value)
+                    var promise = new Promise(function (resolve, reject) {
+                        $.ajax({
+                            type: "Get",
+                            url: '[[@{/secondary_objects/getById/}]]' + checkbox.value,
+                            success: function (house) {
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor?house.realtor.name:null) + `</td>`)
+                                resolve();
+                            },
+                            error: function () {
+                                reject();
+                            }
+                        });
+                    });
+                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Район</th><th style="border: 1px solid black;">Топозона</th><th style="border: 1px solid black;">Улиця</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th></tr>';
+                    ajaxPromises.push(promise);
+                });
+            } else {
+                selectedCheckboxes.forEach(function (checkbox) {
+                    var promise = new Promise(function (resolve, reject) {
+                        $.ajax({
+                            type: "Get",
+                            url: '[[@{/secondary_objects/getById/}]]' + checkbox.value,
+                            success: function (house) {
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor?house.realtor.name:null) + `</td>`)
+                                resolve();
+                            },
+                            error: function () {
+                                reject();
+                            }
+                        });
+                    });
+                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th></tr>';
+                    ajaxPromises.push(promise);
+                })
+            }
+
+            Promise.all(ajaxPromises)
+                .then(function () {
+                    printTable(headerRow, bodyRows);
+                })
+                .catch(function (error) {
+                    console.error("Error fetching data:", error);
+                });
+
+        }
+    </script>
     <script th:inline="javascript">
         $("#pageSize").select2({placeholder: translateValue('виберіть_обєкт'), language: languageForSelect2});
 
