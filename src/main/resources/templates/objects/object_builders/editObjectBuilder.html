@@ -873,6 +873,10 @@
                                 $("#ukrLangSave").click();
                                 console.log("ukr click")
                             }
+                        } else if (error === "Минимум 1 фото в объекте") {
+                            activateListItem('#pills-profile')
+                            errorsQuantity++;
+                            showToastWithTranslate("errorOnePhoto", "danger");
                         } else {
                             showToast(error, "danger");
                         }
@@ -1137,7 +1141,7 @@
                 return item !== imgId;
             });
             $(textCard).remove();
-            showToastWithTranslate("delete_something","danger")
+            showToastWithTranslate("delete_something", "danger")
 
             var myDropzone = Dropzone.forElement("#my-dropzone");
 
@@ -1517,8 +1521,6 @@
             refreshSelect2Find();
             refreshAllTranslate();
         });
-
-
 
 
     </script>

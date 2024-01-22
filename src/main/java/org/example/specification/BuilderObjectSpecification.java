@@ -2,6 +2,7 @@ package org.example.specification;
 
 import jakarta.persistence.criteria.*;
 import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 import org.example.entity.Branch;
 import org.example.entity.BuilderObject;
 import org.example.entity.Layout;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Log4j2
 public class BuilderObjectSpecification implements Specification<BuilderObject> {
     private String name;
     private String district;
@@ -20,11 +22,11 @@ public class BuilderObjectSpecification implements Specification<BuilderObject> 
     private Integer floorQuantity;
 
 
-    public BuilderObjectSpecification(String name, String district, String street, String zone, Integer floorQuantity,Integer minPrice ) {
+    public BuilderObjectSpecification(String name, String district,String zone, String street,  Integer floorQuantity,Integer minPrice ) {
         this.name = name;
         this.district = district;
-        this.street = street;
         this.zone = zone;
+        this.street = street;
         this.minPrice = minPrice;
         this.floorQuantity = floorQuantity;
     }
@@ -39,6 +41,7 @@ public class BuilderObjectSpecification implements Specification<BuilderObject> 
         if (district != null) {
             predicates.add(criteriaBuilder.like(root.get("address").get("district"), "%" +district+ "%"));
         }
+        log.info(zone);
         if (zone != null) {
             predicates.add(criteriaBuilder.like(root.get("address").get("zone"), "%" +zone+ "%"));
         }

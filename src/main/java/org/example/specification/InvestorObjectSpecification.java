@@ -71,10 +71,10 @@ public class InvestorObjectSpecification implements Specification<PropertyInvest
             predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("floor"), maxFloor));
         }
         if (minPrice != null) {
-            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minFloor));
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice));
         }
         if (maxPrice != null) {
-            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxFloor));
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice));
         }
         if (topozone != null && topozone.size() > 0) {
             List<Predicate> topozonePredicates  = topozone.stream().map(d -> criteriaBuilder.like(root.get("address").get("zone"), "%" + d + "%"))

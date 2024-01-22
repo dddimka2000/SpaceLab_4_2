@@ -200,7 +200,7 @@
                         </div>
                         <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="ownership_rights">Право собственности</h6>
-                            <select class="select2 form-select form-select select2find" name="ownership">
+                            <select class="select2 form-select form-select select2find" name="ownership" id="ownership">
                                 <option th:each="status : ${ownershipType}"
                                         th:value="${status}"
                                         th:text="${status.status}" th:data-translate="${status}"
@@ -214,7 +214,7 @@
                            th:value="${element.getNotes()}">
                     <br>
                     <h6 data-translate="attach_files">Прикрепить файлы</h6>
-                    <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()">
+                    <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()" multiple>
                     <br>
                     <div id="fileList">
                     </div>
@@ -873,6 +873,11 @@
                         let codeBranch = $("#codeBranch");
                         let codeStaff = $("#codeStaff");
                         let codeObject = $("#codeObject");
+                        if (error === "Минимум 1 фото в объекте") {
+                            activateListItem('#pills-profile-tab')
+                            errorsQuantity++;
+                            showToastWithTranslate("errorOnePhoto","danger");
+                        }
                         if (error === "Кода данного сотрудника не существует") {
                             errorsQuantity++;
                             showErrorCodeRealtor(codeStaff);
@@ -1028,22 +1033,30 @@
                 isValidated = false
                 $("#ukrLangSave").click();
             }
+            console.log(isValidated)
             if (!validateDate(boughtDate)) isValidated = false;
             if (!validSelect2(publicationStatus)) isValidated = false
             if (!validSelect2(ownershipType)) isValidated = false
+            console.log("sel2 "+isValidated)
             if (!validateNumber(0, 9999, floor)) isValidated = false;
             if (!validSelect2(residentialComplexId)) isValidated = false
             if (!validateNumber(0, 9999, employeeCode)) isValidated = false;
             if (!validateNumber(0, 9999, branchCode)) isValidated = false;
             if (!validateNumber(0, 9999, areaTotal)) isValidated = false;
+            console.log("wf "+isValidated)
             if (!validateNumber(0, 9999, areaLiving)) isValidated = false;
             if (!validateNumber(0, 100000000, price)) isValidated = false;
             if (!validateNumber(0, 9999, areaKitchen)) isValidated = false;
             if (!validString("1", "100", roomMeters)) isValidated = false;
+            console.log("wf2 "+isValidated)
+
             if (!validateNumber(0, 9999, heightCeiling)) isValidated = false;
             if (!validString("1", "500", notes)) isValidated = false;
             if (!validateDate(lastContactDate)) isValidated = false;
+            console.log("wf3 "+isValidated)
             if (!validateDate(vnpExpirationDate)) isValidated = false;
+            console.log(isValidated)
+
             if (!validSelect2(layoutType)) isValidated = false
             if (!validSelect2(ladderType)) isValidated = false
             if (!validSelect2(floorType)) isValidated = false
@@ -1110,42 +1123,33 @@
 
         function showFile() {
             if (fileInput.files.length > 0) {
-                for (var i = 0; i < fileInput.files.length; i++) {
-                    var selectedFile = fileInput.files[i];
-                    if (
-                        selectedFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-                        selectedFile.type === "application/pdf"
-                    ) {
-                        var fileLink = document.createElement("a");
-                        fileLink.href = URL.createObjectURL(selectedFile);
-                        fileLink.download = selectedFile.name;
-                        fileLink.textContent = "Скачать " + selectedFile.name;
-                        fileLink.id = "file" + numFile
-                        fileList.appendChild(fileLink);
-                        var deleteButton = document.createElement("button");
-                        deleteButton.style.marginLeft = "20px";
-                        deleteButton.classList.add("btn", "btn-danger", "btn-sm", "float-right", "for-delete");
-                        deleteButton.innerHTML = `<i class="fa fa-trash"></i>`;
-                        deleteButton.id = "deleteFile" + numFile;
-                        fileList.appendChild(deleteButton);
-                        var lineBreak = document.createElement("br");
-                        lineBreak.id = "lineBreak" + numFile;
-                        var lineBreak2 = document.createElement("br");
-                        lineBreak2.id = "lineBreak2" + numFile;
-                        let numListener = numFile;
-                        deleteButton.addEventListener("click", function () {
-                            deleteFile(fileLink.id, deleteButton.id, lineBreak.id, lineBreak2.id, numListener);
-                        });
-                        fileList.appendChild(lineBreak);
-                        fileList.appendChild(lineBreak2);
-                        fileMap.set(numListener, selectedFile);
-                        numFile++;
+                let checkFile = true;
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    let selectedFile = fileInput.files[i];
+                    if (selectedFile.type === "application/pdf")
+                    {
                     } else {
-                        showToastWithTranslate("show_file_message","danger");
+                        checkFile = false;
+                        showToastWithTranslate("show_file_message", "danger");
+                        fileInput.value = "";
+                    }
+                }
+                if (checkFile) {
+                    for (let i = 0; i < fileInput.files.length; i++) {
+                        let selectedFile = fileInput.files[i];
+                        if (
+                            selectedFile.type === "application/pdf"
+                        ) {
+                            let numListener = numFile;
+                            fileMap.set(numListener, selectedFile);
+                            numFile++;
+                        } else {
+                            showToastWithTranslate("show_file_message", "danger");
+                            fileInput.value = "";
+                        }
                     }
                 }
             }
-            fileInput.value = "";
         }
 
         $(document).ready(function () {
@@ -1497,6 +1501,7 @@
 
             // Создание элементов для отображения или скачивания файлов
             base64FileList.forEach(function (base64Data, index) {
+
                 var fileName = filesElement[index];
                 var link = document.createElement("a");
                 link.href = "data:application/octet-stream;base64," + base64Data;
@@ -1505,21 +1510,18 @@
                 let resultString;
                 if (indexOfDot !== -1) {
                     resultString = fileName.substring(indexOfDot + 1);
-                    // Или используйте slice:
-                    // let resultString = inputString.slice(indexOfDot + 1);
-
                     console.log(resultString);
                 }
-                link.textContent = "Скачать " + resultString;
+                link.textContent = "" + resultString;
                 link.id = "oldFile" + index;
-                fileList.appendChild(link);
-
-                let deleteButton = document.createElement("button");
+                let deleteButton = document.createElement("a");
                 deleteButton.style.marginLeft = "20px";
-                deleteButton.classList.add("btn", "btn-danger", "btn-sm", "float-right", "for-delete");
-                deleteButton.innerHTML = `<i class="fa fa-trash"></i>`;
+                deleteButton.href="#";
+                deleteButton.classList.add("text-decoration-none", "for-delete");
+                deleteButton.innerHTML = "х удалить";
+
+
                 deleteButton.id = "deleteOldFile" + index;
-                fileList.appendChild(deleteButton);
                 var lineBreak = document.createElement("br");
                 lineBreak.id = "lineBreakOld" + index;
                 var lineBreak2 = document.createElement("br");
@@ -1529,8 +1531,22 @@
                 deleteButton.addEventListener("click", function () {
                     deleteFile(link.id, deleteButton.id, lineBreak.id, lineBreak2.id, numListener, oldFileMap);
                 });
-                fileList.appendChild(lineBreak);
-                fileList.appendChild(lineBreak2);
+
+                let rowEl = document.createElement("div");
+                rowEl.classList.add("row");
+
+                let colLg2 = document.createElement("div");
+                colLg2.classList.add("col-lg-3","col-sm-3", "col-md-6");
+                colLg2.appendChild(link);
+
+                let colLg1 = document.createElement("div");
+                colLg1.classList.add("col-lg-1" ,"col-sm-3", "col-md-6");
+                colLg1.appendChild(deleteButton);
+
+                rowEl.appendChild(colLg2);
+                rowEl.appendChild(colLg1);
+
+                fileList.appendChild(rowEl);
                 oldFileMap.set(numListener, fileName);
                 numFile++;
             });

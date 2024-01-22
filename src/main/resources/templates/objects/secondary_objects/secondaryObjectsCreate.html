@@ -207,7 +207,7 @@
                     <input class="form-control" type="text" id="notes" placeholder="Введите заметки">
                     <br>
                     <h6 data-translate="attach_files">Прикрепить файлы</h6>
-                    <input type="file" class="form-control" accept=".pdf, .xlsx" name="fileInput" id="fileInput" onchange="showFile()">
+                    <input type="file" class="form-control" accept=".pdf" name="fileInput" id="fileInput" onchange="showFile()" multiple>
                     <br>
                     <div id="fileList">
 
@@ -812,6 +812,11 @@
                         let codeBranch = $("#codeBranch");
                         let codeStaff = $("#codeStaff");
                         let codeObject = $("#codeObject");
+                        if (error === "Минимум 1 фото в объекте") {
+                            activateListItem('#pills-profile-tab')
+                            errorsQuantity++;
+                            showToastWithTranslate("errorOnePhoto","danger");
+                        }
                         if (error === "Кода данного сотрудника не существует") {
                             errorsQuantity++;
                             showErrorCodeRealtor(codeStaff);
@@ -1048,42 +1053,33 @@
 
         function showFile() {
             if (fileInput.files.length > 0) {
-                for (var i = 0; i < fileInput.files.length; i++) {
-                    var selectedFile = fileInput.files[i];
-                    if (
-                        selectedFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-                        selectedFile.type === "application/pdf"
-                    ) {
-                        var fileLink = document.createElement("a");
-                        fileLink.href = URL.createObjectURL(selectedFile);
-                        fileLink.download = selectedFile.name;
-                        fileLink.textContent = "Скачать " + selectedFile.name;
-                        fileLink.id = "file" + numFile
-                        fileList.appendChild(fileLink);
-                        var deleteButton = document.createElement("button");
-                        deleteButton.style.marginLeft = "20px";
-                        deleteButton.classList.add("btn", "btn-danger", "btn-sm", "float-right", "for-delete");
-                        deleteButton.innerHTML = `<i class="fa fa-trash"></i>`;
-                        deleteButton.id = "deleteFile" + numFile;
-                        fileList.appendChild(deleteButton);
-                        var lineBreak = document.createElement("br");
-                        lineBreak.id = "lineBreak" + numFile;
-                        var lineBreak2 = document.createElement("br");
-                        lineBreak2.id = "lineBreak2" + numFile;
-                        let numListener = numFile;
-                        deleteButton.addEventListener("click", function () {
-                            deleteFile(fileLink.id, deleteButton.id, lineBreak.id, lineBreak2.id, numListener);
-                        });
-                        fileList.appendChild(lineBreak);
-                        fileList.appendChild(lineBreak2);
-                        fileMap.set(numListener, selectedFile);
-                        numFile++;
+                let checkFile = true;
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    let selectedFile = fileInput.files[i];
+                    if (selectedFile.type === "application/pdf")
+                    {
                     } else {
-                        showToastWithTranslate("show_file_message","danger");
+                        checkFile = false;
+                        showToastWithTranslate("show_file_message", "danger");
+                        fileInput.value = "";
+                    }
+                }
+                if (checkFile) {
+                    for (let i = 0; i < fileInput.files.length; i++) {
+                        let selectedFile = fileInput.files[i];
+                        if (
+                            selectedFile.type === "application/pdf"
+                        ) {
+                            let numListener = numFile;
+                            fileMap.set(numListener, selectedFile);
+                            numFile++;
+                        } else {
+                            showToastWithTranslate("show_file_message", "danger");
+                            fileInput.value = "";
+                        }
                     }
                 }
             }
-            fileInput.value = "";
         }
 
         $(document).ready(function () {

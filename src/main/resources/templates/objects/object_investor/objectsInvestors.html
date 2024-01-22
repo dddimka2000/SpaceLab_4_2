@@ -7,7 +7,6 @@
 <head>
     <title data-translate="обєкти_від_інвесторів"></title>
 
-
 </head>
 <body>
 <div layout:fragment="content">
@@ -33,7 +32,7 @@
                 <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
 
                 </div>
-                <div style="width: 100%; display: flex; justify-content: flex-end;">
+                <div style="width: 100%; display: flex; justify-content: flex-end;" id="flex-container">
 
                     <div style="display: flex;margin: 20px;align-items: center">
                         <input type="checkbox" id="printWithAddress" class="form-check-input" data-translate="printWithAddress">
@@ -480,9 +479,7 @@
             el1.find('option:selected').each(function () {
                 selectMultipartRC.push($(this).val());
             })
-            console.log(selectMultipartDistrict);
-            console.log(selectMultipartZone);
-            console.log(selectMultipartRC);
+
             var currentDate = new Date();
             var numberOfDays = parseInt($(filterElements[16]).val(), 10);
             let formattedDate = "";
@@ -617,7 +614,7 @@
                         }
                         $('#rowPanelCount').empty();
                         updateLabelPagination(page, 'rowPanelCount', builderObjects.totalElements, builderObjects.numberOfElements, builderObjects.size);
-                        refreshAllTranslate()
+                        refreshAllTranslate();
                     }
                 }
             )
@@ -626,7 +623,7 @@
         ;
 
         $('#clean-filter').click(function () {
-            let filterElements = $('.for-filter');
+            let filterElements = $('.for-filter').not(':radio');
             filterElements.each(function () {
                 $(this).val("");
             });

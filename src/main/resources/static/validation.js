@@ -415,7 +415,6 @@ function showErrorCode(input) {
     input.css("border", "1px solid #ff0000");
     return false;
 }
-
 function validQuill(minLength, maxLength, inputString) {
     try {
         var quillContent = inputString.html();
