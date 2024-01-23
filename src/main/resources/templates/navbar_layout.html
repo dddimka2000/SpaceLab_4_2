@@ -196,10 +196,11 @@
             }
 
 
-            if ($('#select2MultipleResidentialComplexId')) {
-                select2MultipleResidential();
+            if ($("#select2MultipleResidentialComplexId")) {
+                if (typeof select2MultipleResidential === 'function') {
+                    select2MultipleResidential();
+                }
             }
-
 
 
             if ($(".select2-selection__choice")) {

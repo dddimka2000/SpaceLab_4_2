@@ -13,6 +13,7 @@ import org.example.dto.ObjectBuilderDto;
 import org.example.dto.ObjectBuilderDtoEdit;
 import org.example.entity.BuilderObject;
 import org.example.service.ObjectBuilderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -30,6 +31,7 @@ import java.util.Optional;
 @Component
 @Log4j2
 public class ObjectBuilderValidator implements Validator {
+
     private final long maxFileSize = 5 * 1024 * 1024; // Максимальный размер файла (5 МБ)
     private final List<String> supportedImageFormats = Arrays.asList("image/jpeg", "image/png", "image/jpg", "image/gif");
     private static final List<String> supportedFormatsFiles = Arrays.asList("application/pdf",
@@ -50,6 +52,37 @@ public class ObjectBuilderValidator implements Validator {
         return ObjectBuilderDto.class.isAssignableFrom(clazz) || ObjectBuilderDtoEdit.class.isAssignableFrom(clazz);
     }
 
+    public static boolean isValidPhoto(MultipartFile file) {
+        try {
+            InputStream fileInputStream = file.getInputStream();
+            ContentHandler handler = new BodyContentHandler();
+            Metadata metadata = new Metadata();
+            Parser parser = new AutoDetectParser();
+            ParseContext context = new ParseContext();
+
+            parser.parse(fileInputStream, handler, metadata, context);
+
+            String contentType = metadata.get("Content-Type");
+            if (contentType != null) {
+                if (contentType.startsWith("image/jpeg") ||
+                        contentType.startsWith("image/png") ||
+                        contentType.startsWith("image/jpg") ||
+                        contentType.startsWith("image/gif")
+                ) {
+                    return false;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TikaException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }
+
+        return true;
+    }
+
     public static boolean isValidFile(MultipartFile file) {
         try {
             InputStream fileInputStream = file.getInputStream();
@@ -61,13 +94,13 @@ public class ObjectBuilderValidator implements Validator {
             parser.parse(fileInputStream, handler, metadata, context);
 
             String contentType = metadata.get("Content-Type");
-
-            // Проверяем MIME-тип файла
             if (contentType != null) {
-                if (contentType.startsWith("application/vnd.ms-excel") || // Excel
-                        contentType.startsWith("application/pdf") || // PDF
-                        contentType.startsWith("application/msword")||
-                        contentType.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ) { // Word
+                if (
+//                        contentType.startsWith("application/vnd.ms-excel") || // Excel
+                        contentType.startsWith("application/pdf") // PDF
+//                                || contentType.startsWith("application/msword")||
+//                        contentType.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                ) { // Word
                     return false;
                 }
             }
@@ -101,31 +134,33 @@ public class ObjectBuilderValidator implements Validator {
             }
             for (MultipartFile multipartFile : entity.getFiles()) {
                 if (!supportedImageFormats.contains(multipartFile.getContentType())) {
-                    errors.rejectValue("files", "image.format.invalid", "Неподдерживаемый формат изображения в фотографиях. Пожалуйста, выберите JPEG,PNG,JPG,GIF.");
+                    errors.rejectValue("files", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
                 }
                 if (multipartFile.getSize() > maxFileSize) {
                     errors.rejectValue("files", "image.size.invalid", "Файл не должен превышать 5 МБ.");
                 }
+                if (isValidPhoto((multipartFile))) {
+                    errors.rejectValue("files", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
+                }
             }
             if (isValidFile(entity.getPrices())) {
-                errors.rejectValue("chessboardFile", "image.format.invalid", "Неподдерживаемый формат файла с ценами. Пожалуйста, выберите Pdf, Exel или Документ Microsoft Word.");
+                errors.rejectValue("chessboardFile", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
             }
             if (entity.getPrices().getSize() > maxFileSize) {
                 errors.rejectValue("chessboardFile", "image.size.invalid", "Файл с ценами не должен превышать 5 МБ.");
             }
             if (isValidFile(entity.getInstallmentTerms())) {
-                errors.rejectValue("installmentTerms", "image.format.invalid", "Неподдерживаемый формат файла с условиями рассрочки. Пожалуйста, выберите Pdf, Exel или Документ Microsoft Word.");
+                errors.rejectValue("installmentTerms", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
             }
             if (entity.getInstallmentTerms().getSize() > maxFileSize) {
                 errors.rejectValue("installmentTerms", "image.size.invalid", "Файл с условиями рассрочки не должен превышать 5 МБ.");
             }
             if (isValidFile(entity.getChessboardFile())) {
-                errors.rejectValue("chessboardFile", "image.format.invalid", "Неподдерживаемый формат файла с шахматкой. Пожалуйста, выберите Pdf, Exel или Документ Microsoft Word.");
+                errors.rejectValue("chessboardFile", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
             }
             if (entity.getChessboardFile().getSize() > maxFileSize) {
                 errors.rejectValue("chessboardFile", "image.size.invalid", "Файл с шахматкой не должен превышать 5 МБ.");
             }
-            log.info("success files - 1 page");
             if (entity.getLayoutDTOList().isEmpty()) {
                 errors.rejectValue("file", "image.size.invalid", "Заполните хотя бы 1 планировку.");
             }
@@ -141,6 +176,9 @@ public class ObjectBuilderValidator implements Validator {
                     if (multipartFile1.getSize() > maxFileSize) {
                         errors.rejectValue("img1Layout", "image.size.invalid", "Файл не должен превышать 5 МБ в фотографиях планировки.");
                     }
+                    if (isValidPhoto((multipartFile1))) {
+                        errors.rejectValue("img1Layout", "image.format.invalid", "Неподдерживаемый формат изображения в фотографиях  планировки. Пожалуйста, выберите JPEG,PNG,JPG,GIF.");
+                    }
                 }
                 if (multipartFile2 != null && !multipartFile2.isEmpty()) {
                     if (!supportedImageFormats.contains(multipartFile2.getContentType())) {
@@ -149,6 +187,9 @@ public class ObjectBuilderValidator implements Validator {
                     if (multipartFile2.getSize() > maxFileSize) {
                         errors.rejectValue("img2Layout", "image.size.invalid", "Файл не должен превышать 5 МБ в фотографиях планировки.");
                     }
+                    if (isValidPhoto((multipartFile2))) {
+                        errors.rejectValue("img2Layout", "image.format.invalid", "Неподдерживаемый формат изображения в фотографиях  планировки. Пожалуйста, выберите JPEG,PNG,JPG,GIF.");
+                    }
                 }
                 if (multipartFile3 != null && !multipartFile3.isEmpty()) {
                     if (!supportedImageFormats.contains(multipartFile3.getContentType())) {
@@ -156,6 +197,9 @@ public class ObjectBuilderValidator implements Validator {
                     }
                     if (multipartFile3.getSize() > maxFileSize) {
                         errors.rejectValue("img3Layout", "image.size.invalid", "Файл не должен превышать 5 МБ в фотографиях планировки.");
+                    }
+                    if (isValidPhoto((multipartFile3))) {
+                        errors.rejectValue("img3Layout", "image.format.invalid", "Неподдерживаемый формат изображения в фотографиях  планировки. Пожалуйста, выберите JPEG,PNG,JPG,GIF.");
                     }
                 }
             }
@@ -172,15 +216,15 @@ public class ObjectBuilderValidator implements Validator {
         try {
             Optional<BuilderObject> findById = objectBuilderService.findById(id);
             Optional<BuilderObject> tryFindName = objectBuilderService.findByName(entity.getNameObject());
-            if (tryFindName.isPresent()&& !findById.get().getName().equals(entity.getNameObject())) {
+            if (tryFindName.isPresent() && !findById.get().getName().equals(entity.getNameObject())) {
                 errors.rejectValue("nameObject", "", "(Ру)Объект новостроя с таким именем уже существует");
             }
             Optional<BuilderObject> tryFindName2 = objectBuilderService.findByNameEnglish(entity.getNameObjectEng());
-            if (tryFindName2.isPresent()&& !findById.get().getNameEnglish().equals(entity.getNameObjectEng())) {
+            if (tryFindName2.isPresent() && !findById.get().getNameEnglish().equals(entity.getNameObjectEng())) {
                 errors.rejectValue("nameObject", "", "(Англ)Объект новостроя с таким именем уже существует");
             }
             Optional<BuilderObject> tryFindName3 = objectBuilderService.findByNameUkraine(entity.getNameObjectUkr());
-            if (tryFindName3.isPresent()&& !findById.get().getNameUkraine().equals(entity.getNameObjectUkr())) {
+            if (tryFindName3.isPresent() && !findById.get().getNameUkraine().equals(entity.getNameObjectUkr())) {
                 errors.rejectValue("nameObject", "", "(Укр)Объект новостроя с таким именем уже существует");
             }
             if (Optional.ofNullable(entity.getOldFiles()).isEmpty()) {
@@ -194,15 +238,19 @@ public class ObjectBuilderValidator implements Validator {
             if (Optional.ofNullable(entity.getFiles()).isPresent() && entity.getFiles().size() > 0) {
                 for (MultipartFile multipartFile : entity.getFiles()) {
                     if (!supportedImageFormats.contains(multipartFile.getContentType())) {
-                        errors.rejectValue("files", "image.format.invalid", "Неподдерживаемый формат изображения в фотографиях. Пожалуйста, выберите JPEG,PNG,JPG,GIF.");
+                        errors.rejectValue("files", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
                     }
                     if (multipartFile.getSize() > maxFileSize) {
                         errors.rejectValue("files", "image.size.invalid", "Файл не должен превышать 5 МБ.");
                     }
+                    if (isValidPhoto((multipartFile))) {
+                        errors.rejectValue("files", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
+                    }
+
                 }
             } else {
                 if (Optional.ofNullable(entity.getOldFiles()).isEmpty()) {
-                    errors.rejectValue("files", "", "В галереее 0 картинок.");
+                    errors.rejectValue("files", "", "В галерее 0 картинок.");
                 }
             }
             if ((entity.getOldFiles().size() + entity.getFiles().size()) > 15) {
@@ -211,10 +259,9 @@ public class ObjectBuilderValidator implements Validator {
             if ((entity.getOldFiles().size() + entity.getFiles().size()) < 1) {
                 errors.rejectValue("files", "image.size.invalid", "Добавьте хотя бы 1 фото в галлерею");
             }
-            log.info("success photos - 2 page");
             if (entity.getPrices() != null && entity.getPrices().isPresent()) {
                 if (isValidFile(entity.getPrices().get())) {
-                    errors.rejectValue("chessboardFile", "image.format.invalid", "Неподдерживаемый формат файла с ценами. Пожалуйста, выберите Pdf, Exel или Документ Microsoft Word.");
+                    errors.rejectValue("chessboardFile", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
                 }
                 if (entity.getPrices().get().getSize() > maxFileSize) {
                     errors.rejectValue("chessboardFile", "image.size.invalid", "Файл с ценами не должен превышать 5 МБ.");
@@ -222,7 +269,7 @@ public class ObjectBuilderValidator implements Validator {
             }
             if (entity.getInstallmentTerms() != null && entity.getInstallmentTerms().isPresent()) {
                 if (isValidFile(entity.getInstallmentTerms().get())) {
-                    errors.rejectValue("installmentTerms", "image.format.invalid", "Неподдерживаемый формат файла с условиями рассрочки. Пожалуйста, выберите Pdf, Exel или Документ Microsoft Word.");
+                    errors.rejectValue("installmentTerms", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
                 }
                 if (entity.getInstallmentTerms().get().getSize() > maxFileSize) {
                     errors.rejectValue("installmentTerms", "image.size.invalid", "Файл с условиями рассрочки не должен превышать 5 МБ.");
@@ -230,7 +277,7 @@ public class ObjectBuilderValidator implements Validator {
             }
             if (entity.getChessboardFile() != null && entity.getChessboardFile().isPresent()) {
                 if (isValidFile(entity.getChessboardFile().get())) {
-                    errors.rejectValue("chessboardFile", "image.format.invalid", "Неподдерживаемый формат файла с шахматкой. Пожалуйста, выберите Pdf, Exel или Документ Microsoft Word.");
+                    errors.rejectValue("chessboardFile", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
                 }
                 if (entity.getChessboardFile().get().getSize() > maxFileSize) {
                     errors.rejectValue("chessboardFile", "image.size.invalid", "Файл с шахматкой не должен превышать 5 МБ.");
@@ -249,8 +296,11 @@ public class ObjectBuilderValidator implements Validator {
                     if (multipartFile1.get().getSize() > maxFileSize) {
                         errors.rejectValue("layoutDTOList", "image.size.invalid", "Файл не должен превышать 5 МБ в фотографиях планировки.");
                     }
+                    if (isValidPhoto((multipartFile1.get()))) {
+                        errors.rejectValue("layoutDTOList", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
+                    }
                 } else {
-                    if (layoutDTO.getImg1Old()==null) {
+                    if (layoutDTO.getImg1Old() == null) {
                         errors.rejectValue("layoutDTOList", "", "Заполните фотографии в планировке");
                     }
                 }
@@ -263,8 +313,11 @@ public class ObjectBuilderValidator implements Validator {
                     if (multipartFile2.get().getSize() > maxFileSize) {
                         errors.rejectValue("layoutDTOList", "image.size.invalid", "Файл не должен превышать 5 МБ в фотографиях планировки.");
                     }
+                    if (isValidPhoto((multipartFile2.get()))) {
+                        errors.rejectValue("layoutDTOList", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
+                    }
                 } else {
-                    if (layoutDTO.getImg2Old()==null) {
+                    if (layoutDTO.getImg2Old() == null) {
                         errors.rejectValue("layoutDTOList", "", "Заполните фотографии в планировке");
                     }
                 }
@@ -277,8 +330,11 @@ public class ObjectBuilderValidator implements Validator {
                     if (multipartFile3.get().getSize() > maxFileSize) {
                         errors.rejectValue("layoutDTOList", "image.size.invalid", "Файл не должен превышать 5 МБ в фотографиях планировки.");
                     }
+                    if (isValidPhoto((multipartFile3.get()))) {
+                        errors.rejectValue("layoutDTOList", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
+                    }
                 } else {
-                    if (layoutDTO.getImg3Old()==null) {
+                    if (layoutDTO.getImg3Old() == null) {
                         errors.rejectValue("layoutDTOList", "", "Заполните фотографии в планировке");
                     }
                 }

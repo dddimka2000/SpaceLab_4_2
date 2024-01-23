@@ -149,7 +149,14 @@ function cleanInputs() {
         select2Select.style.borderColor = '';
     }
 }
-
+function cleanInput(el) {
+    el.next().remove()
+    let elements = el;
+    for (var i = 0; i < elements.length; i++) {
+        let element = elements[i];
+        element.style.borderColor = '';
+    }
+}
 function validString(minLength, maxLength, inputString) {
     try {
         var length = inputString.val().length

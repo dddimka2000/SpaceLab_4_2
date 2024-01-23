@@ -686,13 +686,12 @@
     </script>
     <script th:inline="javascript">
         function checkNumber() {
-            let checkNumber = $("#telephone").val()
-            var regExp = /^\+380(31|32|33|34|35|36|38|39|41|43|44|45|46|20|89|94|92|91|67|68|96|97|98|70|90|91|67|68|96|97|98|70|87|89|50|66|95|99)\d{7}$/;
-            console.log(checkNumber)
-            if (regExp.test(checkNumber)) {
-                showToastWithTranslate("error_number", "danger")
+            let checkNumber = $("#telephone")
+            cleanInput(checkNumber);
+            if (!validatePhoneNumber(checkNumber)) {
+                // showToastWithTranslate("error_number", "danger")
             } else {
-                showToastWithTranslate("correct_number", "danger")
+                showToastWithTranslate("correct_number", "success")
             }
         }
 
