@@ -211,7 +211,8 @@
                            placeholder="Введите заметки">
                     <br>
                     <h6 data-translate="attach_files">Прикрепить файлы</h6>
-                    <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()" multiple
+                    <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()"
+                           multiple
                            accept=".pdf">
                     <br>
                     <div id="fileList">
@@ -776,14 +777,14 @@
                             errorsQuantity++;
                             showErrorCodeBranch(codeBranch)
                         }
-                        if(error=="Объект с таким кодом уже существует"){
+                        if (error == "Объект с таким кодом уже существует") {
                             errorsQuantity++;
                             showErrorCode(codeObject)
                         }
                         if (error === "Минимум 1 фото в объекте") {
                             activateListItem('#pills-profile-tab')
                             errorsQuantity++;
-                            showToastWithTranslate("errorOnePhoto","danger");
+                            showToastWithTranslate("errorOnePhoto", "danger");
                         }
                         if (errorsQuantity == 0) {
                             showToast(error, "danger");
@@ -877,8 +878,12 @@
             let advertisementTextUk = $('[name="advertisingTextUkr"]');
 
             if (!validSelect2(region)) isValidated = false
-            if (!validSelect2(city)) isValidated = false
-            if (!validSelect2(district)) isValidated = false
+            if (!city.prop('disabled')) {
+                if (!validSelect2(city)) isValidated = false
+            }
+            if (!district.prop('disabled')){
+                if (!validSelect2(district)) isValidated = false
+            }
             if (!validString("1", "31", street)) {
                 isValidated = false
                 $("#ruLangSave").click();
@@ -998,8 +1003,7 @@
                 let checkFile = true;
                 for (let i = 0; i < fileInput.files.length; i++) {
                     let selectedFile = fileInput.files[i];
-                    if (selectedFile.type === "application/pdf")
-                    {
+                    if (selectedFile.type === "application/pdf") {
                     } else {
                         checkFile = false;
                         showToastWithTranslate("show_file_message", "danger");

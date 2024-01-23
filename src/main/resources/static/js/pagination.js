@@ -128,22 +128,24 @@ function createEllipsisItem() {
 }
 
 function updateLabelPagination(currentPage, container, totalElements, lastPageElements, sizePage) {
-    let label = '<span data-translate="shown">Показано</span> ' + (currentPage * sizePage + 1) + '-' + Math.min((currentPage + 1) * sizePage, totalElements) + ` <span data-translate="of"> из </span> ` + totalElements;
+    if (totalElements > 0) {
+        let label = '<span data-translate="shown">Показано</span> ' + (currentPage * sizePage + 1) + '-' + Math.min((currentPage + 1) * sizePage, totalElements) + ` <span data-translate="of"> из </span> ` + totalElements;
 
-    if (currentPage * sizePage == 0 && totalElements > 0) {
-        label = `<span data-translate="shown">Показано</span> ` + 1 + `-` + Math.min((currentPage + 1) * sizePage, totalElements) + ` <span data-translate="of">из</span> ` + totalElements;
-    }
+        if (currentPage * sizePage == 0 && totalElements > 0) {
+            label = `<span data-translate="shown">Показано</span> ` + 1 + `-` + Math.min((currentPage + 1) * sizePage, totalElements) + ` <span data-translate="of">из</span> ` + totalElements;
+        }
 
-    if ((currentPage + 1) * sizePage > totalElements) {
-        label = `<span data-translate="shown">Показано</span> ` + (currentPage * sizePage) + `-` + (currentPage * sizePage + lastPageElements) + ` <span data-translate="of"> из </span> ` + totalElements;
-    }
+        if ((currentPage + 1) * sizePage > totalElements) {
+            label = `<span data-translate="shown">Показано</span> ` + (currentPage * sizePage) + `-` + (currentPage * sizePage + lastPageElements) + ` <span data-translate="of"> из </span> ` + totalElements;
+        }
 
-    if (currentPage * sizePage == 0 && totalElements > 0 && (currentPage + 1) * sizePage > totalElements) {
-        label = `<span data-translate="shown">Показано</span> ` + 1 + `-` + (currentPage * sizePage + lastPageElements) + ` <span data-translate="of">из</span> ` + totalElements;
+        if (currentPage * sizePage == 0 && totalElements > 0 && (currentPage + 1) * sizePage > totalElements) {
+            label = `<span data-translate="shown">Показано</span> ` + 1 + `-` + (currentPage * sizePage + lastPageElements) + ` <span data-translate="of">из</span> ` + totalElements;
+        }
+        var p = document.createElement('p');
+        p.innerHTML = label;
+        var changeLabel = document.getElementById(container);
+        changeLabel.innerHTML = '';
+        changeLabel.appendChild(p);
     }
-    var p = document.createElement('p');
-    p.innerHTML = label;
-    var changeLabel = document.getElementById(container);
-    changeLabel.innerHTML = '';
-    changeLabel.appendChild(p);
 }

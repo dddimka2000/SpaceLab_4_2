@@ -191,10 +191,17 @@
                 },
                 dataType: 'json',
                 success: function (builderObjects) {
-                    console.log(builderObjects)
                     var table = document.getElementById("branchTable");
                     var tbody = table.querySelector("tbody");
                     $('#branchTable tbody').empty().css('text-align', 'center');
+                    if($("#empty-block"))$("#empty-block").remove();
+                    if(builderObjects.totalElements == 0){
+                        table.insertAdjacentHTML('afterend', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                        tbody.style.display = "none";
+                    }
+                    else {
+                        tbody.style.display = '';
+                    }
                     for (var object of builderObjects.content) {
                         var newRow = tbody.insertRow();
                         var cell1 = newRow.insertCell(0);

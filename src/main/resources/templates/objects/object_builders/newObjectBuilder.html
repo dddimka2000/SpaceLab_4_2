@@ -645,8 +645,12 @@
                 $("#ukrLangSave").click();
             }
             if (!validSelect2(region)) isValidated = false
-            if (!validSelect2(city)) isValidated = false
-            if (!validSelect2(district)) isValidated = false
+            if (!city.prop('disabled')) {
+                if (!validSelect2(city)) isValidated = false
+            }
+            if (!district.prop('disabled')){
+                if (!validSelect2(district)) isValidated = false
+            }
             if (!validString("1", "31", street)) {
                 isValidated = false
                 $("#ruLangSave").click();

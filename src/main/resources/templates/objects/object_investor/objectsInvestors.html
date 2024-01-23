@@ -304,7 +304,7 @@
             var bodyRows = []
             var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
             if (selectedCheckboxes.length === 0) {
-                showToast("Виберіть хоча б один чекбокс для друку.", "danger");
+                showToastWithTranslate("printErrorCheckbox", "danger");
                 return;
             }
             var ajaxPromises = [];
@@ -361,46 +361,6 @@
     <script th:inline="javascript">
         $("#pageSize").select2({placeholder: translateValue('виберіть_обєкт'), language: languageForSelect2});
 
-        function printButton() {
-            var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
-
-            if (selectedCheckboxes.length === 0) {
-                showNotification("Потом переделаю печать", "", false);
-                return;
-            }
-
-            var printDocument = document.createElement('div');
-            printDocument.id = "printElements"
-            var printTable = document.createElement('table');
-            printTable.className = "invoice-list-table table border-top dataTable no-footer dtr-column";
-            printTable.id = "branchTable";
-
-            var tableHead = document.createElement('thead');
-            tableHead.innerHTML = '<tr style="text-align: center"><th>Дата контакта</th><th>Код</th><th>Район</th><th>Топозона</th><th>Улица</th><th>Комнат</th><th>Этаж</th><th>Этажность</th><th>Площадь</th><th>Реклама</th><th>Статус</th><th>Фото</th><th></th><th></th></tr>';
-            printTable.appendChild(tableHead);
-
-            var tableBody = document.createElement('tbody');
-            tableBody.style.textAlign = "center";
-
-            selectedCheckboxes.forEach(function (checkbox) {
-                var rowId = checkbox.getAttribute('data-id');
-                var originalRow = document.querySelector('tr[data-id="' + rowId + '"]');
-
-                // Клонируйте и добавьте клон в таблицу
-                var clonedRow = originalRow.cloneNode(true);
-                tableBody.appendChild(clonedRow);
-            });
-
-            printTable.appendChild(tableBody);
-            printDocument.appendChild(printTable);
-
-            // Отправьте документ для печати
-            document.body.appendChild(printDocument);
-            window.print();
-            document.body.removeChild(printDocument);
-
-
-        }
 
         $(function () {
             $("#select2Multiple24").select2({
@@ -523,6 +483,15 @@
                         var table = document.getElementById("branchTable");
                         var tbody = table.querySelector("tbody");
                         $('#branchTable tbody').empty().css('text-align', 'center');
+
+                        if($("#empty-block"))$("#empty-block").remove();
+                        if(builderObjects.totalElements == 0){
+                            table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                            table.style.display = "none";
+                        }
+                        else {
+                            table.style.display = '';
+                        }
                         for (var object of builderObjects.content) {
                             var newRow = tbody.insertRow();
                             newRow.setAttribute('data-id', elementTr);
@@ -636,6 +605,7 @@
             // $(".select2").find(".select2-selection__rendered").remove();
             let radioFilters = $('[name="flexRadioDefault"]');
             radioFilters.prop("checked", false);
+            getPageWithFilter(0)
 
         });
 
