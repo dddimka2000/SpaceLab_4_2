@@ -37,21 +37,27 @@ public class ObjectBuilderService {
     private final String imagesBucketName = "images";
     private final String filesBucketName = "files";
     final
+    StringTrim stringTrim;
+    final
     ImagesForObjectService imagesForObjectService;
     final
     MinioService minioService;
     final
     LayoutService layoutService;
 
-    public ObjectBuilderService(BuilderObjectRepository builderObjectRepository, LayoutService layoutService, MinioService minioService, ImagesForObjectService imagesForObjectService) {
+
+    public ObjectBuilderService(BuilderObjectRepository builderObjectRepository, LayoutService layoutService, MinioService minioService, ImagesForObjectService imagesForObjectService, StringTrim stringTrim) {
         this.builderObjectRepository = builderObjectRepository;
         this.layoutService = layoutService;
         this.minioService = minioService;
         this.imagesForObjectService = imagesForObjectService;
+        this.stringTrim = stringTrim;
     }
+
     public long count() {
         return builderObjectRepository.count();
     }
+
     public Optional<BuilderObject> findById(Integer id) {
         log.info("ObjectBuilderService-findById start");
         Optional<BuilderObject> entity = builderObjectRepository.findById(id);
@@ -70,12 +76,14 @@ public class ObjectBuilderService {
         log.info("ObjectBuilderService-findByName successfully");
         return entity;
     }
+
     public Optional<BuilderObject> findByNameEnglish(String name) {
         log.info("ObjectBuilderService-findByNameEnglish start");
         Optional<BuilderObject> entity = builderObjectRepository.findByNameEnglish(name);
         log.info("ObjectBuilderService-findByNameEnglish successfully");
         return entity;
     }
+
     public Optional<BuilderObject> findByNameUkraine(String name) {
         log.info("ObjectBuilderService-findByNameUkraine start");
         Optional<BuilderObject> entity = builderObjectRepository.findByNameUkraine(name);
@@ -88,7 +96,8 @@ public class ObjectBuilderService {
         builderObjectRepository.save(entity);
         log.info("ObjectBuilderService-save successfully");
     }
-    public void saveEdit(ObjectBuilderDtoEdit objectBuilderDtoEdit, BuilderObject builderObject, Integer id) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+
+    public void saveEdit(ObjectBuilderDtoEdit objectBuilderDtoEdit, BuilderObject builderObject, Integer id) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         String uuidFile = UUID.randomUUID().toString();
         String resultFilename;
         if (objectBuilderDtoEdit.getPrices() != null && objectBuilderDtoEdit.getPrices().isPresent()) {
@@ -108,11 +117,16 @@ public class ObjectBuilderService {
             minioService.putMultipartFile(objectBuilderDtoEdit.getInstallmentTerms().get(), filesBucketName, resultFilename);
             builderObject.setFileInstallmentTerms(resultFilename);
         }
+        stringTrim.trimStringFields(builderObject);
+        stringTrim.trimStringFields(builderObject.getPromotion());
+        stringTrim.trimStringFields(builderObject.getAddress());
+
         save(builderObject);
         //Delete old Layouts
         layoutService.deleteAllByBuilderObject(builderObject);
         for (LayoutDTOEdit dto : objectBuilderDtoEdit.getLayoutDTOList()) {
             Layout layout = LayoutMapper.INSTANCE.toEntity(dto);
+            stringTrim.trimStringFields(layout);
             if (dto.getImg1Layout() != null && !dto.getImg1Layout().isEmpty()) {
                 uuidFile = UUID.randomUUID().toString();
                 resultFilename = uuidFile + "." + dto.getImg1Layout().get().getOriginalFilename();
@@ -181,11 +195,14 @@ public class ObjectBuilderService {
         resultFilename = uuidFile + "." + objectBuilderDto.getInstallmentTerms().getOriginalFilename();
         minioService.putMultipartFile(objectBuilderDto.getInstallmentTerms(), filesBucketName, resultFilename);
         builderObject.setFileInstallmentTerms(resultFilename);
-
+        stringTrim.trimStringFields(builderObject);
+        stringTrim.trimStringFields(builderObject.getPromotion());
+        stringTrim.trimStringFields(builderObject.getAddress());
 
         save(builderObject);
         for (LayoutDTO dto : objectBuilderDto.getLayoutDTOList()) {
             Layout layout = LayoutMapper.INSTANCE.toEntity(dto);
+            stringTrim.trimStringFields(layout);
             //files to MinIO and add UUID
             uuidFile = UUID.randomUUID().toString();
             resultFilename = uuidFile + "." + dto.getImg1Layout().getOriginalFilename();

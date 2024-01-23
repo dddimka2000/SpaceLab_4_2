@@ -14,18 +14,25 @@
 
             #branchTable * {
                 visibility: visible;
-
             }
 
             #branchTable .btn-group * {
                 visibility: hidden;
                 display: none;
+                top:0px;
             }
 
             #branchTable {
-                position: absolute;
+                position: fixed;
                 left: 0;
                 top: 0;
+                margin: 0;
+                padding: 0;
+            }
+            #filterSearch_H{
+                visibility: hidden;
+                display: none;
+                top:0px;
             }
         }
     </style>
@@ -51,7 +58,7 @@
                     </nav>
                 </div>
                 <hr style="margin-top: -5px">
-                <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
+                <div style="width: 100%; display: flex; justify-content: flex-end;">
                     <button class="btn btn-submit" id="printButton" data-translate="print" style="margin: 20px">Распечатать</button>
                     <a th:href="@{/builder_objects/create}" style="margin: 20px">
                         <button class="btn btn-submit" data-translate="builder_object_add">Добавить объект</button>
@@ -77,13 +84,13 @@
                                     <th data-translate="price_from">Цена от</th>
                                     <th></th>
                                 </tr>
-                                <tr>
+                                <tr id="filterSearch_H">
                                     <td><input type="text" class="form-control for-filter"></td>
                                     <td><input type="text" class="form-control for-filter"></td>
                                     <td><input type="text" class="form-control for-filter"></td>
                                     <td><input type="text" class="form-control for-filter"></td>
-                                    <td><input type="number" min="0" oninput="validateInput(this)" class="form-control for-filter"></td>
-                                    <td><input type="number" min="0" oninput="validateInput(this)" class="form-control for-filter"></td>
+                                    <td><input type="number" min="0"  class="form-control for-filter"></td>
+                                    <td><input type="number" min="0"  class="form-control for-filter"></td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -184,10 +191,17 @@
                 },
                 dataType: 'json',
                 success: function (builderObjects) {
-                    console.log(builderObjects)
                     var table = document.getElementById("branchTable");
                     var tbody = table.querySelector("tbody");
                     $('#branchTable tbody').empty().css('text-align', 'center');
+                    if($("#empty-block"))$("#empty-block").remove();
+                    if(builderObjects.totalElements == 0){
+                        table.insertAdjacentHTML('afterend', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                        tbody.style.display = "none";
+                    }
+                    else {
+                        tbody.style.display = '';
+                    }
                     for (var object of builderObjects.content) {
                         var newRow = tbody.insertRow();
                         var cell1 = newRow.insertCell(0);

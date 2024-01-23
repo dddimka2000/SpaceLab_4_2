@@ -1,11 +1,21 @@
 package org.example.util.validator;
 
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.sax.BodyContentHandler;
 import org.example.dto.BranchDto;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +23,37 @@ import java.util.List;
 public class BranchValidator implements Validator {
     private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("jpg", "jpeg", "png", "pdf");
     private static final long MAX_FILE_SIZE = 20 * 1024 * 1024;
+    public static boolean isValidPhoto(MultipartFile file) {
+        try {
+            InputStream fileInputStream = file.getInputStream();
+            ContentHandler handler = new BodyContentHandler();
+            Metadata metadata = new Metadata();
+            Parser parser = new AutoDetectParser();
+            ParseContext context = new ParseContext();
+
+            parser.parse(fileInputStream, handler, metadata, context);
+
+            String contentType = metadata.get("Content-Type");
+            if (contentType != null) {
+                if (contentType.startsWith("image/jpeg") ||
+                        contentType.startsWith("image/png") ||
+                        contentType.startsWith("image/jpg") ||
+                        contentType.startsWith("image/gif")
+                ) {
+                    return false;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TikaException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }
+
+        return true;
+    }
+
     @Override
     public boolean supports(Class<?> clazz) {
         return BranchDto.class.equals(clazz);
@@ -41,6 +82,9 @@ public class BranchValidator implements Validator {
                 String extension = getFileExtension(originalFilename);
                 if (!ALLOWED_EXTENSIONS.contains(extension.toLowerCase())) {
                     errors.rejectValue(fieldName, "file.extension.invalid", "Допустимі розширення файлів: jpg, jpeg, png, pdf");
+                }
+                if (isValidPhoto(file)) {
+                    errors.rejectValue(fieldName, "file.extension.invalid", "Попытка внести файл с измененным разрешением");
                 }
             }
         }

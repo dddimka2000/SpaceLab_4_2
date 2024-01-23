@@ -74,7 +74,7 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item"  onclick="modalForLogoutModal()">
+                        <a class="dropdown-item" onclick="modalForLogoutModal()">
                             <i class="ti ti-logout me-2 ti-sm"></i>
                             <span class="align-middle">Log Out</span>
                         </a>
@@ -90,23 +90,24 @@
         var translationsSecondExample
         var languageSecondExample
         var languageForSelect2
-        function translateDatePicker(language){
+
+        function translateDatePicker(language) {
             console.log(language)
             var flatpickrDateTimes = document.querySelectorAll(".flatpickr-datetime");
             flatpickrDateTimes.forEach(function (element) {
-                if(language == "ru"){
+                if (language == "ru") {
                     element.flatpickr({
                         dateFormat: "Y/m/d",
                         maxDate: new Date(),
                         locale: "ru"
                     });
-                }else if(language == "ukr"){
+                } else if (language == "ukr") {
                     element.flatpickr({
                         dateFormat: "Y/m/d",
                         maxDate: new Date(),
                         locale: "uk"
                     });
-                }else {
+                } else {
                     element.flatpickr({
                         dateFormat: "Y/m/d",
                         maxDate: new Date()
@@ -114,9 +115,11 @@
                 }
             });
         }
-        function translateByOriginName(key){
+
+        function translateByOriginName(key) {
             return translationsSecondExample[languageSecondExample][key];
         }
+
         function translateValue(key) {
             if (!translationsSecondExample)
                 $.ajax({
@@ -150,14 +153,16 @@
             }
 
         }
-        function selectedItemForLanguage(language){
+
+        function selectedItemForLanguage(language) {
             var items = $('.for-language')
             for (var item of items) {
-                if($(item).attr('data-language') == language){
+                if ($(item).attr('data-language') == language) {
                     $(item).css('background-color', '#7367f0')
-                }else $(item).css('background-color', '')
+                } else $(item).css('background-color', '')
             }
         }
+
         async function getOriginalValue(translatedName) {
             try {
                 const translationsResponse = await fetch('/minions-dd/admin/api/translations');
@@ -181,6 +186,7 @@
                 throw error;
             }
         }
+
         function refreshSelect2Find() {
             let selectElements = document.querySelectorAll(".select2find");
             if (selectElements) {
@@ -188,6 +194,15 @@
                     $(element).select2({language: languageForSelect2, placeholder: translateValue('виберіть_обєкт')});
                 });
             }
+
+
+            if ($("#select2MultipleResidentialComplexId")) {
+                if (typeof select2MultipleResidential === 'function') {
+                    select2MultipleResidential();
+                }
+            }
+
+
             if ($(".select2-selection__choice")) {
                 $(".select2-selection__choice").each(function (index, element) {
                     if (element.value !== undefined) {
@@ -204,6 +219,7 @@
                 });
             }
         }
+
         async function changeLanguageNav(language) {
             selectedItemForLanguage(language)
             try {
@@ -269,9 +285,9 @@
                 let cookie = cookiesArray[i].split("=");
                 cookies[cookie[0]] = cookie[1];
             }
-            if(cookies["selectedLanguage"]=='ru') languageForSelect2='ru'
-            else if(cookies["selectedLanguage"]=='ukr') languageForSelect2='uk'
-            else languageForSelect2='en'
+            if (cookies["selectedLanguage"] == 'ru') languageForSelect2 = 'ru'
+            else if (cookies["selectedLanguage"] == 'ukr') languageForSelect2 = 'uk'
+            else languageForSelect2 = 'en'
             selectedLanguage = cookies["selectedLanguage"];
             languageSecondExample = cookies["selectedLanguage"];
             if (selectedLanguage == undefined) {
@@ -302,7 +318,6 @@
                 selectedLanguage = "ru";
             }
             changeLanguageNav(selectedLanguage);
-
         }
 
     </script>

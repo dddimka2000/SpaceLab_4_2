@@ -212,7 +212,7 @@ public class ObjectsBuilderController {
 
     @Transactional
     @PostMapping("/edit/{id}")
-    public ResponseEntity<?> EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDtoEdit objectBuilderDtoEdit, BindingResult bindingResult, @PathVariable Integer id) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<?> EditMainInfoObjectsBuilderPost(@Valid @ModelAttribute ObjectBuilderDtoEdit objectBuilderDtoEdit, BindingResult bindingResult, @PathVariable Integer id) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         objectBuilderValidator.validateEdit(objectBuilderDtoEdit, bindingResult, id);
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream()
@@ -234,9 +234,17 @@ public class ObjectsBuilderController {
         }
         try {
             String fileName = objectBuilder.get().getFileCheckerboard();
-            byte[] fileCheckerboard = minioService.getPhoto(fileName, filesBucketName);
-            ByteArrayResource resource = new ByteArrayResource(fileCheckerboard);
-            return getByteArrayResourceResponseEntity(fileName, fileCheckerboard, resource);
+            byte[] fileInstallmentTerms = minioService.getPhoto(fileName, filesBucketName);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+
+            ByteArrayResource resource = new ByteArrayResource(fileInstallmentTerms);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(fileInstallmentTerms.length)
+                    .body(resource);
         } catch (Exception e) {
             log.error(e);
             return ResponseEntity.notFound().build();
@@ -249,16 +257,26 @@ public class ObjectsBuilderController {
         if (objectBuilder.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
         try {
             String fileName = objectBuilder.get().getFileInstallmentTerms();
-            byte[] fileCheckerboard = minioService.getPhoto(fileName, filesBucketName);
-            ByteArrayResource resource = new ByteArrayResource(fileCheckerboard);
-            return getByteArrayResourceResponseEntity(fileName, fileCheckerboard, resource);
+            byte[] fileInstallmentTerms = minioService.getPhoto(fileName, filesBucketName);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+
+            ByteArrayResource resource = new ByteArrayResource(fileInstallmentTerms);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(fileInstallmentTerms.length)
+                    .body(resource);
         } catch (Exception e) {
             log.error(e);
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @GetMapping("/card/downloadFilePrices/{id}")
     public ResponseEntity<ByteArrayResource> downloadFilePrices(@PathVariable Integer id) {
@@ -268,9 +286,17 @@ public class ObjectsBuilderController {
         }
         try {
             String fileName = objectBuilder.get().getFilePrices();
-            byte[] file = minioService.getPhoto(fileName, filesBucketName);
-            ByteArrayResource resource = new ByteArrayResource(file);
-            return getByteArrayResourceResponseEntity(fileName, file, resource);
+            byte[] fileInstallmentTerms = minioService.getPhoto(fileName, filesBucketName);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+
+            ByteArrayResource resource = new ByteArrayResource(fileInstallmentTerms);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(fileInstallmentTerms.length)
+                    .body(resource);
         } catch (Exception e) {
             log.error(e);
             return ResponseEntity.notFound().build();

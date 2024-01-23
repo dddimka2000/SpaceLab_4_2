@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.InvestorObjectDtoSearch;
 import org.example.dto.PropertySecondaryObjectDTO;
+import org.example.entity.property.PropertyInvestorObject;
 import org.example.entity.property.PropertySecondaryObject;
 import org.example.mapper.ObjectSecondaryMapper;
 import org.example.service.MinioService;
@@ -67,6 +68,11 @@ public class SecondaryObjectsController {
         modelAndView.setViewName("/objects/secondary_objects/secondaryObjects");
         return modelAndView;
     }
+    @GetMapping("/getById/{id}")
+    @ResponseBody
+    public PropertySecondaryObject getById(@PathVariable Integer id) {
+        return propertySecondaryObjectService.getById(id);
+    }
 
     @GetMapping("/create")
     public ModelAndView SecondaryObjectsCreate() {
@@ -82,7 +88,7 @@ public class SecondaryObjectsController {
 
     @PostMapping("/create")
     @ResponseBody
-    public ResponseEntity<?> newObjectsSecondaryControllerPost(@Valid @ModelAttribute PropertySecondaryObjectDTO propertySecondaryObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<?> newObjectsSecondaryControllerPost(@Valid @ModelAttribute PropertySecondaryObjectDTO propertySecondaryObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         PropertySecondaryObject propertySecondaryObject = ObjectSecondaryMapper.INSTANCE.toEntity(propertySecondaryObjectDTO);
         secondaryObjectValidator.validate(propertySecondaryObjectDTO, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -154,7 +160,7 @@ public class SecondaryObjectsController {
 
     @ResponseBody
     @PostMapping("/edit/{id}")
-    public ResponseEntity<?>  editObjectsSecondaryControllerPost(@PathVariable Integer id, @Valid @ModelAttribute PropertySecondaryObjectDTO propertySecondaryObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<?>  editObjectsSecondaryControllerPost(@PathVariable Integer id, @Valid @ModelAttribute PropertySecondaryObjectDTO propertySecondaryObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         log.info(propertySecondaryObjectDTO);
         PropertySecondaryObject propertySecondaryObject = propertySecondaryObjectService.findById(id).get();
 

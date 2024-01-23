@@ -1,9 +1,11 @@
 package org.example.service;
 
 import io.minio.errors.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.PropertyInvestorObjectDTO;
 import org.example.entity.Realtor;
+import org.example.entity.property.PropertyHouseObject;
 import org.example.entity.property.PropertyInvestorObject;
 import org.example.entity.property.type.PropertyOrigin;
 import org.example.mapper.ObjectInvestorMapper;
@@ -37,12 +39,15 @@ public class PropertyInvestorObjectService {
     MinioService minioService;
     final
     ObjectBuilderService objectBuilderService;
+    final
+    StringTrim stringTrim;
 
-    public PropertyInvestorObjectService(PropertyInvestorObjectRepository propertyInvestorObjectRepository, MinioService minioService, RealtorServiceImpl realtorService, ObjectBuilderService objectBuilderService) {
+    public PropertyInvestorObjectService(PropertyInvestorObjectRepository propertyInvestorObjectRepository, MinioService minioService, RealtorServiceImpl realtorService, ObjectBuilderService objectBuilderService, StringTrim stringTrim) {
         this.propertyInvestorObjectRepository = propertyInvestorObjectRepository;
         this.minioService = minioService;
         this.realtorService = realtorService;
         this.objectBuilderService = objectBuilderService;
+        this.stringTrim = stringTrim;
     }
 
     public void save(PropertyInvestorObject entity) {
@@ -50,9 +55,17 @@ public class PropertyInvestorObjectService {
         propertyInvestorObjectRepository.save(entity);
         log.info("PropertyInvestorObjectService-save successfully");
     }
-    public void saveCreate(PropertyInvestorObject propertyInvestorObject, PropertyInvestorObjectDTO propertyInvestorObjectDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public PropertyInvestorObject getById(Integer id) {
+        log.info("PropertyInvestorObjectService-getById start");
+        PropertyInvestorObject result = propertyInvestorObjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("object with an id = " + id + " was not found"));
+        log.info("PropertyInvestorObjectService-getById successfully");
+        return result;
+    }
+    public void saveCreate(PropertyInvestorObject propertyInvestorObject, PropertyInvestorObjectDTO propertyInvestorObjectDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         log.info("PropertyInvestorObjectService-create start");
         Realtor realtor = realtorService.getByCode(propertyInvestorObjectDTO.getEmployeeCode());
+        stringTrim.trimStringFields(propertyInvestorObject);
+        stringTrim.trimStringFields(propertyInvestorObject.getAddress());
         propertyInvestorObject.setRealtor(realtor);
         propertyInvestorObject.setFiles(minioService.putFileList(propertyInvestorObjectDTO.getFiles()));
         propertyInvestorObject.setPictures(minioService.putImagesList(propertyInvestorObjectDTO.getPictures()));
@@ -61,12 +74,11 @@ public class PropertyInvestorObjectService {
         save(propertyInvestorObject);
         log.info("PropertyInvestorObjectService-create successfully");
     }
-    public void saveEdit(PropertyInvestorObject propertyInvestorObject, PropertyInvestorObjectDTO propertyInvestorObjectDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public void saveEdit(PropertyInvestorObject propertyInvestorObject, PropertyInvestorObjectDTO propertyInvestorObjectDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         if (propertyInvestorObjectDTO.getOldFiles() == null) {
             propertyInvestorObjectDTO.setOldFiles(new ArrayList<>());
         }
         minioService.streamFiles(propertyInvestorObject.getFiles(), propertyInvestorObjectDTO.getOldFiles(), minioService, filesBucketName, propertyInvestorObject.getPictures(), propertyInvestorObjectDTO.getOldPictures(), imagesBucketName, propertyInvestorObjectDTO, propertyInvestorObject);
-        log.info(propertyInvestorObjectDTO.getEmployeeCode());
         Realtor realtor = realtorService.getByCode(propertyInvestorObjectDTO.getEmployeeCode());
         propertyInvestorObject.setRealtor(realtor);
         ObjectInvestorMapper.INSTANCE.toOldEntity(propertyInvestorObject, propertyInvestorObjectDTO);
@@ -81,6 +93,8 @@ public class PropertyInvestorObjectService {
         propertyInvestorObjectDTO.getOldPictures().addAll(namePictures);
         propertyInvestorObject.setPictures(propertyInvestorObjectDTO.getOldPictures());
         propertyInvestorObject.setPropertyOrigin(PropertyOrigin.INVESTOR);
+        stringTrim.trimStringFields(propertyInvestorObject);
+        stringTrim.trimStringFields(propertyInvestorObject.getAddress());
         save(propertyInvestorObject);
         log.info("PropertyInvestorObjectService-edit successfully");
     }

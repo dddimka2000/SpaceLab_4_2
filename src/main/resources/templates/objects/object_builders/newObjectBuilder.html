@@ -9,44 +9,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="">
-    <link rel="icon" type="image/x-icon"
-          th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
     <title data-translate="менеджер_обєкту_від_будівельників"></title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js"
-            type="text/javascript"></script>
-    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
-    <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
-    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
-    <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
-    <script th:src="@{/vendor/js/helpers.js}"></script>
-    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
-    <style>
-        .notification {
-            position: fixed;
-            top: 90px;
-            right: 40px; /* Расстояние справа */
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .notification.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-    </style>
 </head>
 <body>
 <main layout:fragment="content">
@@ -463,14 +426,6 @@
             </div>
         </div>
     </div>
-    <div class="alert alert-warning notification  d-flex align-items-center hidden" role="alert"
-         id="notification">
-
-        <strong id="text_notification"></strong>
-        <div>
-            <span id="notification-message"></span>
-        </div>
-    </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
     <script th:src="@{/js/forms-file-upload.js}"></script>
     <script th:src="@{/vendor/libs/block-ui/block-ui.js}"></script>
@@ -498,9 +453,9 @@
                 }
             })
             let formData = new FormData();
-            formData.append("nameObject", $("#nameObject").val());
-            formData.append("nameObjectEng", $("#nameObjectEu").val());
-            formData.append("nameObjectUkr", $("#nameObjectUkr").val());
+            formData.append("nameObject", $("#nameObject").val().trim());
+            formData.append("nameObjectEng", $("#nameObjectEu").val().trim());
+            formData.append("nameObjectUkr", $("#nameObjectUkr").val().trim());
 
             formData.append("region", $("#region").val());
             formData.append("street", $("#street").val());
@@ -510,9 +465,9 @@
             formData.append("district", $('[name="district"]').val());
             formData.append("city", $('[name="city"]').val());
             formData.append("topozone", $('[name="topozone"]').val());
-            formData.append("promotionName", $("#promotionName").val());
-            formData.append("promotionNameEng", $("#promotionNameEu").val());
-            formData.append("promotionNameUkr", $("#promotionNameUkr").val());
+            formData.append("promotionName", $("#promotionName").val().trim());
+            formData.append("promotionNameEng", $("#promotionNameEu").val().trim());
+            formData.append("promotionNameUkr", $("#promotionNameUkr").val().trim());
 
             formData.append("houseNumber", $('[name="houseNumber"]').val());
             formData.append("section", $('[name="section"]').val());
@@ -609,7 +564,11 @@
                     errors.forEach(function (error) {
                         console.log(error);
                         changeInputValue = 0;
-                        if (error === "(Ру)Объект новостроя с таким именем уже существует") {
+                        if (error === "Минимум 1 фото в объекте") {
+                            activateListItem('#pills-profile')
+                            errorsQuantity++;
+                            showToastWithTranslate("errorOnePhoto", "danger");
+                        } else if (error === "(Ру)Объект новостроя с таким именем уже существует") {
                             showErrorName(nameObject);
                             if (changeInputValue == 0) {
                                 changeInputValue = changeInputValue + 1;
@@ -686,8 +645,12 @@
                 $("#ukrLangSave").click();
             }
             if (!validSelect2(region)) isValidated = false
-            if (!validSelect2(city)) isValidated = false
-            if (!validSelect2(district)) isValidated = false
+            if (!city.prop('disabled')) {
+                if (!validSelect2(city)) isValidated = false
+            }
+            if (!district.prop('disabled')){
+                if (!validSelect2(district)) isValidated = false
+            }
             if (!validString("1", "31", street)) {
                 isValidated = false
                 $("#ruLangSave").click();
@@ -810,7 +773,8 @@
                     reader.readAsDataURL(file);
                 } else {
                     input.value = '';
-                    showNotification("Warning!", "Только изображения", false)
+                    showToastWithTranslate("show_img_message", "danger")
+
                 }
             }
         }
@@ -1050,8 +1014,7 @@
                 return item !== imgId;
             });
             $(textCard).remove();
-            showNotification("Warning!", "Планировка удалена", false)
-            console.log("Удаление Layout");
+            showToastWithTranslate("delete_something", "danger")
         }
 
         // Настройки
@@ -1148,22 +1111,6 @@
             }
             refreshAllTranslate()
         });
-
-        function showNotification(bigTextMessage, message, isSuccess) {
-            const notification = document.getElementById("notification");
-            const notificationMessage = document.getElementById("notification-message");
-
-            var element = document.getElementById("text_notification");
-            element.textContent = bigTextMessage;
-
-            notificationMessage.textContent = message;
-            notification.classList.remove("hidden");
-            notification.classList.toggle("alert-success", isSuccess);
-            notification.classList.toggle("alert-warning", !isSuccess);
-            setTimeout(() => {
-                notification.classList.add("hidden");
-            }, 5000);
-        }
 
 
     </script>

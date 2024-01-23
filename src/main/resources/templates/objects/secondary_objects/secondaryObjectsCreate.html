@@ -5,49 +5,8 @@
         layout:decorate="~{layout.html}" xmlns:layout="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <meta name="description" content="">
-    <link rel="icon" type="image/x-icon"
-          th:href="@{/img/favicon/1644809631_5-abrakadabra-fun-p-domik-na-belom-fone-12.png}">
-    <title data-translate="менеджер_вториної_нерухомості"></title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js"
-            type="text/javascript"></script>
-    <link rel="stylesheet" th:href="@{/vendor/fonts/fontawesome.css}">
-    <link rel="stylesheet" th:href="@{/vendor/fonts/tabler-icons.css}">
-    <link rel="stylesheet" th:href="@{/vendor/fonts/flag-icons.css}">
-    <link rel="stylesheet" th:href="@{/css/demo.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/node-waves/node-waves.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/select2/select2.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/formvalidation/dist/css/formValidation.min.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/animate-css/animate.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/sweetalert2/sweetalert2.css}">
-    <script th:src="@{/vendor/js/helpers.js}"></script>
-    <link rel="stylesheet" th:href="@{/vendor/libs/typeahead-js/typeahead.css}">
-    <link rel="stylesheet" th:href="@{/vendor/libs/dropzone/dropzone.css}">
-    <script th:src="@{/vendor/libs/select2/select2.js}"></script>
-    <style>
-        .notification {
-            position: fixed;
-            top: 90px;
-            right: 40px; /* Расстояние справа */
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-            transition: opacity 0.5s ease-in-out;
-        }
 
-        .notification.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-    </style>
+    <title data-translate="менеджер_вториної_нерухомості"></title>
 </head>
 </body>
 
@@ -172,8 +131,8 @@
                         </div>
                         <div class="col-lg-2 col-sm-6">
                             <h6 data-translate="topzone">Топозона</h6>
-                            <select class="select2 form-select form-select select2find" name="topozone">
-                                <option value="" disabled></option>
+                            <select class="select2 form-select form-select select2find" name="topozone" id="topozone">
+                                <option value="" disabled selected></option>
                                 <option th:each="entity : ${selectTopozone}"
                                         th:value="${entity}" th:data-translate="${entity}"
                                         th:text="${entity}"></option>
@@ -235,7 +194,8 @@
                         </div>
                         <div class="col-lg-3 col-sm-6">
                             <h6 data-translate="ownership_rights">Право собственности</h6>
-                            <select class="select2 form-select form-select select2find" name="ownership">
+                            <select class="select2 form-select form-select select2find" name="ownership" id="ownership">
+                                <option value="" disabled selected></option>
                                 <option th:each="status : ${ownershipType}"
                                         th:value="${status}"  th:data-translate="${status}"
                                         th:text="${status}"></option>
@@ -247,7 +207,7 @@
                     <input class="form-control" type="text" id="notes" placeholder="Введите заметки">
                     <br>
                     <h6 data-translate="attach_files">Прикрепить файлы</h6>
-                    <input type="file" class="form-control" accept=".pdf, .xlsx" name="fileInput" id="fileInput" onchange="showFile()">
+                    <input type="file" class="form-control" accept=".pdf" name="fileInput" id="fileInput" onchange="showFile()" multiple>
                     <br>
                     <div id="fileList">
 
@@ -673,13 +633,12 @@
 
     <script th:inline="javascript">
         function checkNumber() {
-            let checkNumber = $("#telephone").val()
-            var regExp = /^\+380(31|32|33|34|35|36|38|39|41|43|44|45|46|20|89|94|92|91|67|68|96|97|98|70|90|91|67|68|96|97|98|70|87|89|50|66|95|99)\d{7}$/;
-            console.log(checkNumber)
-            if (regExp.test(checkNumber)) {
-                showNotification("Номер корректный", "", true)
+            let checkNumber = $("#telephone")
+            cleanInput(checkNumber);
+            if (!validatePhoneNumber(checkNumber)) {
+                // showToastWithTranslate("error_number", "danger")
             } else {
-                showNotification("Такого номера не существует", "", false)
+                showToastWithTranslate("correct_number", "success")
             }
         }
 
@@ -852,6 +811,11 @@
                         let codeBranch = $("#codeBranch");
                         let codeStaff = $("#codeStaff");
                         let codeObject = $("#codeObject");
+                        if (error === "Минимум 1 фото в объекте") {
+                            activateListItem('#pills-profile-tab')
+                            errorsQuantity++;
+                            showToastWithTranslate("errorOnePhoto","danger");
+                        }
                         if (error === "Кода данного сотрудника не существует") {
                             errorsQuantity++;
                             showErrorCodeRealtor(codeStaff);
@@ -885,7 +849,7 @@
             let streetUkr = $("#streetUkr");
             let district = $('[name="district"]')
             let city = $('[name="city"]')
-            let topozone = $('[name="topozone"]')
+            let topozone = $("#topozone")
             let section = $('[name="section"]')
             let houseNumber = $('[name="houseNumber"]')
             let apartmentNumber = $('[name="apartmentNumber"]');
@@ -903,7 +867,7 @@
             let objectCode = $('[name="codeObject"]');
             let branchCode = $('[name="codeBranch"]');
             let employeeCode = $('[name="codeStaff"]');
-            let ownershipType = $('[name="ownership"]');
+            let ownershipType = $("#ownership");
             let landmark = $("#reference_point");
             let residentialComplexId = $('[name="residentialComplex"]');
             let floorQuantity = $('[name="floorQuantity"]');
@@ -958,8 +922,12 @@
             let advertisementTextUk = $('[name="advertisingTextUkr"]');
 
             if (!validSelect2(region)) isValidated = false
-            if (!validSelect2(city)) isValidated = false
-            if (!validSelect2(district)) isValidated = false
+            if (!city.prop('disabled')) {
+                if (!validSelect2(city)) isValidated = false
+            }
+            if (!district.prop('disabled')){
+                if (!validSelect2(district)) isValidated = false
+            }
             if (!validString("1", "31", street)) {
                 isValidated = false
                 $("#ruLangSave").click();
@@ -1088,42 +1056,33 @@
 
         function showFile() {
             if (fileInput.files.length > 0) {
-                for (var i = 0; i < fileInput.files.length; i++) {
-                    var selectedFile = fileInput.files[i];
-                    if (
-                        selectedFile.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-                        selectedFile.type === "application/pdf"
-                    ) {
-                        var fileLink = document.createElement("a");
-                        fileLink.href = URL.createObjectURL(selectedFile);
-                        fileLink.download = selectedFile.name;
-                        fileLink.textContent = "Скачать " + selectedFile.name;
-                        fileLink.id = "file" + numFile
-                        fileList.appendChild(fileLink);
-                        var deleteButton = document.createElement("button");
-                        deleteButton.style.marginLeft = "20px";
-                        deleteButton.classList.add("btn", "btn-danger", "btn-sm", "float-right", "for-delete");
-                        deleteButton.innerHTML = `<i class="fa fa-trash"></i>`;
-                        deleteButton.id = "deleteFile" + numFile;
-                        fileList.appendChild(deleteButton);
-                        var lineBreak = document.createElement("br");
-                        lineBreak.id = "lineBreak" + numFile;
-                        var lineBreak2 = document.createElement("br");
-                        lineBreak2.id = "lineBreak2" + numFile;
-                        let numListener = numFile;
-                        deleteButton.addEventListener("click", function () {
-                            deleteFile(fileLink.id, deleteButton.id, lineBreak.id, lineBreak2.id, numListener);
-                        });
-                        fileList.appendChild(lineBreak);
-                        fileList.appendChild(lineBreak2);
-                        fileMap.set(numListener, selectedFile);
-                        numFile++;
+                let checkFile = true;
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    let selectedFile = fileInput.files[i];
+                    if (selectedFile.type === "application/pdf")
+                    {
                     } else {
-                        showNotification("Выберите файл формата .xlsx или .pdf.", "", false);
+                        checkFile = false;
+                        showToastWithTranslate("show_file_message", "danger");
+                        fileInput.value = "";
+                    }
+                }
+                if (checkFile) {
+                    for (let i = 0; i < fileInput.files.length; i++) {
+                        let selectedFile = fileInput.files[i];
+                        if (
+                            selectedFile.type === "application/pdf"
+                        ) {
+                            let numListener = numFile;
+                            fileMap.set(numListener, selectedFile);
+                            numFile++;
+                        } else {
+                            showToastWithTranslate("show_file_message", "danger");
+                            fileInput.value = "";
+                        }
                     }
                 }
             }
-            fileInput.value = "";
         }
 
         $(document).ready(function () {

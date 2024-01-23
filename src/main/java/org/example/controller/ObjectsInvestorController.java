@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.InvestorObjectDtoSearch;
 import org.example.dto.PropertyInvestorObjectDTO;
+import org.example.entity.property.PropertyHouseObject;
 import org.example.entity.property.PropertyInvestorObject;
 import org.example.mapper.ObjectInvestorMapper;
 import org.example.service.MinioService;
@@ -57,6 +58,11 @@ public class ObjectsInvestorController {
         this.objectInvestorValidator = objectInvestorValidator;
         this.objectBuilderService = objectBuilderService;
     }
+    @GetMapping("/getById/{id}")
+    @ResponseBody
+    public PropertyInvestorObject getById(@PathVariable Integer id) {
+        return propertyInvestorObjectService.getById(id);
+    }
 
     @GetMapping
     public ModelAndView showObjectsInvestors() {
@@ -86,7 +92,7 @@ public class ObjectsInvestorController {
 
     @PostMapping("/create")
     @ResponseBody
-    public ResponseEntity<?> newObjectsInvestorControllerPost(@Valid @ModelAttribute PropertyInvestorObjectDTO propertyInvestorObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<?> newObjectsInvestorControllerPost(@Valid @ModelAttribute PropertyInvestorObjectDTO propertyInvestorObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         PropertyInvestorObject propertyInvestorObject = ObjectInvestorMapper.INSTANCE.toEntity(propertyInvestorObjectDTO);
         objectInvestorValidator.validate(propertyInvestorObjectDTO, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -159,7 +165,7 @@ public class ObjectsInvestorController {
 
     @ResponseBody
     @PostMapping("/edit/{id}")
-    public ResponseEntity<?> editObjectsInvestorControllerPost(@PathVariable Integer id, @Valid @ModelAttribute PropertyInvestorObjectDTO propertyInvestorObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<?> editObjectsInvestorControllerPost(@PathVariable Integer id, @Valid @ModelAttribute PropertyInvestorObjectDTO propertyInvestorObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         PropertyInvestorObject propertyInvestorObject = propertyInvestorObjectService.findById(id).get();
         objectInvestorValidator.validateEdit(propertyInvestorObjectDTO, bindingResult, propertyInvestorObject.getObjectCode());
         if (bindingResult.hasErrors()) {

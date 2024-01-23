@@ -138,7 +138,7 @@ function validateNumber(min, max, number) {
 
 function cleanInputs() {
     $('.text-for-validating').remove()
-    var elements = document.querySelectorAll('input, select, textarea, button');
+    var elements = document.querySelectorAll('input, select, textarea, button, .ql-editor');
     for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
         element.style.borderColor = '';
@@ -149,7 +149,14 @@ function cleanInputs() {
         select2Select.style.borderColor = '';
     }
 }
-
+function cleanInput(el) {
+    el.next().remove()
+    let elements = el;
+    for (var i = 0; i < elements.length; i++) {
+        let element = elements[i];
+        element.style.borderColor = '';
+    }
+}
 function validString(minLength, maxLength, inputString) {
     try {
         var length = inputString.val().length
@@ -414,6 +421,28 @@ function showErrorCode(input) {
     }
     input.css("border", "1px solid #ff0000");
     return false;
+}
+function validQuill(minLength, maxLength, inputString) {
+    try {
+        var quillContent = inputString.html();
+        var plainText = $("<div>").html(quillContent).text();
+        var length = plainText.length
+        var result = length >= minLength && length <= maxLength && plainText.replace(/\s/g, '').length >= minLength
+    } catch (e) {
+        result = false
+    }
+    if (!result) {
+        scrollToElement(inputString)
+        if (languageSecondExample == 'eng') {
+            addText(inputString, `The field must contain between ${minLength} and ${maxLength} characters`);
+        } else if (languageSecondExample == 'ru') {
+            addText(inputString, `Поле должно содержать от ${minLength} до ${maxLength} символов`);
+        } else {
+            addText(inputString, `Поле повино містити від ${minLength} до ${maxLength} символів`);
+        }
+        inputString.css("border", "1px solid #ff0000");
+    }
+    return result
 }
 
 function removeSpaces() {
