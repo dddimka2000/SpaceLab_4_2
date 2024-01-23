@@ -88,7 +88,7 @@ public class SecondaryObjectsController {
 
     @PostMapping("/create")
     @ResponseBody
-    public ResponseEntity<?> newObjectsSecondaryControllerPost(@Valid @ModelAttribute PropertySecondaryObjectDTO propertySecondaryObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<?> newObjectsSecondaryControllerPost(@Valid @ModelAttribute PropertySecondaryObjectDTO propertySecondaryObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         PropertySecondaryObject propertySecondaryObject = ObjectSecondaryMapper.INSTANCE.toEntity(propertySecondaryObjectDTO);
         secondaryObjectValidator.validate(propertySecondaryObjectDTO, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -160,7 +160,7 @@ public class SecondaryObjectsController {
 
     @ResponseBody
     @PostMapping("/edit/{id}")
-    public ResponseEntity<?>  editObjectsSecondaryControllerPost(@PathVariable Integer id, @Valid @ModelAttribute PropertySecondaryObjectDTO propertySecondaryObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public ResponseEntity<?>  editObjectsSecondaryControllerPost(@PathVariable Integer id, @Valid @ModelAttribute PropertySecondaryObjectDTO propertySecondaryObjectDTO, BindingResult bindingResult) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         log.info(propertySecondaryObjectDTO);
         PropertySecondaryObject propertySecondaryObject = propertySecondaryObjectService.findById(id).get();
 

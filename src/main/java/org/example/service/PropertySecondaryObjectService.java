@@ -35,17 +35,20 @@ public class PropertySecondaryObjectService {
     private final
     PropertySecondaryObjectRepository propertySecondaryObjectRepository;
     final
+    StringTrim stringTrim;
+    final
     RealtorServiceImpl realtorService;
     final
     MinioService minioService;
     final
     ObjectBuilderService objectBuilderService;
 
-    public PropertySecondaryObjectService(PropertySecondaryObjectRepository propertySecondaryObjectRepository, RealtorServiceImpl realtorService, MinioService minioService, ObjectBuilderService objectBuilderService) {
+    public PropertySecondaryObjectService(PropertySecondaryObjectRepository propertySecondaryObjectRepository, RealtorServiceImpl realtorService, MinioService minioService, ObjectBuilderService objectBuilderService, StringTrim stringTrim) {
         this.propertySecondaryObjectRepository = propertySecondaryObjectRepository;
         this.realtorService = realtorService;
         this.minioService = minioService;
         this.objectBuilderService = objectBuilderService;
+        this.stringTrim = stringTrim;
     }
     public PropertySecondaryObject getById(Integer id) {
         log.info("PropertySecondaryObject-getById start");
@@ -53,7 +56,7 @@ public class PropertySecondaryObjectService {
         log.info("PropertySecondaryObject-getById successfully");
         return result;
     }
-    public void saveEdit(PropertySecondaryObject propertySecondaryObject,  PropertySecondaryObjectDTO propertySecondaryObjectDTO)throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public void saveEdit(PropertySecondaryObject propertySecondaryObject,  PropertySecondaryObjectDTO propertySecondaryObjectDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         Realtor realtor = realtorService.getByCode(propertySecondaryObjectDTO.getEmployeeCode());
         minioService.streamFiles(propertySecondaryObject.getFiles(), propertySecondaryObjectDTO.getOldFiles(), minioService, filesBucketName, propertySecondaryObject.getPictures(), propertySecondaryObjectDTO.getOldPictures(), imagesBucketName, propertySecondaryObjectDTO, propertySecondaryObject);
         ObjectSecondaryMapper.INSTANCE.toOldEntity(propertySecondaryObject, propertySecondaryObjectDTO);
@@ -76,9 +79,12 @@ public class PropertySecondaryObjectService {
         propertySecondaryObject.setPictures(propertySecondaryObjectDTO.getOldPictures());
         propertySecondaryObject.setBuilderObject(objectBuilderService.findById(propertySecondaryObjectDTO.getResidentialComplexId()).get());
         propertySecondaryObject.setPropertyOrigin(PropertyOrigin.SECONDARY);
+        stringTrim.trimStringFields(propertySecondaryObject);
+        stringTrim.trimStringFields(propertySecondaryObject.getAddress());
+
         save(propertySecondaryObject);
     }
-    public void saveCreate(PropertySecondaryObject propertySecondaryObject,  PropertySecondaryObjectDTO propertySecondaryObjectDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+    public void saveCreate(PropertySecondaryObject propertySecondaryObject,  PropertySecondaryObjectDTO propertySecondaryObjectDTO) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException, IllegalAccessException {
         log.info("PropertyInvestorObject-create start");
         Realtor realtor = realtorService.getByCode(propertySecondaryObjectDTO.getEmployeeCode());
         propertySecondaryObject.setRealtor(realtor);
@@ -95,6 +101,9 @@ public class PropertySecondaryObjectService {
 
         propertySecondaryObject.setPictures(namePictures);
         propertySecondaryObject.setPropertyOrigin(PropertyOrigin.SECONDARY);
+        stringTrim.trimStringFields(propertySecondaryObject);
+        stringTrim.trimStringFields(propertySecondaryObject.getAddress());
+
         save(propertySecondaryObject);
         log.info("PropertyInvestorObject-create successfully");
     }

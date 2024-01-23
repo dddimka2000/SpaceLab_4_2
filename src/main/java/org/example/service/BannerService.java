@@ -15,9 +15,12 @@ import java.util.Optional;
 public class BannerService {
     private final
     BannerRepository bannerRepository;
+    final
+    StringTrim stringTrim;
 
-    public BannerService(BannerRepository bannerRepository) {
+    public BannerService(BannerRepository bannerRepository, StringTrim stringTrim) {
         this.bannerRepository = bannerRepository;
+        this.stringTrim = stringTrim;
     }
 
     public Optional<Banner> findById(Integer id) {
@@ -27,6 +30,18 @@ public class BannerService {
         return banner;
     }
     public void save(Banner entity) {
+        try {
+            stringTrim.trimStringFields(entity);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        entity.getSlides().stream().forEach(s-> {
+            try {
+                stringTrim.trimStringFields(s);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        });
         bannerRepository.save(entity);
     }
     public void deleteById(Integer id) {

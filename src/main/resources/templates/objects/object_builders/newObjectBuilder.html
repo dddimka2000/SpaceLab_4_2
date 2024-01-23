@@ -453,9 +453,9 @@
                 }
             })
             let formData = new FormData();
-            formData.append("nameObject", $("#nameObject").val());
-            formData.append("nameObjectEng", $("#nameObjectEu").val());
-            formData.append("nameObjectUkr", $("#nameObjectUkr").val());
+            formData.append("nameObject", $("#nameObject").val().trim());
+            formData.append("nameObjectEng", $("#nameObjectEu").val().trim());
+            formData.append("nameObjectUkr", $("#nameObjectUkr").val().trim());
 
             formData.append("region", $("#region").val());
             formData.append("street", $("#street").val());
@@ -465,9 +465,9 @@
             formData.append("district", $('[name="district"]').val());
             formData.append("city", $('[name="city"]').val());
             formData.append("topozone", $('[name="topozone"]').val());
-            formData.append("promotionName", $("#promotionName").val());
-            formData.append("promotionNameEng", $("#promotionNameEu").val());
-            formData.append("promotionNameUkr", $("#promotionNameUkr").val());
+            formData.append("promotionName", $("#promotionName").val().trim());
+            formData.append("promotionNameEng", $("#promotionNameEu").val().trim());
+            formData.append("promotionNameUkr", $("#promotionNameUkr").val().trim());
 
             formData.append("houseNumber", $('[name="houseNumber"]').val());
             formData.append("section", $('[name="section"]').val());

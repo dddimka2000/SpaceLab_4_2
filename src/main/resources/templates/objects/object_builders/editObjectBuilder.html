@@ -732,9 +732,9 @@
                 }
             })
             let formData = new FormData();
-            formData.append("nameObject", $("#nameObject").val());
-            formData.append("nameObjectEng", $("#nameObjectEu").val());
-            formData.append("nameObjectUkr", $("#nameObjectUkr").val());
+            formData.append("nameObject", $("#nameObject").val().trim());
+            formData.append("nameObjectEng", $("#nameObjectEu").val().trim());
+            formData.append("nameObjectUkr", $("#nameObjectUkr").val().trim());
 
             formData.append("region", $("#region").val());
             formData.append("street", $("#street").val());

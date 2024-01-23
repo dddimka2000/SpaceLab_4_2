@@ -694,7 +694,7 @@
                     indexFilesMap++;
                 }
             }
-            formData.append("administrationComment", $('[name="comment"]').val());
+            formData.append("administrationComment", $('[name="comment"]').val()).trim();
             formData.append("publicationStatus", $("#publicationStatus").val());
             formData.append("objectCode", $('[name="codeObject"]').val());
             formData.append("branchCode", $('[name="codeBranch"]').val());
@@ -1152,7 +1152,6 @@
             let ownerPhone = $('[name="telephone"]');
             let boughtDate = $('[name="boughtDate"]');
 
-            let administrationComment = $('[name="comment"]');
             let publicationStatus = $("#publicationStatus");
             let objectCode = $('[name="codeObject"]');
             let branchCode = $('[name="codeBranch"]');
@@ -1237,7 +1236,6 @@
                 isValidated = false;
                 $("#euLangSave").click();
             }
-            if (!validString("0", "5000", comment)) isValidated = false;
             if (!validString("1", "31", apartmentNumber)) isValidated = false;
             if (!validateNumber(0, 9999, buildFinishDate)) isValidated = false;
             if (!validString("1", "31", ownerName)) {
