@@ -23,6 +23,9 @@ class PageServiceTest {
 
     @Mock
     private PageRepository pageRepository;
+    @Mock
+    private StringTrim stringTrim;
+
 
     @InjectMocks
     private PageService pageService;
@@ -46,7 +49,7 @@ class PageServiceTest {
     void save() throws IllegalAccessException {
         // Arrange
         PageEntity entity = new PageEntity();
-
+        doNothing().when(stringTrim).trimStringFields(entity);
         // Act
         pageService.save(entity);
 

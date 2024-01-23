@@ -21,6 +21,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class BannerServiceTest {
+    @Mock
+    StringTrim stringTrim;
 
     @Mock
     private BannerRepository bannerRepository;
@@ -28,11 +30,11 @@ class BannerServiceTest {
     @InjectMocks
     private BannerService bannerService;
 
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
-
     @Test
     void testFindById() {
         // Arrange
@@ -50,12 +52,14 @@ class BannerServiceTest {
         // Verify
         verify(bannerRepository, times(1)).findById(bannerId);
     }
-
     @Test
-    void testSave() {
+    void testSave() throws IllegalAccessException {
         // Arrange
         Banner bannerToSave = new Banner();
-
+        BannerSlide bannerSlide = new BannerSlide();
+        bannerToSave.setSlides(Collections.singletonList(bannerSlide));
+        doNothing().when(stringTrim).trimStringFields(bannerToSave);
+        doNothing().when(stringTrim).trimStringFields(bannerToSave.getSlides());
         // Act
         bannerService.save(bannerToSave);
 

@@ -69,6 +69,7 @@ class UserControllerTest {
     @Test
     void testAdd() throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         UserDto userDto = new UserDto();
+        userDto.setId(2);
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
         ResponseEntity<String> result = userController.add(userDto, bindingResult);

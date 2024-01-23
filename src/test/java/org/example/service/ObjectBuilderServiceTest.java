@@ -1,4 +1,5 @@
 package org.example.service;
+
 import static org.mockito.ArgumentMatchers.anyString;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,6 +30,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class ObjectBuilderServiceTest {
 
@@ -39,11 +41,13 @@ class ObjectBuilderServiceTest {
     private ObjectBuilderService objectBuilderService;
     @Mock
     private MinioService minioService;
-
+    @Mock
+    private StringTrim stringTrim;
     @Mock
     private LayoutService layoutService;
     @Mock
     private ImagesForObjectService imagesForObjectService;
+
     @SneakyThrows
     @Test
     void testSaveCreate() {
@@ -81,6 +85,7 @@ class ObjectBuilderServiceTest {
         // Mock MinioService interactions
 //        doNothing().when(minioService.putMultipartFile(multipartFile, anyString(), anyString()));
         Mockito.doNothing().when(minioService).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString());
+        doNothing().when(stringTrim).trimStringFields(Mockito.any());
 
         // Call the method
         objectBuilderService.saveCreate(objectBuilderDto, builderObject);
@@ -90,6 +95,7 @@ class ObjectBuilderServiceTest {
         Mockito.verify(layoutService, Mockito.times(1)).save(Mockito.any());
         Mockito.verify(builderObjectRepository, Mockito.times(1)).save(Mockito.any());
     }
+
     @SneakyThrows
     @Test
     void testSaveEdit() {
@@ -121,6 +127,7 @@ class ObjectBuilderServiceTest {
         // Mock MinioService interactions
         Mockito.doNothing().when(minioService).putMultipartFile(Mockito.any(), Mockito.anyString(), Mockito.anyString());
         Mockito.doNothing().when(minioService).saveFilesInMinIO(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyString());
+        doNothing().when(stringTrim).trimStringFields(Mockito.any());
 
         // Call the method
         objectBuilderService.saveEdit(objectBuilderDtoEdit, builderObject, id);
@@ -146,6 +153,7 @@ class ObjectBuilderServiceTest {
         // Implement mock data for LayoutDTO
         return new LayoutDTO();
     }
+
     @Test
     void count() {
         // Arrange
@@ -173,7 +181,6 @@ class ObjectBuilderServiceTest {
         assertEquals(Optional.of(expectedEntity), result);
         verify(builderObjectRepository, times(1)).findById(id);
     }
-
 
 
     @Test
@@ -246,6 +253,7 @@ class ObjectBuilderServiceTest {
         // Assert
         verify(builderObjectRepository, times(1)).delete(builderObject);
     }
+
     @Test
     void testFindBuilderObjectsByCriteria() {
         // Arrange
@@ -306,7 +314,6 @@ class ObjectBuilderServiceTest {
         assertEquals(expectedPage, result);
         verify(builderObjectRepository, times(1)).findAll(any(Specification.class), any(Pageable.class));
     }
-
 
 
 }
