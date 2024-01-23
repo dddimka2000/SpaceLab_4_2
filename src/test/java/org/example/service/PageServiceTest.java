@@ -43,7 +43,7 @@ class PageServiceTest {
     }
 
     @Test
-    void save() {
+    void save() throws IllegalAccessException {
         // Arrange
         PageEntity entity = new PageEntity();
 
