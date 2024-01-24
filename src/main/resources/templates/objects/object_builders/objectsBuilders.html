@@ -89,8 +89,8 @@
                                     <td><input type="text" class="form-control for-filter"></td>
                                     <td><input type="text" class="form-control for-filter"></td>
                                     <td><input type="text" class="form-control for-filter"></td>
-                                    <td><input type="number" min="0"  class="form-control for-filter"></td>
-                                    <td><input type="number" min="0"  class="form-control for-filter"></td>
+                                    <td><input type="number" min="0"  class="form-control for-filter" data-num="limited"></td>
+                                    <td><input type="number" min="0"  class="form-control for-filter" data-num="limited"></td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -262,6 +262,20 @@
             elementDelete = elem;
             $("#deleteModal").modal("show");
         }
+        const limitedInputs = document.querySelectorAll('input[data-num="limited"]');
+        limitedInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const parsedValue = parseInt(input.value, 10);
+
+                if (!isNaN(parsedValue)) { // Проверка, что parsedValue является числом
+                    if (parsedValue > 2147483647) {
+                        input.value = '2147483647';
+                    } else if (parsedValue < -2147483647) {
+                        input.value = '-2147483647';
+                    }
+                }
+            });
+        });
 
         $(document).on("click", "#okBtn", function () {
             let contextPath =/*[[@{/}]]*/ '';

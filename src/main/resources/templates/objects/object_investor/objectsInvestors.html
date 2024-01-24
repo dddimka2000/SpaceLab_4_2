@@ -95,10 +95,10 @@
                                             <h6 data-translate="floor"></h6><span>:</span>
                                         </div>
                                         <div style="display: flex">
-                                            <input class="form-control for-filter"
+                                            <input class="form-control for-filter" data-num="limited"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
                                             <div class="mt-2">—</div>
-                                            <input class="form-control for-filter"
+                                            <input class="form-control for-filter" data-num="limited"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
                                         </div>
                                     </div>
@@ -107,10 +107,10 @@
                                             <h6 data-translate="price">Цена</h6><span> ($):</span>
                                         </div>
                                         <div style="display: flex">
-                                            <input class="form-control for-filter"
+                                            <input class="form-control for-filter" data-num="limited"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
                                             <div class="mt-2">—</div>
-                                            <input class="form-control for-filter"
+                                            <input class="form-control for-filter" data-num="limited"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
                                         </div>
                                     </div>
@@ -142,20 +142,20 @@
                                             <h6 data-translate="number_of_floors">Этажность</h6><span>:</span>
                                         </div>
                                         <div style="display: flex">
-                                            <input class="form-control for-filter"
+                                            <input class="form-control for-filter" data-num="limited"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
                                             <div class="mt-2">—</div>
-                                            <input class="form-control for-filter"
+                                            <input class="form-control for-filter" data-num="limited"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-sm-6">
                                         <h6 data-translate="S_area_sqm">Площадь(кв. м):</h6>
                                         <div style="display: flex">
-                                            <input class="form-control for-filter"
+                                            <input class="form-control for-filter" data-num="limited"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
                                             <div class="mt-2">—</div>
-                                            <input class="form-control for-filter"
+                                            <input class="form-control for-filter" data-num="limited"
                                                    oninput="this.value = this.value.replace(/\D/g, '')">
                                         </div>
                                     </div>
@@ -300,6 +300,20 @@
     <script th:src="@{/vendor/libs/select2/select2.js}"></script>
 
     <script>
+        const limitedInputs = document.querySelectorAll('input[data-num="limited"]');
+        limitedInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const parsedValue = parseInt(input.value, 10);
+
+                if (!isNaN(parsedValue)) { // Проверка, что parsedValue является числом
+                    if (parsedValue > 2147483647) {
+                        input.value = '2147483647';
+                    } else if (parsedValue < -2147483647) {
+                        input.value = '-2147483647';
+                    }
+                }
+            });
+        });
         function printElements() {
             var bodyRows = []
             var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
@@ -510,7 +524,7 @@
                                 cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: darkorange"></i>`;
                             }
                             if (daysDifference > 18) {
-                                cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: darkred"></i>`;
+                                cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: #ff0000"></i>`;
                             } else {
                                 cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: forestgreen"></i>`;
                             }
