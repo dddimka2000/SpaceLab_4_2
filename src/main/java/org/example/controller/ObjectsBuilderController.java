@@ -234,19 +234,17 @@ public class ObjectsBuilderController {
         }
         try {
             String fileName = objectBuilder.get().getFileCheckerboard();
-            byte[] fileInstallmentTerms = minioService.getPhoto(fileName, filesBucketName);
+            byte[] fileCheckerboard = minioService.getPhoto(fileName, filesBucketName);
 
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
 
-            ByteArrayResource resource = new ByteArrayResource(fileInstallmentTerms);
+            ByteArrayResource resource = new ByteArrayResource(fileCheckerboard);
             return ResponseEntity.ok()
                     .headers(headers)
-                    .contentLength(fileInstallmentTerms.length)
+                    .contentLength(fileCheckerboard.length)
                     .body(resource);
         } catch (Exception e) {
-            log.error(e);
             return ResponseEntity.notFound().build();
         }
     }
@@ -264,7 +262,6 @@ public class ObjectsBuilderController {
 
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
 
             ByteArrayResource resource = new ByteArrayResource(fileInstallmentTerms);
             return ResponseEntity.ok()
@@ -272,7 +269,6 @@ public class ObjectsBuilderController {
                     .contentLength(fileInstallmentTerms.length)
                     .body(resource);
         } catch (Exception e) {
-            log.error(e);
             return ResponseEntity.notFound().build();
         }
     }
@@ -286,37 +282,19 @@ public class ObjectsBuilderController {
         }
         try {
             String fileName = objectBuilder.get().getFilePrices();
-            byte[] fileInstallmentTerms = minioService.getPhoto(fileName, filesBucketName);
+            byte[] filePrices = minioService.getPhoto(fileName, filesBucketName);
 
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
 
-            ByteArrayResource resource = new ByteArrayResource(fileInstallmentTerms);
+            ByteArrayResource resource = new ByteArrayResource(filePrices);
             return ResponseEntity.ok()
                     .headers(headers)
-                    .contentLength(fileInstallmentTerms.length)
+                    .contentLength(filePrices.length)
                     .body(resource);
         } catch (Exception e) {
-            log.error(e);
             return ResponseEntity.notFound().build();
         }
-    }
-
-    @NotNull
-    private ResponseEntity<ByteArrayResource> getByteArrayResourceResponseEntity(String fileName,
-                                                                                 byte[] file, ByteArrayResource resource) {
-        HttpHeaders headers = new HttpHeaders();
-        try {
-            String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString());
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + encodedFileName);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(file.length)
-                .body(resource);
     }
 
     @GetMapping("/for/select")

@@ -21,7 +21,8 @@
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a>
+                            </li>
                             <li class="breadcrumb-item"><a th:href="@{/builder_objects}"
                                                            data-translate="breadcrumb.builder_objects">Объекты от
                                 строителей</a></li>
@@ -57,14 +58,18 @@
                                         class="d-block w-100 h-100 rounded"></a>
                             </div>
                             <div class="col-sm-6 col-lg-6" style="text-align: right">
-                                <a th:href="@{downloadFileCheckerboard/{id}(id=${id})}"
-                                   data-translate="view_chessboard"  target="_blank">Просмотреть
-                                    шахматку</a><br>
-                                <a th:href="@{downloadFilePrices/{id}(id=${id})}"  target="_blank"
-                                   data-translate="view_installment_conditions">Просмотреть условия рассрочки</a><br>
-                                <a th:href="@{downloadFileInstallmentTerms/{id}(id=${id})}"
-                                   data-translate="view_prices"  target="_blank">Просмотреть
-                                    цены</a><br>
+                                <a th:href="@{downloadFileCheckerboard/{id}(id=${id})}" target="_blank">
+                                    <p data-translate="view_chessboard"></p>
+                                </a>
+                                <br>
+                                <a th:href="@{downloadFilePrices/{id}(id=${id})}" target="_blank">
+                                    <p data-translate="view_installment_conditions"></p>
+                                </a>
+                                <br>
+                                <a th:href="@{downloadFileInstallmentTerms/{id}(id=${id})}" target="_blank">
+                                    <p data-translate="view_prices"></p>
+                                </a>
+                                <br>
                             </div>
                         </div>
                         <br><br>
