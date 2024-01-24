@@ -54,7 +54,7 @@ public class WebSecurityConfig {
                         {
                             try {
                                 authorize.requestMatchers("/auth/login/**","/auth/login", "/auth/registration", "/auth/process_login","/img/**","/vendor/**").permitAll()
-                                        .requestMatchers("/wrrwrw/**", "/personal_account").authenticated()
+                                        .requestMatchers("/**", "/personal_account").authenticated()
                                         .anyRequest().permitAll()
                                         .and()
                                         .logout()
