@@ -83,7 +83,7 @@ public class CommercialServiceImpl {
         log.info("CommercialServiceImpl-getAll start");
 
         Specification<PropertyCommercialObject> specification = new CommercialObjectSpecification(objectForFilterDto);
-        Pageable pageable = PageRequest.of(objectForFilterDto.getPage(), 10, Sort.by(Sort.Order.desc("id")));
+        Pageable pageable = PageRequest.of(objectForFilterDto.getPage(), objectForFilterDto.getNumberOfElement(), Sort.by(Sort.Order.desc("id")));
         Page<PropertyCommercialObject> result = propertyCommercialObjectRepository.findAll(specification, pageable);
 
         log.info("CommercialServiceImpl-getAll successfully");

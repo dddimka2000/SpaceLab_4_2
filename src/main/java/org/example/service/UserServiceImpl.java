@@ -60,10 +60,10 @@ public class UserServiceImpl {
         log.info("UserServiceImpl-save successfully");
     }
 
-    public Page<UserEntity> getAll(int page, String role, String surname, String name, String middleName, String phone, String email) {
+    public Page<UserEntity> getAll(int page, int numberOfElement, String role, String surname, String name, String middleName, String phone, String email) {
         log.info("UserServiceImpl-getAll start");
 
-        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Order.desc("id")));
+        Pageable pageable = PageRequest.of(page, numberOfElement, Sort.by(Sort.Order.desc("id")));
         Page<UserEntity> result = userRepository.findAll(Specification.where(UserSpecification.roleContains(role))
                 .and(UserSpecification.surnameContains(surname).and(UserSpecification.nameContains(name))
                         .and(UserSpecification.middleNameContains(middleName)).and(UserSpecification.phoneContains(phone))

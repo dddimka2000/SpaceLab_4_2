@@ -114,11 +114,12 @@ class BranchControllerTest {
         String name = "Test Branch";
         String address = "Test Address";
         int page = 1;
+        int number = 1;
         Page<Branch> branchPage = mock(Page.class);
-        when(branchService.getAll(page, code, name, address)).thenReturn(branchPage);
-        Page<Branch> result = branchController.getAll(code, name, address, page);
+        when(branchService.getAll(page,number, code, name, address)).thenReturn(branchPage);
+        Page<Branch> result = branchController.getAll(code, name, address, page, number);
         assertEquals(branchPage, result);
-        verify(branchService, times(1)).getAll(page, code, name, address);
+        verify(branchService, times(1)).getAll(page, number, code, name, address);
     }
 
     @Test

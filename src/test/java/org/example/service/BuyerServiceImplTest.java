@@ -130,6 +130,7 @@ public class BuyerServiceImplTest {
     public void testGetAll() {
         // Arrange
         Integer page = 0;
+        Integer numberOfElement = 1;
         String branch = "Branch";
         String realtor = "Realtor";
         String name = "Name";
@@ -138,7 +139,7 @@ public class BuyerServiceImplTest {
         String price = "100000";
 
         // Act
-        buyerService.getAll(page, branch, realtor, name, phone, email, price);
+        buyerService.getAll(page, numberOfElement, branch, realtor, name, phone, email, price);
 
         // Assert
         Mockito.verify(buyerRepository, times(1)).findAll(any(Specification.class),  any(Pageable.class));

@@ -25,16 +25,16 @@ public class CommercialInfoDto {
     private LocalDate boughtDate;
     @NotNull(message = "{error.field.empty}")
     private OwnershipType ownershipType;
-    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @Size(max = 999, message = "{error.field.size}")
     @NotNull(message = "{error.field.empty}")
     private String notes;
     @Size(min = 1, max = 999, message = "{error.field.size}")
     @NotNull(message = "{error.field.empty}")
     private String cadastralNumber;
-    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @Size(max = 999, message = "{error.field.size}")
     @NotNull(message = "{error.field.empty}")
     private String plotDescription;
-    @Size(min = 1, max = 999, message = "{error.field.size}")
+    @Size(max = 999, message = "{error.field.size}")
     @NotNull(message = "{error.field.empty}")
     private String administrationComment;
 

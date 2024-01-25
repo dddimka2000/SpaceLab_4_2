@@ -93,8 +93,8 @@ public class RealtorController {
     }
     @GetMapping("/get-all")
     @ResponseBody
-    public Page<Realtor> getAll(@RequestParam("page")int page, @RequestParam("filial")String branchId, @RequestParam("code")String code, @RequestParam("fullName")String fullName, @RequestParam("phone")String phone, @RequestParam("email")String email, @RequestParam("birthdate") String birthdate){
-        return realtorService.getAll(page, branchId, code, fullName, phone, email, birthdate);
+    public Page<Realtor> getAll(@RequestParam("page")int page, @RequestParam int numberOfElement, @RequestParam("filial")String branchId, @RequestParam("code")String code, @RequestParam("fullName")String fullName, @RequestParam("phone")String phone, @RequestParam("email")String email, @RequestParam("birthdate") String birthdate){
+        return realtorService.getAll(page, numberOfElement, branchId, code, fullName, phone, email, birthdate);
     }
     @GetMapping("/getUrl")
     @ResponseBody

@@ -39,13 +39,13 @@ public class CommercialValidator implements Validator {
 
         if (commercialInfoDto.getId() == null && validateService.validPhoneNumber(commercialInfoDto.getOwnerPhone())) {
             errors.rejectValue("ownerPhone", "", "The phone already exists");
-        } else if (validateService.validPhoneNumber(commercialInfoDto.getOwnerPhone(), commercialInfoDto.getId())) {
+        } else if (commercialInfoDto.getId() != null && validateService.validPhoneNumber(commercialInfoDto.getOwnerPhone(), commercialInfoDto.getId())) {
             errors.rejectValue("ownerPhone", "", "The phone already exists");
         }
 
         if (commercialInfoDto.getId() == null && propertyObjectService.existsByCode(commercialInfoDto.getObjectCode().toString())) {
             errors.rejectValue("objectCode", "", "The object with this code already exists");
-        } else if (!propertyObjectService.getById(commercialInfoDto.getId()).getObjectCode().equals(commercialInfoDto.getObjectCode().toString())
+        } else if (commercialInfoDto.getId() != null && !propertyObjectService.getById(commercialInfoDto.getId()).getObjectCode().equals(commercialInfoDto.getObjectCode().toString())
                 && propertyObjectService.existsByCode(commercialInfoDto.getObjectCode().toString())) {
             errors.rejectValue("objectCode", "", "The object with this code already exists");
         }

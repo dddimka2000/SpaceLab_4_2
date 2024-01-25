@@ -79,8 +79,8 @@ public class BranchController {
 
     @GetMapping("/get-all")
     @ResponseBody
-    public Page<Branch> getAll(@RequestParam("code") String code, @RequestParam("name") String name, @RequestParam("address") String address, @RequestParam("page") int page) {
-        return branchServiceImpl.getAll(page, code, name, address);
+    public Page<Branch> getAll(@RequestParam("code") String code, @RequestParam("name") String name, @RequestParam("address") String address, @RequestParam("page") int page, @RequestParam int numberOfElement) {
+        return branchServiceImpl.getAll(page,numberOfElement, code, name, address);
     }
 
     @GetMapping("/delete/{id}")

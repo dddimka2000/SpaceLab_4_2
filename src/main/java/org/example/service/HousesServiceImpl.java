@@ -83,7 +83,7 @@ public class HousesServiceImpl {
         log.info("HousesServiceImpl-getAll start");
 
         Specification<PropertyHouseObject> specification = new HouseObjectSpecification(objectForFilterDto);
-        Pageable pageable = PageRequest.of(objectForFilterDto.getPage(), 10, Sort.by(Sort.Order.desc("id")));
+        Pageable pageable = PageRequest.of(objectForFilterDto.getPage(), objectForFilterDto.getNumberOfElement(), Sort.by(Sort.Order.desc("id")));
         Page<PropertyHouseObject> result = propertyHouseObjectRepository.findAll(specification, pageable);
 
         log.info("HousesServiceImpl-getAll successfully");

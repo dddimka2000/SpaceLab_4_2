@@ -1,8 +1,11 @@
 var currentPage;
 
-function updatePagination(currentPage, totalButtons, container) {
-    var pagination = document.getElementById(container);
-    pagination.innerHTML = '';
+function updatePagination(currentPage, totalButtons, container, numberOfElements, storageName) {
+    var containerBlock = document.getElementById(container);
+    containerBlock.innerHTML = '';
+
+    var pagination = document.createElement("div")
+
     var li, link;
     if (currentPage > 0) {
         li = document.createElement('span');
@@ -11,9 +14,7 @@ function updatePagination(currentPage, totalButtons, container) {
         li.setAttribute("aria-label", "Previous");
         link = document.createElement('span');
         link.innerHTML = "&#10094;";
-        li.onclick = function () {
-            getPageWithFilter(currentPage - 1);
-        };
+        li.setAttribute("onclick", `getPageWithFilter(${currentPage - 1})`);
         li.appendChild(link);
         pagination.appendChild(li);
     }
@@ -92,12 +93,34 @@ function updatePagination(currentPage, totalButtons, container) {
         link = document.createElement('span');
         link.innerHTML = "&#10095;";
         li.appendChild(link);
-        li.onclick = function () {
-            getPageWithFilter(currentPage + 1);
-        };
+        li.setAttribute("onclick", `getPageWithFilter(${currentPage + 1})`)
         pagination.appendChild(li);
     }
 
+    var block = document.createElement('div')
+    block.style.width='100%'
+    block.innerHTML = `
+<div class="row">
+    <div class="col-6">
+        <span data-translate="shown">${translateValue('shown')}</span>
+            ` + (currentPage == 0 ? 1 : ((currentPage) * numberOfElements)) + `-` + (currentPage == 0 ? numberOfElements : ((currentPage + 1) * numberOfElements)) + ` 
+        <span data-translate="of">${translateValue('of')}</span>
+        ` + (totalButtons * numberOfElements) + `
+    </div>
+    <div class="col-6 pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end">
+        ${pagination.innerHTML}
+    </div>
+</div>
+<div class="row" style="width: 25%">
+    <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">
+        <option value="2" ${localStorage.getItem(storageName) == 2 ? 'selected' : ''}>2</option>
+        <option value="5" ${localStorage.getItem(storageName) == 5 ? 'selected' : ''}>5</option>
+        <option value="10" ${localStorage.getItem(storageName) == 10 || localStorage.getItem(storageName) == null ? 'selected' : ''}>10</option>
+        <option value="25" ${localStorage.getItem(storageName) == 25 ? 'selected' : ''}>25</option>
+    </select>
+</div>`
+
+    containerBlock.appendChild(block)
 }
 
 function createPaginationItem(pageNumber) {
@@ -111,9 +134,7 @@ function createPaginationItem(pageNumber) {
     button.innerText = pageNumber + 1;
     li.appendChild(button);
 
-    button.addEventListener('click', function () {
-        getPageWithFilter(pageNumber)
-    });
+    button.setAttribute("onclick", `getPageWithFilter(${pageNumber})`)
     return li;
 }
 

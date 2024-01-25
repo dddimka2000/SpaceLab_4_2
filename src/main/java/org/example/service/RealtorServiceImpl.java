@@ -59,10 +59,10 @@ public class RealtorServiceImpl {
         log.info("RealtorServiceImpl-add successfully");
     }
 
-    public Page<Realtor> getAll(int page, String branchId, String code, String fullName, String phone, String email, String birthdate) {
+    public Page<Realtor> getAll(int page, int numberOfElement, String branchId, String code, String fullName, String phone, String email, String birthdate) {
         log.info("RealtorServiceImpl-getAll start");
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
+        Pageable pageable = PageRequest.of(page, numberOfElement, Sort.by(Sort.Order.desc("id")));
         Page<Realtor> result = realtorRepository.findAll(Specification.where(RealtorSpecification.branchContains(branchId))
                 .and(RealtorSpecification.codeContains(code)).and(RealtorSpecification.phoneContains(phone)).and(RealtorSpecification.birthdateContains(birthdate))
                 .and(RealtorSpecification.fullNameContains(fullName)).and(RealtorSpecification.emailContains(email)), pageable);

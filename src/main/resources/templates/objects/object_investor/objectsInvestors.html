@@ -247,25 +247,11 @@
                             </table>
                         </div>
                         <br>
-                        <div class="row" id="pagination_container">
-                            <div class="col-lg-6 col-sm-6" id="rowPanelCount">
-                            </div>
-                            <div class="col-lg-6 col-sm-6">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-end" id="paginationItems">
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-6">
-                            <p data-translate="number_of_rows">Количество строк:</p>
-                            <select class="form-select form-control select2" id="pageSize">
-                                <option value="2">2</option>
-                                <option value="5">5</option>
-                                <option value="10" selected>10</option>
-                                <option value="25">25</option>
-                            </select>
-                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                            id="paginationItems">
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -420,6 +406,10 @@
             getPageWithFilter(0);
         });
 
+        function setNumberOfElement(numberOfElement){
+            localStorage.setItem('numberOfElementForInvestor', numberOfElement)
+            getPageWithFilter(0)
+        }
 
         function getPageWithFilter(page) {
             let filterElements = $('.for-filter');
@@ -474,8 +464,8 @@
                     method: "GET",
                     url: url,
                     data: {
-                        pageSize: pageSize,
                         page: page,
+                        pageSize: localStorage.getItem('numberOfElementForInvestor') || 10,
                         district: selectMultipartDistrict,
                         numberRooms: rooms,
                         minFloor: $(filterElements[5]).val(),
@@ -593,11 +583,28 @@
                         }
                         $('#paginationItems').empty();
                         if (builderObjects.totalPages > 1) {
-                            updatePagination(page, builderObjects.totalPages, 'paginationItems')
+                            updatePagination(page, builderObjects.totalPages, 'paginationItems', localStorage.getItem('numberOfElementForInvestor') || 10, 'numberOfElementForInvestor')
                         }
-                        $('#rowPanelCount').empty();
-                        updateLabelPagination(page, 'rowPanelCount', builderObjects.totalElements, builderObjects.numberOfElements, builderObjects.size);
-                        refreshAllTranslate();
+                        else {
+                            var pagination = document.getElementById('paginationItems');
+                            pagination.innerHTML = '';
+                            var row = document.createElement('div');
+                            row.style.marginRight = 'auto'
+                            row.style.width='100%'
+                            row.innerHTML += `
+<div class="row" style="width: 25%">
+    <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">
+        <option value="2" ${localStorage.getItem('numberOfElementForInvestor') == 2 ? 'selected' : ''}>2</option>
+        <option value="5" ${localStorage.getItem('numberOfElementForInvestor') == 5 ? 'selected' : ''}>5</option>
+        <option value="10" ${localStorage.getItem('numberOfElementForInvestor') == 10 || localStorage.getItem('numberOfElementForInvestor') == null ? 'selected' : ''}>10</option>
+        <option value="25" ${localStorage.getItem('numberOfElementForInvestor') == 25 ? 'selected' : ''}>25</option>
+    </select>
+</div>`;
+                            pagination.appendChild(row)
+                        }
+                        $('#number-of-element').select2({
+                            minimumResultsForSearch: -1,
+                        })
                     }
                 }
             )

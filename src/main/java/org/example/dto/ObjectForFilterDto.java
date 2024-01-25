@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 public class ObjectForFilterDto {
     private Integer page;
+    private Integer numberOfElement;
     private List<String> district;
     private Integer numberRooms;
     private Integer minFloor;

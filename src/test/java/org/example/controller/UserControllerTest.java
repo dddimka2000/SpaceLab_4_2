@@ -105,8 +105,8 @@ class UserControllerTest {
 
     @Test
     void getAll() {
-        when(userService.getAll(1, "ROLE_USER", "Doe", "John", "Middle", "123456789", "john.doe@example.com")).thenReturn(mock(Page.class));
-        Page<UserEntity> result = userController.getAll(1, "ROLE_USER", "Doe", "John", "Middle", "123456789", "john.doe@example.com");
+        when(userService.getAll(1,5,  "ROLE_USER", "Doe", "John", "Middle", "123456789", "john.doe@example.com")).thenReturn(mock(Page.class));
+        Page<UserEntity> result = userController.getAll(1,5, "ROLE_USER", "Doe", "John", "Middle", "123456789", "john.doe@example.com");
         assertNotNull(result);
     }
 
