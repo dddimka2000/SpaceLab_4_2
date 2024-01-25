@@ -114,6 +114,10 @@
             }, 700);
             $input.data('timeout', timeout);
         });
+        function setNumberOfElement(numberOfElement){
+            localStorage.setItem('numberOfElementForBuyer', numberOfElement)
+            getPageWithFilter(0)
+        }
         function getPageWithFilter(page) {
             this.page = page
             var filterElements = $('.for-filter');
@@ -122,6 +126,7 @@
                 url: '[[@{/buyers/get-all}]]',
                 data: {
                     page: page,
+                    numberOfElement: localStorage.getItem('numberOfElementForBuyer') || 10,
                     branch: filterElements[0].value,
                     realtor: filterElements[1].value,
                     name: filterElements[2].value,
@@ -168,7 +173,27 @@
                         <a class='btn btn-default btn-sm float-right' href='[[@{/buyers/edit/}]]` + buyerId + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
                     }
                     $('#pagination_container').empty();
-                    if (buyers.totalPages > 1) updatePagination(page, buyers.totalPages, 'pagination_container')
+                    if (buyers.totalPages > 1) updatePagination(page, buyers.totalPages, 'pagination_container', localStorage.getItem('numberOfElementForBuyer') || 10, 'numberOfElementForBuyer')
+                    else {
+                        var pagination = document.getElementById('pagination_container');
+                        pagination.innerHTML = '';
+                        var row = document.createElement('div');
+                        row.style.marginRight = 'auto'
+                        row.style.width='100%'
+                        row.innerHTML += `
+<div class="row" style="width: 25%">
+    <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">
+        <option value="2" ${localStorage.getItem('numberOfElementForBuyer') == 2 ? 'selected' : ''}>2</option>
+        <option value="5" ${localStorage.getItem('numberOfElementForBuyer') == 5 ? 'selected' : ''}>5</option>
+        <option value="10" ${localStorage.getItem('numberOfElementForBuyer') == 10 || localStorage.getItem('numberOfElementForBuyer') == null ? 'selected' : ''}>10</option>
+        <option value="25" ${localStorage.getItem('numberOfElementForBuyer') == 25 ? 'selected' : ''}>25</option>
+    </select>
+</div>`;
+                        pagination.appendChild(row)
+                    }
+                    $('#number-of-element').select2({
+                        minimumResultsForSearch: -1,
+                    })
                 },
             });
         }

@@ -127,6 +127,7 @@ public class CommercialServiceImplTest {
         propertyCommercialObject.setMinFloor(5);
         propertyCommercialObject.setMaxFloor(5);
         propertyCommercialObject.setMaxPrice(5);
+        propertyCommercialObject.setNumberOfElement(5);
         propertyCommercialObject.setPage(1);
 
         when(propertyCommercialObjectRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(Page.empty());;

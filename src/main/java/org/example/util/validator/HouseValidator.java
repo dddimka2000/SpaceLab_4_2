@@ -38,13 +38,13 @@ public class HouseValidator implements Validator {
 
         if (houseInfoDto.getId() == null && validateService.validPhoneNumber(houseInfoDto.getOwnerPhone())) {
             errors.rejectValue("ownerPhone", "", "The phone already exists");
-        } else if (validateService.validPhoneNumber(houseInfoDto.getOwnerPhone(), houseInfoDto.getId())) {
+        } else if (houseInfoDto.getId() != null && validateService.validPhoneNumber(houseInfoDto.getOwnerPhone(), houseInfoDto.getId())) {
             errors.rejectValue("ownerPhone", "", "The phone already exists");
         }
 
         if (houseInfoDto.getId() == null && propertyObjectService.existsByCode(houseInfoDto.getObjectCode().toString())) {
             errors.rejectValue("objectCode", "", "The object with this code already exists");
-        } else if (!propertyObjectService.getById(houseInfoDto.getId()).getObjectCode().equals(houseInfoDto.getObjectCode().toString()) && propertyObjectService.existsByCode(houseInfoDto.getObjectCode().toString())) {
+        } else if (houseInfoDto.getId() != null && !propertyObjectService.getById(houseInfoDto.getId()).getObjectCode().equals(houseInfoDto.getObjectCode().toString()) && propertyObjectService.existsByCode(houseInfoDto.getObjectCode().toString())) {
             errors.rejectValue("objectCode", "", "The object with this code already exists");
         }
     }

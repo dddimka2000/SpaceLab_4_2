@@ -115,7 +115,7 @@ class UserServiceImplTest {
 
         Mockito.when(userRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(mockPage);
 
-        Page<UserEntity> result = userService.getAll(page, role, surname, name, middleName, phone, email);
+        Page<UserEntity> result = userService.getAll(page,5 , role, surname, name, middleName, phone, email);
 
         assertEquals(mockPage, result);
     }

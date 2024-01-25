@@ -109,7 +109,7 @@ public class BranchServiceImplTest {
         when(branchRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(Page.empty());
 
         // Act
-        Page<Branch> result = branchService.getAll(0, "code", "name", "address");
+        Page<Branch> result = branchService.getAll(0,10, "code", "name", "address");
 
         // Assert
         assertNotNull(result);

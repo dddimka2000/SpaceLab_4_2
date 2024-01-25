@@ -53,9 +53,9 @@ public class BranchServiceImpl {
         log.info("BranchServiceImpl-getById successfully");
         return res;
     }
-    public Page<Branch> getAll(int page, String code, String name, String address) {
+    public Page<Branch> getAll(int page, Integer numberOfElement, String code, String name, String address) {
         log.info("BranchServiceImpl-getAll start");
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
+        Pageable pageable = PageRequest.of(page, numberOfElement, Sort.by(Sort.Order.desc("id")));
         Page<Branch> res = branchRepository.findAll(Specification.where(BranchSpecification.codeContains(code))
                 .and(BranchSpecification.nameContains(name))
                 .and(BranchSpecification.addressContains(address)), pageable);

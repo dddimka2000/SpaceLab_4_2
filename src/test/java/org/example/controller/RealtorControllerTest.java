@@ -122,8 +122,8 @@ class RealtorControllerTest {
     void getAll() {
         Realtor realtor = new Realtor();
         realtor.setId(1);
-        when(realtorService.getAll(1, "branchId", "code", "fullName", "phone", "email", "birthdate")).thenReturn(new PageImpl<>(Collections.singletonList(realtor)));
-        Page<Realtor> result = realtorController.getAll(1, "branchId", "code", "fullName", "phone", "email", "birthdate");
+        when(realtorService.getAll(1, 5,"branchId", "code", "fullName", "phone", "email", "birthdate")).thenReturn(new PageImpl<>(Collections.singletonList(realtor)));
+        Page<Realtor> result = realtorController.getAll(1,5, "branchId", "code", "fullName", "phone", "email", "birthdate");
         assertEquals(1, result.getTotalElements());
         assertEquals(realtor, result.getContent().get(0));
     }

@@ -139,6 +139,7 @@ class BuyerControllerTest {
     @Test
     void getAll() {
         Integer page = 1;
+        Integer numberOfElement = 1;
         String branch = "TestBranch";
         String realtor = "TestRealtor";
         String name = "TestName";
@@ -146,10 +147,10 @@ class BuyerControllerTest {
         String email = "TestEmail";
         String price = "TestPrice";
         Page<Buyer> buyerPage = mock(Page.class);
-        when(buyerService.getAll(page, branch, realtor, name, phone, email, price)).thenReturn(buyerPage);
-        Page<Buyer> result = buyerController.getAll(page, branch, realtor, name, phone, email, price);
+        when(buyerService.getAll(page, numberOfElement, branch, realtor, name, phone, email, price)).thenReturn(buyerPage);
+        Page<Buyer> result = buyerController.getAll(page, numberOfElement, branch, realtor, name, phone, email, price);
         assertEquals(buyerPage, result);
-        verify(buyerService, times(1)).getAll(page, branch, realtor, name, phone, email, price);
+        verify(buyerService, times(1)).getAll(page, numberOfElement, branch, realtor, name, phone, email, price);
     }
 
     @Test

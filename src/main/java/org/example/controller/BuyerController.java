@@ -110,8 +110,8 @@ public class BuyerController {
 
     @GetMapping("/get-all")
     @ResponseBody
-    public Page<Buyer> getAll(@RequestParam Integer page, @RequestParam String branch, @RequestParam String realtor, @RequestParam String name, @RequestParam String phone, @RequestParam String email, @RequestParam String price) {
-        return buyerService.getAll(page, branch, realtor, name, phone, email, price);
+    public Page<Buyer> getAll(@RequestParam Integer page, @RequestParam Integer numberOfElement, @RequestParam String branch, @RequestParam String realtor, @RequestParam String name, @RequestParam String phone, @RequestParam String email, @RequestParam String price) {
+        return buyerService.getAll(page, numberOfElement, branch, realtor, name, phone, email, price);
     }
 
     @GetMapping("/delete/{id}")

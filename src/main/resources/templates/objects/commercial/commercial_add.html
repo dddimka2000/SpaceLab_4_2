@@ -6,6 +6,19 @@
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title data-translate="менеджер_комерційної_нерухомості"></title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var titleElement = document.getElementById("title_page");
+            var h4Element = document.createElement("h4");
+            h4Element.classList.add("fw-bold");
+            if (getLastDigitFromPath()) {
+                h4Element.setAttribute("data-translate", "edit_object");
+            } else {
+                h4Element.setAttribute("data-translate", "new_object");
+            }
+            titleElement.appendChild(h4Element);
+        });
+    </script>
 </head>
 <body>
 <section layout:fragment="content">
@@ -14,7 +27,7 @@
         <div class="container-fluid">
             <br>
             <div class="d-flex justify-content-between">
-                <h4 class="fw-bold" data-translate="main">Новый объект</h4>
+                <h4 id="title_page"></h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
@@ -1236,6 +1249,7 @@
                 });
                 console.log(oldImagesArray);
             }
+            myDropzone.files.length = currentFiles
             updateDropzoneMaxFiles()
         });
         myDropzone.on("addedfile", function (file) {

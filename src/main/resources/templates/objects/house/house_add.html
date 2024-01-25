@@ -6,6 +6,19 @@
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title data-translate="менеджер_будинку"></title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var titleElement = document.getElementById("title_page");
+            var h4Element = document.createElement("h4");
+            h4Element.classList.add("fw-bold");
+            if (getLastDigitFromPath()) {
+                h4Element.setAttribute("data-translate", "edit_object");
+            } else {
+                h4Element.setAttribute("data-translate", "new_object");
+            }
+            titleElement.appendChild(h4Element);
+        });
+    </script>
 </head>
 <body>
 <section layout:fragment="content">
@@ -14,7 +27,7 @@
         <div class="container-fluid">
             <br>
             <div class="d-flex justify-content-between">
-                <h4 class="fw-bold" data-translate="new_object">Новый объект</h4>
+                <h4 id="title_page"></h4>
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
@@ -748,7 +761,6 @@
             if (!validatePhoneNumber(ownerPhone)) isValidated = false
             if (!validateDate(boughtDate)) isValidated = false
             if (!validSelect2(ownershipType)) isValidated = false
-            if (!validString("1", "1000", notes)) isValidated = false
             if (cadastralNumber.val().length !== 11) {
                 cadastralNumber.css("border", "1px solid #ff0000")
                 if (languageSecondExample == 'eng') addText(cadastralNumber, "The cadastral number is incorrect")
@@ -759,9 +771,7 @@
             }
 
             if (!validString("1", "10", codeObject)) isValidated = false
-            if (!validString("1", "1000", plotDescription)) isValidated = false
             if (!getLastDigitFromPath(window.location.pathname) && !validateFile('housesFiles', [".pdf"])) isValidated = false
-            if (!validString("1", "1000", administrationComment)) isValidated = false
             if (!validSelect2(publicationStatus)) isValidated = false
             if (!validateNumber(1, 1000000, codeBranch)) isValidated = false
             if (!validateNumber(1, 1000000, codeStaff)) isValidated = false
@@ -1133,7 +1143,9 @@
         });
         myDropzone.on('removedfile', function (file) {
             console.log('Файл был удален:', file.name);
+            console.log('current files = ', currentFiles);
             currentFiles--;
+            console.log('current files = ', currentFiles);
             if (uploadedFiles.has(file.name)) {
                 uploadedFiles.delete(file.name);
             } else {
@@ -1159,6 +1171,7 @@
                 });
                 console.log(oldImagesArray);
             }
+            myDropzone.files.length = currentFiles
             updateDropzoneMaxFiles()
         });
         myDropzone.on("addedfile", function (file) {
@@ -1175,6 +1188,7 @@
                 success: function (files) {
                     if (files) hadImage = true
                     files.forEach(function (file) {
+                        currentFiles++
                         var mockFile = {
                             name: removeBeforeFirstDot(file.originUrl),
                             size: file.size,

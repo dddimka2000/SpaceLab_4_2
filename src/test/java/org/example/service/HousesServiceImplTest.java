@@ -136,6 +136,7 @@ class HousesServiceImplTest {
         propertyCommercialObject.setMinFloor(5);
         propertyCommercialObject.setMaxFloor(5);
         propertyCommercialObject.setMaxPrice(5);
+        propertyCommercialObject.setNumberOfElement(5);
         propertyCommercialObject.setPage(1);
         when(propertyHouseObjectRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(Page.empty());
         Page<PropertyHouseObject> page = housesService.getAll(propertyCommercialObject);

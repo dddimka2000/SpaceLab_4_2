@@ -98,18 +98,12 @@
                             </table>
                         </div>
                         <br>
-                        <div class="row" id="pagination_container">
-                            <div class="col-sm-6" id="rowPanelCount">
-                                <p th:text="${panelCount}"></p>
-                            </div>
-                            <div class="col-sm-6">
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-end" id="paginationItems">
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
                     </div>
+                </div>
+                <div class="card-footer">
+                    <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                        id="paginationItems">
+                    </ul>
                 </div>
             </div>
 
@@ -170,18 +164,21 @@
             }, 1000);
             $input.data('timeout', timeout);
         });
-
+        function setNumberOfElement(numberOfElement){
+            localStorage.setItem('numberOfElementForBuilder', numberOfElement)
+            getPageWithFilter(0)
+        }
         function getPageWithFilter(page) {
             var filterElements = $('.for-filter');
             let contextPath = /*[[@{/}]]*/ '';
             let url = contextPath.toString() + "builder_objects/filter";
 
-            console.log(filterElements)
             $.ajax({
                 method: "GET",
                 url: url,
                 data: {
                     page: page,
+                    numberOfElement: localStorage.getItem('numberOfElementForBuilder') || 10,
                     name: filterElements[0].value,
                     district: filterElements[1].value,
                     topozone: filterElements[2].value,
@@ -240,11 +237,28 @@
                     }
                     $('#paginationItems').empty();
                     if (builderObjects.totalPages > 1) {
-                        updatePagination(page, builderObjects.totalPages, 'paginationItems')
+                        updatePagination(page, builderObjects.totalPages, 'paginationItems', localStorage.getItem('numberOfElementForBuilder') || 10, 'numberOfElementForBuilder')
                     }
-                    $('#rowPanelCount').empty();
-                    updateLabelPagination(page, 'rowPanelCount', builderObjects.totalElements, builderObjects.numberOfElements, builderObjects.size);
-                    refreshAllTranslate()
+                    else {
+                        var pagination = document.getElementById('paginationItems');
+                        pagination.innerHTML = '';
+                        var row = document.createElement('div');
+                        row.style.marginRight = 'auto'
+                        row.style.width='100%'
+                        row.innerHTML += `
+<div class="row" style="width: 25%">
+    <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">
+        <option value="2" ${localStorage.getItem('numberOfElementForBuilder') == 2 ? 'selected' : ''}>2</option>
+        <option value="5" ${localStorage.getItem('numberOfElementForBuilder') == 5 ? 'selected' : ''}>5</option>
+        <option value="10" ${localStorage.getItem('numberOfElementForBuilder') == 10 || localStorage.getItem('numberOfElementForBuilder') == null ? 'selected' : ''}>10</option>
+        <option value="25" ${localStorage.getItem('numberOfElementForBuilder') == 25 ? 'selected' : ''}>25</option>
+    </select>
+</div>`;
+                        pagination.appendChild(row)
+                    }
+                    $('#number-of-element').select2({
+                        minimumResultsForSearch: -1,
+                    })
                 },
             });
         }

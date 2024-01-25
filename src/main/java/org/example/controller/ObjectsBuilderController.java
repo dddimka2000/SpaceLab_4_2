@@ -46,7 +46,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/builder_objects")
 @Log4j2
 public class ObjectsBuilderController {
-    Integer pageSize = 10;
     private final String imagesBucketName = "images";
     private final String filesBucketName = "files";
     private final
@@ -72,8 +71,8 @@ public class ObjectsBuilderController {
     @GetMapping("/filter")
     @ResponseBody
     public Page<BuilderObject> showPageObjectBuilder(@ModelAttribute ObjectBuilderDtoSearch objectBuilderDto
-            , @RequestParam(name = "page", defaultValue = "0") Integer numberPage) {
-        Pageable pageable = PageRequest.of(numberPage, pageSize);
+            , @RequestParam(name = "page", defaultValue = "0") Integer numberPage, @RequestParam Integer numberOfElement) {
+        Pageable pageable = PageRequest.of(numberPage, numberOfElement);
         Page<BuilderObject> pageElements = objectBuilderService.findBuilderObjectsByCriteria(
                 objectBuilderDto.getName(),
                 objectBuilderDto.getDistrict(),

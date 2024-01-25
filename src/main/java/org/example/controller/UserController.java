@@ -80,8 +80,8 @@ public class UserController {
     }
     @GetMapping("/get-all")
     @ResponseBody
-    public Page<UserEntity> getAll(@RequestParam("page")int page, @RequestParam("role")String role, @RequestParam("surname")String surname, @RequestParam("name")String name, @RequestParam("middleName")String middleName, @RequestParam("phone")String phone, @RequestParam("email")String email){
-        return userService.getAll(page, role, surname, name, middleName, phone, email);
+    public Page<UserEntity> getAll(@RequestParam("page")int page, @RequestParam int numberOfElement, @RequestParam("role")String role, @RequestParam("surname")String surname, @RequestParam("name")String name, @RequestParam("middleName")String middleName, @RequestParam("phone")String phone, @RequestParam("email")String email){
+        return userService.getAll(page, numberOfElement, role, surname, name, middleName, phone, email);
     }
     @GetMapping("/delete/{id}")
     public ResponseEntity<String> deleteById(@PathVariable("id")int id){

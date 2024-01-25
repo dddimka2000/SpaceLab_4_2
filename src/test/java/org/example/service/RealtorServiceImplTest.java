@@ -100,7 +100,7 @@ class RealtorServiceImplTest {
                 .thenReturn(new PageImpl<>(Collections.emptyList()));
 
         // Act
-        Page<Realtor> result = realtorService.getAll(0, "branchId", "code", "fullName", "phone", "email", "birthdate");
+        Page<Realtor> result = realtorService.getAll(0,5, "branchId", "code", "fullName", "phone", "email", "birthdate");
 
         // Assert
         assertNotNull(result);

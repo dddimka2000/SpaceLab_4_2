@@ -102,7 +102,10 @@
             }, 700);
             $input.data('timeout', timeout);
         });
-
+        function setNumberOfElement(numberOfElement){
+            localStorage.setItem('numberOfElementForUser', numberOfElement)
+            getPageWithFilter(0)
+        }
         function getPageWithFilter(page) {
             this.page = page
             var filterElements = $('.for-filter');
@@ -111,6 +114,7 @@
                 url: '[[@{/users/get-all}]]',
                 data: {
                     page: page,
+                    numberOfElement: localStorage.getItem('numberOfElementForUser') || 10,
                     role: filterElements[0].value,
                     surname: filterElements[1].value,
                     name: filterElements[2].value,
@@ -154,7 +158,27 @@
                     }
 
                     $('#pagination_container').empty();
-                    if (users.totalPages > 1) updatePagination(page, users.totalPages, 'pagination_container')
+                    if (users.totalPages > 1) updatePagination(page, users.totalPages, 'pagination_container', localStorage.getItem('numberOfElementForUser') || 10, 'numberOfElementForUser')
+                    else {
+                        var pagination = document.getElementById('pagination_container');
+                        pagination.innerHTML = '';
+                        var row = document.createElement('div');
+                        row.style.marginRight = 'auto'
+                        row.style.width='100%'
+                        row.innerHTML += `
+<div class="row" style="width: 25%">
+    <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">
+        <option value="2" ${localStorage.getItem('numberOfElementForUser') == 2 ? 'selected' : ''}>2</option>
+        <option value="5" ${localStorage.getItem('numberOfElementForUser') == 5 ? 'selected' : ''}>5</option>
+        <option value="10" ${localStorage.getItem('numberOfElementForUser') == 10 || localStorage.getItem('numberOfElementForUser') == null ? 'selected' : ''}>10</option>
+        <option value="25" ${localStorage.getItem('numberOfElementForUser') == 25 ? 'selected' : ''}>25</option>
+    </select>
+</div>`;
+                        pagination.appendChild(row)
+                    }
+                    $('#number-of-element').select2({
+                        minimumResultsForSearch: -1,
+                    })
                 },
             });
         }

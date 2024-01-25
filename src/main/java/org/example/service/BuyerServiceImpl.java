@@ -106,9 +106,9 @@ public class BuyerServiceImpl {
         log.info("BuyerServiceImpl-deleteNote successfully");
     }
 
-    public Page<Buyer> getAll(Integer page, String branch, String realtor, String name, String phone, String email, String price) {
+    public Page<Buyer> getAll(Integer page, Integer numberOfElement, String branch, String realtor, String name, String phone, String email, String price) {
         log.info("BuyerServiceImpl-getAll start");
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
+        Pageable pageable = PageRequest.of(page, numberOfElement, Sort.by(Sort.Order.desc("id")));
         Page<Buyer> result = buyerRepository.findAll(Specification.where(BuyerSpecification.branchContains(branch).and(BuyerSpecification.realtorContains(realtor))
                 .and(BuyerSpecification.middleNameContains(name).or(BuyerSpecification.nameContains(name)).or(BuyerSpecification.surnameContains(name)))
                 .and(BuyerSpecification.phoneContains(phone)).and(BuyerSpecification.emailContains(email)).and(BuyerSpecification.priceGreaterThanOrEqual(price))),pageable);
