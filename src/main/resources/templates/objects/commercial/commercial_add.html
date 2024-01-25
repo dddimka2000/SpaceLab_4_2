@@ -739,7 +739,9 @@
             addressSelect2()
             changeLanguageNav(languageSecondExample)
         });
-
+        var hadImage = false
+        var imagesForDelete = []
+        var filesForDelete = []
         function sendForm() {
             var formData = new FormData();
             if (!validAllInputs(formData)) return
@@ -764,11 +766,35 @@
                     showBlockForAllBody(false)
                 }
             })
+            if(filesForDelete.length !== 0)deleteAllFiles()
+            if(imagesForDelete.length !== 0)deleteAllImages()
         }
-    </script>
-    <script>
-        var hadImage = false
-
+        function deleteAllImages() {
+            $.ajax({
+                type: 'DELETE',
+                url: '[[@{/commercial/delete/images}]]',
+                data: {
+                    urls: imagesForDelete.join(','),
+                    id: getLastDigitFromPath()
+                },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
+                success: function (response) {
+                },
+            });
+        }
+        function deleteAllFiles() {
+            $.ajax({
+                type: 'DELETE',
+                url: '[[@{/commercial/delete/files}]]',
+                data: {
+                    urls: filesForDelete.join(','),
+                    id: getLastDigitFromPath()
+                },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
+                success: function (response) {
+                },
+            });
+        }
         function deleteFile(button, url) {
             $('#confirmationModal').modal('show');
 
@@ -777,20 +803,9 @@
                 if (rowElement) {
                     rowElement.remove();
                 }
-                showBlockForAllBody(true)
-                $.ajax({
-                    type: "Delete",
-                    url: '[[@{/commercial/deleteFile}]]',
-                    data: {
-                        id: getLastDigitFromPath(window.location.pathname),
-                        url: url,
-                    },
-                    headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
-                    success: function (response) {
-                        showToast(response, "success")
-                        showBlockForAllBody(false)
-                    },
-                });
+
+                filesForDelete.push(url);
+
                 $('#confirmationModal').modal('hide');
                 $('.confirm-delete').off('click');
             });
@@ -799,7 +814,6 @@
                 $('.confirm-delete').off('click');
             });
         }
-
         function downloadFileFrom(url) {
             showBlockForAllBody(true)
             $.ajax({
@@ -1228,20 +1242,7 @@
                 uploadedFiles.delete(file.name);
             } else {
                 if (file.description) {
-                    $.ajax({
-                        url: "[[@{/commercial/deletePicture/}]]" + getLastDigitFromPath(window.location.pathname),
-                        method: "Delete",
-                        data: {
-                            url: file.description,
-                        },
-                        headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
-                        success: function (response) {
-                            showToast(response, "success")
-                        },
-                        error: function (error) {
-                            console.error("Помилка при отриманні списку файлів: ", error);
-                        }
-                    });
+                    imagesForDelete.push(file.description)
                 }
                 console.log('Файл не найден в uploadedFiles Map.');
                 oldImagesArray = oldImagesArray.filter(function (item) {

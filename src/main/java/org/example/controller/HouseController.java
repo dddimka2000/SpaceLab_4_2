@@ -7,6 +7,7 @@ import org.example.dto.HouseAddressDto;
 import org.example.dto.ObjectForFilterDto;
 import org.example.dto.HouseInfoDto;
 import org.example.dto.HouseMaterialDto;
+import org.example.entity.property.PropertyCommercialObject;
 import org.example.entity.property.PropertyHouseObject;
 import org.example.service.HousesServiceImpl;
 import org.example.service.MinioService;
@@ -163,6 +164,28 @@ public class HouseController {
         house.getFiles().remove(url);
         minioService.deleteImg(url, "images");
         housesService.save(house);
+        return ResponseEntity.ok().body("deleteObj");
+    }
+    @DeleteMapping("/delete/files")
+    public ResponseEntity<String> deleteFile(@RequestParam List<String> urls , @RequestParam int id) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        PropertyHouseObject commercialObject = housesService.getById(id);
+        for (String url : urls) {
+            commercialObject.getFiles().remove(url);
+            minioService.deleteImg(url, "images");
+            housesService.save(commercialObject);
+
+        }
+        return ResponseEntity.ok().body("deleteObj");
+    }
+    @DeleteMapping("/delete/images")
+    public ResponseEntity<String> deleteImages(@RequestParam List<String> urls , @RequestParam int id) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        PropertyHouseObject commercialObject = housesService.getById(id);
+        for (String url : urls) {
+            commercialObject.getPictures().remove(url);
+            minioService.deleteImg(url, "images");
+            housesService.save(commercialObject);
+
+        }
         return ResponseEntity.ok().body("deleteObj");
     }
     @ModelAttribute

@@ -9,6 +9,7 @@ import org.example.dto.RealtorDto;
 import org.example.entity.Branch;
 import org.example.entity.Realtor;
 import org.example.entity.RealtorFeedBack;
+import org.example.entity.property.PropertyHouseObject;
 import org.example.entity.property.type.ContactType;
 import org.example.service.MinioService;
 import org.example.service.RealtorContactServiceImpl;
@@ -167,5 +168,16 @@ public class RealtorController {
         }catch (EntityNotFoundException e) {
             return null;
         }
+    }
+    @DeleteMapping("/delete/files")
+    public ResponseEntity<String> deleteFile(@RequestParam List<String> urls , @RequestParam int id) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        Realtor realtor = realtorService.getById(id);
+        for (String url : urls) {
+            realtor.getFiles().remove(url);
+            minioService.deleteImg(url, "images");
+            realtorService.save(realtor);
+
+        }
+        return ResponseEntity.ok().body("deleteObj");
     }
 }

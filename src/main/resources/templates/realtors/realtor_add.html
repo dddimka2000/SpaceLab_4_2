@@ -242,27 +242,13 @@
                                        onchange="downloadFileToFeedBack()">
                                 <div id="block-for-file">
                                     <div class="row" th:each="file: ${realtorDto.getFiles()}" style="margin-top: 5px">
-                                        <div class="col-2"><a href="#" class="text-decoration-none"
-                                                              th:onclick="@{downloadFileFromFeedBack('{file}')(file=${file})}"
-                                                              data-translate="downloadFile">Скачать
-                                            файл</a></div>
+                                        <div class="col-2">
+                                            <a href="#" class="text-decoration-none" th:onclick="@{downloadFileFromFeedBack('{file}')(file=${file})}">
+                                        <span th:text="${#strings.substringAfter(file, '.')}"></span>
+                                        </a></div>
                                         <div class="col"><a href="#" class="text-decoration-none for-delete"
                                                             th:onclick="@{deleteFileFromFeedBack(this,'{file}')(file=${file})}">
-                                            <button class="btn btn-danger" style="padding: 5px" width="18" height="18"
-                                                    type="button">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                     class="icon icon-tabler icon-tabler-trash" width="20" height="20"
-                                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                     fill="none"
-                                                     stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M4 7l16 0"></path>
-                                                    <path d="M10 11l0 6"></path>
-                                                    <path d="M14 11l0 6"></path>
-                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                                </svg>
-                                            </button>
+                                            х удалить
                                         </a></div>
                                     </div>
                                 </div>
@@ -318,6 +304,7 @@
     <script>
         const urlForAddFeedBack = '[[@{/realtors/feedback/save}]]'
         const urlForValidCode = '[[@{/realtors/countCode/}]]'
+        var filesForDelete = [];
 
         $(document).ready(function () {
             if (realtor.branch != null) branchSelect2(realtor.branch.id, realtor.branch.name)
@@ -413,20 +400,7 @@
                             downloadFileFromFeedBack(url);
                         });
 
-                        var col2 = $("<div class='col'><a href='#' class='text-decoration-none for-delete'><button class=\"btn btn-danger\" style='padding: 5px'   width=\"18\"\n" +
-                            "                                     height=\"18\"   type=\"button\">\n" +
-                            "                                <svg xmlns=\"http://www.w3.org/2000/svg\" className=\"icon icon-tabler icon-tabler-trash\"\n" +
-                            "                                     width=\"20\"\n" +
-                            "                                     height=\"20\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\"\n" +
-                            "                                     stroke-linecap=\"round\" stroke-linejoin=\"round\">\n" +
-                            "                                    <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"></path>\n" +
-                            "                                    <path d=\"M4 7l16 0\"></path>\n" +
-                            "                                    <path d=\"M10 11l0 6\"></path>\n" +
-                            "                                    <path d=\"M14 11l0 6\"></path>\n" +
-                            "                                    <path d=\"M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12\"></path>\n" +
-                            "                                    <path d=\"M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3\"></path>\n" +
-                            "                                </svg>\n" +
-                            "                            </button></a></div>");
+                        var col2 = $("<div class='col'><a href='#' class='text-decoration-none for-delete'>x удалить</a></div>");
                         col2.on("click", function () {
                             deleteFileFromFeedBack(this, url);
                         });
@@ -451,23 +425,9 @@
                 if (rowElement) {
                     rowElement.remove();
                 }
-                showBlockForAllBody(true)
-                $.ajax({
-                    url: '[[@{/realtors/delete}]]',
-                    type: "GET",
-                    data: {
-                        url: link,
-                        idRealtor: realtor.id
-                    },
-                    success: function (response) {
-                        showToast(response, "success")
-                        showBlockForAllBody(false)
-                    },
-                    error: function (error) {
-                        console.error("Помилка видалення файлу", error)
-                        showBlockForAllBody(false)
-                    }
-                });
+
+                filesForDelete.push(decodeURIComponent(link));
+
                 $('#confirmationModal').modal('hide');
                 $('.confirm-delete').off('click');
             });
@@ -478,6 +438,7 @@
         }
 
         function downloadFileFromFeedBack(link) {
+            link = decodeURIComponent(link)
             $.ajax({
                 type: "GET",
                 url: "[[@{/realtors/download}]]?url=" + link,
@@ -524,6 +485,20 @@
                     }
                     showBlockForAllBody(false)
                 }
+            });
+            if(filesForDelete.length !== 0)deleteAllFiles()
+        }
+        function deleteAllFiles() {
+            $.ajax({
+                type: 'DELETE',
+                url: '[[@{/realtors/delete/files}]]',
+                data: {
+                    urls: filesForDelete.join(','),
+                    id: getLastDigitFromPath()
+                },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
+                success: function (response) {
+                },
             });
         }
     </script>

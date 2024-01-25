@@ -545,6 +545,8 @@
             })
         }
 
+        var filesForDelete = []
+        var imagesForDelete = []
         function deleteFile(button, url) {
             $('#confirmationModal').modal('show');
 
@@ -553,20 +555,9 @@
                 if (rowElement) {
                     rowElement.remove();
                 }
-                showBlockForAllBody(true)
-                $.ajax({
-                    type: "Delete",
-                    url: '[[@{/houses/deleteFile}]]',
-                    data: {
-                        id: getLastDigitFromPath(window.location.pathname),
-                        url: url,
-                    },
-                    headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
-                    success: function (response) {
-                        showToast(response, "success")
-                        showBlockForAllBody(false)
-                    },
-                });
+
+                filesForDelete.push(url);
+
                 $('#confirmationModal').modal('hide');
                 $('.confirm-delete').off('click');
             });
@@ -870,8 +861,35 @@
                     showBlockForAllBody(false)
                 }
             })
+            if(filesForDelete.length !== 0)deleteAllFiles()
+            if(imagesForDelete.length !== 0)deleteAllImages()
         }
-
+        function deleteAllImages() {
+            $.ajax({
+                type: 'DELETE',
+                url: '[[@{/houses/delete/images}]]',
+                data: {
+                    urls: imagesForDelete.join(','),
+                    id: getLastDigitFromPath()
+                },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
+                success: function (response) {
+                },
+            });
+        }
+        function deleteAllFiles() {
+            $.ajax({
+                type: 'DELETE',
+                url: '[[@{/houses/delete/files}]]',
+                data: {
+                    urls: filesForDelete.join(','),
+                    id: getLastDigitFromPath()
+                },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
+                success: function (response) {
+                },
+            });
+        }
         $(document).ready(function () {
             $('#landOwnershipPresent').select2({
                 placeholder: translateValue('виберіть_обєкт'),
@@ -1150,20 +1168,7 @@
                 uploadedFiles.delete(file.name);
             } else {
                 if (file.description) {
-                    $.ajax({
-                        url: "[[@{/houses/deletePicture/}]]" + getLastDigitFromPath(window.location.pathname),
-                        method: "Delete",
-                        data: {
-                            url: file.description,
-                        },
-                        headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
-                        success: function (response) {
-                            showToast(response, "success")
-                        },
-                        error: function (error) {
-                            console.error("Помилка при отриманні списку файлів: ", error);
-                        }
-                    });
+                    imagesForDelete.push(file.description)
                 }
                 console.log('Файл не найден в uploadedFiles Map.');
                 oldImagesArray = oldImagesArray.filter(function (item) {

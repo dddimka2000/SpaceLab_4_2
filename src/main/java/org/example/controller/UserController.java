@@ -28,6 +28,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -125,6 +126,17 @@ public class UserController {
     public ResponseEntity<String> saveReview(@ModelAttribute UserReview review){
         reviewService.save(review);
         return ResponseEntity.ok("Відгук збережено");
+    }
+    @DeleteMapping("/delete/files")
+    public ResponseEntity<String> deleteFile(@RequestParam List<String> urls , @RequestParam int id) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        UserEntity user = userService.getById(id);
+        for (String url : urls) {
+            user.getFiles().remove(url);
+            minioService.deleteImg(url, "images");
+            userService.save(user);
+
+        }
+        return ResponseEntity.ok().body("deleteObj");
     }
     @ModelAttribute
     public void activeMenuItem(Model model) {

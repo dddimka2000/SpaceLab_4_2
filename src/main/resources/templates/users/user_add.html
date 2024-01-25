@@ -153,6 +153,7 @@
     </div>
     <script>
         var userId
+        var filesForDelete = [];
 
         function deleteReviewBody(button, idReview) {
             $('#confirmationModal').modal('show');
@@ -222,19 +223,8 @@
                 if (rowElement) {
                     rowElement.remove();
                 }
-                showBlockForAllBody(true)
-                $.ajax({
-                    type: "Get",
-                    url: '[[@{/users/delete/file}]]',
-                    data: {
-                        userId: userId,
-                        url: url,
-                    },
-                    success: function (response) {
-                        showToast(response, "success")
-                        showBlockForAllBody(false)
-                    },
-                });
+
+                filesForDelete.push(decodeURIComponent(url));
 
                 $('#confirmationModal').modal('hide');
                 $('.confirm-delete').off('click');
@@ -614,6 +604,20 @@
                     showBlockForAllBody(false)
                 }
             })
+            if(filesForDelete.length !== 0)deleteAllFiles()
+        }
+        function deleteAllFiles() {
+            $.ajax({
+                type: 'DELETE',
+                url: '[[@{/users/delete/files}]]',
+                data: {
+                    urls: filesForDelete.join(','),
+                    id: getLastDigitFromPath()
+                },
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
+                success: function (response) {
+                },
+            });
         }
     </script>
 </section>

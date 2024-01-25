@@ -157,6 +157,28 @@ public class CommercialObjectsController {
         commercialService.save(house);
         return ResponseEntity.ok().body("deleteObj");
     }
+    @DeleteMapping("/delete/files")
+    public ResponseEntity<String> deleteFile(@RequestParam List<String> urls , @RequestParam int id) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        PropertyCommercialObject commercialObject = commercialService.getById(id);
+        for (String url : urls) {
+            commercialObject.getFiles().remove(url);
+            minioService.deleteImg(url, "images");
+            commercialService.save(commercialObject);
+
+        }
+        return ResponseEntity.ok().body("deleteObj");
+    }
+    @DeleteMapping("/delete/images")
+    public ResponseEntity<String> deleteImages(@RequestParam List<String> urls , @RequestParam int id) throws ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, IOException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        PropertyCommercialObject commercialObject = commercialService.getById(id);
+        for (String url : urls) {
+            commercialObject.getPictures().remove(url);
+            minioService.deleteImg(url, "images");
+            commercialService.save(commercialObject);
+
+        }
+        return ResponseEntity.ok().body("deleteObj");
+    }
     @ModelAttribute
     public void activeMenuItem(Model model) {
         model.addAttribute("commercialPropertyActive", true);
