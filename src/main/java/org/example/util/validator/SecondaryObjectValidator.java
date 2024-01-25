@@ -216,7 +216,7 @@ public class SecondaryObjectValidator implements Validator {
         }
         int oldPicturesNum=0;
         if (entity.getOldPictures() != null){
-            picturesNum=entity.getOldPictures().size();
+            oldPicturesNum=entity.getOldPictures().size();
         }
         if(picturesNum+oldPicturesNum==0){
             errors.rejectValue("pictures", "image.size.invalid", "Минимум 1 фото в объекте");

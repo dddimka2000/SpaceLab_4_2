@@ -83,9 +83,9 @@
     <script th:src="@{/js/pagination.js}"></script>
 
     <link th:href="@{/vendor/css/rtl/core.css}"
-    class="template-customizer-core-css">
+          class="template-customizer-core-css">
     <link th:href="@{/vendor/css/rtl/theme-default.css}"
-    class="template-customizer-theme-css">
+          class="template-customizer-theme-css">
     <script th:src="@{/vendor/libs/block-ui/block-ui.js}"></script>
 
     <style>
@@ -133,7 +133,7 @@
         <div class="layout-page">
             <nav layout:insert="~{navbar_layout :: navbar}"></nav>
 
-            <div class="content-wrapper" >
+            <div class="content-wrapper">
                 <section layout:fragment="content">
 
 
@@ -240,14 +240,15 @@
 <!-- Main JS -->
 <script th:src="@{/js/main.js}"></script>
 <script>
-window.onload = function () {
-var spinner = document.getElementById('spinner');
-setTimeout(function () {
-spinner.style.display = 'none';
-spinner.remove();
-document.getElementById('content').style.display = 'block';
-}, 1300);
-};
+    window.onload = function () {
+        var spinner = document.getElementById('spinner');
+        setTimeout(function () {
+            refreshAllTranslate();
+            spinner.style.display = 'none';
+            spinner.remove();
+            document.getElementById('content').style.display = 'block';
+        }, 1300);
+    };
 </script>
 <script>
     function modalForLogoutModal() {
@@ -269,6 +270,7 @@ document.getElementById('content').style.display = 'block';
         notification.classList.toggle("alert-warning", !isSuccess);
         setTimeout(() => {
             notification.classList.add("hidden");
+
         }, 5000);
     }
 </script>

@@ -214,7 +214,8 @@
                            th:value="${element.getNotes()}">
                     <br>
                     <h6 data-translate="attach_files">Прикрепить файлы</h6>
-                    <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()" multiple>
+                    <input type="file" class="form-control" name="fileInput" id="fileInput" onchange="showFile()"
+                           multiple>
                     <br>
                     <div id="fileList">
                     </div>
@@ -260,8 +261,8 @@
                                 <span>—</span>
                                 <div>
                                     <input class="form-control" type="number" id="codeStaff" name="codeStaff"
-                                    placeholder="Код сотрудника"
-                                    th:value="${element.getRealtor()!=null}?${element.getRealtor().getCode()}:''">
+                                           placeholder="Код сотрудника"
+                                           th:value="${element.getRealtor()!=null}?${element.getRealtor().getCode()}:''">
                                 </div>
                             </div>
                         </div>
@@ -658,14 +659,7 @@
             </div>
         </div>
     </div>
-    <div class="alert alert-warning notification  d-flex align-items-center hidden" role="alert"
-         id="notification">
 
-        <strong id="text_notification"></strong>
-        <div>
-            <span id="notification-message"></span>
-        </div>
-    </div>
     <script th:src="@{/vendor/libs/dropzone/dropzone.js}"></script>
 
     <link rel="stylesheet" th:href="@{/vendor/libs/flatpickr/flatpickr.css}"/>
@@ -875,7 +869,7 @@
                         if (error === "Минимум 1 фото в объекте") {
                             activateListItem('#pills-profile-tab')
                             errorsQuantity++;
-                            showToastWithTranslate("errorOnePhoto","danger");
+                            showToastWithTranslate("errorOnePhoto", "danger");
                         }
                         if (error === "Кода данного сотрудника не существует") {
                             errorsQuantity++;
@@ -987,7 +981,7 @@
             if (!city.prop('disabled')) {
                 if (!validSelect2(city)) isValidated = false
             }
-            if (!district.prop('disabled')){
+            if (!district.prop('disabled')) {
                 if (!validSelect2(district)) isValidated = false
             }
             if (!validString("1", "31", street)) {
@@ -1040,23 +1034,23 @@
             if (!validateDate(boughtDate)) isValidated = false;
             if (!validSelect2(publicationStatus)) isValidated = false
             if (!validSelect2(ownershipType)) isValidated = false
-            console.log("sel2 "+isValidated)
+            console.log("sel2 " + isValidated)
             if (!validateNumber(0, 9999, floor)) isValidated = false;
             if (!validSelect2(residentialComplexId)) isValidated = false
             if (!validateNumber(0, 9999, employeeCode)) isValidated = false;
             if (!validateNumber(0, 9999, branchCode)) isValidated = false;
             if (!validateNumber(0, 9999, areaTotal)) isValidated = false;
-            console.log("wf "+isValidated)
+            console.log("wf " + isValidated)
             if (!validateNumber(0, 9999, areaLiving)) isValidated = false;
             if (!validateNumber(0, 100000000, price)) isValidated = false;
             if (!validateNumber(0, 9999, areaKitchen)) isValidated = false;
             if (!validString("1", "100", roomMeters)) isValidated = false;
-            console.log("wf2 "+isValidated)
+            console.log("wf2 " + isValidated)
 
             if (!validateNumber(0, 9999, heightCeiling)) isValidated = false;
             if (!validString("1", "500", notes)) isValidated = false;
             if (!validateDate(lastContactDate)) isValidated = false;
-            console.log("wf3 "+isValidated)
+            console.log("wf3 " + isValidated)
             if (!validateDate(vnpExpirationDate)) isValidated = false;
             console.log(isValidated)
 
@@ -1129,8 +1123,7 @@
                 let checkFile = true;
                 for (let i = 0; i < fileInput.files.length; i++) {
                     let selectedFile = fileInput.files[i];
-                    if (selectedFile.type === "application/pdf")
-                    {
+                    if (selectedFile.type === "application/pdf") {
                     } else {
                         checkFile = false;
                         showToastWithTranslate("show_file_message", "danger");
@@ -1241,7 +1234,7 @@
         let uploadedFiles = new Map();
         let oldImagesArray = [];
         let currentFiles = 0;
-
+        let currentFilesAll = -1;
         var myDropzone = new Dropzone("#my-dropzoneSecondary_objects", {
             url: "/uploadFileSecondary_objects",
             acceptedFiles: ".jpg, .png, .icon, .jpeg",
@@ -1252,17 +1245,12 @@
             maxFiles: 15,
             autoProcessQueue: true,
             success: function (file, response) {
-                console.log("Файл загружен: " + file.name);
-                console.log("Ответ сервера: " + response);
-                console.log(currentFiles);
-                console.log(myDropzone.maxFiles);
                 currentFiles++;
                 const imageElement = file.previewElement.querySelector("img[data-dz-thumbnail]");
                 imageElement.src = file.dataURL;
             }
         })
         myDropzone.on('success', function (file, response) {
-            console.log('Файл успешно загружен:', file.name);
             if (oldImagesArray.includes(file.name)) {
                 uploadedFiles.set("wrr2142" + file.name, file);
             } else {
@@ -1270,32 +1258,29 @@
             }
         });
         myDropzone.on('removedfile', function (file) {
-            console.log('Файл был удален:', file.name);
-            currentFiles--;
+            currentFilesAll--;
+
             if (uploadedFiles.has(file.name)) {
                 uploadedFiles.delete(file.name);
             } else {
-                console.log('Файл не найден в uploadedFiles Map.');
                 oldImagesArray = oldImagesArray.filter(function (item) {
                     return item !== file.name;
                 });
                 console.log(oldImagesArray);
             }
+            myDropzone.files.length = currentFilesAll;
             updateDropzoneMaxFiles()
         });
         myDropzone.on("addedfile", function (file) {
-            console.log("Начало загрузки файла: " + file.name);
-
+            currentFilesAll++;
         });
         myDropzone.on('queuecomplete', function () {
-            console.log('Загрузка всех файлов завершена.');
         });
 
         function updateDropzoneMaxFiles() {
             const newMaxFiles = (15 - oldImagesArray.length);
             myDropzone.options.maxFiles = newMaxFiles;
         }
-
 
         // Настройки
         $('#telephone').mask('+380999999999');
@@ -1519,7 +1504,7 @@
                 link.id = "oldFile" + index;
                 let deleteButton = document.createElement("a");
                 deleteButton.style.marginLeft = "20px";
-                deleteButton.href="#";
+                deleteButton.href = "#";
                 deleteButton.classList.add("text-decoration-none", "for-delete");
                 deleteButton.innerHTML = "х удалить";
 
@@ -1539,11 +1524,11 @@
                 rowEl.classList.add("row");
 
                 let colLg2 = document.createElement("div");
-                colLg2.classList.add("col-lg-3","col-sm-3", "col-md-6");
+                colLg2.classList.add("col-lg-3", "col-sm-3", "col-md-6");
                 colLg2.appendChild(link);
 
                 let colLg1 = document.createElement("div");
-                colLg1.classList.add("col-lg-1" ,"col-sm-3", "col-md-6");
+                colLg1.classList.add("col-lg-1", "col-sm-3", "col-md-6");
                 colLg1.appendChild(deleteButton);
 
                 rowEl.appendChild(colLg2);
@@ -1551,6 +1536,7 @@
 
                 fileList.appendChild(rowEl);
                 oldFileMap.set(numListener, fileName);
+                currentFilesAll++;
                 numFile++;
             });
         }

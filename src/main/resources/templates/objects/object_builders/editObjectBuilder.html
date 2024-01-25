@@ -532,6 +532,7 @@
             const newMaxFiles = (15 - oldImagesArray.length);
             myDropzone.options.maxFiles = newMaxFiles;
         }
+        let currentFilesAll = 0;
 
         var myDropzone = new Dropzone("#my-dropzone", {
             url: "/uploadFile",
@@ -554,6 +555,7 @@
             }
         });
         myDropzone.on('removedfile', function (file) {
+            currentFilesAll--;
             if (uploadedFiles.has(file.name)) {
                 uploadedFiles.delete(file.name);
             } else {
@@ -561,9 +563,12 @@
                     return item !== file.name;
                 });
             }
+            myDropzone.files.length = currentFilesAll;
+            console.log(currentFilesAll)
             updateDropzoneMaxFiles()
         });
         myDropzone.on("addedfile", function (file) {
+            currentFilesAll++;
         });
         myDropzone.on('queuecomplete', function () {
         });
@@ -878,8 +883,8 @@
                                 console.log("ukr click")
                             }
                         } else if (error === "Минимум 1 фото в объекте") {
-                            activateListItem('#pills-profile')
-                            errorsQuantity++;
+                            activateListItem('#pills-profile-tab')
+                            changeInputValue++;
                             showToastWithTranslate("errorOnePhoto", "danger");
                         } else {
                             showToast(error, "danger");
@@ -1240,7 +1245,6 @@
                 myDropzone.emit("addedfile", mockFile);
                 myDropzone.emit("thumbnail", mockFile, img);
                 myDropzone.emit("complete", mockFile);
-
                 i++;
             });
             updateDropzoneMaxFiles()

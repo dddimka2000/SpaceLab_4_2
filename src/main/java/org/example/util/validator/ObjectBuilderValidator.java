@@ -257,7 +257,7 @@ public class ObjectBuilderValidator implements Validator {
                 errors.rejectValue("files", "image.size.invalid", "Файлов больше 15 в галлерее");
             }
             if ((entity.getOldFiles().size() + entity.getFiles().size()) < 1) {
-                errors.rejectValue("files", "image.size.invalid", "Добавьте хотя бы 1 фото в галлерею");
+                errors.rejectValue("files", "image.size.invalid", "Минимум 1 фото в объекте");
             }
             if (entity.getPrices() != null && entity.getPrices().isPresent()) {
                 if (isValidFile(entity.getPrices().get())) {

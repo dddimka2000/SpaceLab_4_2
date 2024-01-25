@@ -32,8 +32,8 @@ function updatePagination(currentPage, totalButtons, container, numberOfElements
             li.classList.add("active");
         }
         pagination.appendChild(li);
-        if (currentPage <= 4) {
-            for (var i = 1; i <= 5; i++) {
+        if (currentPage < 3) {
+            for (var i = 1; i < 4; i++) {
                 li = createPaginationItem(i);
                 if (i == currentPage) {
                     li.classList.add("active");

@@ -170,13 +170,16 @@
                             <div class="col-lg-4 col-sm-6">
                                 <h6 data-translate="contact_date">Дата последнего контакта</h6>
                                 <select id="day" name="day" class="form-select select2 for-filter select2find">
-                                    <option selected value="" disabled></option>
-                                    <option value="1" data-translate="one_day">1 день</option>
-                                    <script>
-                                        for (let i = 2; i <= 31; i++) {
-                                            document.write('<option value="' + i + '" data-translate="' + i + 'multiple_days">' + i + ' дней' + '</option>');
-                                        }
-                                    </script>
+                                    <option selected value=""></option>
+                                    <option value="3" data-translate="3multiple_days"></option>
+                                    <option value="7" data-translate="multiple_weeks_and_more"></option>
+                                    <option value="21" data-translate="3multiple_weeks_and_more"></option>
+                                    <option value="99999" data-translate="6multiple_weeks_and_more"></option>
+                                    <!--                                    <script>-->
+                                    <!--                                        for (let i = 2; i <= 31; i++) {-->
+                                    <!--                                            document.write('<option value="' + i + '" data-translate="' + i + 'multiple_days">' + i + ' дней' + '</option>');-->
+                                    <!--                                        }-->
+                                    <!--                                    </script>-->
                                 </select>
                             </div>
                             <div class="col-lg-4 col-sm-6" style="display: flex;align-items: end;justify-content: end">
@@ -426,10 +429,12 @@
         $("#pageSize").on("change", function () {
             getPageWithFilter(0);
         });
-        function setNumberOfElement(numberOfElement){
+
+        function setNumberOfElement(numberOfElement) {
             localStorage.setItem('numberOfElementForSecondary', numberOfElement)
             getPageWithFilter(0)
         }
+
         function getPageWithFilter(page) {
             let filterElements = $('.for-filter');
             let contextPath = /*[[@{/}]]*/ '';
@@ -510,12 +515,11 @@
                         var tbody = table.querySelector("tbody");
                         $('#branchTable tbody').empty().css('text-align', 'center');
 
-                        if($("#empty-block"))$("#empty-block").remove();
-                        if(builderObjects.totalElements == 0){
-                            table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                        if ($("#empty-block")) $("#empty-block").remove();
+                        if (builderObjects.totalElements == 0) {
+                            table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">' + translateValue("empty") + '</h1></center>');
                             table.style.display = "none";
-                        }
-                        else {
+                        } else {
                             table.style.display = '';
                         }
                         for (var object of builderObjects.content) {
@@ -568,23 +572,23 @@
 
                             var cell10 = newRow.insertCell(9);
                             if (object.advertisementEnabled) {
-                                cell10.innerHTML = '<div class="alert alert-success" data-translate="yes">Да</div>';
+                                cell10.innerHTML = '<div class="badge bg-label-success" data-translate="yes">Да</div>';
                             } else {
-                                cell10.innerHTML = '<div class="alert alert-danger" data-translate="no">Нет</div>';
+                                cell10.innerHTML = '<div class="badge bg-label-danger" data-translate="no">Нет</div>';
                             }
 
                             var cell11 = newRow.insertCell(10);
                             if (object.buildStatus == "FINISHED") {
-                                cell11.innerHTML = '<div class="alert alert-success" data-translate="FINISHED">Закончена</div>';
+                                cell11.innerHTML = '<div class="badge bg-label-success" data-translate="FINISHED">Закончена</div>';
                             } else if (object.buildStatus == "IN_PROGRESS") {
-                                cell11.innerHTML = '<div class="alert alert-info" data-translate="IN_PROGRESS">В процессе</div>';
+                                cell11.innerHTML = '<div class="badge bg-label-info" data-translate="IN_PROGRESS">В процессе</div>';
                             } else {
-                                cell11.innerHTML = '<div  class="alert alert-danger" data-translate="NOT_STARTED">Еще не начата</div>';
+                                cell11.innerHTML = '<div  class="badge bg-label-danger" data-translate="NOT_STARTED">Еще не начата</div>';
                             }
 
 
                             var cell12 = newRow.insertCell(11);
-                            cell12.innerHTML = '<alert class="alert alert-success" data-translate="yes">Да</alert>';
+                            cell12.innerHTML = '<div class="badge bg-label-success" data-translate="yes">Да</div>';
 
                             var cell13 = newRow.insertCell(12);
                             cell13.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint"
@@ -606,13 +610,12 @@
                         $('#paginationItems').empty();
                         if (builderObjects.totalPages > 1) {
                             updatePagination(page, builderObjects.totalPages, 'paginationItems', localStorage.getItem('numberOfElementForSecondary') || 10, 'numberOfElementForSecondary')
-                        }
-                        else {
+                        } else {
                             var pagination = document.getElementById('paginationItems');
                             pagination.innerHTML = '';
                             var row = document.createElement('div');
                             row.style.marginRight = 'auto'
-                            row.style.width='100%'
+                            row.style.width = '100%'
                             row.innerHTML += `
 <div class="row" style="width: 25%">
     <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">
@@ -627,6 +630,8 @@
                         $('#number-of-element').select2({
                             minimumResultsForSearch: -1,
                         })
+                        refreshAllTranslate();
+
                     }
                 }
             )
@@ -657,7 +662,7 @@
         });
         const limitedInputs = document.querySelectorAll('input[data-num="limited"]');
         limitedInputs.forEach(input => {
-            input.addEventListener('input', function() {
+            input.addEventListener('input', function () {
                 const parsedValue = parseInt(input.value, 10);
 
                 if (!isNaN(parsedValue)) { // Проверка, что parsedValue является числом
@@ -669,6 +674,7 @@
                 }
             });
         });
+
         function select2MultipleResidential() {
             let contextPath = /*[[@{/}]]*/ '';
 

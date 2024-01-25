@@ -824,7 +824,6 @@
             let ownerPhone = $('[name="telephone"]');
             let boughtDate = $('[name="boughtDate"]');
 
-            let administrationComment = $('[name="comment"]');
             let publicationStatus = $("#publicationStatus");
             let objectCode = $('[name="codeObject"]');
             let branchCode = $('[name="codeBranch"]');
@@ -958,7 +957,6 @@
             }
             if (!validateNumber(0, 20, roomQuantity)) isValidated = false;
             if (!validString("1", "15", objectCode)) isValidated = false;
-            if (!validString("0", "20000", administrationComment)) isValidated = false;
             if (!validString("1", "100", landmark)) isValidated = false;
             if (!validSelect2(kitchenType)) isValidated = false
             if (!validSelect2(bathroomType)) isValidated = false
