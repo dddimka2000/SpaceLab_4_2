@@ -210,11 +210,13 @@ public class ObjectInvestorValidator implements Validator {
         }
         int picturesNum=0;
         if (entity.getPictures() != null) {
+            log.info(entity.getPictures().size());
             picturesNum=entity.getPictures().size();
         }
         int oldPicturesNum=0;
         if (entity.getOldPictures() != null){
-            picturesNum=entity.getOldPictures().size();
+            log.info(entity.getOldPictures().size());
+            oldPicturesNum=entity.getOldPictures().size();
         }
         if(picturesNum+oldPicturesNum==0){
             errors.rejectValue("pictures", "image.size.invalid", "Минимум 1 фото в объекте");

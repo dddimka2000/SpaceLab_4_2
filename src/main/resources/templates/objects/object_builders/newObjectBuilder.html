@@ -564,11 +564,11 @@
                     errors.forEach(function (error) {
                         console.log(error);
                         changeInputValue = 0;
-                        if (error === "Минимум 1 фото в объекте") {
-                            activateListItem('#pills-profile')
-                            errorsQuantity++;
+                     if (error === "Минимум 1 фото в объекте") {
+                            activateListItem('#pills-profile-tab')
+                            changeInputValue++;
                             showToastWithTranslate("errorOnePhoto", "danger");
-                        } else if (error === "(Ру)Объект новостроя с таким именем уже существует") {
+                        }  else if (error === "(Ру)Объект новостроя с таким именем уже существует") {
                             showErrorName(nameObject);
                             if (changeInputValue == 0) {
                                 changeInputValue = changeInputValue + 1;

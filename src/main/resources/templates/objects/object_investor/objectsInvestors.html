@@ -174,13 +174,16 @@
                             <div class="col-lg-4 col-sm-6">
                                 <h6 data-translate="contact_date">Дата последнего контакта</h6>
                                 <select id="day" name="day" class="form-select select2 for-filter select2find">
-                                    <option selected value="" disabled></option>
-                                    <option value="1" data-translate="one_day">1 день</option>
-                                    <script>
-                                        for (let i = 2; i <= 31; i++) {
-                                            document.write('<option value="' + i + '" data-translate="' + i + 'multiple_days">' + i + ' дней' + '</option>');
-                                        }
-                                    </script>
+                                    <option selected value=""></option>
+                                    <option value="3" data-translate="3multiple_days"></option>
+                                    <option value="7" data-translate="multiple_weeks_and_more"></option>
+                                    <option value="21" data-translate="3multiple_weeks_and_more"></option>
+                                    <option value="99999" data-translate="6multiple_weeks_and_more"></option>
+<!--                                    <script>-->
+<!--                                        for (let i = 2; i <= 31; i++) {-->
+<!--                                            document.write('<option value="' + i + '" data-translate="' + i + 'multiple_days">' + i + ' дней' + '</option>');-->
+<!--                                        }-->
+<!--                                    </script>-->
                                 </select>
                             </div>
                             <div class="col-lg-4 col-sm-6" style="display: flex;align-items: end;justify-content: end">
@@ -311,7 +314,6 @@
             var headerRow
             if (document.getElementById('printWithAddress').checked) {
                 selectedCheckboxes.forEach(function (checkbox) {
-                    console.log(checkbox.value)
                     var promise = new Promise(function (resolve, reject) {
                         $.ajax({
                             type: "Get",
@@ -369,14 +371,15 @@
             });
             $("#select2MultipleTopozone").select2({
                 placeholder: translateValue('виберіть_обєкт'),
-                language: languageForSelect2
+                language: languageForSelect2,
             });
             select2MultipleResidential();
             getPageWithFilter(0);
+            refreshAllTranslate();
+
         });
 
         function openModal(elem) {
-            console.log(elem);
             elementDelete = elem;
             $("#deleteModal").modal("show");
         }
@@ -384,7 +387,6 @@
         $(document).on("click", "#okBtn", function () {
             let contextPath =/*[[@{/}]]*/ '';
             let url = contextPath + "investor_objects/delete/" + elementDelete;
-            console.log(url)
             $.ajax({
                 url: url,
                 method: "DELETE",
@@ -422,13 +424,10 @@
             Array.from(filterElements).forEach(function (element) {
                 var el = $(element);
                 if (el.is(':radio')) {
-                    console.log(el.prop('checked'));
                     if (el.prop('checked')) {
-                        console.log(el.val());
                         rooms = el.val();
                     }
                 } else {
-                    console.log(element.value);
                 }
             });
             let el1 = $(filterElements[0]);
@@ -483,7 +482,6 @@
                     },
                     dataType: 'json',
                     success: function (builderObjects) {
-                        console.log(builderObjects)
                         var table = document.getElementById("branchTable");
                         var tbody = table.querySelector("tbody");
                         $('#branchTable tbody').empty().css('text-align', 'center');
@@ -502,11 +500,8 @@
                             var cell1 = newRow.insertCell(0);
                             var today = new Date();
                             var otherDate = new Date(object.lastContactDate)
-                            console.log(object.lastContactDate)
-                            console.log(otherDate)
                             var timeDifference = today - otherDate;
                             var daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-                            console.log(daysDifference)
                             if (daysDifference > 3 && daysDifference <= 7) {
                                 cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: deepskyblue"></i>`;
                             }
@@ -546,23 +541,22 @@
 
                             var cell10 = newRow.insertCell(9);
                             if (object.advertisementEnabled) {
-                                cell10.innerHTML = '<div class="alert alert-success" data-translate="yes">Да</div>';
+                                cell10.innerHTML = '<div class="badge bg-label-success" data-translate="yes">Да</div>';
                             } else {
-                                cell10.innerHTML = '<div class="alert alert-danger" data-translate="no">Нет</div>';
+                                cell10.innerHTML = '<div class="badge bg-label-danger" data-translate="no">Нет</div>';
                             }
-
                             var cell11 = newRow.insertCell(10);
                             if (object.buildStatus == "FINISHED") {
-                                cell11.innerHTML = '<div class="alert alert-success" data-translate="FINISHED">Закончена</div>';
+                                cell11.innerHTML = '<div class="badge bg-label-success" data-translate="FINISHED">Закончена</div>';
                             } else if (object.buildStatus == "IN_PROGRESS") {
-                                cell11.innerHTML = '<div class="alert alert-info" data-translate="IN_PROGRESS">В процессе</div>';
+                                cell11.innerHTML = '<div class="badge bg-label-info" data-translate="IN_PROGRESS">В процессе</div>';
                             } else {
-                                cell11.innerHTML = '<div  class="alert alert-danger" data-translate="NOT_STARTED">Еще не начата</div>';
+                                cell11.innerHTML = '<div  class="badge bg-label-danger" data-translate="NOT_STARTED">Еще не начата</div>';
                             }
 
 
                             var cell12 = newRow.insertCell(11);
-                            cell12.innerHTML = '<alert class="alert alert-success" data-translate="yes">Да</alert>';
+                            cell12.innerHTML = '<div class="badge bg-label-success" data-translate="yes">Да</div>';
 
                             var cell13 = newRow.insertCell(12);
                             cell13.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint"
@@ -605,6 +599,8 @@
                         $('#number-of-element').select2({
                             minimumResultsForSearch: -1,
                         })
+                        refreshAllTranslate();
+
                     }
                 }
             )

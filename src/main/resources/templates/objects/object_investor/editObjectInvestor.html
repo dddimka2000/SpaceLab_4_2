@@ -693,7 +693,7 @@
                     indexFilesMap++;
                 }
             }
-            formData.append("administrationComment", $('[name="comment"]').val()).trim();
+            formData.append("administrationComment", $('[name="comment"]').val());
             formData.append("publicationStatus", $("#publicationStatus").val());
             formData.append("objectCode", $('[name="codeObject"]').val());
             formData.append("branchCode", $('[name="codeBranch"]').val());
@@ -752,8 +752,6 @@
             formData.append("advertisementTextUk", $('[name="advertisingTextUkr"]').val());
 
             formData.append("advertisementEnabled", $('[name="statusPromotion"]').prop("checked"));
-            console.log($('[name="statusPromotion"]').prop("checked"))
-
             let i = 1;
             for (let [fileName, file] of uploadedFiles) {
                 if (i > (15 - oldImagesArray.length)) {
@@ -978,6 +976,7 @@
         let uploadedFiles = new Map();
         let oldImagesArray = [];
         let currentFiles = 0;
+        let currentFilesAll = -1;
 
         var myDropzone = new Dropzone("#my-dropzoneInvestor", {
             url: "/uploadFileInvestor",
@@ -1007,6 +1006,7 @@
             }
         });
         myDropzone.on('removedfile', function (file) {
+            currentFilesAll--;
             console.log('Файл был удален:', file.name);
             currentFiles--;
             if (uploadedFiles.has(file.name)) {
@@ -1018,11 +1018,12 @@
                 });
                 console.log(oldImagesArray);
             }
+            myDropzone.files.length = currentFilesAll;
+            console.log(currentFilesAll)
             updateDropzoneMaxFiles()
         });
         myDropzone.on("addedfile", function (file) {
-            console.log("Начало загрузки файла: " + file.name);
-
+            currentFilesAll++;
         });
         myDropzone.on('queuecomplete', function () {
             console.log('Загрузка всех файлов завершена.');
@@ -1283,7 +1284,7 @@
             }
             if (!validateNumber(0, 20, roomQuantity)) isValidated = false;
             if (!validString("1", "15", objectCode)) isValidated = false;
-            if (!validString("0", "20000", administrationComment)) isValidated = false;
+            if (!validString("0", "5000", comment)) isValidated = false;
             if (!validString("1", "100", landmark)) isValidated = false;
             if (!validSelect2(kitchenType)) isValidated = false
             if (!validSelect2(bathroomType)) isValidated = false
@@ -1436,6 +1437,8 @@
                 var fileName = filesElement[index];
                 var link = document.createElement("a");
                 link.href = "data:application/octet-stream;base64," + base64Data;
+                currentFilesAll++;
+
                 link.download = filesElement[index];
                 let indexOfDot = fileName.indexOf('.');
                 let resultString;
