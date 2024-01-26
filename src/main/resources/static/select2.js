@@ -171,6 +171,7 @@ function forSelect2(id, text, selectName, url) {
                                 if (data.id) return {id: data.id, text: translateValue(data.name)};
                                 return {id: data, text: translateValue(data)};
                             });
+
                             return {
                                 results: results
                             };
@@ -213,6 +214,7 @@ function forSelect2(id, text, selectName, url) {
             $(selectName).trigger('change');
         }
     }
+
 }
 
 function forSelect2WithSearch(id, text, selectName, url, name) {

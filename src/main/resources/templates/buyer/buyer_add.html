@@ -67,78 +67,76 @@
                 <div class="card-body">
                     <div class="tab-content">
                         <div class="tab-pane fade show active" aria-labelledby="navs-pills-top-info" id="top-info">
-                            <div class="row">
-                                <div class="col" data-translate="lastName">
+                            <div class="row gy-3">
+                                <div class="col-sm-6 col-md-4 col-lg-2" data-translate="lastName">
                                     Фамилия
                                 </div>
-                                <div class="col" data-translate="firstName">
+                                <div class="col-sm-6 col-md-4 col-lg-2" data-translate="firstName">
                                     Имя
                                 </div>
-                                <div class="col" data-translate="middleName">
+                                <div class="col-sm-6 col-md-4 col-lg-2" data-translate="middleName">
                                     Отчество
                                 </div>
-                                <div class="col" data-translate="phone">
+                                <div class="col-sm-6 col-md-4 col-lg-2" data-translate="phone">
                                     Телефон
                                 </div>
-                                <div class="col">
+                                <div class="col-sm-6 col-md-4 col-lg-2">
                                     Email
                                 </div>
-                                <div class="col" data-translate="realtor">
+                                <div class="col-sm-6 col-md-4 col-lg-2" data-translate="realtor">
                                     Риелтор
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
+                            <div class="row gy-3">
+                                <div class="col-sm-6 col-md-4 col-lg-2">
                                     <input class="form-control" id="surname">
                                 </div>
-                                <div class="col">
+                                <div class="col-sm-6 col-md-4 col-lg-2">
                                     <input class="form-control" id="name">
                                 </div>
-                                <div class="col">
+                                <div class="col-sm-6 col-md-4 col-lg-2">
                                     <input class="form-control" id="middleName">
                                 </div>
-                                <div class="col">
+                                <div class="col-sm-6 col-md-4 col-lg-2">
                                     <input class="form-control phone" id="phone">
                                 </div>
-                                <div class="col">
+                                <div class="col-sm-6 col-md-4 col-lg-2">
                                     <input class="form-control" id="email">
                                 </div>
-                                <div class="col">
+                                <div class="col-sm-6 col-md-4 col-lg-2">
                                     <select id="realtorSelect2" name="realtor"></select>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-2" data-translate="passport">
+                            <div class="row gy-3">
+                                <div class="col-md-6 col-lg-2" data-translate="passport">
                                     Паспорт Серия/Номер
                                 </div>
-                                <div class="col-2" data-translate="dateOfBirth">
+                                <div class="col-md-6 col-lg-2" data-translate="dateOfBirth">
                                     Дата рождения
                                 </div>
-                                <div class="col-2" data-translate="information_source">
+                                <div class="col-md-6 col-lg-2" data-translate="information_source">
                                     Источник информации
                                 </div>
-                                <div class="col-2" data-translate="last_contact_date">
+                                <div class="col-md-6 col-lg-2" data-translate="last_contact_date">
                                     Дата последнего контакта
                                 </div>
-                                <div class="col-4">
-                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-2">
+                            <div class="row gy-3">
+                                <div class="col-md-6 col-lg-2">
                                     <input class="form-control" id="passport" placeholder="XX 1234">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-md-6 col-lg-2">
                                     <input type="text" class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
                                            id="birthdate"/>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-md-6 col-lg-2">
                                     <select id="informationSourceSelect2" name="informationSource"></select>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-md-6 col-lg-2">
                                     <input type="text" class="form-control flatpickr-datetime" placeholder="YYYY/MM/DD"
                                            id="lastVisit"/>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-md-12 col-lg-4">
                                     <a class="btn btn-success" onclick="checkPhone(this)"
                                        data-translate="check_phone_number" style="color: black">Проверить номер
                                         телефона</a>
@@ -148,11 +146,9 @@
 
                             <textarea class="form-control bootstrap-maxlength-example" id="comment" rows="5"></textarea>
                             <div class="row mt-2">
-                                <div class="col-5">
+                                <div class="col-lg-5">
                                     <p data-translate="attach_files">Прикрепить файли</p>
                                     <input type="file" class="form-control" id="files" accept=".pdf" multiple>
-                                </div>
-                                <div class="col-7">
                                 </div>
                             </div>
                             <div id="block-for-file">
@@ -160,15 +156,15 @@
                         </div>
                         <div class="tab-pane fade show" aria-labelledby="navs-pills-top-application"
                              id="top-application">
-                            <div class="row">
-                                <div class="col-4">
+                            <div class="row gy-3">
+                                <div class="col-lg-4">
                                     <p data-translate="district">Район</p>
                                     <select class="form-control" id="district" multiple></select>
                                     <br>
                                     <p data-translate="topzone">Топзона</p>
                                     <select class="form-control" id="topzone" multiple></select>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-lg-3">
                                     <p data-translate="property.numberOfRooms">Количество комнат</p>
                                     1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers"
                                              value="1">
@@ -179,9 +175,9 @@
                                     >3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers"
                                               value="4">
                                 </div>
-                                <div class="col-5">
-                                    <div class="row">
-                                        <div class="col">
+                                <div class="col-lg-5">
+                                    <div class="row gy-3">
+                                        <div class="col-lg-6">
                                             <div data-translate="floor">Этаж:</div>
                                             <div id="floorBlock" style="display: flex">
                                                 <input class="form-control" id="floorMin">
@@ -189,7 +185,7 @@
                                                 <input class="form-control" id="floorMax">
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div class="col-lg-6">
                                             <div data-translate="price">Цена ($):</div>
                                             <div id="priceBlock" style="display: flex">
                                                 <input class="form-control" id="priceMin">
@@ -198,8 +194,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col">
+                                    <div class="row gy-3">
+                                        <div class="col-lg-6">
                                             <div data-translate="plotArea">Участок(кв. м):</div>
                                             <div id="plotAreaBlock" style="display: flex">
                                                 <input class="form-control" id="plotAreaMin">
@@ -207,7 +203,7 @@
                                                 <input class="form-control" id="plotAreaMax">
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div class="col-lg-6">
                                             <div data-translate="S_area_sqm">Площадь(кв. м):</div>
                                             <div id="houseAreaBlock" style="display: flex">
                                                 <input class="form-control" id="houseAreaMin">
@@ -219,32 +215,32 @@
                                 </div>
                             </div>
                             <br/>
-                            <div class="row">
-                                <div class="col-2">
+                            <div class="row gy-3">
+                                <div class="col-md-6 col-lg-2">
                                     <div data-translate="RC">ЖК</div>
 
                                     <select class="form-control" id="builderObjects" name="builderObject"></select>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-md-6 col-lg-2">
                                     <div data-translate="status"> Статус</div>
 
                                     <select class="form-control" id="status"></select>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-md-6 col-lg-3">
                                     <div data-translate="propertyType"> Вид недвижемости</div>
                                     <select class="form-control" id="propertyOrigin"></select>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-md-6 col-lg-3">
                                     <div data-translate="real_estate_type">Тип недвижимости</div>
                                     <select class="form-control" id="propertyApplicationType"></select>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-2">
+                            <div class="row gy-3">
+                                <div class="col-md-6 col-lg-2">
                                     <div data-translate="phone">Телефон:</div>
                                     <input class="form-control phone" id="phoneExample2">
                                 </div>
-                                <div class="col-4">
+                                <div class="col-md-6 col-lg-4">
                                     <div data-translate="realtor">Риелтор:</div>
                                     <select class="form-control" id="realtorSelect2example2"></select>
                                 </div>

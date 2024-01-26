@@ -29,16 +29,21 @@
             <hr style="margin-top: -5px">
             <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
                 <p><input type="checkbox" style="margin-top: 3px" id="printWithAddress"
-                                                    class="form-check-input" data-translate="printWithAddress"><div data-translate="printWithAddress"  style="margin-right: 20px"></div></p>
-                <button class="btn btn-submit waves-effect waves-light" th:onclick="|window.location.href='@{/houses/add}'|"
+                          class="form-check-input" data-translate="printWithAddress">
+                <div data-translate="printWithAddress" style="margin-right: 20px"></div>
+                </p>
+                <button class="btn btn-submit waves-effect waves-light"
+                        th:onclick="|window.location.href='@{/houses/add}'|"
                         style="margin-right: 5px" data-translate="builder_object_add">Добавить об'єкт
                 </button>
-                <button class="btn btn-submit waves-effect waves-light" onclick="printElements()" data-translate="print">Распечатать</button>
+                <button class="btn btn-submit waves-effect waves-light" onclick="printElements()"
+                        data-translate="print">Распечатать
+                </button>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-4">
+            <div class="card border mt-3">
+                <div class="card-header">
+                    <div class="row gy-3">
+                        <div class="col-md-6 col-lg-4">
                             <div data-translate="region_district"></div>
                             <select id="district" multiple></select>
                             <div data-translate="topzone"></div>
@@ -49,7 +54,7 @@
                                         th:text="${entity}"></option>
                             </select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-md-6 col-lg-3">
                             <div data-translate="property.numberOfRooms"></div>
                             <br>
                             1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1">
@@ -57,9 +62,9 @@
                             3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">
                             >3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">
                         </div>
-                        <div class="col-5">
-                            <div class="row">
-                                <div class="col">
+                        <div class="col-md-12 col-lg-5">
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
                                     <div data-translate="floor"></div>
                                     <div style="display: flex">
                                         <input class="form-control for-filter onlyNumber" id="floorMin">
@@ -67,7 +72,7 @@
                                         <input class="form-control for-filter onlyNumber" id="floorMax">
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col-lg-6">
                                     <div data-translate="price"></div>
                                     <div style="display: flex">
                                         <input class="form-control for-filter onlyNumber" id="priceMin">
@@ -76,17 +81,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                   <div data-translate="plotArea"></div>
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
+                                    <div data-translate="plotArea"></div>
                                     <div style="display: flex">
                                         <input class="form-control for-filter onlyNumber" id="plotAreaMin">
                                         <div class="mt-2">&mdash;</div>
                                         <input class="form-control for-filter onlyNumber" id="plotAreaMax">
                                     </div>
                                 </div>
-                                <div class="col">
-                                  <div data-translate="S_area_sqm"></div>
+                                <div class="col-lg-6">
+                                    <div data-translate="S_area_sqm"></div>
                                     <div style="display: flex">
                                         <input class="form-control for-filter onlyNumber" id="houseAreaMin">
                                         <div class="mt-2">&mdash;</div>
@@ -97,11 +102,11 @@
                         </div>
                     </div>
                     <div class="row mt-1">
-                        <div class="col-4">
+                        <div class="col-md-6 col-lg-4">
                             <div data-translate="street"></div>
                             <input class="form-control for-filter" id="street">
                         </div>
-                        <div class="col-3">
+                        <div class="col-md-6 col-lg-3">
                             <div data-translate="contact_date"></div>
                             <select class="form-control" style="width: 60%;" id="lastContactDate">
                                 <option></option>
@@ -110,24 +115,23 @@
                                 <option value="21">21</option>
                             </select>
                         </div>
-                        <div class="col-5">
-                            <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
+                        <div class="col-md-12 col-lg-5">
+                            <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px; margin-top: 20px">
                                 <button class="btn btn-submit waves-effect waves-light" onclick="clearFilter()"
                                         style="margin-right: 5px" data-translate="clear">
                                     Очистить фильтр
                                 </button>
-                                <button class="btn btn-submit waves-effect waves-light" onclick="getPageWithFilter(0)" data-translate="search">Поиск</button>
+                                <button class="btn btn-submit waves-effect waves-light" onclick="getPageWithFilter(0)"
+                                        data-translate="search">Поиск
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card border mt-3">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="invoice-list-table table border-top dataTable no-footer dtr-column"
-                               id="houseTable" style=" width: 100%;
-    table-layout: auto;">
+                               id="houseTable" style=" width: 100%; table-layout: auto; text-align: center">
                             <thead>
                             <tr>
                                 <th data-translate="contact_date">Дата контакта</th>
@@ -176,7 +180,7 @@
                             type: "Get",
                             url: '[[@{/houses/getById/}]]' + checkbox.value,
                             success: function (house) {
-                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor?house.realtor.name:null) + `</td>`)
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor ? house.realtor.name : null) + `</td>`)
                                 resolve();
                             },
                             error: function () {
@@ -194,7 +198,7 @@
                             type: "Get",
                             url: '[[@{/houses/getById/}]]' + checkbox.value,
                             success: function (house) {
-                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor?house.realtor.name:null) + `</td>`)
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor ? house.realtor.name : null) + `</td>`)
                                 resolve();
                             },
                             error: function () {
@@ -253,11 +257,19 @@
                 language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
+            setTimeout(function () {
+                $(".select2-container").each(function() {
+                    var placeholderElement = $(this).find("[placeholder]");
+                    placeholderElement.css("width", "100%");
+                });
+            }, 2000)
         });
-        function setNumberOfElement(numberOfElement){
+
+        function setNumberOfElement(numberOfElement) {
             localStorage.setItem('numberOfElementForHouse', numberOfElement)
             getPageWithFilter(0)
         }
+
         function getPageWithFilter(page) {
 
             this.page = page
@@ -293,11 +305,10 @@
                     var tbody = table.querySelector("tbody");
                     $('#houseTable tbody').empty();
                     $('#empty-block').remove()
-                    if(houses.content.length == 0){
-                        table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                    if (houses.content.length == 0) {
+                        table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">' + translateValue("empty") + '</h1></center>');
                         table.style.display = "none";
-                    }
-                    else {
+                    } else {
                         table.style.display = ''
                     }
 
@@ -331,13 +342,13 @@
                         cell8.innerHTML = house.areaTotal;
 
                         var cell9 = newRow.insertCell(9);
-                        cell9.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1" data-translate="Yes">'+translateValue('Yes')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">'+translateValue('no')+'</span>'
+                        cell9.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1" data-translate="Yes">' + translateValue('Yes') + '</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">' + translateValue('no') + '</span>'
 
                         var cell10 = newRow.insertCell(10);
-                        cell10.innerHTML = house.publicationStatus == 'PUBLISHED' ? '<span class="badge bg-label-success me-1" data-translate="PUBLISHED">'+translateValue('PUBLISHED')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="Модерация">'+translateValue('Модерация')+'</span>'
+                        cell10.innerHTML = house.publicationStatus == 'PUBLISHED' ? '<span class="badge bg-label-success me-1" data-translate="PUBLISHED">' + translateValue('PUBLISHED') + '</span>' : '<span class="badge bg-label-danger me-1" data-translate="Модерация">' + translateValue('Модерация') + '</span>'
 
                         var cell11 = newRow.insertCell(11);
-                        cell11.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1" data-translate="Есть">'+translateValue('Есть')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">'+translateValue('no')+'</span>'
+                        cell11.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1" data-translate="Есть">' + translateValue('Есть') + '</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">' + translateValue('no') + '</span>'
 
                         var cell12 = newRow.insertCell(12);
                         cell12.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint" value="` + house.id + `">`
@@ -354,7 +365,7 @@
                         pagination.innerHTML = '';
                         var row = document.createElement('div');
                         row.style.marginRight = 'auto'
-                        row.style.width='100%'
+                        row.style.width = '100%'
                         row.innerHTML += `
 <div class="row" style="width: 25%">
     <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">

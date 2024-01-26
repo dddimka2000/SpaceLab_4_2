@@ -61,8 +61,8 @@
                 <div class="card-body">
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="navs-pills-top-info">
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
                                     <img id="previewImage" class="pull-left img-responsive mb-2"
                                          th:src="@{/img/default.png}"
                                          style="width: 50%; height: 200px">
@@ -71,57 +71,57 @@
                                            th:id="img">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
                                     <label class="form-label" data-translate="branches">Филиалы</label>
                                     <select id="branchSelect2Multiple" name="branches" multiple>
                                     </select>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-lg-6">
                                     <label class="form-label" data-translate="role">Роль</label>
                                     <select id="roleSelect2" name="roles" class="form-select"></select>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
                                     <label class="form-label" data-translate="lastName">Фамилия</label>
                                     <input id="surname" type="text" class="form-control"
                                            placeholder="Пушкин" aria-describedby="defaultFormControlHelp"/>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-lg-6">
                                     <label class="form-label" data-translate="firstName">Имя</label>
                                     <input type="text" class="form-control" id="name"
                                            placeholder="Александр" aria-describedby="defaultFormControlHelp"/>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
                                     <label class="form-label" data-translate="middleName">Отчество</label>
                                     <input type="text" class="form-control" id="middleName"
                                            placeholder="Сергеевич" aria-describedby="defaultFormControlHelp"/>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-lg-6">
                                     <label class="form-label" data-translate="phone">Телефон</label>
                                     <input type="tel" class="form-control phone" id="phone"/>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
                                     <label class="form-label">Email</label>
                                     <input type="text" class="form-control" id="email"
                                            placeholder="test@gmail.com" aria-describedby="defaultFormControlHelp"/>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row gy-3">
                                 <h3 data-translate="changePassword">Сменить пароль</h3>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
                                     <label class="form-label" data-translate="newPassword">Новый пароль</label>
                                     <input type="password" class="form-control" id="password"
                                            aria-describedby="defaultFormControlHelp"/>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-lg-6">
                                     <label class="form-label" data-translate="repeatPassword">Повтор пароля</label>
                                     <input type="password" class="form-control" id="confirmPassword"
                                            aria-describedby="defaultFormControlHelp"/>
@@ -131,7 +131,7 @@
 
 
                         <div class="tab-pane fade" id="navs-pills-top-reviews">
-                            <div class="row mb-3">
+                            <div class="row gy-3 mb-3">
                                 <h5 data-translate="attachPdfFiles">Прикрепить PDF файлы</h5>
                                 <input type="file" class="form-control" accept=".pdf" id="file"
                                        onchange="downloadFileTo()">

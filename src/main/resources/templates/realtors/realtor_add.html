@@ -64,8 +64,8 @@
                         <div class="tab-pane fade show active" id="navs-pills-top-info" aria-labelledby="top-home">
                             <form method="post" th:action="@{/realtors/add}" th:object="${realtorDto}"
                                   enctype="multipart/form-data" id="realtorAdd">
-                                <div class="row mb-3">
-                                    <div class="col-6">
+                                <div class="row gy-3 mb-3">
+                                    <div class="col-lg-6">
                                         <img id="previewImage" class="d-block w-px-auto h-px-300 rounded"
                                              th:src="@{/img/default.png}"
                                              style="width: 50%; height: 200px">
@@ -76,8 +76,8 @@
                                         <input th:field="*{id}" type="text" class="form-control" hidden>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-6">
+                                <div class="row gy-3 mb-3">
+                                    <div class="col-lg-6">
                                         <label class="form-label" data-translate="code">Код</label>
                                         <input placeholder="11" type="number" class="form-control onlyNumber"
                                                th:field="*{code}">
@@ -97,7 +97,7 @@
                                                placeholder="test@gmail.com"
                                                aria-describedby="defaultFormControlHelp"/>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-lg-6">
                                         <br/>
                                         <ul class="nav nav-pills mb-4" id="pills-block" role="tablist">
                                             <li class="nav-item" role="presentation">
@@ -173,19 +173,19 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
+                                    <div class="row gy-3 mb-3">
                                         <h3 data-translate="phones">Телефоны</h3>
                                     </div>
                                     <div id="phones">
-                                        <div class="row mb-3" th:each="contact: ${realtorDto.getContacts()}">
-                                            <div class="col-5">
+                                        <div class="row gy-3 mb-3" th:each="contact: ${realtorDto.getContacts()}">
+                                            <div class="col-lg-5">
                                                 <input type="text" class="form-control"
                                                        th:value="${contact.getId()}" hidden>
                                                 <input type="text" class="form-control"
                                                        th:value="${contact.getPhone()}"
                                                        aria-describedby="defaultFormControlHelp"/>
                                             </div>
-                                            <div class="col-5">
+                                            <div class="col-lg-5">
                                                 <select class="form-control for-select">
                                                     <option th:each="type: ${contactTypes}" th:value="${type}"
                                                             th:text="${type}" th:selected="${type == contact.type}">
@@ -193,7 +193,7 @@
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div class="col-1">
+                                            <div class="col-lg-2">
                                                 <button type="button" class="btn btn-default btn-sm"
                                                         th:onclick="@{deletePhone(this,'{id}')(id=${contact.id})}">
                                                     <i class="fa fa-trash"></i>
@@ -203,28 +203,28 @@
 
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <div class="col-5">
+                                    <div class="row gy-3 mb-3">
+                                        <div class="col-md-1 col-lg-5">
                                         </div>
-                                        <div class="col-5 d-flex justify-content-end" id="addPhone">
+                                        <div class="col-md-10 col-lg-5 d-flex justify-content-end" id="addPhone">
                                             <button type="button" onclick="addBlockForPhone()" class="btn btn-info"
                                                     data-translate="add">Добавить
                                             </button>
                                         </div>
-                                        <div class="col-1">
+                                        <div class="col-md-1 col-lg-1">
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
+                                    <div class="row gy-3 mb-3">
                                         <h3 data-translate="changePassword">Сменить пароль</h3>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-6">
+                                    <div class="row gy-3 mb-3">
+                                        <div class="col-lg-6">
                                             <label class="form-label" data-translate="newPassword">Новый пароль</label>
                                             <input type="password" class="form-control"
                                                    th:field="*{password}"
                                                    aria-describedby="defaultFormControlHelp"/>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-lg-6">
                                             <label class="form-label" data-translate="repeatPassword">Повтор
                                                 пароля</label>
                                             <input type="password" class="form-control" id="password2"
@@ -236,27 +236,27 @@
                         </div>
 
                         <div class="tab-pane fade" id="navs-pills-top-reviews" aria-labelledby="top-profile">
-                            <div class="row mb-3">
+                            <div class="row gy-3 mb-3">
                                 <h5 data-translate="attachPdfFiles">Прикрепить PDF файлы</h5>
                                 <input type="file" accept=".pdf" id="file" class="form-control"
                                        onchange="downloadFileToFeedBack()">
                                 <div id="block-for-file">
-                                    <div class="row" th:each="file: ${realtorDto.getFiles()}" style="margin-top: 5px">
-                                        <div class="col-2">
+                                    <div class="row gy-3" th:each="file: ${realtorDto.getFiles()}" style="margin-top: 5px">
+                                        <div class="col-sm-6 col-lg-2">
                                             <a href="#" class="text-decoration-none" th:onclick="@{downloadFileFromFeedBack('{file}')(file=${file})}">
                                         <span th:text="${#strings.substringAfter(file, '.')}"></span>
                                         </a></div>
-                                        <div class="col"><a href="#" class="text-decoration-none for-delete"
+                                        <div class="col-sm-6 col"><a href="#" class="text-decoration-none for-delete"
                                                             th:onclick="@{deleteFileFromFeedBack(this,'{file}')(file=${file})}">
                                             х удалить
                                         </a></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" th:each="body: ${realtorDto.getRealtorFeedBacks()}"
+                            <div class="row gy-3" th:each="body: ${realtorDto.getRealtorFeedBacks()}"
                                  th:id="'feedback-' + ${body.id}">
-                                <div class="row">
-                                    <div class="col-5">
+                                <div class="row gy-3">
+                                    <div class="col-md-4 col-lg-5">
                                         <label>Имя</label>
                                         <input type="text" class="form-control for-feedback" name="id"
                                                th:value="${body.id}"
@@ -264,20 +264,20 @@
                                         <input type="text" class="form-control for-feedback" name="name"
                                                th:value="${body.name}">
                                     </div>
-                                    <div class="col-5">
+                                    <div class="col-md-4 col-lg-5">
                                         <label>Контакт</label>
                                         <input type="text" class="form-control for-feedback" name="phone"
                                                th:value="${body.phone}">
                                     </div>
-                                    <div class="col-1">
+                                    <div class="col-md-4 col-lg-2">
                                         <button class="btn btn-default btn-sm" style="margin-top: 22.042px;"
                                                 th:onclick="@{deleteFeedBackBody(this,'{idBody}')(idBody=${body.id})}">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-10">
+                                <div class="row gy-3">
+                                    <div class="col-lg-10">
                                         <label>Отзыв</label>
                                         <textarea name="description" class="form-control  for-feedback" cols="30"
                                                   rows="10"

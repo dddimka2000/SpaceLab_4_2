@@ -33,16 +33,16 @@
             </button>
             <button class="btn btn-submit waves-effect waves-light" onclick="printElements()"  data-translate="print">Распечатать</button>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-4">
+        <div class="card border mt-3">
+            <div class="card-header">
+                <div class="row gy-3">
+                    <div class="col-md-12 col-lg-4">
                         <div data-translate="region_district"></div>
                         <select id="district" multiple></select>
                         <div data-translate="topzone"></div>
                         <select id="topzone" multiple></select>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-12 col-lg-3">
                         <div data-translate="property.numberOfRooms"></div>
                         1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1">
                         2 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">
@@ -52,9 +52,9 @@
                         <div data-translate="RC"></div>
                         <select id="buildObject" multiple></select>
                     </div>
-                    <div class="col-5">
-                        <div class="row">
-                            <div class="col">
+                    <div class="col-md-12 col-lg-5">
+                        <div class="row gy-3">
+                            <div class="col-lg-6">
                                 <div data-translate="floor"></div>
 
                                 <div style="display: flex">
@@ -63,7 +63,7 @@
                                     <input class="form-control for-filter onlyNumber" id="floorMax">
                                 </div>
                             </div>
-                            <div class="col">
+                            <div class="col-lg-6">
                                 <div data-translate="price"></div>
                                 <div style="display: flex">
                                     <input class="form-control for-filter onlyNumber" id="priceMin">
@@ -72,8 +72,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
+                        <div class="row gy-3">
+                            <div class="col-lg-6">
                                 <div data-translate="plotArea"></div>
                                 <div style="display: flex">
                                     <input class="form-control for-filter onlyNumber" id="plotAreaMin">
@@ -81,7 +81,7 @@
                                     <input class="form-control for-filter onlyNumber" id="plotAreaMax">
                                 </div>
                             </div>
-                            <div class="col">
+                            <div class="col-lg-6">
                                 <div data-translate="S_area_sqm"></div>
                                 <div style="display: flex">
                                     <input class="form-control for-filter onlyNumber" id="houseAreaMin">
@@ -93,11 +93,11 @@
                     </div>
                 </div>
                 <div class="row mt-1">
-                    <div class="col-4">
+                    <div class="col-lg-4">
                         <div data-translate="street"></div>
                         <input class="form-control for-filter" id="street">
                     </div>
-                    <div class="col-3">
+                    <div class="col-lg-3">
                         <div data-translate="contact_date"></div>
                         <select class="form-control" style="width: 60%;" id="lastContactDate">
                             <option></option>
@@ -106,9 +106,9 @@
                             <option value="21">21</option>
                         </select>
                     </div>
-                    <div class="col-5">
+                    <div class="col-lg-5">
                         <br/>
-                        <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
+                        <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px; margin-top: 20px">
                             <button class="btn btn-submit waves-effect waves-light" onclick="clearFilter()" style="margin-right: 5px" data-translate="clear">
                                 Очистить фильтр
                             </button>
@@ -117,12 +117,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card border mt-3">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="invoice-list-table table border-top dataTable no-footer dtr-column" id="houseTable" style=" width: 100%;
-    table-layout: auto;">
+                    <table class="invoice-list-table table border-top dataTable no-footer dtr-column" id="houseTable" style=" width: 100%; table-layout: auto; text-align: center">
                         <thead>
                         <tr>
                             <th data-translate="contact_date">Дата контакта</th>
@@ -166,6 +163,12 @@
                 minimumResultsForSearch: -1,
             })
             getPageWithFilter(0)
+            setTimeout(function () {
+                $(".select2-container").each(function() {
+                    var placeholderElement = $(this).find("[placeholder]");
+                    placeholderElement.css("width", "100%");
+                });
+            }, 2000)
         });
         function printElements() {
             var bodyRows = []
