@@ -6,7 +6,6 @@
         xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title data-translate="обєкти_від_інвесторів"></title>
-
 </head>
 <body>
 <div layout:fragment="content">
@@ -35,7 +34,8 @@
                 <div style="width: 100%; display: flex; justify-content: flex-end;" id="flex-container">
 
                     <div style="display: flex;margin: 20px;align-items: center">
-                        <input type="checkbox" id="printWithAddress" class="form-check-input" data-translate="printWithAddress">
+                        <input type="checkbox" id="printWithAddress" class="form-check-input"
+                               data-translate="printWithAddress">
                         <div data-translate="printWithAddress"></div>
                     </div>
                     <button class="btn btn-submit" id="printButton" data-translate="print" onclick="printElements()"
@@ -179,11 +179,11 @@
                                     <option value="7" data-translate="multiple_weeks_and_more"></option>
                                     <option value="21" data-translate="3multiple_weeks_and_more"></option>
                                     <option value="99999" data-translate="6multiple_weeks_and_more"></option>
-<!--                                    <script>-->
-<!--                                        for (let i = 2; i <= 31; i++) {-->
-<!--                                            document.write('<option value="' + i + '" data-translate="' + i + 'multiple_days">' + i + ' дней' + '</option>');-->
-<!--                                        }-->
-<!--                                    </script>-->
+                                    <!--                                    <script>-->
+                                    <!--                                        for (let i = 2; i <= 31; i++) {-->
+                                    <!--                                            document.write('<option value="' + i + '" data-translate="' + i + 'multiple_days">' + i + ' дней' + '</option>');-->
+                                    <!--                                        }-->
+                                    <!--                                    </script>-->
                                 </select>
                             </div>
                             <div class="col-lg-4 col-sm-6" style="display: flex;align-items: end;justify-content: end">
@@ -289,9 +289,11 @@
     <script th:src="@{/vendor/libs/select2/select2.js}"></script>
 
     <script>
+
+
         const limitedInputs = document.querySelectorAll('input[data-num="limited"]');
         limitedInputs.forEach(input => {
-            input.addEventListener('input', function() {
+            input.addEventListener('input', function () {
                 const parsedValue = parseInt(input.value, 10);
 
                 if (!isNaN(parsedValue)) { // Проверка, что parsedValue является числом
@@ -303,6 +305,7 @@
                 }
             });
         });
+
         function printElements() {
             var bodyRows = []
             var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
@@ -319,7 +322,7 @@
                             type: "Get",
                             url: '[[@{/investor_objects/getById/}]]' + checkbox.value,
                             success: function (house) {
-                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor?house.realtor.name:null) + `</td>`)
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor ? house.realtor.name : null) + `</td>`)
                                 resolve();
                             },
                             error: function () {
@@ -337,7 +340,7 @@
                             type: "Get",
                             url: '[[@{/investor_objects/getById/}]]' + checkbox.value,
                             success: function (house) {
-                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor?house.realtor.name:null) + `</td>`)
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor ? house.realtor.name : null) + `</td>`)
                                 resolve();
                             },
                             error: function () {
@@ -408,7 +411,7 @@
             getPageWithFilter(0);
         });
 
-        function setNumberOfElement(numberOfElement){
+        function setNumberOfElement(numberOfElement) {
             localStorage.setItem('numberOfElementForInvestor', numberOfElement)
             getPageWithFilter(0)
         }
@@ -486,12 +489,11 @@
                         var tbody = table.querySelector("tbody");
                         $('#branchTable tbody').empty().css('text-align', 'center');
 
-                        if($("#empty-block"))$("#empty-block").remove();
-                        if(builderObjects.totalElements == 0){
-                            table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                        if ($("#empty-block")) $("#empty-block").remove();
+                        if (builderObjects.totalElements == 0) {
+                            table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">' + translateValue("empty") + '</h1></center>');
                             table.style.display = "none";
-                        }
-                        else {
+                        } else {
                             table.style.display = '';
                         }
                         for (var object of builderObjects.content) {
@@ -578,13 +580,12 @@
                         $('#paginationItems').empty();
                         if (builderObjects.totalPages > 1) {
                             updatePagination(page, builderObjects.totalPages, 'paginationItems', localStorage.getItem('numberOfElementForInvestor') || 10, 'numberOfElementForInvestor')
-                        }
-                        else {
+                        } else {
                             var pagination = document.getElementById('paginationItems');
                             pagination.innerHTML = '';
                             var row = document.createElement('div');
                             row.style.marginRight = 'auto'
-                            row.style.width='100%'
+                            row.style.width = '100%'
                             row.innerHTML += `
 <div class="row" style="width: 25%">
     <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">

@@ -6,36 +6,37 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <title data-translate="обєкти_від_будівельників"></title>
-    <style>
-        @media print {
-            body * {
-                visibility: hidden;
-            }
+<!--    <style>-->
+<!--        @media print {-->
+<!--            body * {-->
+<!--                visibility: hidden;-->
+<!--            }-->
 
-            #branchTable * {
-                visibility: visible;
-            }
+<!--            #branchTable * {-->
+<!--                visibility: visible;-->
+<!--            }-->
 
-            #branchTable .btn-group * {
-                visibility: hidden;
-                display: none;
-                top:0px;
-            }
+<!--            #branchTable .btn-group * {-->
+<!--                visibility: hidden;-->
+<!--                display: none;-->
+<!--                top: 0px;-->
+<!--            }-->
 
-            #branchTable {
-                position: fixed;
-                left: 0;
-                top: 0;
-                margin: 0;
-                padding: 0;
-            }
-            #filterSearch_H{
-                visibility: hidden;
-                display: none;
-                top:0px;
-            }
-        }
-    </style>
+<!--            #branchTable {-->
+<!--                position: fixed;-->
+<!--                left: 0;-->
+<!--                top: 0;-->
+<!--                margin: 0;-->
+<!--                padding: 0;-->
+<!--            }-->
+
+<!--            #filterSearch_H {-->
+<!--                visibility: hidden;-->
+<!--                display: none;-->
+<!--                top: 0px;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
 </head>
 <body>
 <div layout:fragment="content">
@@ -59,7 +60,9 @@
                 </div>
                 <hr style="margin-top: -5px">
                 <div style="width: 100%; display: flex; justify-content: flex-end;">
-                    <button class="btn btn-submit" id="printButton" data-translate="print" style="margin: 20px">Распечатать</button>
+                    <button class="btn btn-submit" id="printButton" data-translate="print" style="margin: 20px" onclick="printElements()">
+                        Распечатать
+                    </button>
                     <a th:href="@{/builder_objects/create}" style="margin: 20px">
                         <button class="btn btn-submit" data-translate="builder_object_add">Добавить объект</button>
                     </a>
@@ -89,8 +92,10 @@
                                     <td><input type="text" class="form-control for-filter"></td>
                                     <td><input type="text" class="form-control for-filter"></td>
                                     <td><input type="text" class="form-control for-filter"></td>
-                                    <td><input type="number" min="0"  class="form-control for-filter" data-num="limited"></td>
-                                    <td><input type="number" min="0"  class="form-control for-filter" data-num="limited"></td>
+                                    <td><input type="number" min="0" class="form-control for-filter" data-num="limited">
+                                    </td>
+                                    <td><input type="number" min="0" class="form-control for-filter" data-num="limited">
+                                    </td>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -144,12 +149,58 @@
     </div>
     <script th:src="@{/js/pagination.js}"></script>
 
+
+    <script>
+        function printElements() {
+            var bodyRows = [];
+            var selectedCheckboxes = document.querySelectorAll('tbody tr .btn-group');
+            if (selectedCheckboxes.length === 0) {
+                showToastWithTranslate("printErrorCheckbox", "danger");
+                return;
+            }
+            var ajaxPromises = [];
+            var headerRow
+            selectedCheckboxes.forEach(function (checkbox) {
+                var promise = new Promise(function (resolve, reject) {
+                    console.log(checkbox)
+                    console.log(checkbox.getAttribute('value'))
+
+                    $.ajax({
+                        type: "Get",
+                        url: '[[@{/builder_objects/getById/}]]' + checkbox.getAttribute('value'),
+                        success: function (house) {
+                            let minLayout = house.layouts.reduce(function (min, layout) {
+                                return layout.price < min.price ? layout : min;
+                            }, house.layouts[0]);
+                            bodyRows.push(`<td style="border: 1px solid black;">` + house.name + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + minLayout.price + `</td>`)
+                            resolve();
+                        },
+                        error: function () {
+                            reject();
+                        }
+                    });
+                });
+                ajaxPromises.push(promise);
+            })
+            console.log("end")
+            headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Имя</th><th style="border: 1px solid black;">Район</th><th style="border: 1px solid black;">Топозона</th><th style="border: 1px solid black;">Улиця</th><th style="border: 1px solid black;">Этажность</th><th style="border: 1px solid black;">Ціна</th></tr>';
+            Promise.all(ajaxPromises)
+                .then(function () {
+                    console.log(bodyRows);
+                    printTable(headerRow, bodyRows);
+                })
+                .catch(function (error) {
+                    console.error("Error fetching data:", error);
+                });
+
+        }
+    </script>
     <script th:inline="javascript">
         let dtoArray = new Map();
-        document.getElementById("printButton").addEventListener("click", function () {
-                window.print();
-            }
-        )
+        // document.getElementById("printButton").addEventListener("click", function () {
+        //         window.print();
+        //     }
+        // )
 
         $(document).ready(function () {
             getPageWithFilter(0)
@@ -164,10 +215,12 @@
             }, 1000);
             $input.data('timeout', timeout);
         });
-        function setNumberOfElement(numberOfElement){
+
+        function setNumberOfElement(numberOfElement) {
             localStorage.setItem('numberOfElementForBuilder', numberOfElement)
             getPageWithFilter(0)
         }
+
         function getPageWithFilter(page) {
             var filterElements = $('.for-filter');
             let contextPath = /*[[@{/}]]*/ '';
@@ -191,18 +244,17 @@
                     var table = document.getElementById("branchTable");
                     var tbody = table.querySelector("tbody");
                     $('#branchTable tbody').empty().css('text-align', 'center');
-                    if($("#empty-block"))$("#empty-block").remove();
-                    if(builderObjects.totalElements == 0){
-                        table.insertAdjacentHTML('afterend', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                    if ($("#empty-block")) $("#empty-block").remove();
+                    if (builderObjects.totalElements == 0) {
+                        table.insertAdjacentHTML('afterend', '<center id="empty-block"><h1 data-translate="empty">' + translateValue("empty") + '</h1></center>');
                         tbody.style.display = "none";
-                    }
-                    else {
+                    } else {
                         tbody.style.display = '';
                     }
                     for (var object of builderObjects.content) {
                         var newRow = tbody.insertRow();
                         var cell1 = newRow.insertCell(0);
-                        cell1.innerHTML = `<a href="` + contextPath + `builder_objects/card/` + object.id + `">`+object.name+`</a>`;
+                        cell1.innerHTML = `<a href="` + contextPath + `builder_objects/card/` + object.id + `">` + object.name + `</a>`;
                         var cell2 = newRow.insertCell(1);
                         cell2.innerHTML = object.address.district;
 
@@ -226,7 +278,7 @@
 
                         var cell7 = newRow.insertCell(6);
                         cell7.innerHTML = `
-                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                        <div class="btn-group" role="group" aria-label="Basic example" value="` + object.id + `">
                        <a href="` + contextPath + `builder_objects/edit/` + object.id + `">
                                                 <button class="btn btn-default btn-sm float-right"
                                                         title="Редактировать"><i class="fa fa-pencil-alt"></i></button>
@@ -238,13 +290,12 @@
                     $('#paginationItems').empty();
                     if (builderObjects.totalPages > 1) {
                         updatePagination(page, builderObjects.totalPages, 'paginationItems', localStorage.getItem('numberOfElementForBuilder') || 10, 'numberOfElementForBuilder')
-                    }
-                    else {
+                    } else {
                         var pagination = document.getElementById('paginationItems');
                         pagination.innerHTML = '';
                         var row = document.createElement('div');
                         row.style.marginRight = 'auto'
-                        row.style.width='100%'
+                        row.style.width = '100%'
                         row.innerHTML += `
 <div class="row" style="width: 25%">
     <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">
@@ -263,6 +314,7 @@
                 },
             });
         }
+
         $('#clean-filter').click(function () {
             let filterElements = $('.for-filter');
             filterElements.each(function () {
@@ -277,9 +329,10 @@
             elementDelete = elem;
             $("#deleteModal").modal("show");
         }
+
         const limitedInputs = document.querySelectorAll('input[data-num="limited"]');
         limitedInputs.forEach(input => {
-            input.addEventListener('input', function() {
+            input.addEventListener('input', function () {
                 const parsedValue = parseInt(input.value, 10);
 
                 if (!isNaN(parsedValue)) { // Проверка, что parsedValue является числом
@@ -312,6 +365,7 @@
                 }
             })
         });
+
         function showNotification(bigTextMessage, message, isSuccess) {
             const notification = document.getElementById("notification");
             const notificationMessage = document.getElementById("notification-message");

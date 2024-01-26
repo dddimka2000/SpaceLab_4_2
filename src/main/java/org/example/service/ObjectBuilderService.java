@@ -1,6 +1,7 @@
 package org.example.service;
 
 import io.minio.errors.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.example.dto.LayoutDTO;
@@ -10,6 +11,7 @@ import org.example.dto.ObjectBuilderDtoEdit;
 import org.example.entity.BuilderObject;
 import org.example.entity.ImagesForObject;
 import org.example.entity.Layout;
+import org.example.entity.property.PropertyCommercialObject;
 import org.example.entity.property.type.TypeObject;
 import org.example.mapper.LayoutMapper;
 import org.example.repository.BuilderObjectRepository;
@@ -64,7 +66,12 @@ public class ObjectBuilderService {
         log.info("ObjectBuilderService-findById successfully");
         return entity;
     }
-
+    public BuilderObject getById(Integer id) {
+        log.info("BuilderObject-getById start");
+        BuilderObject result = builderObjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("A  object with an id = " + id + " was not found"));
+        log.info("BuilderObject-getById successfully");
+        return result;
+    }
     public Page<BuilderObject> findBuilderObjectsByCriteria(String name, String district, String zone, String street, Integer floorQuantity, Integer minPrice, Pageable pageable) {
         Specification<BuilderObject> spec = new BuilderObjectSpecification(name, district, zone, street, floorQuantity, minPrice);
         return builderObjectRepository.findAll(spec, pageable);

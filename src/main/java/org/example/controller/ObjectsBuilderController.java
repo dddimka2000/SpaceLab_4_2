@@ -7,6 +7,7 @@ import org.example.dto.*;
 import org.example.entity.BuilderObject;
 import org.example.entity.ImagesForObject;
 import org.example.entity.Layout;
+import org.example.entity.property.PropertyCommercialObject;
 import org.example.entity.property.type.TypeObject;
 import org.example.mapper.LayoutMapper;
 import org.example.mapper.ObjectBuilderMapper;
@@ -304,7 +305,11 @@ public class ObjectsBuilderController {
         Page<BuilderObject> searchResults = objectBuilderService.forSelect(name, PageRequest.of(page, size, Sort.by(Sort.Order.asc("id"))));
         return searchResults;
     }
-
+    @GetMapping("/getById/{id}")
+    @ResponseBody
+    public BuilderObject getById(@PathVariable Integer id){
+        return objectBuilderService.getById(id);
+    }
 //    @PostMapping("/generate-excel")
 //    public ResponseEntity<?> generateExcel(HttpServletResponse response, @RequestBody ArrayList<ObjectBuilderDtoSearch> objectBuilderDTOSearchList) throws IOException {
 //        log.info(objectBuilderDTOSearchList);
