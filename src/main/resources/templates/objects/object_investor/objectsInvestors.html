@@ -330,7 +330,16 @@
                             }
                         });
                     });
-                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Район</th><th style="border: 1px solid black;">Топозона</th><th style="border: 1px solid black;">Улиця</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th></tr>';
+                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">' +translateValue("code")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("district")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("topzone")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("street")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("rooms")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("floor")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("S_area_sqm")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("price")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("owner")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("realtor")+'</th></tr>';
                     ajaxPromises.push(promise);
                 });
             } else {
@@ -348,7 +357,13 @@
                             }
                         });
                     });
-                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th></tr>';
+                    headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">' +translateValue("code")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("rooms")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("floor")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("S_area_sqm")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("price")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("owner")+'</th>' +
+                        '<th style="border: 1px solid black;">' +translateValue("realtor")+'</th></tr>';
                     ajaxPromises.push(promise);
                 })
             }

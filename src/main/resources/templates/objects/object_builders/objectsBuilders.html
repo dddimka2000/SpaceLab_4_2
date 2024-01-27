@@ -183,7 +183,7 @@
                 ajaxPromises.push(promise);
             })
             console.log("end")
-            headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Имя</th><th style="border: 1px solid black;">Район</th><th style="border: 1px solid black;">Топозона</th><th style="border: 1px solid black;">Улиця</th><th style="border: 1px solid black;">Этажность</th><th style="border: 1px solid black;">Ціна</th></tr>';
+            headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">' +translateValue("title")+'</th><th style="border: 1px solid black;" >' +translateValue("district")+'</th><th style="border: 1px solid black;" >' +translateValue("topzone")+'</th><th style="border: 1px solid black;" >' +translateValue("street")+'</th><th style="border: 1px solid black;" >' +translateValue("number_of_floors")+'</th><th style="border: 1px solid black;" >' +translateValue("price_from")+'</th></tr>';
             Promise.all(ajaxPromises)
                 .then(function () {
                     console.log(bodyRows);
