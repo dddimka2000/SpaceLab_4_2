@@ -23,9 +23,15 @@
                     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb"
                          class="d-flex align-items-center">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
-                            <li class="breadcrumb-item"><a th:href="@{/secondary_objects}" data-translate="secondary_real_estate">Объекты вторичной недвижимости</a></li>
-                            <li class="breadcrumb-item active" aria-current="page" data-translate="property_card_secondary_real_estate">Карточка объекта вторичной недвижимости</li>
+                            <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a>
+                            </li>
+                            <li class="breadcrumb-item"><a th:href="@{/secondary_objects}"
+                                                           data-translate="secondary_real_estate">Объекты вторичной
+                                недвижимости</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"
+                                data-translate="property_card_secondary_real_estate">Карточка объекта вторичной
+                                недвижимости
+                            </li>
                         </ol>
                     </nav>
                 </div>
@@ -34,16 +40,15 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-lg-5 col-sm-6">
+                            <div class="col-sm-6 col-lg-6">
                                 <h3 data-translate="view_object">Просмотр объекта</h3>
                             </div>
-                            <div class="col-lg-7 col-sm-6" style="text-align: right;">
-                                <div class="btn-group">
-                                    <a href="#" onclick="checkModalWindow()" class="btn btn-submit" data-translate="searchBuyer">Поиск покупателя</a>
-                                    <a th:href="@{/secondary_objects/edit/{id}(id=${id})}">
-                                        <button class="btn btn-submit" data-translate="edit">Редактировать</button>
-                                    </a>
-                                </div>
+                            <div class="col-sm-6 col-lg-6" style="text-align: right;">
+                                <a href="#" onclick="checkModalWindow()" class="btn btn-primary"
+                                   data-translate="searchBuyer">Поиск покупателя</a>
+                                <a th:href="@{/secondary_objects/edit/{id}(id=${id})}">
+                                    <button class="btn btn-primary" data-translate="edit">Редактировать</button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -90,7 +95,9 @@
                                 <td th:text="${element.getFloor()}+'/'+${element.getFloorQuantity()}">Этажность</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold" data-translate="property.numberOfRooms">Колличество комнат</td>
+                                <td style="font-weight: bold" data-translate="property.numberOfRooms">Колличество
+                                    комнат
+                                </td>
                                 <td th:text="${element.getRoomQuantity()}"></td>
                             </tr>
                             <tr>
@@ -134,15 +141,15 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
+        <div id="smallModal"  class="modal animate__animated animate__flipInX"
+             tabindex="-1" aria-labelledby="flipInXAnimationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel2">Покупатели</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="modal-body">
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
@@ -165,11 +172,16 @@
                         if (buyers) {
                             buyers.forEach(function (buyer) {
                                 modalBody.html(modalBody.html() + `
-                    <a href='[[@{/buyers/}]]`+buyer.id+`'>
-                        `+buyer.surname+` `+buyer.name+` `+buyer.middleName+`
+                    <a href='[[@{/buyers/}]]` + buyer.id + `'>
+                        ` + buyer.surname + ` ` + buyer.name + ` ` + buyer.middleName + `
                     </a><br/>
                             `);
                             });
+                            if (buyers.length == 0) {
+                                modalBody.html(modalBody.html() + `<p data-translate="empty">` + translateByOriginName("empty") + `</p>`);
+                            }
+                        } else {
+                            modalBody.html(modalBody.html() + `<p data-translate="empty">` + translateByOriginName("empty") + `</p>`);
                         }
                     }
                 })
