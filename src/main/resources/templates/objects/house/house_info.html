@@ -7,6 +7,8 @@
         xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <title data-translate="карточка_будинку"></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+
 </head>
 
 <body>
@@ -20,7 +22,8 @@
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/}" data-translate="breadcrumb.home">Главная</a></li>
-                        <li class="breadcrumb-item"><a th:href="@{/houses}" data-translate="houses_and_plots">Дома и участки</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/houses}" data-translate="houses_and_plots">Дома и
+                            участки</a></li>
                         <li class="breadcrumb-item active" aria-current="page" data-translate="houses">Дома</li>
                     </ol>
                 </nav>
@@ -30,8 +33,9 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-sm" role="document">
+    <div id="smallModal" class="modal animate__animated animate__flipInX"
+         tabindex="-1" aria-labelledby="flipInXAnimationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel2" data-translate="buyers">Покупатели</h5>
@@ -66,10 +70,16 @@
                     </a><br/>
                             `);
                         });
+                        if (buyers.length == 0) {
+                            modalBody.html(modalBody.html() + `<p data-translate="empty">` + translateByOriginName("empty") + `</p>`);
+                        }
+                    } else {
+                        modalBody.html(modalBody.html() + `<p data-translate="empty">` + translateByOriginName("empty") + `</p>`);
                     }
                 }
             })
         }
+
 
         $(document).ready(function () {
             var url
@@ -93,18 +103,26 @@
                             content.innerHTML = `
                 <div class="card">
                     <div class="card-header">
-                    <div class="row">
-                        <div class="col">
-                            <h3 data-translate="edit">Редактировать</h3>
-                        </div>
-                        <div class="col">
-                            <a href="[[@{/houses/edit/}]]` + houseId + `" class="float-end btn btn-primary" data-translate="edit">Редактировать</a>
+                      <div class="row">
+                            <div class="col-sm-6 col-lg-6">
+                                <h3 data-translate="view_object">Просмотр объекта</h3>
+                            </div>
+                            <div class="col-sm-6 col-lg-6" style="text-align: right;">
                             <a href="#" onclick="checkModalWindow()" class="float-end btn btn-primary" style="margin-right: 5px" data-translate="searchBuyer">Поиск покупателя</a>
-                        </div>
+                            <a href="[[@{/houses/edit/}]]` + houseId + `" class="float-end btn btn-primary" data-translate="edit">Редактировать</a>
+                            </div>
+                      </div>
                     </div>
-                    </div>
+                    <hr class="my-0">
                     <div class="card-body">
-                    <img src="` + url + `" style=" margin-bottom: 5px" class="d-block w-px-auto h-px-300 rounded">
+                         <div class="row">
+                            <div class="col-lg-6 col-sm-6" style="text-align: center">
+                                <a href="` + url + `" data-lightbox="checkerboard">
+                                    <img src="` + url + `" alt="Photo" class="d-block w-100 h-100 rounded">
+                                </a>
+                            </div>
+                         </div>
+                         <br><br>
                         <table class="table table-bordered table-view">
                             <tr>
                                 <td data-translate="object_code">Код об'єкта</td>
@@ -171,14 +189,14 @@
                                 <td>` + house.stateHouse + `</td>
                             </tr>
                         </table>
-                    </div>
-                </div>
-                <b data-translate="description">Описание</b><br/>
-                ` + house.description + `<br/><br/>
-                <b data-translate="enter_ad_title">Рекламний заголовок</b><br/>
-                ` + house.advertisementHeadline + `<br/><br/>
-                <b data-translate="enter_ad_text">Рекламний текст</b><br/>
-                ` + house.advertisementText + `<br/>
+                 <h3 data-translate="description">Описание</h3>
+                <p>
+               ` + house.description + `</p>
+                <h3 data-translate="advertising_title">Рекламний заголовок</h3>
+                <p>` + house.advertisementHeadline + `</p>
+                <h3 data-translate="advertising_text">Рекламний текст</h3>
+                <p>` + house.advertisementText + `</p>             </div>                    </div>
+
                 `
                             changeLanguageNav(languageSecondExample)
                         }
