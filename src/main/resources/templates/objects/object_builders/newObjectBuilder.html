@@ -437,7 +437,6 @@
             $(".nameContent").css("display", "none")
             $("." + lang + "Content").css("display", "block");
             langOld = lang.toString();
-            console.log(langOld)
         }
 
         function sendForm() {
@@ -492,7 +491,6 @@
             let index = 0;
 
             layoutArray.forEach(function (element) {
-                console.log(element);
                 let layoutData = {
                     nameLayout: $("#nameLayout" + element).val(),
                     nameLayoutEng: $("#nameLayoutEu" + element).val(),
@@ -523,12 +521,10 @@
                 for (let key in layoutData) {
                     formData.append(`layoutDTOList[${index}].${key}`, layoutData[key]);
                 }
-                console.log(layoutData)
                 index = index + 1;
             });
 
             const uploadedFiles = window.uploadedFiles;
-            console.log(uploadedFiles);
             let i = 1;
             for (let [fileName, file] of uploadedFiles) {
                 if (i > 15) {
@@ -537,7 +533,6 @@
                 formData.append("files[]", file);
                 i++;
             }
-            console.log(formData.get("files[]"))
             let contextPath =/*[[@{/}]]*/'';
             let url = contextPath.toString() + "builder_objects/create";
             if (!validAllInput(formData)) {
@@ -564,30 +559,40 @@
                     errors.forEach(function (error) {
                         console.log(error);
                         changeInputValue = 0;
-                     if (error === "Минимум 1 фото в объекте") {
+                        let fileInputs = "#dropzone-basic";
+                        let allowedExtensions = ['.jpeg', '.jpg', '.png'];
+                        if (error === "Минимум 1 фото в объекте") {
                             activateListItem('#pills-profile-tab')
                             changeInputValue++;
-                            showToastWithTranslate("errorOnePhoto", "danger");
-                        }  else if (error === "(Ру)Объект новостроя с таким именем уже существует") {
+                            if (languageSecondExample == 'eng') addText($(fileInputs), 'There should be a minimum of 1 photo in the object')
+                            else if (languageSecondExample == 'ru') addText($(fileInputs), 'Минимум 1 фото в объекте')
+                            else addText($(fileInputs), 'Мінімум 1 фото об\'єкта')
+                        } else if (error === "Попытка загрузить файл с подменой разрешения") {
+                            activateListItem('#pills-profile-tab')
+                            if (languageSecondExample == 'eng') addText($(fileInputs), `Unsupported file type The following types are available: ${allowedExtensions.join(', ')}`)
+                            else if (languageSecondExample == 'ru') addText($(fileInputs), `Неподдерживаемый тип файла доступны следующие типы: ${allowedExtensions.join(', ')}`)
+                            else addText($(fileInputs), `Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`)
+                            if (changeInputValue == 0) {
+                                changeInputValue = changeInputValue + 1;
+                                $("#ruLangSave").click();
+                            }
+                        } else if (error === "(Ру)Объект новостроя с таким именем уже существует") {
                             showErrorName(nameObject);
                             if (changeInputValue == 0) {
                                 changeInputValue = changeInputValue + 1;
                                 $("#ruLangSave").click();
-                                console.log("ru click")
                             }
                         } else if (error === "(Англ)Объект новостроя с таким именем уже существует") {
                             showErrorName(nameObjectEng)
                             if (changeInputValue == 0) {
                                 changeInputValue = changeInputValue + 1;
                                 $("#euLangSave").click();
-                                console.log("eu click")
                             }
                         } else if (error === "(Укр)Объект новостроя с таким именем уже существует") {
                             showErrorName(nameObjectUkr)
                             if (changeInputValue == 0) {
                                 changeInputValue = changeInputValue + 1;
                                 $("#ukrLangSave").click();
-                                console.log("ukr click")
                             }
                         } else {
                             showToast(error, "danger");
@@ -648,7 +653,7 @@
             if (!city.prop('disabled')) {
                 if (!validSelect2(city)) isValidated = false
             }
-            if (!district.prop('disabled')){
+            if (!district.prop('disabled')) {
                 if (!validSelect2(district)) isValidated = false
             }
             if (!validString("1", "31", street)) {
@@ -749,6 +754,10 @@
                 }
 
             })
+
+            if (!validateDropzone(uploadedFiles, ['.jpeg', '.jpg', '.png'], "#dropzone-basic")) isValidated = false
+
+
             countError = 0;
             console.log(isValidated)
             return isValidated
@@ -988,7 +997,6 @@
                                             </div>
                                             `
             cardContainer.appendChild(newCard);
-            console.log("Добавление Layout");
 
             imgMaxId = imgMaxId + 3;
             let allCookies = document.cookie;
@@ -999,7 +1007,6 @@
                 cookies[cookie[0]] = cookie[1];
             }
             let selectedLanguage = cookies["selectedLanguage"];
-            console.log(selectedLanguage)
             if (selectedLanguage == undefined) {
                 document.cookie = "selectedLanguage=ru; path=/";
                 selectedLanguage = "ru";
@@ -1021,10 +1028,8 @@
         $('#telephone').mask('+380999999999');
         $('[name="city"]').change(function () {
             let selectedValue = $(this).val();
-            console.log(selectedValue)
             let contextPath = /*[[@{/}]]*/ '';
             let url = contextPath.toString() + "getDistrict/" + selectedValue.toString();
-            console.log(url)
             if (selectedValue.toString() == "") {
                 const container2 = $('[name="district"]');
                 container2.empty();
@@ -1038,7 +1043,6 @@
                     },
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data)
                         if (Array.isArray(data)) {
                             const container = $('[name="district"]');
                             if (container.is(':disabled')) {
@@ -1064,10 +1068,8 @@
         });
         $("#region").change(function () {
             let selectedValue = $(this).val();
-            console.log(selectedValue)
             let contextPath = /*[[@{/}]]*/ '';
             let url = contextPath.toString() + "getCity/" + selectedValue.toString();
-            console.log(url)
             if (selectedValue.toString() == "") {
                 const container = $('[name="city"]');
                 container.empty();
@@ -1084,7 +1086,6 @@
                     },
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data)
                         if (Array.isArray(data)) {
                             const container = $('[name="city"]');
                             if (container.is(':disabled')) {

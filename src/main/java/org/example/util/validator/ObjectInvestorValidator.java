@@ -152,7 +152,7 @@ public class ObjectInvestorValidator implements Validator {
         if (entity.getPictures() != null && entity.getPictures().size() > 0) {
             for (MultipartFile multipartFile : entity.getPictures()) {
                 if (!supportedImageFormats.contains(multipartFile.getContentType())) {
-                    errors.rejectValue("pictures", "", "Попытка занести файл с измененным расширением");
+                    errors.rejectValue("pictures", "", "Попытка занести фото с измененным расширением");
                 }
                 if (multipartFile.getSize() > maxFileSize) {
                     errors.rejectValue("pictures", "image.size.invalid", "Фотография не должна превышать 5 МБ.");

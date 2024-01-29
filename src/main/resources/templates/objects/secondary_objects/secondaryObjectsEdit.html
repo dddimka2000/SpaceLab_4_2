@@ -866,10 +866,21 @@
                         let codeBranch = $("#codeBranch");
                         let codeStaff = $("#codeStaff");
                         let codeObject = $("#codeObject");
+                        let fileInputs = "#my-dropzoneSecondary_objects";
+                        let allowedExtensions = ['.jpeg', '.jpg', '.png'];
                         if (error === "Минимум 1 фото в объекте") {
                             activateListItem('#pills-profile-tab')
+                            if (languageSecondExample == 'eng') addText($(fileInputs), 'There should be a minimum of 1 photo in the object')
+                            else if (languageSecondExample == 'ru') addText($(fileInputs), 'Минимум 1 фото в объекте')
+                            else addText($(fileInputs), 'Мінімум 1 фото об\'єкта')
                             errorsQuantity++;
-                            showToastWithTranslate("errorOnePhoto", "danger");
+                        }
+                        if (error === "Попытка занести фото с измененным расширением") {
+                            activateListItem('#pills-profile-tab')
+                            if (languageSecondExample == 'eng') addText($(fileInputs), `Unsupported file type The following types are available: ${allowedExtensions.join(', ')}`)
+                            else if (languageSecondExample == 'ru') addText($(fileInputs), `Неподдерживаемый тип файла доступны следующие типы: ${allowedExtensions.join(', ')}`)
+                            else addText($(fileInputs), `Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`)
+                            errorsQuantity++;
                         }
                         if (error === "Кода данного сотрудника не существует") {
                             errorsQuantity++;
@@ -1107,6 +1118,7 @@
                 $("#euLangSave").click();
             }
             if (!validString("1", "500", informationSource)) isValidated = false
+            if (!validateDropzoneWithOldImage(uploadedFiles, ['.jpeg', '.jpg', '.png'], "#my-dropzoneSecondary_objects", oldImagesArray)) isValidated = false;
 
             countError = 0;
             console.log(isValidated)
@@ -1234,7 +1246,7 @@
         let uploadedFiles = new Map();
         let oldImagesArray = [];
         let currentFiles = 0;
-        let currentFilesAll = -1;
+        let currentFilesAll = 0;
         var myDropzone = new Dropzone("#my-dropzoneSecondary_objects", {
             url: "/uploadFileSecondary_objects",
             acceptedFiles: ".jpg, .png, .icon, .jpeg",
@@ -1388,7 +1400,6 @@
                 myDropzone.emit("addedfile", mockFile);
                 myDropzone.emit("thumbnail", mockFile, img);
                 myDropzone.emit("complete", mockFile);
-
                 i++;
             });
             updateDropzoneMaxFiles()
@@ -1536,7 +1547,6 @@
 
                 fileList.appendChild(rowEl);
                 oldFileMap.set(numListener, fileName);
-                currentFilesAll++;
                 numFile++;
             });
         }

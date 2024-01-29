@@ -764,6 +764,8 @@
                     $("#full_body").unblock();
                     errorsQuantity = 0;
                     var errors = JSON.parse(xhr.responseText);
+                    let fileInputs = "#my-dropzoneInvestor";
+                    let allowedExtensions = ['.jpeg', '.jpg', '.png'];
                     errors.forEach(function (error) {
                         let codeBranch = $("#codeBranch");
                         let codeStaff = $("#codeStaff");
@@ -784,6 +786,20 @@
                             activateListItem('#pills-profile-tab')
                             errorsQuantity++;
                             showToastWithTranslate("errorOnePhoto", "danger");
+                        }
+                        if (error === "Минимум 1 фото в объекте") {
+                            activateListItem('#pills-profile-tab')
+                            if (languageSecondExample == 'eng') addText($(fileInputs), 'There should be a minimum of 1 photo in the object')
+                            else if (languageSecondExample == 'ru') addText($(fileInputs), 'Минимум 1 фото в объекте')
+                            else addText($(fileInputs), 'Мінімум 1 фото об\'єкта')
+                            errorsQuantity++;
+                        }
+                        if (error === "Попытка занести фото с измененным расширением") {
+                            activateListItem('#pills-profile-tab')
+                            if (languageSecondExample == 'eng') addText($(fileInputs), `Unsupported file type The following types are available: ${allowedExtensions.join(', ')}`)
+                            else if (languageSecondExample == 'ru') addText($(fileInputs), `Неподдерживаемый тип файла доступны следующие типы: ${allowedExtensions.join(', ')}`)
+                            else addText($(fileInputs), `Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`)
+                            errorsQuantity++;
                         }
                         if (errorsQuantity == 0) {
                             showToast(error, "danger");
@@ -989,6 +1005,7 @@
                 $("#euLangSave").click();
             }
             if (!validString("1", "500", informationSource)) isValidated = false
+            if (!validateDropzone(uploadedFiles, ['.jpeg', '.jpg', '.png'], "#my-dropzoneInvestor")) isValidated = false;
 
             countError = 0;
             console.log(isValidated)

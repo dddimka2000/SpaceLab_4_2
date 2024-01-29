@@ -786,14 +786,25 @@
                     $("#full_body").unblock();
                     errorsQuantity = 0;
                     var errors = JSON.parse(xhr.responseText);
+                    let fileInputs = "#my-dropzoneInvestor";
+                    let allowedExtensions = ['.jpeg', '.jpg', '.png'];
                     errors.forEach(function (error) {
                         let codeBranch = $("#codeBranch");
                         let codeStaff = $("#codeStaff");
                         let codeObject = $("#codeObject");
                         if (error === "Минимум 1 фото в объекте") {
                             activateListItem('#pills-profile-tab')
+                            if (languageSecondExample == 'eng') addText($(fileInputs), 'There should be a minimum of 1 photo in the object')
+                            else if (languageSecondExample == 'ru') addText($(fileInputs), 'Минимум 1 фото в объекте')
+                            else addText($(fileInputs), 'Мінімум 1 фото об\'єкта')
                             errorsQuantity++;
-                            showToastWithTranslate("errorOnePhoto","danger");
+                        }
+                        if (error === "Попытка занести фото с измененным расширением") {
+                            activateListItem('#pills-profile-tab')
+                            if (languageSecondExample == 'eng') addText($(fileInputs), `Unsupported file type The following types are available: ${allowedExtensions.join(', ')}`)
+                            else if (languageSecondExample == 'ru') addText($(fileInputs), `Неподдерживаемый тип файла доступны следующие типы: ${allowedExtensions.join(', ')}`)
+                            else addText($(fileInputs), `Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`)
+                            errorsQuantity++;
                         }
                         if (error === "Кода данного сотрудника не существует") {
                             errorsQuantity++;
@@ -803,7 +814,7 @@
                             errorsQuantity++;
                             showErrorCodeBranch(codeBranch)
                         }
-                        if(error=="Объект с таким кодом уже существует"){
+                        if (error == "Объект с таким кодом уже существует") {
                             errorsQuantity++;
                             showErrorCode(codeObject)
                         }
@@ -814,6 +825,7 @@
                 }
             })
         }
+
         let errorsQuantity = 0;
 
         var fileInput = document.getElementById("fileInput");
@@ -863,8 +875,7 @@
                 let checkFile = true;
                 for (let i = 0; i < fileInput.files.length; i++) {
                     let selectedFile = fileInput.files[i];
-                    if (selectedFile.type === "application/pdf")
-                    {
+                    if (selectedFile.type === "application/pdf") {
                     } else {
                         checkFile = false;
                         showToastWithTranslate("show_file_message", "danger");
@@ -1207,7 +1218,7 @@
             if (!city.prop('disabled')) {
                 if (!validSelect2(city)) isValidated = false
             }
-            if (!district.prop('disabled')){
+            if (!district.prop('disabled')) {
                 if (!validSelect2(district)) isValidated = false
             }
             if (!validString("1", "31", street)) {
@@ -1317,6 +1328,11 @@
                 $("#euLangSave").click();
             }
             if (!validString("1", "500", informationSource)) isValidated = false
+            console.log(isValidated)
+
+            if (!validateDropzoneWithOldImage(uploadedFiles, ['.jpeg', '.jpg', '.png'], "#my-dropzoneInvestor", oldImagesArray)) {
+                isValidated = false
+            }
 
             countError = 0;
             console.log(isValidated)
@@ -1450,7 +1466,7 @@
                 link.id = "oldFile" + index;
                 let deleteButton = document.createElement("a");
                 deleteButton.style.marginLeft = "20px";
-                deleteButton.href="#";
+                deleteButton.href = "#";
                 deleteButton.classList.add("text-decoration-none", "for-delete");
                 deleteButton.innerHTML = "х удалить";
 
@@ -1470,11 +1486,11 @@
                 rowEl.classList.add("row");
 
                 let colLg2 = document.createElement("div");
-                colLg2.classList.add("col-lg-3","col-sm-3", "col-md-6");
+                colLg2.classList.add("col-lg-3", "col-sm-3", "col-md-6");
                 colLg2.appendChild(link);
 
                 let colLg1 = document.createElement("div");
-                colLg1.classList.add("col-lg-1" ,"col-sm-3", "col-md-6");
+                colLg1.classList.add("col-lg-1", "col-sm-3", "col-md-6");
                 colLg1.appendChild(deleteButton);
 
                 rowEl.appendChild(colLg2);

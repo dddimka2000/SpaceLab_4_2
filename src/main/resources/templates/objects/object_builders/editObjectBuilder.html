@@ -532,6 +532,7 @@
             const newMaxFiles = (15 - oldImagesArray.length);
             myDropzone.options.maxFiles = newMaxFiles;
         }
+
         let currentFilesAll = 0;
 
         var myDropzone = new Dropzone("#my-dropzone", {
@@ -621,7 +622,7 @@
             if (!city.prop('disabled')) {
                 if (!validSelect2(city)) isValidated = false
             }
-            if (!district.prop('disabled')){
+            if (!district.prop('disabled')) {
                 if (!validSelect2(district)) isValidated = false
             }
             if (!validString("1", "31", street)) {
@@ -720,9 +721,10 @@
                 if (!$("#previewImage" + (element + 2)).attr("src")) {
                     if (!validateFile('inputImage' + (element + 2), ['.jpeg', '.jpg', '.png'])) isValidated = false
                 }
-                console.log(isValidated)
-
             })
+            if (!validateDropzoneWithOldImage(uploadedFiles, ['.jpeg', '.jpg', '.png'], "#my-dropzone", oldImagesArray))  isValidated = false;
+
+
             countError = 0;
             console.log(isValidated)
             return isValidated
@@ -858,6 +860,8 @@
                     let nameObject = $("#nameObject");
                     let nameObjectEng = $("#nameObjectEu");
                     let nameObjectUkr = $("#nameObjectUkr");
+                    let fileInputs = "#my-dropzone";
+                    let allowedExtensions = ['.jpeg', '.jpg', '.png'];
                     errors.forEach(function (error) {
                         console.log(error);
                         changeInputValue = 0;
@@ -867,6 +871,15 @@
                                 changeInputValue = changeInputValue + 1;
                                 $("#ruLangSave").click();
                                 console.log("ru click")
+                            }
+                        } else if (error === "Попытка загрузить файл с подменой разрешения") {
+                            activateListItem('#pills-profile-tab')
+                            if (languageSecondExample == 'eng') addText($(fileInputs), `Unsupported file type The following types are available: ${allowedExtensions.join(', ')}`)
+                            else if (languageSecondExample == 'ru') addText($(fileInputs), `Неподдерживаемый тип файла доступны следующие типы: ${allowedExtensions.join(', ')}`)
+                            else addText($(fileInputs), `Непідтримуваний тип файлу доступні такі типи: ${allowedExtensions.join(', ')}`)
+                            if (changeInputValue == 0) {
+                                changeInputValue = changeInputValue + 1;
+                                $("#ruLangSave").click();
                             }
                         } else if (error === "(Англ)Объект новостроя с таким именем уже существует") {
                             showErrorName(nameObjectEng)
@@ -885,7 +898,9 @@
                         } else if (error === "Минимум 1 фото в объекте") {
                             activateListItem('#pills-profile-tab')
                             changeInputValue++;
-                            showToastWithTranslate("errorOnePhoto", "danger");
+                            if (languageSecondExample == 'eng') addText($(fileInputs), 'There should be a minimum of 1 photo in the object')
+                            else if (languageSecondExample == 'ru') addText($(fileInputs), 'Минимум 1 фото в объекте')
+                            else addText($(fileInputs), 'Мінімум 1 фото об\'єкта')
                         } else {
                             showToast(error, "danger");
                         }

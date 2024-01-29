@@ -5,7 +5,7 @@ function showToast(message, type) {
 
     if (message.includes("ERROR:")) {
         message = message.replace("ERROR:", "");
-        type='danger'
+        type = 'danger'
     }
 
     let toastContainer = document.querySelector('.position-fixed.top-0.end-0.p-3');
@@ -16,7 +16,7 @@ function showToast(message, type) {
         toastContainer.style.zIndex = '9999';
         document.body.appendChild(toastContainer);
     }
-    if(message == 'saveObj'  ||  message == 'deleteObj'  ||  message == 'editObj')
+    if (message == 'saveObj' || message == 'deleteObj' || message == 'editObj')
         message = translateValue(message)
 
 
@@ -40,7 +40,8 @@ function showToast(message, type) {
         toastInstance.hide();
     });
 }
-function showToastWithTranslate( translate, type) {
+
+function showToastWithTranslate(translate, type) {
     let toastContainer = document.querySelector('.position-fixed.top-0.end-0.p-3');
 
     if (!toastContainer) {
@@ -70,11 +71,12 @@ function showToastWithTranslate( translate, type) {
     });
     refreshAllTranslate();
 }
+
 function getLastDigitFromPath(relativePath) {
-    if(!relativePath)relativePath=window.location.pathname
+    if (!relativePath) relativePath = window.location.pathname
     var pathSegments = relativePath.split("/");
     var lastSegment = pathSegments[pathSegments.length - 1];
-    lastSegment.replace('#','')
+    lastSegment.replace('#', '')
     if (/^\d+$/.test(lastSegment)) {
         return parseInt(lastSegment, 10);
     } else {
@@ -84,7 +86,7 @@ function getLastDigitFromPath(relativePath) {
 
 function textForTable(str, length) {
     if (str.toString().length > length) {
-        return str.substring(0, length-3) + '...';
+        return str.substring(0, length - 3) + '...';
     }
     return str;
 }
@@ -107,6 +109,7 @@ function createStatusIcon(dateString) {
     icon.innerHTML = `<i class="fas fa-info-circle" style="color: ${color}"></i>`;
     return icon;
 }
+
 function printTable(headerRow, bodyRows) {
     console.log(bodyRows)
     if (!headerRow || !bodyRows || !Array.isArray(bodyRows)) {
@@ -114,7 +117,7 @@ function printTable(headerRow, bodyRows) {
         return;
     }
     var tableHtml = '<table style="width: 100%; border: 1px solid black;">' + headerRow;
-    bodyRows.forEach(function(row) {
+    bodyRows.forEach(function (row) {
         tableHtml += '<tr style="border: 1px solid black;">' + row + '</tr>';
     });
 
@@ -134,6 +137,7 @@ function printTable(headerRow, bodyRows) {
     }
     document.body.removeChild(printDiv);
 }
+
 function removeBeforeFirstDot(input) {
     const indexOfDot = input.indexOf('.');
     if (indexOfDot !== -1) {
@@ -142,18 +146,24 @@ function removeBeforeFirstDot(input) {
         return input;
     }
 }
+
 $(document).ready(function () {
-    $(".phone").each(function(index, element) {
+    $(".phone").each(function (index, element) {
         new Cleave("#" + element.id, {
             blocks: [13],
             numericOnly: true,
             prefix: "+380"
         })
     });
-    $(".for-filter").each(function(index, element) {
-        var maxLength = 20;
+    $(".for-filter").each(function (index, element) {
+        var maxLength = 0;
+        if (!$(element).hasClass("number-max")) {
+            maxLength = 20;
+        } else {
+            maxLength = 9;
+        }
         $(element).attr("maxlength", maxLength);
-        $(element).on("input", function() {
+        $(element).on("input", function () {
             if ($(this).val().length > maxLength) {
                 $(this).val($(this).val().substring(0, maxLength));
             }
@@ -166,8 +176,8 @@ $(document).ready(function () {
     });
 })
 
-function showBlockForAllBody(show){
-    if(show){
+function showBlockForAllBody(show) {
+    if (show) {
         $("#full_body").block({
             message: '<div style="display: flex; align-items: center; justify-content: center; height: 100vh;"><div class="pinner-border spinner-border text-primary" role="status" style="height: 10vw; width: 10vw; max-height: 400px; max-width: 400px;"></div></div>',
             css: {
@@ -179,7 +189,7 @@ function showBlockForAllBody(show){
                 opacity: 0.5
             }
         })
-    }else {
+    } else {
         $("#full_body").unblock();
     }
 }
