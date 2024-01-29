@@ -567,7 +567,7 @@
                             if (languageSecondExample == 'eng') addText($(fileInputs), 'There should be a minimum of 1 photo in the object')
                             else if (languageSecondExample == 'ru') addText($(fileInputs), 'Минимум 1 фото в объекте')
                             else addText($(fileInputs), 'Мінімум 1 фото об\'єкта')
-                        } else if (error === "Попытка загрузить файл с подменой разрешения") {
+                        } else if (error === "Попытка занести фото с измененным расширением") {
                             activateListItem('#pills-profile-tab')
                             if (languageSecondExample == 'eng') addText($(fileInputs), `Unsupported file type The following types are available: ${allowedExtensions.join(', ')}`)
                             else if (languageSecondExample == 'ru') addText($(fileInputs), `Неподдерживаемый тип файла доступны следующие типы: ${allowedExtensions.join(', ')}`)

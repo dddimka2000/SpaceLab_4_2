@@ -872,7 +872,7 @@
                                 $("#ruLangSave").click();
                                 console.log("ru click")
                             }
-                        } else if (error === "Попытка загрузить файл с подменой разрешения") {
+                        } else if (error === "Попытка занести фото с измененным расширением") {
                             activateListItem('#pills-profile-tab')
                             if (languageSecondExample == 'eng') addText($(fileInputs), `Unsupported file type The following types are available: ${allowedExtensions.join(', ')}`)
                             else if (languageSecondExample == 'ru') addText($(fileInputs), `Неподдерживаемый тип файла доступны следующие типы: ${allowedExtensions.join(', ')}`)

@@ -134,7 +134,7 @@ public class ObjectBuilderValidator implements Validator {
             }
             for (MultipartFile multipartFile : entity.getFiles()) {
                 if (!supportedImageFormats.contains(multipartFile.getContentType())) {
-                    errors.rejectValue("files", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
+                    errors.rejectValue("files", "image.format.invalid", "Попытка занести фото с измененным расширением");
                 }
                 if (multipartFile.getSize() > maxFileSize) {
                     errors.rejectValue("files", "image.size.invalid", "Файл не должен превышать 5 МБ.");
@@ -244,7 +244,7 @@ public class ObjectBuilderValidator implements Validator {
                         errors.rejectValue("files", "image.size.invalid", "Файл не должен превышать 5 МБ.");
                     }
                     if (isValidPhoto((multipartFile))) {
-                        errors.rejectValue("files", "image.format.invalid", "Попытка загрузить файл с подменой разрешения");
+                        errors.rejectValue("files", "image.format.invalid", "Попытка занести фото с измененным расширением");
                     }
 
                 }
