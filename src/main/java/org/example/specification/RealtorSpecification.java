@@ -5,6 +5,8 @@ import org.example.entity.Realtor;
 import org.example.entity.RealtorContact;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
+
 public class RealtorSpecification {
 
     public static Specification<Realtor> codeContains(String code) {
@@ -87,14 +89,18 @@ public class RealtorSpecification {
         };
     }
 
-    public static Specification<Realtor> birthdateContains(String birthdate) {
-        if (birthdate.isBlank()) return (root, query, criteriaBuilder) -> null;
-
+    public static Specification<Realtor> birthdateInRange(LocalDate birthdateMin, LocalDate birthdateMax) {
         return (root, query, criteriaBuilder) -> {
-            return criteriaBuilder.like(
-                    criteriaBuilder.lower(root.get("birthdate").as(String.class)),
-                    "%" + birthdate.toLowerCase() + "%"
-            );
+            if (birthdateMin == null && birthdateMax == null) {
+                return null;
+            }
+            if (birthdateMin == null) {
+                return criteriaBuilder.lessThanOrEqualTo(root.get("birthdate"), birthdateMax);
+            }
+            if (birthdateMax == null) {
+                return criteriaBuilder.greaterThanOrEqualTo(root.get("birthdate"), birthdateMin);
+            }
+            return criteriaBuilder.between(root.get("birthdate"), birthdateMin, birthdateMax);
         };
     }
 

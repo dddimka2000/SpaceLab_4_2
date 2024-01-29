@@ -18,11 +18,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
 
 @Service
@@ -59,12 +61,18 @@ public class RealtorServiceImpl {
         log.info("RealtorServiceImpl-add successfully");
     }
 
-    public Page<Realtor> getAll(int page, int numberOfElement, String branchId, String code, String fullName, String phone, String email, String birthdate) {
+    public Page<Realtor> getAll(int page, int numberOfElement, String branchId, String code, String fullName, String phone, String email, String birthdateMin, String birthdateMax) {
         log.info("RealtorServiceImpl-getAll start");
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate from = null;
+        LocalDate to =  null;
+        if(!birthdateMin.isBlank())
+            from = LocalDate.parse(birthdateMin, formatter);
+        if(!birthdateMax.isBlank())
+            to = LocalDate.parse(birthdateMax, formatter);
         Pageable pageable = PageRequest.of(page, numberOfElement, Sort.by(Sort.Order.desc("id")));
         Page<Realtor> result = realtorRepository.findAll(Specification.where(RealtorSpecification.branchContains(branchId))
-                .and(RealtorSpecification.codeContains(code)).and(RealtorSpecification.phoneContains(phone)).and(RealtorSpecification.birthdateContains(birthdate))
+                .and(RealtorSpecification.codeContains(code)).and(RealtorSpecification.phoneContains(phone)).and(RealtorSpecification.birthdateInRange(from, to))
                 .and(RealtorSpecification.fullNameContains(fullName)).and(RealtorSpecification.emailContains(email)), pageable);
 
         log.info("RealtorServiceImpl-getAll successfully");

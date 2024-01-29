@@ -66,8 +66,11 @@
                                     <input type="text" class="form-control for-filter">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control flatpickr-datetime-for-filter for-filter "
-                                           id="datepicker">
+                                    <div class="input-group input-daterange" id="bs-datepicker-daterange">
+                                        <input type="text" placeholder="MM/DD/YYYY" class="form-control flatpickr-datetime-for-filter for-filter" />
+                                        <span class="input-group-text">to</span>
+                                        <input type="text" placeholder="MM/DD/YYYY" class="form-control flatpickr-datetime-for-filter for-filter" />
+                                    </div>
                                 </td>
                                 <td>
                                 </td>
@@ -143,7 +146,8 @@
                     fullName: filterElements[2].value,
                     phone: filterElements[3].value,
                     email: filterElements[4].value,
-                    birthdate: filterElements[5].value
+                    birthdateMin: filterElements[5].value,
+                    birthdateMax: filterElements[6].value
                 },
                 success: function (realtors) {
                     var table = document.getElementById("realtorsTable");
@@ -243,6 +247,7 @@
             filterElements[3].value = "";
             filterElements[4].value = "";
             filterElements[5].value = "";
+            filterElements[6].value = "";
             getPageWithFilter(0)
         });
     </script>
