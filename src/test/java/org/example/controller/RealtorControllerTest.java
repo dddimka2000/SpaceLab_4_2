@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -122,8 +123,8 @@ class RealtorControllerTest {
     void getAll() {
         Realtor realtor = new Realtor();
         realtor.setId(1);
-        when(realtorService.getAll(1, 5,"branchId", "code", "fullName", "phone", "email", any(), any())).thenReturn(new PageImpl<>(Collections.singletonList(realtor)));
-        Page<Realtor> result = realtorController.getAll(1,5, "branchId", "code", "fullName", "phone", "email", any(), any());
+        when(realtorService.getAll(1, 5,"branchId", "code", "fullName", "phone", "email", "2020-02-02", "2020-02-04")).thenReturn(new PageImpl<>(Collections.singletonList(realtor)));
+        Page<Realtor> result = realtorController.getAll(1,5, "branchId", "code", "fullName", "phone", "email", "2020-02-02","2020-02-04");
         assertEquals(1, result.getTotalElements());
         assertEquals(realtor, result.getContent().get(0));
     }
