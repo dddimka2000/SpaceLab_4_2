@@ -27,10 +27,10 @@ public class QuestionServiceImpl {
         log.info("QuestionServiceImpl-save successfully");
     }
 
-    public Page<Question> getAll(int page) {
+    public Page<Question> getAll(int page, int size) {
         log.info("QuestionServiceImpl-getAll start");
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("id")));
         Page<Question> result = questionRepository.findAll(pageable);
 
         log.info("QuestionServiceImpl-getAll successfully");

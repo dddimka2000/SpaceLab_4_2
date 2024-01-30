@@ -43,11 +43,9 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="card-footer">
-                    <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
-                        id="pagination_container">
-                    </ul>
+                    <div class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                        id="paginationItems">
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,7 +124,8 @@
                 type: "Get",
                 url: '[[@{/proposals_for_changes/get-all}]]',
                 data: {
-                    page: page
+                    page: page,
+                    size: localStorage.getItem('numberForChangesTable') || 10
                 },
                 success: function (offers) {
                     var table = document.getElementById("offersTable");
@@ -153,9 +152,34 @@
                         <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + offerId + `);" title='Удалить'><i class='fa fa-trash'></i></button>`
                     }
                     $('#pagination_container').empty();
-                    if (offers.totalPages > 1) updatePagination(page, offers.totalPages, 'pagination_container')
+                    if (offers.totalPages > 1) {
+                        updatePagination(page, offers.totalPages, 'paginationItems', localStorage.getItem('numberForChangesTable') || 10, 'numberForChangesTable')
+                    } else {
+                        var pagination = document.getElementById('paginationItems');
+                        pagination.innerHTML = '';
+                        var row = document.createElement('div');
+                        row.style.marginRight = 'auto'
+                        row.style.width = '100%'
+                        row.innerHTML += `
+<div class="row" style="width: 25%">
+    <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">
+        <option value="2" ${localStorage.getItem('numberForChangesTable') == 2 ? 'selected' : ''}>2</option>
+        <option value="5" ${localStorage.getItem('numberForChangesTable') == 5 ? 'selected' : ''}>5</option>
+        <option value="10" ${localStorage.getItem('numberForChangesTable') == 10 || localStorage.getItem('numberForChangesTable') == null ? 'selected' : ''}>10</option>
+        <option value="25" ${localStorage.getItem('numberForChangesTable') == 25 ? 'selected' : ''}>25</option>
+    </select>
+</div>`;
+                        pagination.appendChild(row)
+                    }
+                    $('#number-of-element').select2({
+                        minimumResultsForSearch: -1,
+                    })
                 },
             });
+        }
+        function setNumberOfElement(numberOfElement) {
+            localStorage.setItem('numberForChangesTable', numberOfElement)
+            getPageWithFilter(0)
         }
     </script>
 </section>

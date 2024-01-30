@@ -29,8 +29,8 @@ public class QuestionController {
     }
     @GetMapping("/get-all")
     @ResponseBody
-    public Page<Question> getAll(@RequestParam("page")int page){
-        return questionService.getAll(page);
+    public Page<Question> getAll(@RequestParam("page")int page,@RequestParam("size") int size){
+        return questionService.getAll(page,size);
     }
     @GetMapping("/getById")
     @ResponseBody
