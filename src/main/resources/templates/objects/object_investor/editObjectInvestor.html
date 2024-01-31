@@ -461,14 +461,14 @@
                                    th:checked="${element.getVnp}">
                             <span class="checkmark" data-translate="VNP"> ВНП</span>
                         </div>
-                        <div class="col-lg-2 col-sm-6">
+                        <div class="col-lg-4 col-sm-6">
                             <h6 data-translate="VNP_until_date">Дата внп до</h6>
                             <input class="form-control flatpickr-datetime"
                                    placeholder="YYYY/MM/DD" type="text"
                                    aria-describedby="defaultFormControlHelp" id="dateVNP" name="dateVnp"
                                    th:value="${element.getVnpExpirationDate()}">
                         </div>
-                        <div class="col-lg-2 col-sm-6">
+                        <div class="col-lg-4 col-sm-6">
                             <h6 data-translate="information_source">Источник информации</h6>
                             <input type="text" class="form-control" id="sourceInformation"
                                    data-translate-placeholder="enter_information_source"

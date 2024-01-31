@@ -447,19 +447,20 @@
                             <span class="checkmark" data-translate="VNP"> ВНП</span>
                         </div>
 
+                        <div class="col-lg-4 col-sm-6">
+                            <h6 data-translate="VNP_until_date">Дата внп до</h6>
+                            <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
+                                   aria-describedby="defaultFormControlHelp" id="dateVNP" name="dateVnp"
+                                   value="">
+                        </div>
+                        <div class="col-lg-4 col-sm-6">
+                            <h6 data-translate="information_source">Источник информации</h6>
+                            <input type="text" class="form-control" id="sourceInformation"
+                                   data-translate-placeholder="enter_information_source"
+                                   placeholder="Введите источник информации">
+                        </div>
                     </div>
-                    <div class="col-lg-2 col-sm-6">
-                        <h6 data-translate="VNP_until_date">Дата внп до</h6>
-                        <input class="form-control flatpickr-datetime" type="text" placeholder="YYYY/MM/DD"
-                               aria-describedby="defaultFormControlHelp" id="dateVNP" name="dateVnp"
-                               value="">
-                    </div>
-                    <div class="col-lg-2 col-sm-6">
-                        <h6 data-translate="information_source">Источник информации</h6>
-                        <input type="text" class="form-control" id="sourceInformation"
-                               data-translate-placeholder="enter_information_source"
-                               placeholder="Введите источник информации">
-                    </div>
+
                     <br>
                     <div class="row">
                         <div class="col-lg-2 col-sm-6">
@@ -895,7 +896,7 @@
             if (!city.prop('disabled')) {
                 if (!validSelect2(city)) isValidated = false
             }
-            if (!district.prop('disabled')){
+            if (!district.prop('disabled')) {
                 if (!validSelect2(district)) isValidated = false
             }
             if (!validString("1", "31", street)) {
