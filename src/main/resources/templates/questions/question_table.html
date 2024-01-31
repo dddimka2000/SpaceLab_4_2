@@ -215,7 +215,12 @@
                     var table = document.getElementById("questionTable");
                     var tbody = table.querySelector("tbody");
                     $('#questionTable tbody').empty();
-
+                    if (questions.totalElements == 0) {
+                        table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">' + translateValue("empty") + '</h1></center>');
+                        table.style.display = "none";
+                    } else {
+                        table.style.display = '';
+                    }
                     for (var question of questions.content) {
                         var newRow = tbody.insertRow();
                         var questionId = question.id;

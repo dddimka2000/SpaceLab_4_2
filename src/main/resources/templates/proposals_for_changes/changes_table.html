@@ -131,7 +131,12 @@
                     var table = document.getElementById("offersTable");
                     var tbody = table.querySelector("tbody");
                     $('#offersTable tbody').empty();
-
+                    if (offers.totalElements == 0) {
+                        table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">' + translateValue("empty") + '</h1></center>');
+                        table.style.display = "none";
+                    } else {
+                        table.style.display = '';
+                    }
                     for (var offer of offers.content) {
                         var newRow = tbody.insertRow();
                         var offerId = offer.id;
