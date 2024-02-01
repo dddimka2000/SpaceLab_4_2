@@ -502,10 +502,10 @@
                             if (daysDifference > 3 && daysDifference <= 7) {
                                 cell1.innerHTML = `<i class="fas fa-info-circle" style="color: deepskyblue"></i>`;
                             }
-                            if (daysDifference > 7 && daysDifference <= 21) {
+                            else if (daysDifference > 7 && daysDifference <= 21) {
                                 cell1.innerHTML = `<i class="fas fa-info-circle" style="color: darkorange"></i>`;
                             }
-                            if (daysDifference > 21) {
+                            else if (daysDifference > 21) {
                                 cell1.innerHTML = `<i class="fas fa-info-circle" style="color: red"></i>`;
                             } else {
                                 cell1.innerHTML = `<i class="fas fa-info-circle" style="color: green"></i>`;
