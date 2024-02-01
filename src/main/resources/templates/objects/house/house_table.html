@@ -116,11 +116,17 @@
                         </div>
                         <div class="col-md-6 col-lg-4">
                             <h6 data-translate="contact_date"></h6>
-                            <select class="form-control" style="width: 60%;" id="lastContactDate">
+                            <select id="lastContactDate" name="day" class="form-select select2 for-filter select2find">
                                 <option selected value=""></option>
-                                <option value="3">3</option>
-                                <option value="7">7</option>
-                                <option value="21">21</option>
+                                <option value="3" data-translate="3multiple_days"></option>
+                                <option value="7" data-translate="multiple_weeks_and_more"></option>
+                                <option value="21" data-translate="3multiple_weeks_and_more"></option>
+                                <option value="99999" data-translate="6multiple_weeks_and_more"></option>
+                                <!--                                    <script>-->
+                                <!--                                        for (let i = 2; i <= 31; i++) {-->
+                                <!--                                            document.write('<option value="' + i + '" data-translate="' + i + 'multiple_days">' + i + ' дней' + '</option>');-->
+                                <!--                                        }-->
+                                <!--                                    </script>-->
                             </select>
                         </div>
                         <div class="col-md-12 col-lg-4"
@@ -264,6 +270,7 @@
                 language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
+
             setTimeout(function () {
                 $(".select2-container").each(function () {
                     var placeholderElement = $(this).find("[placeholder]");
