@@ -169,8 +169,8 @@
 
                         var cell7 = newRow.insertCell(7);
                         cell7.innerHTML = `
-                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + buyerId + `);" title='Удалить'><i class='fa fa-trash'></i></button>
-                        <a class='btn btn-default btn-sm float-right' href='[[@{/buyers/edit/}]]` + buyerId + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
+                        <a class='btn btn-default btn-sm float-right' href='[[@{/buyers/edit/}]]` + buyerId + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>
+                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + buyerId + `);" title='Удалить'><i class='fa fa-trash'></i></button>`;
                     }
                     $('#pagination_container').empty();
                     if (buyers.totalPages > 1) updatePagination(page, buyers.totalPages, 'pagination_container', localStorage.getItem('numberOfElementForBuyer') || 10, 'numberOfElementForBuyer')

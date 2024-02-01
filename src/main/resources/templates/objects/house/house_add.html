@@ -777,7 +777,7 @@
             if (!validString("1", "5000", advertisementTextRu)) isValidated = false
             if (!validString("1", "5000", advertisementTextEn)) isValidated = false
             $('#my-dropzoneInvestor').css("border-color", "")
-            if (allUploadedFiles.length <= 0 && !hadImage || currentFiles === 0) {
+            if (currentFiles === 0) {
                 activateListItem('#pills-contact-tab')
                 if (languageSecondExample == 'eng') {
                     showToast("At least one photo must be uploaded to the drop zone", "danger");
@@ -1182,6 +1182,7 @@
                 url: "[[@{/houses/getPicture/}]]" + getLastDigitFromPath(window.location.pathname),
                 method: "GET",
                 success: function (files) {
+                    currentFiles = files.length
                     if (files) hadImage = true
                     files.forEach(function (file) {
                         currentFiles++

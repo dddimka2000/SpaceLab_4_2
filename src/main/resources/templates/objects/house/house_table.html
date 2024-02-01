@@ -45,9 +45,9 @@
                     <div class="row gy-3">
                         <div class="col-md-6 col-lg-4">
                             <div data-translate="region_district"></div>
-                            <select id="district" multiple></select>
+                            <select id="district" onchange="getPageWithFilter(0)" multiple></select>
                             <div data-translate="topzone"></div>
-                            <select class="select2 form-select for-filter select2find" multiple
+                            <select class="select2 form-select for-filter select2find" onchange="getPageWithFilter(0)" multiple
                                     id="topzone">
                                 <option th:each="entity : ${selectTopozone}"
                                         th:value="${entity}" th:data-translate="${entity}"
@@ -57,27 +57,27 @@
                         <div class="col-md-6 col-lg-3">
                             <div data-translate="property.numberOfRooms"></div>
                             <br>
-                            1 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1">
-                            2 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">
-                            3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">
-                            >3 <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">
+                            1 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="1">
+                            2 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="2">
+                            3 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="3">
+                            >3 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="4">
                         </div>
                         <div class="col-md-12 col-lg-5">
                             <div class="row gy-3">
                                 <div class="col-lg-6">
                                     <div data-translate="floor"></div>
                                     <div style="display: flex">
-                                        <input class="form-control for-filter onlyNumber" id="floorMin">
+                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="floorMin">
                                         <div class="mt-2">&mdash;</div>
-                                        <input class="form-control for-filter onlyNumber" id="floorMax">
+                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="floorMax">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div data-translate="price"></div>
                                     <div style="display: flex">
-                                        <input class="form-control for-filter onlyNumber" id="priceMin">
+                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="priceMin">
                                         <div class="mt-2">&mdash;</div>
-                                        <input class="form-control for-filter onlyNumber" id="priceMax">
+                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="priceMax">
                                     </div>
                                 </div>
                             </div>
@@ -85,17 +85,17 @@
                                 <div class="col-lg-6">
                                     <div data-translate="plotArea"></div>
                                     <div style="display: flex">
-                                        <input class="form-control for-filter onlyNumber" id="plotAreaMin">
+                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="plotAreaMin">
                                         <div class="mt-2">&mdash;</div>
-                                        <input class="form-control for-filter onlyNumber" id="plotAreaMax">
+                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="plotAreaMax">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div data-translate="S_area_sqm"></div>
                                     <div style="display: flex">
-                                        <input class="form-control for-filter onlyNumber" id="houseAreaMin">
+                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="houseAreaMin">
                                         <div class="mt-2">&mdash;</div>
-                                        <input class="form-control for-filter onlyNumber" id="houseAreaMax">
+                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="houseAreaMax">
                                     </div>
                                 </div>
                             </div>
@@ -104,15 +104,16 @@
                     <div class="row mt-1">
                         <div class="col-md-6 col-lg-4">
                             <div data-translate="street"></div>
-                            <input class="form-control for-filter" id="street">
+                            <input class="form-control for-filter" onchange="getPageWithFilter(0)" id="street">
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <div data-translate="contact_date"></div>
-                            <select class="form-control" style="width: 60%;" id="lastContactDate">
-                                <option></option>
-                                <option value="3">3</option>
-                                <option value="7">7</option>
-                                <option value="21">21</option>
+                            <select class="form-control" style="width: 60%;" onchange="getPageWithFilter(0)" id="lastContactDate">
+                                <option selected value=""></option>
+                                <option value="3" data-translate="3multiple_days"></option>
+                                <option value="7" data-translate="multiple_weeks_and_more"></option>
+                                <option value="21" data-translate="3multiple_weeks_and_more"></option>
+                                <option value="99999" data-translate="6multiple_weeks_and_more"></option>
                             </select>
                         </div>
                         <div class="col-md-12 col-lg-5">
@@ -355,8 +356,8 @@
 
                         var cell13 = newRow.insertCell(13);
                         cell13.innerHTML = `
-                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>
-                        <a class='btn btn-default btn-sm float-right' href='[[@{/houses/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
+                        <a class='btn btn-default btn-sm float-right' href='[[@{/houses/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>
+                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>`;
                     }
                     $('#pagination_container').empty();
                     if (houses.totalPages > 1) updatePagination(page, houses.totalPages, 'pagination_container', localStorage.getItem('numberOfElementForHouse') || 10, 'numberOfElementForHouse')
