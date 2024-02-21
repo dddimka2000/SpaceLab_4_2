@@ -1,6 +1,5 @@
 package org.example.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -51,4 +50,7 @@ public class Realtor {
     private List<RealtorContact> contacts;
     @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST} )
     private List<RealtorFeedBack> realtorFeedBacks;
+    @OneToMany(mappedBy = "realtor", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<PotentialCustomer> potentialCustomers;
 }

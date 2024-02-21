@@ -10,7 +10,7 @@ function previewImage(event, imageId) {
     reader.readAsDataURL(event.target.files[0]);
 }
 
-function validateAndUpload(file, allowedExtensions) {
+function validateAndUpload(imageId, allowedExtensions) {
     const fileInputs = document.querySelectorAll('.fileInput');
 
     fileInputs.forEach(fileInput => {
