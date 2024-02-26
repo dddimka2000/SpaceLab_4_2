@@ -16,148 +16,211 @@
         <div class="container-fluid">
             <br>
             <div class="d-flex justify-content-between">
-            <h4 class="fw-bold" data-translate="COMMERCIAL">Комерческая недвижемось</h4>
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" data-translate="COMMERCIAL">Комерческая</li>
-                </ol>
-            </nav>
-        </div>
-        <hr style="margin-top: -5px">
-        <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
+                <h4 class="fw-bold" data-translate="COMMERCIAL">Комерческая недвижемось</h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="COMMERCIAL">Комерческая
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <hr style="margin-top: -5px">
 
-            <p><input type="checkbox" class="form-check-input" style="margin-top: 3px" id="printWithAddress" ><div  style="margin-right: 20px" data-translate="printWithAddress"></div></p>
-            <button class="btn btn-submit waves-effect waves-light" th:onclick="|window.location.href='@{/commercial/add}'|"
-                    style="margin-right: 5px" data-translate="builder_object_add">Добавить об'єкт
-            </button>
-            <button class="btn btn-submit waves-effect waves-light" onclick="printElements()"  data-translate="print">Распечатать</button>
-        </div>
-        <div class="card border mt-3">
-            <div class="card-header">
-                <div class="row gy-3">
-                    <div class="col-md-12 col-lg-4">
-                        <div data-translate="region_district"></div>
-                        <select id="district" onchange="getPageWithFilter(0)" multiple></select>
-                        <div data-translate="topzone"></div>
-                        <select id="topzone" onchange="getPageWithFilter(0)" multiple></select>
-                    </div>
-                    <div class="col-md-12 col-lg-3">
-                        <div data-translate="property.numberOfRooms"></div>
-                        1 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="1">
-                        2 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="2">
-                        3 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="3">
-                        >3 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="4">
-                        <div class="mb-3"></div>
-                        <div data-translate="RC"></div>
-                        <select id="buildObject" onchange="getPageWithFilter(0)" multiple></select>
-                    </div>
-                    <div class="col-md-12 col-lg-5">
-                        <div class="row gy-3">
-                            <div class="col-lg-6">
-                                <div data-translate="floor"></div>
 
-                                <div style="display: flex">
-                                    <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="floorMin">
-                                    <div class="mt-2">&mdash;</div>
-                                    <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="floorMax">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div data-translate="price"></div>
-                                <div style="display: flex">
-                                    <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="priceMin">
-                                    <div class="mt-2">&mdash;</div>
-                                    <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="priceMax">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row gy-3">
-                            <div class="col-lg-6">
-                                <div data-translate="plotArea"></div>
-                                <div style="display: flex">
-                                    <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="plotAreaMin">
-                                    <div class="mt-2">&mdash;</div>
-                                    <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="plotAreaMax">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div data-translate="S_area_sqm"></div>
-                                <div style="display: flex">
-                                    <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="houseAreaMin">
-                                    <div class="mt-2">&mdash;</div>
-                                    <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="houseAreaMax">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div style="width: 100%; display: flex; justify-content: flex-end;" id="flex-container">
+                <div style="display: flex;margin: 20px;align-items: center">
+                    <input type="checkbox" id="printWithAddress" class="form-check-input"
+                           data-translate="printWithAddress">
+                    <div data-translate="printWithAddress"></div>
                 </div>
-                <div class="row mt-1">
-                    <div class="col-lg-4">
-                        <div data-translate="street"></div>
-                        <input class="form-control for-filter" onchange="getPageWithFilter(0)" id="street">
+                <button class="btn btn-submit" id="printButton" data-translate="print" onclick="printElements()"
+                        style="margin: 20px">
+                    Распечатать
+                </button>
+                <div style="margin: 20px">
+                    <button class="btn btn-submit waves-effect waves-light"
+                            th:onclick="|window.location.href='@{/commercial/add}'|"
+                             data-translate="builder_object_add">Добавить об'єкт
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="card border">
+                <div class="card-header">
+                    <div class="row gy-3">
+                        <div class="col-md-12 col-lg-4">
+                            <h6 data-translate="district"></h6>
+                            <select id="district" multiple></select>
+                            <h6 data-translate="topzone"></h6>
+                            <select id="topzone" multiple></select>
+                        </div>
+                        <div class="col-md-12 col-lg-3">
+                            <div>
+                                <h6 data-translate="property.numberOfRooms"></h6>
+                                <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1">1
+                                <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">2
+                                <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">3
+                                <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">>3
+                            </div>
+                            <div class="mt-3">
+                                <h6 data-translate="RC"></h6>
+                                <select class="select2 form-select for-filter" multiple
+                                        id="buildObject">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-5">
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
+                                    <h6 data-translate="floor"></h6>
+
+                                    <div style="display: flex">
+                                        <input class="form-control for-filter onlyNumber" id="floorMin">
+                                        <div class="mt-2">&mdash;</div>
+                                        <input class="form-control for-filter onlyNumber" id="floorMax">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div style="display: flex">
+                                        <h6 data-translate="price"></h6><span> ($):</span>
+                                    </div>
+                                    <div style="display: flex">
+                                        <input class="form-control for-filter onlyNumber" id="priceMin">
+                                        <div class="mt-2">&mdash;</div>
+                                        <input class="form-control for-filter onlyNumber" id="priceMax">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
+                                    <h6 data-translate="plotArea"></h6>
+                                    <div style="display: flex">
+                                        <input class="form-control for-filter onlyNumber" id="plotAreaMin">
+                                        <div class="mt-2">&mdash;</div>
+                                        <input class="form-control for-filter onlyNumber" id="plotAreaMax">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h6 data-translate="S_area_sqm"></h6>
+                                    <div style="display: flex">
+                                        <input class="form-control for-filter onlyNumber" id="houseAreaMin">
+                                        <div class="mt-2">&mdash;</div>
+                                        <input class="form-control for-filter onlyNumber" id="houseAreaMax">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-3">
-                        <div data-translate="contact_date"></div>
-                        <select class="form-control" style="width: 60%;" onchange="getPageWithFilter(0)" id="lastContactDate">
-                            <option selected value=""></option>
-                            <option value="3" data-translate="3multiple_days"></option>
-                            <option value="7" data-translate="multiple_weeks_and_more"></option>
-                            <option value="21" data-translate="3multiple_weeks_and_more"></option>
-                            <option value="99999" data-translate="6multiple_weeks_and_more"></option>
-                        </select>
-                    </div>
-                    <div class="col-lg-5">
-                        <br/>
-                        <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px; margin-top: 20px">
-                            <button class="btn btn-submit waves-effect waves-light" onclick="clearFilter()" style="margin-right: 5px" data-translate="clear">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                            <h6 data-translate="street"></h6>
+                            <input class="form-control for-filter" data-translate-placeholder="enter_street" id="street">
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <h6 data-translate="contact_date"></h6>
+                            <select id="lastContactDate" name="day" class="form-select select2 for-filter select2find">
+                                <option selected value=""></option>
+                                <option value="3" data-translate="3multiple_days"></option>
+                                <option value="7" data-translate="multiple_weeks_and_more"></option>
+                                <option value="21" data-translate="3multiple_weeks_and_more"></option>
+                                <option value="99999" data-translate="6multiple_weeks_and_more"></option>
+                                <!--                                    <script>-->
+                                <!--                                        for (let i = 2; i <= 31; i++) {-->
+                                <!--                                            document.write('<option value="' + i + '" data-translate="' + i + 'multiple_days">' + i + ' дней' + '</option>');-->
+                                <!--                                        }-->
+                                <!--                                    </script>-->
+                            </select>
+                        </div>
+                        <div class="col-md-12 col-lg-4"
+                             style="display: flex; justify-content: flex-end;align-items: end;">
+                            <button class="btn btn-submit waves-effect waves-light" onclick="clearFilter()"
+                                    style="margin-right: 5px" data-translate="clear_filter">
                                 Очистить фильтр
                             </button>
-                            <button class="btn btn-submit waves-effect waves-light" onclick="getPageWithFilter(0)" data-translate="search">Поиск</button>
+                            <button class="btn btn-submit waves-effect waves-light" onclick="getPageWithFilter(0)"
+                                    data-translate="search">Поиск
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="invoice-list-table table border-top dataTable no-footer dtr-column" id="houseTable" style=" width: 100%; table-layout: auto; text-align: center">
-                        <thead>
-                        <tr>
-                            <th data-translate="contact_date">Дата контакта</th>
-                            <th data-translate="code">Код</th>
-                            <th data-translate="district">Район</th>
-                            <th data-translate="topzone">Топзона</th>
-                            <th data-translate="street">Улица</th>
-                            <th data-translate="rooms">Комнат</th>
-                            <th data-translate="floor">Этаж</th>
-                            <th data-translate="number_of_floors">Этажность</th>
-                            <th data-translate="S_area_sqm">Площадь</th>
-                            <th data-translate="price">Цена</th>
-                            <th data-translate="advertisement">Реклама</th>
-                            <th data-translate="status">Статус</th>
-                            <th data-translate="photo">Фото</th>
-                            <th></th>
-                            <th style="min-width: 130px;"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="invoice-list-table table border-top dataTable no-footer dtr-column"
+                               id="houseTable" style=" width: 100%; table-layout: auto; text-align: center">
+                            <thead>
+                            <tr>
+                                <th data-translate="contact_date">Дата контакта</th>
+                                <th data-translate="code">Код</th>
+                                <th data-translate="district">Район</th>
+                                <th data-translate="topzone">Топзона</th>
+                                <th data-translate="street">Улица</th>
+                                <th data-translate="rooms">Комнат</th>
+                                <th data-translate="floor">Этаж</th>
+                                <th data-translate="number_of_floors">Этажность</th>
+                                <th data-translate="S_area_sqm">Площадь</th>
+                                <th data-translate="price">Цена</th>
+                                <th data-translate="advertisement">Реклама</th>
+                                <th data-translate="status">Статус</th>
+                                <th data-translate="photo">Фото</th>
+                                <th></th>
+                                <th style="min-width: 130px;"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="card-footer">
-                <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
-                    id="pagination_container">
-                </ul>
+                <div class="card-footer">
+                    <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                        id="pagination_container">
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-    </div>
     <script>
+        function select2MultipleResidential() {
+            let contextPath = "/minions-dd/admin";
+
+            $('#buildObject').select2({
+                placeholder: translateValue('виберіть_обєкт'),
+                language: languageForSelect2,
+                ajax: {
+                    url: contextPath + 'builder_objects/for/select',
+                    dataType: 'json',
+                    delay: 1500,
+                    data: function (params) {
+                        var number = params.page > 0 ? params.page - 1 : 0;
+                        return {
+                            query: params.term || '',
+                            page: number,
+                            size: 10
+                        };
+                    },
+                    processResults: function (data, params) {
+                        var results = data.content.map(function (item) {
+                            return {id: item.id, text: item.name};
+                        });
+                        var hasMore = data.totalPages > data.number;
+                        return {
+                            results: results,
+                            pagination: {
+                                more: hasMore
+                            }
+                        };
+                    },
+                    cache: true
+                }
+            });
+        }
         $(document).ready(function () {
             forSelect2(undefined, undefined, "#district", "/enum/district")
             forSelect2(undefined, undefined, "#topzone", "/enum/topzone")
-            forSelect2WithSearch(undefined, undefined, "#buildObject", "/builder_objects/for/select")
+            // forSelect2WithSearch(undefined, undefined, "#buildObject", "/builder_objects/for/select")
+            select2MultipleResidential();//new changes by Dima
             $('#lastContactDate').select2({
                 placeholder: translateValue('виберіть_обєкт'),
                 language: languageForSelect2,
@@ -165,13 +228,13 @@
             })
             getPageWithFilter(0)
             setTimeout(function () {
-                $(".select2-container").each(function() {
+                $(".select2-container").each(function () {
                     var placeholderElement = $(this).find("[placeholder]");
                     placeholderElement.css("width", "100%");
-                    placeholderElement.attr("placeholder", translateValue('виберіть_обєкт'))
                 });
             }, 2000)
         });
+
         function printElements() {
             var bodyRows = []
             var selectedCheckboxes = document.querySelectorAll('.print-checkbox:checked');
@@ -188,7 +251,7 @@
                             type: "Get",
                             url: '[[@{/commercial/getById/}]]' + checkbox.value,
                             success: function (house) {
-                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floor + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor?house.realtor.name:null) + `</td>`)
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.address.district + `</td><td style="border: 1px solid black;">` + house.address.zone + `</td><td style="border: 1px solid black;">` + house.address.street + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floor + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor ? house.realtor.name : null) + `</td>`)
                                 resolve();
                             },
                             error: function () {
@@ -199,14 +262,14 @@
                     headerRow = '<tr style="border: 1px solid black;"><th style="border: 1px solid black;">Код</th><th style="border: 1px solid black;">Район</th><th style="border: 1px solid black;">Топозона</th><th style="border: 1px solid black;">Улиця</th><th style="border: 1px solid black;">Кімнати</th><th style="border: 1px solid black;">Поверх</th><th style="border: 1px solid black;">Площа</th><th style="border: 1px solid black;">Ціна</th><th style="border: 1px solid black;">Власник</th><th style="border: 1px solid black;">Ріелтор</th></tr>';
                     ajaxPromises.push(promise);
                 });
-            }else {
+            } else {
                 selectedCheckboxes.forEach(function (checkbox) {
                     var promise = new Promise(function (resolve, reject) {
                         $.ajax({
                             type: "Get",
                             url: '[[@{/commercial/getById/}]]' + checkbox.value,
                             success: function (house) {
-                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floor + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor?house.realtor.name:null) + `</td>`)
+                                bodyRows.push(`<td style="border: 1px solid black;">` + house.objectCode + `</td><td style="border: 1px solid black;">` + house.roomQuantity + `</td><td style="border: 1px solid black;">` + house.floor + `</td><td style="border: 1px solid black;">` + house.floorQuantity + `</td><td style="border: 1px solid black;">` + house.areaTotal + `</td><td style="border: 1px solid black;">` + house.price + `</td><td style="border: 1px solid black;">` + house.ownerName + `</td><td style="border: 1px solid black;">` + (house.realtor ? house.realtor.name : null) + `</td>`)
                                 resolve();
                             },
                             error: function () {
@@ -228,10 +291,12 @@
                 });
 
         }
-        function setNumberOfElement(numberOfElement){
+
+        function setNumberOfElement(numberOfElement) {
             localStorage.setItem('numberOfElementForCommercial', numberOfElement)
             getPageWithFilter(0)
         }
+
         function getPageWithFilter(page) {
             this.page = page
             var data = {
@@ -265,11 +330,10 @@
                     var tbody = table.querySelector("tbody");
                     $('#houseTable tbody').empty();
                     $('#empty-block').remove()
-                    if(houses.content.length == 0){
-                        table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>');
+                    if (houses.content.length == 0) {
+                        table.insertAdjacentHTML('beforebegin', '<center id="empty-block"><h1 data-translate="empty">' + translateValue("empty") + '</h1></center>');
                         table.style.display = "none";
-                    }
-                    else {
+                    } else {
                         table.style.display = ''
                     }
 
@@ -307,21 +371,21 @@
                         cell9.innerHTML = house.price;
 
                         var cell10 = newRow.insertCell(10);
-                        cell10.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1" data-translate="Yes">'+translateValue('Yes')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">'+translateValue('no')+'</span>'
+                        cell10.innerHTML = house.advertisementEnabled ? '<span class="badge bg-label-success me-1" data-translate="Yes">' + translateValue('Yes') + '</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">' + translateValue('no') + '</span>'
 
                         var cell11 = newRow.insertCell(11);
-                        cell11.innerHTML = house.publicationStatus == 'PUBLISHED' ? '<span class="badge bg-label-success me-1" data-translate="PUBLISHED">'+translateValue('PUBLISHED')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="Модерация">'+translateValue('Модерация')+'</span>'
+                        cell11.innerHTML = house.publicationStatus == 'PUBLISHED' ? '<span class="badge bg-label-success me-1" data-translate="PUBLISHED">' + translateValue('PUBLISHED') + '</span>' : '<span class="badge bg-label-danger me-1" data-translate="Модерация">' + translateValue('Модерация') + '</span>'
 
                         var cell12 = newRow.insertCell(12);
-                        cell12.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1" data-translate="Есть">'+translateValue('Есть')+'</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">'+translateValue('no')+'</span>'
+                        cell12.innerHTML = house.pictures ? '<span class="badge bg-label-success me-1" data-translate="Есть">' + translateValue('Есть') + '</span>' : '<span class="badge bg-label-danger me-1" data-translate="no">' + translateValue('no') + '</span>'
 
                         var cell13 = newRow.insertCell(13);
                         cell13.innerHTML = `<input class="form-check-input print-checkbox" type="checkbox" name="checkPrint" value="` + house.id + `">`
 
                         var cell14 = newRow.insertCell(14);
                         cell14.innerHTML = `
-                        <a class='btn btn-default btn-sm float-right' href='[[@{/commercial/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>
-                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>`;
+                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>
+                        <a class='btn btn-default btn-sm float-right' href='[[@{/commercial/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
                     }
                     $('#pagination_container').empty();
                     if (houses.totalPages > 1) updatePagination(page, houses.totalPages, 'pagination_container', localStorage.getItem('numberOfElementForCommercial') || 10, 'numberOfElementForCommercial')
@@ -330,7 +394,7 @@
                         pagination.innerHTML = '';
                         var row = document.createElement('div');
                         row.style.marginRight = 'auto'
-                        row.style.width='100%'
+                        row.style.width = '100%'
                         row.innerHTML += `
 <div class="row" style="width: 25%">
     <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">
@@ -360,7 +424,7 @@
                 $.ajax({
                     type: "delete",
                     url: '[[@{/commercial/delete/}]]' + houseId,
-                    headers: { 'X-XSRF-TOKEN': '[[${_csrf.token}]]' },
+                    headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
                     success: function (response) {
                         getPageWithFilter(page)
                         showToast(response, "success")

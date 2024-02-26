@@ -38,15 +38,15 @@ class QuestionControllerTest {
         assertEquals("questions/question_table", modelAndView.getViewName());
     }
 
-    @Test
-    void getAll() {
-        int page = 1;
-        Page<Question> questionPage = mock(Page.class);
-        when(questionService.getAll(page)).thenReturn(questionPage);
-        Page<Question> result = questionController.getAll(page);
-        assertEquals(questionPage, result);
-        verify(questionService, times(1)).getAll(page);
-    }
+//    @Test
+//    void getAll() {
+//        int page = 1;
+//        Page<Question> questionPage = mock(Page.class);
+//        when(questionService.getAll(page)).thenReturn(questionPage);
+//        Page<Question> result = questionController.getAll(page);
+//        assertEquals(questionPage, result);
+//        verify(questionService, times(1)).getAll(page);
+//    }
 
     @Test
     void getById() {

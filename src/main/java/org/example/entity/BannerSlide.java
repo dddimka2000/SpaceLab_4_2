@@ -19,6 +19,7 @@ public class BannerSlide {
     private String name;
     private Integer queue;
     private String imgPath;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "banner_id", referencedColumnName = "id")

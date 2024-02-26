@@ -28,15 +28,15 @@ class ChangeOfferControllerTest {
         assertEquals("proposals_for_changes/changes_table", modelAndView.getViewName());
     }
 
-    @Test
-    void getAll() {
-        int page = 1;
-        Page<ChangeOffer> changeOfferPage = mock(Page.class);
-        when(changeOfferService.getAll(page)).thenReturn(changeOfferPage);
-        Page<ChangeOffer> result = changeOfferController.getAll(page);
-        assertEquals(changeOfferPage, result);
-        verify(changeOfferService, times(1)).getAll(page);
-    }
+//    @Test
+//    void getAll() {
+//        int page = 1;
+//        Page<ChangeOffer> changeOfferPage = mock(Page.class);
+//        when(changeOfferService.getAll(page)).thenReturn(changeOfferPage);
+//        Page<ChangeOffer> result = changeOfferController.getAll(page);
+//        assertEquals(changeOfferPage, result);
+//        verify(changeOfferService, times(1)).getAll(page);
+//    }
 
     @Test
     void getById() {

@@ -28,9 +28,6 @@
                     </nav>
                 </div>
                 <hr style="margin-top: -5px">
-                <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
-
-                </div>
                 <div style="width: 100%; display: flex; justify-content: flex-end;" id="flex-container">
 
                     <div style="display: flex;margin: 20px;align-items: center">
@@ -46,8 +43,9 @@
                         <button class="btn btn-submit" data-translate="builder_object_add">Добавить объект</button>
                     </a>
                 </div>
-                <br>
-                <div class="card">
+
+
+                <div class="card border">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-lg-4 col-sm-6">
@@ -92,7 +90,7 @@
                                 <div class="row">
                                     <div class="col-lg-6 col-sm-6">
                                         <div style="display: flex">
-                                            <h6 data-translate="floor"></h6><span>:</span>
+                                            <h6 data-translate="floor"></h6>
                                         </div>
                                         <div style="display: flex">
                                             <input class="form-control for-filter number-max" maxlength="9"
@@ -118,7 +116,6 @@
 
                             </div>
                         </div>
-                        <br>
                         <div class="row">
                             <div class="col-lg-4 col-sm-6">
                                 <h6 data-translate="topzone">Топозона</h6>
@@ -139,7 +136,7 @@
                                 <div class="row">
                                     <div class="col-lg-6 col-sm-6">
                                         <div style="display: flex">
-                                            <h6 data-translate="number_of_floors">Этажность</h6><span>:</span>
+                                            <h6 data-translate="number_of_floors">Этажность</h6>
                                         </div>
                                         <div style="display: flex">
                                             <input class="form-control for-filter number-max" maxlength="9"
@@ -164,7 +161,6 @@
                             </div>
 
                         </div>
-                        <br>
                         <div class="row">
                             <div class="col-lg-4 col-sm-6">
                                 <h6 data-translate="street">Улица</h6>
@@ -249,9 +245,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        <br>
-                    </div>
-                    <div class="card-footer">
                         <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
                             id="paginationItems">
                         </ul>
@@ -507,15 +500,15 @@
                             var timeDifference = today - otherDate;
                             var daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
                             if (daysDifference > 3 && daysDifference <= 7) {
-                                cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: deepskyblue"></i>`;
+                                cell1.innerHTML = `<i class="fas fa-info-circle" style="color: deepskyblue"></i>`;
                             }
-                            if (daysDifference > 7 && daysDifference <= 18) {
-                                cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: darkorange"></i>`;
+                            else if (daysDifference > 7 && daysDifference <= 21) {
+                                cell1.innerHTML = `<i class="fas fa-info-circle" style="color: darkorange"></i>`;
                             }
-                            if (daysDifference > 18) {
-                                cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: #ff0000"></i>`;
+                            else if (daysDifference > 21) {
+                                cell1.innerHTML = `<i class="fas fa-info-circle" style="color: red"></i>`;
                             } else {
-                                cell1.innerHTML = `<i class="ti ti-alert-triangle ti-tada" style="color: forestgreen"></i>`;
+                                cell1.innerHTML = `<i class="fas fa-info-circle" style="color: green"></i>`;
                             }
 
                             var cell2 = newRow.insertCell(1);

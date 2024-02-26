@@ -100,12 +100,12 @@ function createStatusIcon(dateString) {
     if (daysDiff <= 3) {
         color = "green";
     } else if (daysDiff <= 7) {
-        color = "blue";
+        color = "deepskyblue";
     } else if (daysDiff <= 21) {
-        color = "orange";
+        color = "darkorange";
     }
     const icon = document.createElement("div");
-    icon.className = "d-flex";
+    icon.className = "d-flex justify-content-center";
     icon.innerHTML = `<i class="fas fa-info-circle" style="color: ${color}"></i>`;
     return icon;
 }

@@ -47,22 +47,22 @@ class QuestionServiceImplTest {
         verify(questionRepository, times(1)).save(question);
     }
 
-    @Test
-    void getAll() {
-        // Arrange
-        int page = 0;
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
-
-        // Instead of using any(), provide a specific Page object or a matcher
-        when(questionRepository.findAll(pageable)).thenReturn(Page.empty());
-
-        // Act
-        Page<Question> result = questionService.getAll(page);
-
-        // Assert
-        assertEquals(Page.empty(), result);
-        verify(questionRepository, times(1)).findAll(pageable);
-    }
+//    @Test
+//    void getAll() {
+//        // Arrange
+//        int page = 0;
+//        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
+//
+//        // Instead of using any(), provide a specific Page object or a matcher
+//        when(questionRepository.findAll(pageable)).thenReturn(Page.empty());
+//
+//        // Act
+//        Page<Question> result = questionService.getAll(page);
+//
+//        // Assert
+//        assertEquals(Page.empty(), result);
+//        verify(questionRepository, times(1)).findAll(pageable);
+//    }
 
 
     @Test

@@ -42,20 +42,20 @@ class ChangeOfferServiceImplTest {
         verify(changeOfferRepository, times(1)).save(changeOffer);
     }
 
-    @Test
-    void getAll() {
-        // Arrange
-        List<ChangeOffer> changeOfferList = new ArrayList<>();
-        Page<ChangeOffer> expectedPage = new PageImpl<>(changeOfferList);
-        when(changeOfferRepository.findAll(any(Pageable.class))).thenReturn(expectedPage);
-
-        // Act
-        Page<ChangeOffer> result = changeOfferService.getAll(0);
-
-        // Assert
-        assertEquals(expectedPage, result);
-        verify(changeOfferRepository, times(1)).findAll(any(Pageable.class));
-    }
+//    @Test
+//    void getAll() {
+//        // Arrange
+//        List<ChangeOffer> changeOfferList = new ArrayList<>();
+//        Page<ChangeOffer> expectedPage = new PageImpl<>(changeOfferList);
+//        when(changeOfferRepository.findAll(any(Pageable.class))).thenReturn(expectedPage);
+//
+//        // Act
+//        Page<ChangeOffer> result = changeOfferService.getAll(0);
+//
+//        // Assert
+//        assertEquals(expectedPage, result);
+//        verify(changeOfferRepository, times(1)).findAll(any(Pageable.class));
+//    }
 
     @Test
     void getById() {

@@ -42,12 +42,10 @@
                                 <h3 data-translate="view_object">Просмотр объекта</h3>
                             </div>
                             <div class="col-sm-6 col-lg-6" style="text-align: right;">
-                                <div class="btn-group">
-                                    <a href="#" onclick="checkModalWindow()" class="btn btn-submit" data-translate="searchBuyer">Поиск покупателя</a>
-                                    <a th:href="@{/investor_objects/edit/{id}(id=${id})}">
-                                        <button class="btn btn-submit" data-translate="edit">Редактировать</button>
+                                    <a href="#" onclick="checkModalWindow()" class="btn btn-primary" data-translate="searchBuyer">Поиск покупателя</a>
+                                    <a th:href="@{/investor_objects/edit/{id}(id=${id})}" >
+                                        <button class="btn btn-primary" data-translate="edit">Редактировать</button>
                                     </a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -138,8 +136,9 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="smallModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
+        <div id="smallModal"  class="modal animate__animated animate__flipInX"
+             tabindex="-1" aria-labelledby="flipInXAnimationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel2">Покупатели</h5>
@@ -169,11 +168,15 @@
                         if (buyers) {
                             buyers.forEach(function (buyer) {
                                 modalBody.html(modalBody.html() + `
-                    <a href='[[@{/buyers/}]]`+buyer.id+`'>
-                        `+buyer.surname+` `+buyer.name+` `+buyer.middleName+`
-                    </a><br/>
-                            `);
+                                   <a href='[[@{/buyers/}]]` + buyer.id + `'>
+                                      ` + buyer.surname + ` ` + buyer.name + ` ` + buyer.middleName + `
+                                   </a><br/>`)
                             });
+                            if (buyers.length == 0) {
+                                modalBody.html(modalBody.html() + `<p data-translate="empty">` + translateByOriginName("empty") + `</p>`);
+                            }
+                        } else {
+                            modalBody.html(modalBody.html() + `<p data-translate="empty">` + translateByOriginName("empty") + `</p>`);
                         }
                     }
                 })

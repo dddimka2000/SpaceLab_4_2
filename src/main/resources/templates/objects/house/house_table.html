@@ -27,27 +27,33 @@
                 </nav>
             </div>
             <hr style="margin-top: -5px">
-            <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px;">
-                <p><input type="checkbox" style="margin-top: 3px" id="printWithAddress"
-                          class="form-check-input" data-translate="printWithAddress">
-                <div data-translate="printWithAddress" style="margin-right: 20px"></div>
-                </p>
-                <button class="btn btn-submit waves-effect waves-light"
-                        th:onclick="|window.location.href='@{/houses/add}'|"
-                        style="margin-right: 5px" data-translate="builder_object_add">Добавить об'єкт
+            <div style="width: 100%; display: flex; justify-content: flex-end;" id="flex-container">
+                <div style="display: flex;margin: 20px;align-items: center">
+                    <input type="checkbox" id="printWithAddress" class="form-check-input"
+                           data-translate="printWithAddress">
+                    <div data-translate="printWithAddress"></div>
+                </div>
+                <button class="btn btn-submit" id="printButton" data-translate="print" onclick="printElements()"
+                        style="margin: 20px">
+                    Распечатать
                 </button>
-                <button class="btn btn-submit waves-effect waves-light" onclick="printElements()"
-                        data-translate="print">Распечатать
-                </button>
+                <div style="margin: 20px">
+                    <button class="btn btn-submit waves-effect waves-light"
+                            th:onclick="|window.location.href='@{/houses/add}'|"
+                            data-translate="builder_object_add">Добавить об'єкт
+                    </button>
+                </div>
             </div>
-            <div class="card border mt-3">
+
+
+            <div class="card border">
                 <div class="card-header">
                     <div class="row gy-3">
                         <div class="col-md-6 col-lg-4">
-                            <div data-translate="region_district"></div>
-                            <select id="district" onchange="getPageWithFilter(0)" multiple></select>
-                            <div data-translate="topzone"></div>
-                            <select class="select2 form-select for-filter select2find" onchange="getPageWithFilter(0)" multiple
+                            <h6 data-translate="district"></h6>
+                            <select id="district" multiple></select>
+                            <h6 data-translate="topzone"></h6>
+                            <select class="select2 form-select for-filter select2find" multiple
                                     id="topzone">
                                 <option th:each="entity : ${selectTopozone}"
                                         th:value="${entity}" th:data-translate="${entity}"
@@ -55,77 +61,83 @@
                             </select>
                         </div>
                         <div class="col-md-6 col-lg-3">
-                            <div data-translate="property.numberOfRooms"></div>
-                            <br>
-                            1 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="1">
-                            2 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="2">
-                            3 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="3">
-                            >3 <input type="radio" onchange="getPageWithFilter(0)" class="form-check-input roomNumbers" name="roomNumbers" value="4">
+                            <h6 data-translate="property.numberOfRooms"></h6>
+                            <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="1">1
+                            <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="2">2
+                            <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="3">3
+                            <input type="radio" class="form-check-input roomNumbers" name="roomNumbers" value="4">>3
                         </div>
                         <div class="col-md-12 col-lg-5">
                             <div class="row gy-3">
                                 <div class="col-lg-6">
-                                    <div data-translate="floor"></div>
+                                    <h6 data-translate="floor"></h6>
                                     <div style="display: flex">
-                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="floorMin">
+                                        <input class="form-control for-filter onlyNumber" id="floorMin">
                                         <div class="mt-2">&mdash;</div>
-                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="floorMax">
+                                        <input class="form-control for-filter onlyNumber" id="floorMax">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div data-translate="price"></div>
                                     <div style="display: flex">
-                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="priceMin">
+                                        <h6 data-translate="price"></h6><span> ($):</span>
+                                    </div>
+                                    <div style="display: flex">
+                                        <input class="form-control for-filter onlyNumber" id="priceMin">
                                         <div class="mt-2">&mdash;</div>
-                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="priceMax">
+                                        <input class="form-control for-filter onlyNumber" id="priceMax">
                                     </div>
                                 </div>
                             </div>
                             <div class="row gy-3">
                                 <div class="col-lg-6">
-                                    <div data-translate="plotArea"></div>
+                                    <h6 data-translate="plotArea"></h6>
                                     <div style="display: flex">
-                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="plotAreaMin">
+                                        <input class="form-control for-filter onlyNumber" id="plotAreaMin">
                                         <div class="mt-2">&mdash;</div>
-                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="plotAreaMax">
+                                        <input class="form-control for-filter onlyNumber" id="plotAreaMax">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div data-translate="S_area_sqm"></div>
+                                    <h6 data-translate="S_area_sqm"></h6>
                                     <div style="display: flex">
-                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="houseAreaMin">
+                                        <input class="form-control for-filter onlyNumber" id="houseAreaMin">
                                         <div class="mt-2">&mdash;</div>
-                                        <input class="form-control for-filter onlyNumber" onchange="getPageWithFilter(0)" id="houseAreaMax">
+                                        <input class="form-control for-filter onlyNumber" id="houseAreaMax">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-1">
+                    <div class="row">
                         <div class="col-md-6 col-lg-4">
-                            <div data-translate="street"></div>
-                            <input class="form-control for-filter" onchange="getPageWithFilter(0)" id="street">
+                            <h6 data-translate="street"></h6>
+                            <input class="form-control for-filter" id="street"
+                                   data-translate-placeholder="enter_street">
                         </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div data-translate="contact_date"></div>
-                            <select class="form-control" style="width: 60%;" onchange="getPageWithFilter(0)" id="lastContactDate">
+                        <div class="col-md-6 col-lg-4">
+                            <h6 data-translate="contact_date"></h6>
+                            <select id="lastContactDate" name="day" class="form-select select2 for-filter select2find">
                                 <option selected value=""></option>
                                 <option value="3" data-translate="3multiple_days"></option>
                                 <option value="7" data-translate="multiple_weeks_and_more"></option>
                                 <option value="21" data-translate="3multiple_weeks_and_more"></option>
                                 <option value="99999" data-translate="6multiple_weeks_and_more"></option>
+                                <!--                                    <script>-->
+                                <!--                                        for (let i = 2; i <= 31; i++) {-->
+                                <!--                                            document.write('<option value="' + i + '" data-translate="' + i + 'multiple_days">' + i + ' дней' + '</option>');-->
+                                <!--                                        }-->
+                                <!--                                    </script>-->
                             </select>
                         </div>
-                        <div class="col-md-12 col-lg-5">
-                            <div style="width: 100%; display: flex; justify-content: flex-end; margin-bottom: 17px; margin-top: 20px">
-                                <button class="btn btn-submit waves-effect waves-light" onclick="clearFilter()"
-                                        style="margin-right: 5px" data-translate="clear">
-                                    Очистить фильтр
-                                </button>
-                                <button class="btn btn-submit waves-effect waves-light" onclick="getPageWithFilter(0)"
-                                        data-translate="search">Поиск
-                                </button>
-                            </div>
+                        <div class="col-md-12 col-lg-4"
+                             style="display: flex; justify-content: flex-end;align-items: end;">
+                            <button class="btn btn-submit waves-effect waves-light" onclick="clearFilter()"
+                                    style="margin-right: 5px" data-translate="clear_filter">
+                                Очистить фильтр
+                            </button>
+                            <button class="btn btn-submit waves-effect waves-light" onclick="getPageWithFilter(0)"
+                                    data-translate="search">Поиск
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -258,8 +270,9 @@
                 language: languageForSelect2,
                 minimumResultsForSearch: -1,
             })
+
             setTimeout(function () {
-                $(".select2-container").each(function() {
+                $(".select2-container").each(function () {
                     var placeholderElement = $(this).find("[placeholder]");
                     placeholderElement.css("width", "100%");
                 });
@@ -356,8 +369,8 @@
 
                         var cell13 = newRow.insertCell(13);
                         cell13.innerHTML = `
-                        <a class='btn btn-default btn-sm float-right' href='[[@{/houses/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>
-                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>`;
+                        <button class='btn btn-default btn-sm float-right' onclick="deleteElement(this, ` + house.id + `);" title='Удалить'><i class='fa fa-trash'></i></button>
+                        <a class='btn btn-default btn-sm float-right' href='[[@{/houses/edit/}]]` + house.id + `' title='Редактировать'><i class='fa fa-pencil-alt'></i></a>`;
                     }
                     $('#pagination_container').empty();
                     if (houses.totalPages > 1) updatePagination(page, houses.totalPages, 'pagination_container', localStorage.getItem('numberOfElementForHouse') || 10, 'numberOfElementForHouse')

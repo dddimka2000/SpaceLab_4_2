@@ -94,6 +94,7 @@ public class HouseObjectSpecification implements Specification<PropertyHouseObje
         if (!street.isBlank()) {
             predicates.add(criteriaBuilder.like(root.get("address").get("street"), "%" + street + "%"));
         }
+       
         if (lastContactDate != null) {
             predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("lastContactDate"), lastContactDate));
         }

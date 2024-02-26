@@ -69,13 +69,19 @@
         <li th:class="'menu-item ' + ${realtorsActive != null  ? 'active' : ''}">
             <a th:href="@{/realtors}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-currency-real"></i>
-                <div  data-translate="realtors">Риелторы</div>
+                <div data-translate="realtors">Риелторы</div>
+            </a>
+        </li>
+        <li th:class="'menu-item ' + ${potentialCustomers != null  ? 'active' : ''}">
+            <a th:href="@{/potential_customer}" class="menu-link">
+                <i class="menu-icon fa-solid fa-address-book"></i>
+                <div data-translate="potential_customers"></div>
             </a>
         </li>
         <li th:class="'menu-item ' + ${usersActive != null  || pagesActive != null  || bannersActive != null  || applicationsActive != null  || questionsActive != null  || changesActive != null  ? 'active open' : ''}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-toggle-left"></i>
-                <div  data-translate="website_management">Управление сайтом</div>
+                <div data-translate="website_management">Управление сайтом</div>
             </a>
             <ul class="menu-sub">
                 <li th:class="'menu-item ' + ${applicationsActive != null  ? 'active' : ''}">

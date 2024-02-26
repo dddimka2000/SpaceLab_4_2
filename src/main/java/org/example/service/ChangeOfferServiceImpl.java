@@ -24,9 +24,9 @@ public class ChangeOfferServiceImpl {
         log.info("ChangeOfferServiceImpl-save successfully");
     }
 
-    public Page<ChangeOffer> getAll(int page) {
+    public Page<ChangeOffer> getAll(int page, int size) {
         log.info("ChangeOfferServiceImpl-getAll start");
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Order.desc("id")));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("id")));
         Page<ChangeOffer> result = changeOfferRepository.findAll(pageable);
         log.info("ChangeOfferServiceImpl-getAll successfully");
         return result;

@@ -25,8 +25,8 @@ public class ChangeOfferController {
 
     @GetMapping("/get-all")
     @ResponseBody
-    public Page<ChangeOffer> getAll(@RequestParam("page") int page) {
-        return changeOfferService.getAll(page);
+    public Page<ChangeOffer> getAll(@RequestParam("page") int page,@RequestParam("size") int size) {
+        return changeOfferService.getAll(page,size);
     }
 
     @GetMapping("/getById")

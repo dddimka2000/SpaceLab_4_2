@@ -2,3 +2,5 @@
 /target/
 /.idea/
 /src/main/java/org/example/chat/
+src/main/resources/application.properties
+src/main/java/org/example/config/WebSecurityConfig.java
