@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html
+        lang="en"
+        class="light-style layout-navbar-fixed layout-menu-fixed"
+        layout:decorate="~{layout.html}"
+>
+<head>
+    <title data-translate="ріелтори"></title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <br>
+            <div class="d-flex justify-content-between">
+                <h4 class="fw-bold" data-translate="potential_customers"></h4>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="d-flex align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/}" data-translate="main">Главная</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" data-translate="potential_customers"></li>
+                    </ol>
+                </nav>
+            </div>
+            <hr style="margin-top: -5px">
+            <div class="card border">
+                <div class="card-body">
+                    <div class="d-flex justify-content-end">
+                        <div class="input-group input-group-merge" style="width: 20%">
+                            <input class="form-control for-filter" aria-describedby="multicol-confirm-password2">
+                            <span class="input-group-text cursor-pointer" id="multicol-confirm-password2">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="table-responsive">
+                        <table id="potential_customer" class="table table-bordered table-striped linkedRow">
+                            <thead>
+                            <tr>
+                                <th data-translate="fullName"></th>
+                                <th data-translate="phone"></th>
+                                <th data-translate="RC"></th>
+                                <th data-translate="date_of_view"></th>
+                                <th data-translate="realtor"></th>
+                                <th data-translate="date_of_registration"></th>
+                                <th data-translate="status"></th>
+                                <th style="min-width: 100px"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <ul class="pagination pagination-sm m-0 mt-1" style="display: flex; justify-content: flex-end"
+                        id="pagination_container">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var page;
+        $(document).ready(function () {
+            getPageWithFilter(0)
+        })
+        $('.for-filter').on('input', function () {
+            clearTimeout($(this).data('timeout'));
+            var $input = $(this);
+            var timeout = setTimeout(function () {
+                getPageWithFilter(0);
+            }, 700);
+            $input.data('timeout', timeout);
+        });
+        function setNumberOfElement(numberOfElement){
+            localStorage.setItem('numberOfElementForPotentialCustomer', numberOfElement)
+            getPageWithFilter(0)
+        }
+        function getPageWithFilter(page) {
+            this.page = page
+            $.ajax({
+                type: "Get",
+                url: '[[@{/potential_customer/get-all}]]',
+                data: {
+                    page: page,
+                    numberOfElement: localStorage.getItem('numberOfElementForPotentialCustomer') || 10,
+                    search: $('.for-filter').val()
+                },
+                success: function (potential_customer) {
+                    var table = document.getElementById("potential_customer");
+                    var tbody = table.querySelector("tbody");
+                    $('#potential_customer tbody').empty();
+                    $('#empty-block').remove()
+                    if(potential_customer.content.length == 0)
+                        table.insertAdjacentHTML('afterend', '<center id="empty-block"><h1 data-translate="empty">'+translateValue("empty")+'</h1></center>')
+                    for (var customer of potential_customer.content) {
+                        var newRow = tbody.insertRow();
+                        var cell1 = newRow.insertCell(0);
+                        cell1.innerHTML = customer.fullName
+                        var cell2 = newRow.insertCell(1);
+                        cell2.innerHTML = customer.phone
+                        var cell3 = newRow.insertCell(2);
+                        cell3.innerHTML = customer.builderObject
+                        var cell4 = newRow.insertCell(3);
+                        cell4.innerHTML = customer.viewDate
+                        var cell5 = newRow.insertCell(4);
+                        console.log(customer)
+                        cell5.innerHTML = customer.realtorFullName
+                        var cell6 = newRow.insertCell(5);
+                        cell6.innerHTML = customer.registrationDate
+                        var cell7 = newRow.insertCell(6);
+                        cell7.innerHTML = customer.statusPotentialCustomer
+                        var cell8 = newRow.insertCell(7);
+                        var customerId = customer.id
+                        cell8.innerHTML = `
+                            <button class="btn" style="padding: 0" type="button" onclick="changeStatus(${customerId}, 'NEW')"><i class="fa-solid fa-circle-play"></i></button>
+                            <button class="btn" style="padding: 0" type="button" onclick="changeStatus(${customerId}, 'PROCESSED')"><i class="fa-solid fa-check"></i></button>
+                            <button class="btn" style="padding: 0" type="button" onclick="changeStatus(${customerId}, 'FAKE')"><i class="fa-solid fa-ban"></i></button>
+                        `
+                    }
+                    $('#pagination_container').empty();
+                    if (potential_customer.totalPages > 1) updatePagination(page, potential_customer.totalPages, 'pagination_container', localStorage.getItem('numberOfElementForPotentialCustomer') || 10, 'numberOfElementForPotentialCustomer')
+                    else {
+                        var pagination = document.getElementById('pagination_container');
+                        pagination.innerHTML = '';
+                        var row = document.createElement('div');
+                        row.style.marginRight = 'auto'
+                        row.style.width='100%'
+                        row.innerHTML += `
+<div class="row" style="width: 25%">
+    <select class="form-select" id="number-of-element" onchange="setNumberOfElement(this.value)">
+        <option value="2" ${localStorage.getItem('numberOfElementForPotentialCustomer') == 2 ? 'selected' : ''}>2</option>
+        <option value="5" ${localStorage.getItem('numberOfElementForPotentialCustomer') == 5 ? 'selected' : ''}>5</option>
+        <option value="10" ${localStorage.getItem('numberOfElementForPotentialCustomer') == 10 || localStorage.getItem('numberOfElementForPotentialCustomer') == null ? 'selected' : ''}>10</option>
+        <option value="25" ${localStorage.getItem('numberOfElementForPotentialCustomer') == 25 ? 'selected' : ''}>25</option>
+    </select>
+</div>`;
+                        pagination.appendChild(row)
+                    }
+                    $('#number-of-element').select2({
+                        minimumResultsForSearch: -1,
+                    })
+                },
+            });
+        }
+        function changeStatus(id, status){
+            showBlockForAllBody(true)
+            $.ajax({
+                type: "put",
+                url: '[[@{/potential_customer/change/status}]]',
+                headers: {'X-XSRF-TOKEN': '[[${_csrf.token}]]'},
+                data: {
+                    id: id,
+                    status: status
+                },
+                success: function () {
+                    if (languageSecondExample == 'eng') {
+                        showToast("Status was changed", "success");
+                    } else if (languageSecondExample == 'ru') {
+                        showToast("Статус был изменен", "success");
+                    } else {
+                        showToast("Статус був змінений", "success");
+                    }
+                    getPageWithFilter(page)
+                    showBlockForAllBody(false)
+                },
+                error: function (xhr, status, error) {
+                    showBlockForAllBody(false)
+                }
+            })
+        }
+    </script>
+</section>
+
+</body>
+</html>
