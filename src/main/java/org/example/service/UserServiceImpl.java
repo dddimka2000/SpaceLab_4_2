@@ -14,6 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +82,17 @@ public class UserServiceImpl {
         log.info("UserServiceImpl-deleteById successfully");
     }
     public UserEntity getAuthUser(){
-        return userRepository.findById(1).get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            return getByEmail(currentUserName);
+        }
+        else throw new RuntimeException("The realtor is not authorized");
+    }
+
+    private UserEntity getByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new EntityNotFoundException("A user with an email = " + email + " was not found")
+        );
     }
 }
