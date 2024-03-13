@@ -1,9 +1,7 @@
 package org.example.specification;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
+import org.example.entity.BuilderObject;
 import org.example.entity.PotentialCustomer;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -24,7 +22,11 @@ public class PotentialCustomerSpecification implements Specification<PotentialCu
         if(search != null){
             predicates.add(criteriaBuilder.like(root.get("fullName"), "%"+search+"%"));
             predicates.add(criteriaBuilder.like(root.get("phone"), "%"+search+"%"));
-            predicates.add(criteriaBuilder.like(root.get("builderObject").get("name"), "%"+search+"%"));
+            Join<PotentialCustomer, BuilderObject> join = root.join("builderObject", JoinType.LEFT);
+            predicates.add(criteriaBuilder.and(
+                    criteriaBuilder.isNotNull(root.get("builderObject")),
+                    criteriaBuilder.like(join.get("name"), "%" + search + "%")
+            ));
             predicates.add(criteriaBuilder.like(root.get("viewDate"), "%"+search+"%"));
             predicates.add(criteriaBuilder.like(
                     criteriaBuilder.concat(

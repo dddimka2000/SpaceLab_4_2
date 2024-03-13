@@ -28,7 +28,8 @@ public class PotentialCustomerController {
     @GetMapping("/get-all")
     @ResponseBody
     public Page<PotentialCustomerDtoForView> getAll(@RequestParam Integer page, @RequestParam Integer numberOfElement, @RequestParam String search){
-        return potentialCustomerService.getAll(page, numberOfElement, search);
+        Page<PotentialCustomerDtoForView> result = potentialCustomerService.getAll(page, numberOfElement, search);
+        return result;
     }
     @PutMapping("/change/status")
     @ResponseBody

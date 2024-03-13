@@ -19,7 +19,7 @@ public interface PotentialCustomerMapper {
     PotentialCustomerDtoForView toDto(PotentialCustomer potentialCustomer);
     default PotentialCustomerDtoForView toDtoFromEntity(PotentialCustomer potentialCustomer){
         PotentialCustomerDtoForView potentialCustomerDtoForView = toDto(potentialCustomer);
-        potentialCustomerDtoForView.setBuilderObject(potentialCustomer.getBuilderObject().getName());
+        if(potentialCustomer.getBuilderObject()!=null)potentialCustomerDtoForView.setBuilderObject(potentialCustomer.getBuilderObject().getName());
         potentialCustomerDtoForView.setRealtorFullName(potentialCustomer.getRealtor().getSurname()+" "+potentialCustomer.getRealtor().getName());
         return potentialCustomerDtoForView;
     }
