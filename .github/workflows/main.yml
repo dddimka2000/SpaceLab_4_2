@@ -49,7 +49,7 @@ jobs:
           username: ${{ secrets.remote_server_username }}
           password: ${{ secrets.remote_server_ssh_key }}
           script: |
-            if docker ps -a --format '{{.Names}}' | grep -q '^MinionsDD$'; then
+            if docker ps -a --format '{{.Names}}' | grep -q '^slj_prominada_admin_dd_di'; then
               docker stop slj_prominada_admin_dd_di || true
               docker rm slj_prominada_admin_dd_di || true
             fi
