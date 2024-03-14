@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Configuration;
 public class MinIOConfig {
     @Value("${minio.endpoint}")
     private String endpoint;
-
+    @Value("${minio.port}")
+    private int port;
     @Value("${minio.accessKey}")
     private String accessKey;
 
@@ -19,7 +20,7 @@ public class MinIOConfig {
     @Bean
     public MinioClient minioClient() {
         return MinioClient.builder()
-                .endpoint(endpoint)
+                .endpoint(endpoint, port, false)
                 .credentials(accessKey, secretKey)
                 .build();
     }
