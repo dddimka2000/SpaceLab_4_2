@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MinIOConfig {
-
     @Value("${minio.endpoint}")
     private String endpoint;
 
@@ -25,4 +24,3 @@ public class MinIOConfig {
                 .build();
     }
 }
-
